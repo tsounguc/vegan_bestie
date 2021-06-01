@@ -1,16 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sheveegan/assets/barcode_icon.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
+import 'package:sheveegan/productprovider.dart';
 
 class SheVeganHomePage extends HookWidget {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
+    final productScanResults = useProvider(productProvider.state);
+    // if (productScanResults.error!.isNotEmpty) {
+    //   final snackBar = SnackBar(
+    //     content: Text(productScanResults.error!),
+    //     backgroundColor: Colors.green.shade400,
+    //   );
+    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    // }
     return Scaffold(
+      key: _scaffoldKey,
       body: Stack(
         children: [
-          Container(color: Colors.green.shade900,),
+          Container(
+            color: Colors.green.shade900,
+          ),
           AnimatedContainer(
             color: Colors.white,
             duration: Duration(milliseconds: 250),
@@ -74,45 +89,73 @@ class SheVeganHomePage extends HookWidget {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
                   margin: EdgeInsets.symmetric(horizontal: 50),
+                  height: 200,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.image_outlined,
-                        color: Colors.green.shade50,
-                        size: 200,
-                      )
+                      productScanResults.imageUrl == null ||
+                              productScanResults.imageUrl!.isEmpty
+                          ? Icon(
+                              Icons.image_outlined,
+                              color: Colors.green.shade50,
+                              size: 200,
+                            )
+                          : Expanded(
+                              child: Image(
+                                image: NetworkImage(
+                                  "${productScanResults.imageUrl}",
+                                ),
+                              ),
+                            ),
                     ],
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Expanded(
                   child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.green.shade50,
-                        border: Border.all(color: Colors.transparent),
-                        borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10)),
-                      ),
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade50,
+                      border: Border.all(color: Colors.transparent),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          topLeft: Radius.circular(10)),
+                    ),
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 25, vertical: 20),
                       child: Column(
-
                         // mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          SizedBox(height: 20,),
+                          SizedBox(
+                            height: 20,
+                          ),
                           Text(
-                            'Barcode: ',
+                            'Barcode: ${productScanResults.barcode}',
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.green.shade900,
                             ),
                           ),
-                          SizedBox(height: 20,),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            'Product: ${productScanResults.productName}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.green.shade900,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
                           Expanded(
                             child: Text(
-                              'Product: ',
+                              'Ingredients: ${productScanResults.ingredients}',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.green.shade900,
@@ -121,16 +164,7 @@ class SheVeganHomePage extends HookWidget {
                           ),
                           Expanded(
                             child: Text(
-                              'Ingredients: ',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.green.shade900,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              'Labels: ',
+                              'Labels: ${productScanResults.labels}',
                               style: TextStyle(
                                 fontSize: 15,
                                 color: Colors.green.shade900,
@@ -149,7 +183,10 @@ class SheVeganHomePage extends HookWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green.shade400,
-        onPressed: () {},
+        onPressed: () {
+          context.read(productProvider).scan(context);
+
+        },
         child: Icon(
           BarcodeIcon.barcode_icon,
           color: Colors.white,
