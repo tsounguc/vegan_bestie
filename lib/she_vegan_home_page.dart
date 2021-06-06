@@ -149,11 +149,10 @@ class SheVeganHomePage extends HookWidget {
                               ),
                               if (!context.read(productProvider).sheVegan)
                                 Tooltip(
-                                  decoration:
-                                  BoxDecoration(color: Colors.red),
+                                  decoration: BoxDecoration(color: Colors.red),
                                   height: 50,
                                   message:
-                                  "contains ${context.read(productProvider).nonVeganIngredientsInProduct.toList()}",
+                                      "contains ${context.read(productProvider).nonVeganIngredientsInProduct.toList()}",
                                   child: Icon(Icons.info_outline),
                                   showDuration: Duration(seconds: 5),
                                 ),
@@ -172,27 +171,41 @@ class SheVeganHomePage extends HookWidget {
                           SizedBox(
                             height: 20,
                           ),
+                          Text(
+                            "Ingredients: ",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.green.shade900,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
                           Expanded(
-                            child: Text(
-                              'Ingredients: ${productScanResults.ingredients}',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.green.shade900,
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  '${productScanResults.ingredients}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.green.shade900,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Labels: ${productScanResults.labels}',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.green.shade900,
-                                ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Labels: ${productScanResults.labels}',
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.green.shade900,
                               ),
-
-                            ],
+                            ),
                           ),
                         ],
                       ),
