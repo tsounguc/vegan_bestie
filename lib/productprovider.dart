@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
+import 'package:sheveegan/assets/vegan_icon.dart';
 import 'package:sheveegan/product.dart';
 
 class ProductStateNotifier extends StateNotifier<ProductInfo> {
@@ -14,6 +15,58 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   String? productName;
   String? ingredients;
   String? labels;
+  bool sheVegan = true;
+
+  List<String> nonVeganIngredientsInProduct = [];
+  List<String> nonVeganIngredients = [
+    "anchovies",
+    "bee pollen",
+    "bee venom",
+    "beef",
+    "beeswax",
+    "butter",
+    "calamari",
+    "carmine",
+    "casein",
+    "castoreum",
+    "cheese",
+    "chicken",
+    "cochineal",
+    "crab",
+    "cream",
+    "duck",
+    "edible bone phosphate",
+    "eggs",
+    "fish",
+    "fish sauce",
+    "gelatin",
+    "goose",
+    "honey",
+    "horse",
+    "isinglass",
+    "l-cysteine",
+    "lamb",
+    "lactose",
+    "lobster",
+    "milk",
+    "mussels",
+    // "omega-3 fatty acids",
+    "organ meat",
+    "pork",
+    "propolis",
+    "quail",
+    "royal jelly",
+    "scallops",
+    "shellac",
+    "shrimp",
+    "squid",
+    "turkey",
+    "veal",
+    "vitamin d3",
+    "whey",
+    "wild meat",
+    "yogurt",
+  ];
 
   Future scan(BuildContext context) async {
     try {
@@ -23,9 +76,23 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       if (barcode!.isNotEmpty) {
         Product? product = await getProduct(context);
         error = "";
-        productName = product!.productName;
-        ingredients = product.ingredientsText;
-        labels = product.labels;
+        if (product!.productName == null) {
+          productName = '';
+        } else {
+          productName = product.productName;
+        }
+
+        if (product.ingredientsText == null) {
+          ingredients = '';
+        } else {
+          ingredients = product.ingredientsText;
+        }
+
+        if (product.labels == null) {
+          labels = '';
+        } else {
+          labels = product.labels;
+        }
         if (product.imageFrontUrl != null) {
           imageUrl = product.imageFrontUrl;
           print(imageUrl);
@@ -47,6 +114,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
           imageUrl: imageUrl,
           error: error,
         );
+        veganCheck(context);
       }
     } on PlatformException catch (e) {
       print("PlatformException: $e");
@@ -75,12 +143,81 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       }
       return result.product;
     } on Exception catch (e) {
-      final snackBar = SnackBar(backgroundColor: Colors.amber,
+      final snackBar = SnackBar(
+        backgroundColor: Colors.amber,
         content: Text(error!),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);}
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
-  final productProvider = StateNotifierProvider<ProductStateNotifier>(
-          (ref) => new ProductStateNotifier());
+  void veganCheck(BuildContext context) {
+    sheVegan = true;
+    nonVeganIngredientsInProduct = [];
+    if (labels!.isEmpty) {
+      nonVeganIngredients.forEach((nonVeganIngredient) {
+        if (ingredients!
+            .toLowerCase()
+            .contains(nonVeganIngredient.toLowerCase())) {
+          print("contains $nonVeganIngredient");
+          nonVeganIngredientsInProduct.add(nonVeganIngredient);
+          sheVegan = false;
+        }
+      });
+    } else if (!(labels!.toLowerCase().contains('vegan') ||
+        labels!.toLowerCase().contains('contains no animal ingredients'))) {
+      nonVeganIngredients.forEach((nonVeganIngredient) {
+        if (ingredients!
+            .toLowerCase()
+            .contains(nonVeganIngredient.toLowerCase())) {
+          print("contains $nonVeganIngredient");
+          nonVeganIngredientsInProduct.add(nonVeganIngredient);
+          sheVegan = false;
+        }
+      });
+    }
+    if(sheVegan == true){
+      final snackBar = SnackBar(
+        backgroundColor: Colors.green,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Guuurl you know she ',
+            ),
+            Icon(
+              VeganIcon.vegan_icon,
+              color: Colors.white,
+            ),
+            Text(
+              'egan! 😊',
+            ),
+          ],
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }else if(!sheVegan){
+      final snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Girl she ain\'t',
+            ),
+            Icon(
+              VeganIcon.vegan_icon,
+              color: Colors.white,
+            ),
+            Text(
+              'egan 😞',
+            ),
+
+          ],
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+}
+
+final productProvider = StateNotifierProvider<ProductStateNotifier>(
+    (ref) => new ProductStateNotifier());

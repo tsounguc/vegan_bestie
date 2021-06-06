@@ -84,7 +84,9 @@ class SheVeganHomePage extends HookWidget {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.green.shade400,
+                    color: context.read(productProvider).sheVegan
+                        ? Colors.green.shade400
+                        : Colors.red.shade400,
                     border: Border.all(color: Colors.transparent),
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
@@ -116,7 +118,9 @@ class SheVeganHomePage extends HookWidget {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.green.shade50,
+                      color: context.read(productProvider).sheVegan
+                          ? Colors.green.shade50
+                          : Colors.red.shade50,
                       border: Border.all(color: Colors.transparent),
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(10),
@@ -133,12 +137,27 @@ class SheVeganHomePage extends HookWidget {
                           SizedBox(
                             height: 20,
                           ),
-                          Text(
-                            'Barcode: ${productScanResults.barcode}',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.green.shade900,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Barcode: ${productScanResults.barcode}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.green.shade900,
+                                ),
+                              ),
+                              if (!context.read(productProvider).sheVegan)
+                                Tooltip(
+                                  decoration:
+                                  BoxDecoration(color: Colors.red),
+                                  height: 50,
+                                  message:
+                                  "contains ${context.read(productProvider).nonVeganIngredientsInProduct.toList()}",
+                                  child: Icon(Icons.info_outline),
+                                  showDuration: Duration(seconds: 5),
+                                ),
+                            ],
                           ),
                           SizedBox(
                             height: 20,
@@ -162,14 +181,18 @@ class SheVeganHomePage extends HookWidget {
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: Text(
-                              'Labels: ${productScanResults.labels}',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.green.shade900,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Labels: ${productScanResults.labels}',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.green.shade900,
+                                ),
                               ),
-                            ),
+
+                            ],
                           ),
                         ],
                       ),
@@ -182,10 +205,11 @@ class SheVeganHomePage extends HookWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green.shade400,
+        backgroundColor: context.read(productProvider).sheVegan
+            ? Colors.green.shade400
+            : Colors.red.shade400,
         onPressed: () {
           context.read(productProvider).scan(context);
-
         },
         child: Icon(
           BarcodeIcon.barcode_icon,
