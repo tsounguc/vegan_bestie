@@ -13,11 +13,12 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   String? imageUrl;
   String? barcode;
   String? productName;
-  String? ingredients;
+  List<Ingredient>? ingredients;
+  String? ingredientsText;
   String? labels;
   bool sheVegan = true;
 
-  List<String> nonVeganIngredientsInProduct = [];
+  String nonVeganIngredientsInProduct = "";
   List<String> nonVeganIngredients = [
     "anchovies",
     "bee pollen",
@@ -73,43 +74,14 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       barcode = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", 'Cancel', true, ScanMode.BARCODE);
       print("Barcode: " + barcode!);
+
       if (barcode!.isNotEmpty) {
         Product? product = await getProduct(context);
-        error = "";
-        if (product!.productName == null) {
-          productName = '';
-        } else {
-          productName = product.productName;
-        }
-
-        if (product.ingredientsText == null) {
-          ingredients = '';
-        } else {
-          ingredients = product.ingredientsText;
-        }
-
-        if (product.labels == null) {
-          labels = '';
-        } else {
-          labels = product.labels;
-        }
-        if (product.imageFrontUrl != null) {
-          imageUrl = product.imageFrontUrl;
-          print(imageUrl);
-        } else if (product.imageFrontSmallUrl != null) {
-          imageUrl = product.imageFrontSmallUrl;
-          print(imageUrl);
-        } else if (product.imageNutritionUrl != null) {
-          imageUrl = product.imageFrontSmallUrl;
-          print(imageUrl);
-        } else if (product.imageNutritionSmallUrl != null) {
-          imageUrl = product.imageNutritionSmallUrl;
-          print(imageUrl);
-        }
+        initState(product!);
         state = ProductInfo(
           barcode: barcode,
           productName: productName,
-          ingredients: ingredients,
+          ingredients: ingredientsText,
           labels: labels,
           imageUrl: imageUrl,
           error: error,
@@ -118,6 +90,44 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       }
     } on PlatformException catch (e) {
       print("PlatformException: $e");
+    }
+  }
+
+  void initState(Product product) {
+    error = "";
+    if (product.productName == null) {
+      productName = '';
+    } else {
+      productName = product.productName;
+    }
+
+    if (product.ingredients == null) {
+      ingredients = [];
+      ingredientsText = "";
+    } else {
+      ingredients = product.ingredients;
+      ingredientsText = product.ingredientsText;
+    }
+
+    if (product.labels == null) {
+      labels = '';
+    } else {
+      labels = product.labels;
+    }
+    if (product.imageFrontUrl != null) {
+      imageUrl = product.imageFrontUrl;
+      print(imageUrl);
+    } else if (product.imageFrontSmallUrl != null) {
+      imageUrl = product.imageFrontSmallUrl;
+      print(imageUrl);
+    } else if (product.imageNutritionUrl != null) {
+      imageUrl = product.imageFrontSmallUrl;
+      print(imageUrl);
+    } else if (product.imageNutritionSmallUrl != null) {
+      imageUrl = product.imageNutritionSmallUrl;
+      print(imageUrl);
+    } else {
+      imageUrl = '';
     }
   }
 
@@ -153,36 +163,43 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
   void veganCheck(BuildContext context) {
     sheVegan = true;
-    nonVeganIngredientsInProduct = [];
     if (labels!.isEmpty) {
-      nonVeganIngredients.forEach((nonVeganIngredient) {
-        if (ingredients!
-            .toLowerCase()
-            .contains(nonVeganIngredient.toLowerCase())) {
-          print("contains $nonVeganIngredient");
-          nonVeganIngredientsInProduct.add(nonVeganIngredient);
-          sheVegan = false;
+      ingredients!.forEach((ingredient) {
+        print(ingredient.text);
+        print(ingredient.vegan);
+        if (ingredient.vegan == null ||
+            ingredient.vegan == IngredientSpecialPropertyStatus.NEGATIVE) {
+          nonVeganIngredients.forEach((nonVeganIngredient) {
+            if (ingredient.text == nonVeganIngredient) {
+              nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!},  " ;
+              sheVegan = false;
+            }
+          });
         }
       });
     } else if (!(labels!.toLowerCase().contains('vegan') ||
         labels!.toLowerCase().contains('contains no animal ingredients'))) {
-      nonVeganIngredients.forEach((nonVeganIngredient) {
-        if (ingredients!
-            .toLowerCase()
-            .contains(nonVeganIngredient.toLowerCase())) {
-          print("contains $nonVeganIngredient");
-          nonVeganIngredientsInProduct.add(nonVeganIngredient);
-          sheVegan = false;
+      ingredients!.forEach((ingredient) {
+        print(ingredient.text);
+        print(ingredient.vegan);
+        if (ingredient.vegan == null ||
+            ingredient.vegan == IngredientSpecialPropertyStatus.NEGATIVE) {
+          nonVeganIngredients.forEach((nonVeganIngredient) {
+            if (ingredient.text == nonVeganIngredient) {
+              sheVegan = false;
+            }
+          });
         }
       });
     }
-    if(sheVegan == true){
+    if (sheVegan == true) {
       final snackBar = SnackBar(
         backgroundColor: Colors.green,
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Guuurl you know she ',
+            Text(
+              'Guuurl you know she ',
             ),
             Icon(
               VeganIcon.vegan_icon,
@@ -195,13 +212,14 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }else if(!sheVegan){
+    } else if (!sheVegan) {
       final snackBar = SnackBar(
         backgroundColor: Colors.red,
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Girl she ain\'t',
+            Text(
+              'Girl she ain\'t',
             ),
             Icon(
               VeganIcon.vegan_icon,
@@ -210,7 +228,6 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
             Text(
               'egan 😞',
             ),
-
           ],
         ),
       );

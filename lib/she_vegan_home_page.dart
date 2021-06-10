@@ -11,127 +11,125 @@ class SheVeganHomePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     final productScanResults = useProvider(productProvider.state);
-    // if (productScanResults.error!.isNotEmpty) {
-    //   final snackBar = SnackBar(
-    //     content: Text(productScanResults.error!),
-    //     backgroundColor: Colors.green.shade400,
-    //   );
-    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    // }
+
     return Scaffold(
       key: _scaffoldKey,
-      body: Stack(
-        children: [
-          Container(
-            color: Colors.green.shade900,
-          ),
-          AnimatedContainer(
-            color: Colors.white,
-            duration: Duration(milliseconds: 250),
-            // margin: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 75),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.menu),
-                        onPressed: () {},
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('She ',
-                              style: TextStyle(
-                                color: Colors.green.shade900,
-                                fontSize: 37,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'cursive',
-                              )
-                              // style: Theme.of(context).textTheme.headline1,
-                              ),
-                          Icon(
-                            VeganIcon.vegan_icon,
-                            color: Colors.green.shade900,
-                            size: 30,
-                          ),
-                          Text(
-                            'egan',
-                            style: TextStyle(
-                              color: Colors.green.shade900,
-                              fontSize: 37,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'cursive',
+      appBar: AppBar(
+        toolbarHeight: 100,
+        backgroundColor: context.read(productProvider).sheVegan
+            ? Colors.green.shade400
+            : Colors.red.shade400,
+        shadowColor: context.read(productProvider).sheVegan
+            ? Colors.green.shade400
+            : Colors.red.shade400,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('She ',
+                style: TextStyle(
+                  // color: Colors.green.shade900
+                  color: Colors.white,
+                  fontSize: 37,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'cursive',
+                )
+                // style: Theme.of(context).textTheme.headline1,
+                ),
+            Icon(
+              VeganIcon.vegan_icon,
+              // color: Colors.green.shade900,
+              color: Colors.white,
+              size: 30,
+            ),
+            Text(
+              'egan',
+              style: TextStyle(
+                // color: Colors.green.shade900,
+                color: Colors.white,
+                fontSize: 37,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'cursive',
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          color: context.read(productProvider).sheVegan
+              ? Colors.green.shade50
+              : Colors.red.shade50,
+          // border: Border.all(color: Colors.transparent),
+          // borderRadius: BorderRadius.only(
+          //     topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+        ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  productScanResults.imageUrl == null ||
+                          productScanResults.imageUrl!.isEmpty
+                      ? Container(
+                          height: size.height * .4,
+                          width: size.width * .9,
+                          decoration: BoxDecoration(
+                            color: context.read(productProvider).sheVegan
+                                ? Colors.green.shade400
+                                : Colors.red.shade400,
+                            border: Border.all(color: Colors.transparent),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
                             ),
                           ),
-                        ],
-                      ),
-                      Icon(
-                        Icons.account_circle,
-                        color: Colors.green.shade500,
-                        size: 42,
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: context.read(productProvider).sheVegan
-                        ? Colors.green.shade400
-                        : Colors.red.shade400,
-                    border: Border.all(color: Colors.transparent),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  margin: EdgeInsets.symmetric(horizontal: 50),
-                  height: 200,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      productScanResults.imageUrl == null ||
-                              productScanResults.imageUrl!.isEmpty
-                          ? Icon(
-                              Icons.image_outlined,
-                              color: Colors.green.shade50,
-                              size: 200,
-                            )
-                          : Expanded(
-                              child: Image(
+                          child: Icon(
+                            Icons.image_outlined,
+                            color: Colors.green.shade50,
+                            size: 200,
+                          ),
+                        )
+                      : Container(
+                          height: size.height * .4,
+                          width: size.width * .9,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
                                 image: NetworkImage(
-                                  "${productScanResults.imageUrl}",
-                                ),
-                              ),
+                                    "${productScanResults.imageUrl}"),
+                                fit: BoxFit.fill),
+                            color: context.read(productProvider).sheVegan
+                                ? Colors.green.shade400
+                                : Colors.red.shade400,
+                            border: Border.all(color: Colors.transparent),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
                             ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Expanded(
-                  child: Container(
+                          ),
+                        ),
+                  Container(
+                    height: size.height * .4,
+                    width: size.width * .9,
+                    // color: Colors.white,
                     decoration: BoxDecoration(
-                      color: context.read(productProvider).sheVegan
-                          ? Colors.green.shade50
-                          : Colors.red.shade50,
-                      border: Border.all(color: Colors.transparent),
+                      color: Colors.white,
+                      // border: Border.(color: Colors.grey),
                       borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(10),
-                          topLeft: Radius.circular(10)),
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
+                      ),
                     ),
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+
+                    // margin: ,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 12.0),
                       child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           SizedBox(
@@ -152,7 +150,7 @@ class SheVeganHomePage extends HookWidget {
                                   decoration: BoxDecoration(color: Colors.red),
                                   height: 50,
                                   message:
-                                      "contains ${context.read(productProvider).nonVeganIngredientsInProduct.toList()}",
+                                      "contains ${context.read(productProvider).nonVeganIngredientsInProduct}",
                                   child: Icon(Icons.info_outline),
                                   showDuration: Duration(seconds: 5),
                                 ),
@@ -196,7 +194,7 @@ class SheVeganHomePage extends HookWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           Expanded(
                             child: Text(
@@ -211,11 +209,12 @@ class SheVeganHomePage extends HookWidget {
                       ),
                     ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: context.read(productProvider).sheVegan

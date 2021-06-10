@@ -9,7 +9,7 @@ class Home extends HookWidget {
     return MaterialApp(
       title: "SheVegan Home",
       theme: ThemeData(
-        primaryColor: Colors.green.shade50,
+        primaryColor: Colors.green.shade400,
         primaryColorDark: Colors.green,
         primaryColorLight: Colors.lime,
         textTheme: TextTheme(headline1: TextStyle(
