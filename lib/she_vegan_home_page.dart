@@ -152,7 +152,7 @@ class SheVeganHomePage extends HookWidget {
                                   decoration: BoxDecoration(color: Colors.red),
                                   height: 50,
                                   message:
-                                      "contains ${context.read(productProvider).nonVeganIngredientsInProduct.toList()}",
+                                      "contains ${context.read(productProvider).nonVeganIngredientsInProduct}",
                                   child: Icon(Icons.info_outline),
                                   showDuration: Duration(seconds: 5),
                                 ),
