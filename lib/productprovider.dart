@@ -160,21 +160,45 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
+  void addNewProduct() async {
+    // define the product to be added.
+    // more attributes available ...
+    Product myProduct = Product(
+      barcode: '0048151623426',
+      productName: 'Maryland Choc Chip',
+    );
+
+    // a registered user login for https://world.openfoodfacts.org/ is required
+    User myUser = User(userId: 'max@off.com', password: 'password');
+
+    // query the OpenFoodFacts API
+    Status result = await OpenFoodAPIClient.saveProduct(myUser, myProduct);
+
+    if (result.status != 1) {
+      throw Exception('product could not be added: ${result.error}');
+    }
+  }
 
   void veganCheck(BuildContext context) {
     sheVegan = true;
+    nonVeganIngredientsInProduct = "";
     if (labels!.isEmpty) {
+      print('isEmpty');
       ingredients!.forEach((ingredient) {
         print(ingredient.text);
         print(ingredient.vegan);
         if (ingredient.vegan == null ||
-            ingredient.vegan == IngredientSpecialPropertyStatus.NEGATIVE) {
+            ingredient.vegan == IngredientSpecialPropertyStatus.MAYBE) {
           nonVeganIngredients.forEach((nonVeganIngredient) {
             if (ingredient.text == nonVeganIngredient) {
               nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!},  " ;
               sheVegan = false;
             }
           });
+        }
+        if(ingredient.vegan == IngredientSpecialPropertyStatus.NEGATIVE){
+          nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!},  " ;
+          sheVegan = false;
         }
       });
     } else if (!(labels!.toLowerCase().contains('vegan') ||
@@ -183,12 +207,17 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         print(ingredient.text);
         print(ingredient.vegan);
         if (ingredient.vegan == null ||
-            ingredient.vegan == IngredientSpecialPropertyStatus.NEGATIVE) {
+            ingredient.vegan == IngredientSpecialPropertyStatus.MAYBE) {
           nonVeganIngredients.forEach((nonVeganIngredient) {
             if (ingredient.text == nonVeganIngredient) {
+              nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!},  " ;
               sheVegan = false;
             }
           });
+        }
+        if(ingredient.vegan == IngredientSpecialPropertyStatus.NEGATIVE){
+          nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!},  " ;
+          sheVegan = false;
         }
       });
     }
