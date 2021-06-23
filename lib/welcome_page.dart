@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
 import 'package:sheveegan/colors.dart';
+import 'package:sheveegan/login_page.dart';
+import 'package:sheveegan/sign_up.dart';
 
 class WelcomePage extends StatelessWidget {
   // const WelcomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 150),
-      decoration: BoxDecoration(color: gradientStartColor),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
+    return Scaffold(
+      backgroundColor: gradientStartColor,
+      body: SafeArea(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 150),
+          decoration: BoxDecoration(color: gradientStartColor),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,11 +59,15 @@ class WelcomePage extends StatelessWidget {
                 children: [
                   MaterialButton(
                     minWidth: double.infinity,
-                    height: 60,
+                    height: 50,
                     color: Colors.white,
-                    onPressed: () {},
+                    onPressed: () {
+                      Route route =
+                          MaterialPageRoute(builder: (context) => LoginPage());
+                      Navigator.push(context, route);
+                    },
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       "Login",
@@ -77,9 +83,13 @@ class WelcomePage extends StatelessWidget {
                   Container(
                     child: MaterialButton(
                       minWidth: double.infinity,
-                      height: 60,
+                      height: 50,
                       color: Colors.white,
-                      onPressed: () {},
+                      onPressed: () {
+                        Route route = MaterialPageRoute(
+                            builder: (context) => SignUpPage());
+                        Navigator.push(context, route);
+                      },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),

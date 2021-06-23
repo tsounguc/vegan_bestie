@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sheveegan/colors.dart';
 
-class LoginPage extends StatelessWidget {
+class SignUpPage extends StatelessWidget {
   // const LoginPage({Key? key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
                   padding: const EdgeInsets.only(
                       left: 8.0, top: 25.0, bottom: 50.0, right: 8.0),
                   child: Text(
-                    "Login",
+                    "Sign up",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,
@@ -83,6 +83,25 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 40.0, vertical: 10),
+                  child: TextFormField(
+                    autofocus: false,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white70,
+                      labelText: "Confirm Password",
+                      labelStyle: TextStyle(color: Colors.grey.shade900),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                    ),
+                  ),
+                ),
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 60, vertical: 40),
                   child: Container(
                     child: MaterialButton(
@@ -94,7 +113,7 @@ class LoginPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Text(
-                        "Login",
+                        "Sign up",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
@@ -106,18 +125,8 @@ class LoginPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Forgot UserID",
-                        style: TextStyle(
-                          color: Colors.white,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
                     Text(
-                      "or",
+                      "Already have an account?",
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -125,28 +134,7 @@ class LoginPage extends StatelessWidget {
                     TextButton(
                       onPressed: () {},
                       child: Text(
-                        "Password",
-                        style: TextStyle(
-                          color: Colors.white,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account?",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Sign up",
+                        "Login",
                         style: TextStyle(
                           color: Colors.white,
                           decoration: TextDecoration.underline,

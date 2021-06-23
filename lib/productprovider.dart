@@ -160,16 +160,19 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
-  void addNewProduct() async {
+  void addNewProduct(String barcode, String productName, String productImage, String ingredients ) async {
     // define the product to be added.
     // more attributes available ...
     Product myProduct = Product(
-      barcode: '0048151623426',
-      productName: 'Maryland Choc Chip',
+      barcode: barcode,
+      productName: productName,
+      imageFrontUrl: productImage,
+      ingredientsText: ingredients,
+      lang: OpenFoodFactsLanguage.ENGLISH,
     );
 
     // a registered user login for https://world.openfoodfacts.org/ is required
-    User myUser = User(userId: 'max@off.com', password: 'password');
+    User myUser = User(userId: 'christian-tsoungui-nkoulou', password: 'Whatsupbro3');
 
     // query the OpenFoodFacts API
     Status result = await OpenFoodAPIClient.saveProduct(myUser, myProduct);
