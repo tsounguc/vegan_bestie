@@ -5,6 +5,7 @@ class ProductInfo {
   String? productName;
   String? ingredients;
   String? labels;
+  bool loading;
 
 
   ProductInfo({
@@ -14,5 +15,6 @@ class ProductInfo {
     this.ingredients = "",
     this.labels = "",
     this.error  = "",
+    this.loading = false,
   });
 }

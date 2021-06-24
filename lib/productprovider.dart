@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -11,6 +12,8 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
   String? error;
   String? imageUrl;
+  CachedNetworkImage? cachedNetworkImage;
+  CachedNetworkImageProvider? imageProvider;
   String? barcode;
   String? productName;
   List<Ingredient>? ingredients;
@@ -76,8 +79,16 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       print("Barcode: " + barcode!);
 
       if (barcode!.isNotEmpty) {
+        state = ProductInfo(loading: true);
         Product? product = await getProduct(context);
         initState(product!);
+        cachedNetworkImage = CachedNetworkImage(
+          height: 250,
+          width: 225,
+          fit: BoxFit.fill,
+          imageUrl: '$imageUrl',
+        );
+        imageProvider = CachedNetworkImageProvider(imageUrl!);
         state = ProductInfo(
           barcode: barcode,
           productName: productName,
@@ -85,6 +96,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
           labels: labels,
           imageUrl: imageUrl,
           error: error,
+          loading: false,
         );
         veganCheck(context);
       }
@@ -147,6 +159,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
           ingredients: "",
           labels: "",
           error: error,
+          loading: false,
         );
 
         throw Exception('Error retrieving the product: ' + error!);
@@ -160,7 +173,9 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
-  void addNewProduct(String barcode, String productName, String productImage, String ingredients ) async {
+
+  void addNewProduct(String barcode, String productName, String productImage,
+      String ingredients) async {
     // define the product to be added.
     // more attributes available ...
     Product myProduct = Product(
@@ -172,7 +187,8 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     );
 
     // a registered user login for https://world.openfoodfacts.org/ is required
-    User myUser = User(userId: 'christian-tsoungui-nkoulou', password: 'Whatsupbro3');
+    User myUser =
+        User(userId: 'christian-tsoungui-nkoulou', password: 'Whatsupbro3');
 
     // query the OpenFoodFacts API
     Status result = await OpenFoodAPIClient.saveProduct(myUser, myProduct);
@@ -194,13 +210,15 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
             ingredient.vegan == IngredientSpecialPropertyStatus.MAYBE) {
           nonVeganIngredients.forEach((nonVeganIngredient) {
             if (ingredient.text == nonVeganIngredient) {
-              nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!},  " ;
+              nonVeganIngredientsInProduct =
+                  nonVeganIngredientsInProduct + "${ingredient.text!},  ";
               sheVegan = false;
             }
           });
         }
-        if(ingredient.vegan == IngredientSpecialPropertyStatus.NEGATIVE){
-          nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!},  " ;
+        if (ingredient.vegan == IngredientSpecialPropertyStatus.NEGATIVE) {
+          nonVeganIngredientsInProduct =
+              nonVeganIngredientsInProduct + "${ingredient.text!},  ";
           sheVegan = false;
         }
       });
@@ -213,13 +231,15 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
             ingredient.vegan == IngredientSpecialPropertyStatus.MAYBE) {
           nonVeganIngredients.forEach((nonVeganIngredient) {
             if (ingredient.text == nonVeganIngredient) {
-              nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!},  " ;
+              nonVeganIngredientsInProduct =
+                  nonVeganIngredientsInProduct + "${ingredient.text!},  ";
               sheVegan = false;
             }
           });
         }
-        if(ingredient.vegan == IngredientSpecialPropertyStatus.NEGATIVE){
-          nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!},  " ;
+        if (ingredient.vegan == IngredientSpecialPropertyStatus.NEGATIVE) {
+          nonVeganIngredientsInProduct =
+              nonVeganIngredientsInProduct + "${ingredient.text!},  ";
           sheVegan = false;
         }
       });
@@ -269,4 +289,4 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 }
 
 final productProvider = StateNotifierProvider<ProductStateNotifier>(
-        (ref) => new ProductStateNotifier());
+    (ref) => new ProductStateNotifier());
