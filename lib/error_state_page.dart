@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sheveegan/add_product.dart';
+import 'package:sheveegan/addProduct/add_product.dart';
 import 'package:sheveegan/assets/barcode_icon.dart';
 import 'package:sheveegan/productprovider.dart';
 
@@ -27,11 +27,14 @@ class ErrorStatePage extends HookWidget {
               height: 5,
             ),
             Center(
-              child: Text(
-                "${productScanResults.error!.substring(0, 1).toUpperCase() + productScanResults.error!.substring(1)}",
-                style: TextStyle(
-                  // color: Colors.white,
-                  fontSize: 18,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
+                child: Text(
+                  "${productScanResults.error!.substring(0, 1).toUpperCase() + productScanResults.error!.substring(1)}",
+                  style: TextStyle(
+                    // color: Colors.white,
+                    // fontSize: 18,
+                  ),
                 ),
               ),
             ),

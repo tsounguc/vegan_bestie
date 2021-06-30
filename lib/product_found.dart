@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sheveegan/add_product.dart';
+import 'package:sheveegan/addProduct/add_product.dart';
 import 'package:sheveegan/assets/barcode_icon.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
 import 'package:sheveegan/colors.dart';
@@ -36,7 +36,7 @@ class ProductFoundPage extends HookWidget {
         filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: size.height * 0.12,
+            // toolbarHeight: size.height * 0.12,
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
@@ -205,10 +205,12 @@ class ProductFoundPage extends HookWidget {
                             Expanded(
                               child: Row(
                                 children: [
-                                  Text(
-                                    'Labels: ${productScanResults.labels}',
-                                    style: TextStyle(
-                                      fontSize: 15,
+                                  Expanded(
+                                    child: Text(
+                                      'Labels: ${productScanResults.labels}',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -290,42 +292,18 @@ class ProductFoundPage extends HookWidget {
               ],
             ),
           ),
-          floatingActionButton: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              FloatingActionButton(
-                heroTag: UniqueKey(),
-                backgroundColor: context.read(productProvider).sheVegan
-                    ? Colors.green.shade600
-                    : Colors.red.shade600,
-                onPressed: () {
-                  Route route =
-                      MaterialPageRoute(builder: (context) => AddProduct());
-                  Navigator.push(context, route);
-                },
-                child: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
-              ),
-              Container(
-                height: 20,
-              ),
-              FloatingActionButton(
-                heroTag: UniqueKey(),
-                backgroundColor: context.read(productProvider).sheVegan
-                    ? Colors.green.shade600
-                    : Colors.red.shade600,
-                onPressed: () {
-                  context.read(productProvider).scan(context);
-                },
-                child: Icon(
-                  BarcodeIcon.barcode_icon,
-                  color: Colors.white,
-                ),
-              ),
-            ],
+          floatingActionButton: FloatingActionButton(
+            heroTag: UniqueKey(),
+            backgroundColor: context.read(productProvider).sheVegan
+                ? Colors.green.shade600
+                : Colors.red.shade600,
+            onPressed: () {
+              context.read(productProvider).scan(context);
+            },
+            child: Icon(
+              BarcodeIcon.barcode_icon,
+              color: Colors.white,
+            ),
           ),
         ),
       ),

@@ -79,16 +79,17 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       print("Barcode: " + barcode!);
 
       if (barcode!.isNotEmpty) {
+        print("barcode not empty");
         state = ProductInfo(loading: true);
         Product? product = await getProduct(context);
         initState(product!);
-        cachedNetworkImage = CachedNetworkImage(
-          height: 250,
-          width: 225,
-          fit: BoxFit.fill,
-          imageUrl: '$imageUrl',
-        );
-        imageProvider = CachedNetworkImageProvider(imageUrl!);
+        // cachedNetworkImage = CachedNetworkImage(
+        //   height: 250,
+        //   width: 225,
+        //   fit: BoxFit.fill,
+        //   imageUrl: '$imageUrl',
+        // );
+        // imageProvider = CachedNetworkImageProvider(imageUrl!);
         state = ProductInfo(
           barcode: barcode,
           productName: productName,
@@ -107,6 +108,11 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
   void initState(Product product) {
     error = "";
+    imageUrl = "";
+    productName = "";
+    ingredients = [];
+    ingredientsText = "";
+    labels = "";
     if (product.productName == null) {
       productName = '';
     } else {
@@ -116,6 +122,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     if (product.ingredients == null) {
       ingredients = [];
       ingredientsText = "";
+      error = '${product.productName} is missing ingredients list';
     } else {
       ingredients = product.ingredients;
       ingredientsText = product.ingredientsText;
@@ -141,6 +148,22 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     } else {
       imageUrl = '';
     }
+    cachedNetworkImage = CachedNetworkImage(
+      height: 250,
+      width: 225,
+      fit: BoxFit.fill,
+      imageUrl: '$imageUrl',
+    );
+    imageProvider = CachedNetworkImageProvider(imageUrl!);
+    state = ProductInfo(
+      barcode: barcode,
+      imageUrl: imageUrl,
+      productName: productName,
+      ingredients: ingredientsText,
+      labels: labels,
+      error: error,
+      loading: false,
+    );
   }
 
   Future<Product?> getProduct(BuildContext context) async {
@@ -152,10 +175,15 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       ProductResult result = await OpenFoodAPIClient.getProduct(configuration);
       if (result.status != 1) {
         error = result.statusVerbose!;
+        print("Error message: $error");
+        if (error!.contains("product not found")) {
+          productName = "";
+        }
+
         state = ProductInfo(
-          barcode: "",
+          barcode: barcode,
           imageUrl: "",
-          productName: "",
+          productName: productName,
           ingredients: "",
           labels: "",
           error: error,
@@ -164,9 +192,12 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
         throw Exception('Error retrieving the product: ' + error!);
       }
+      print("product found: ${result.product!.productName}");
+
       return result.product;
     } on Exception catch (e) {
       final snackBar = SnackBar(
+        // duration: Duration(seconds: 5),
         backgroundColor: Colors.amber,
         content: Text(error!),
       );
@@ -174,14 +205,18 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     }
   }
 
-  void addNewProduct(String barcode, String productName, String productImage,
-      String ingredients) async {
+  void addNewProduct(
+    String barcode,
+    String productName,
+    // String productImage,
+    String ingredients,
+  ) async {
     // define the product to be added.
     // more attributes available ...
     Product myProduct = Product(
       barcode: barcode,
       productName: productName,
-      imageFrontUrl: productImage,
+      // imageFrontUrl: Uri.parseproductImage,
       ingredientsText: ingredients,
       lang: OpenFoodFactsLanguage.ENGLISH,
     );
@@ -266,6 +301,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else if (!sheVegan) {
       final snackBar = SnackBar(
+        duration: Duration(seconds: 5),
         backgroundColor: Colors.red,
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
