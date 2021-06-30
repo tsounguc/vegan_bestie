@@ -27,6 +27,7 @@ dependencies:
   hooks_riverpod: ^0.13.1+1
   openfoodfacts: ^1.1.0-beta
   flutter_barcode_scanner: ^2.0.0
+  cached_network_image: ^3.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
