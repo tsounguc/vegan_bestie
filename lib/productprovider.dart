@@ -1,17 +1,27 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
+import 'package:sheveegan/camera_screen.dart';
+import 'package:sheveegan/colors.dart';
 import 'package:sheveegan/product.dart';
 
 class ProductStateNotifier extends StateNotifier<ProductInfo> {
   ProductStateNotifier() : super(ProductInfo());
 
+  final ImagePicker picker = ImagePicker();
+
   String? error;
   String? imageUrl;
+  PickedFile? imageToUpload;
   CachedNetworkImage? cachedNetworkImage;
   CachedNetworkImageProvider? imageProvider;
   String? barcode;
@@ -20,6 +30,11 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   String? ingredientsText;
   String? labels;
   bool sheVegan = true;
+
+  List<CameraDescription>? _cameras;
+  CameraController? _cameraController;
+
+  // Future<void> _initializeControllerFuture;
 
   String nonVeganIngredientsInProduct = "";
   List<String> nonVeganIngredients = [
@@ -83,13 +98,6 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         state = ProductInfo(loading: true);
         Product? product = await getProduct(context);
         initState(product!);
-        // cachedNetworkImage = CachedNetworkImage(
-        //   height: 250,
-        //   width: 225,
-        //   fit: BoxFit.fill,
-        //   imageUrl: '$imageUrl',
-        // );
-        // imageProvider = CachedNetworkImageProvider(imageUrl!);
         state = ProductInfo(
           barcode: barcode,
           productName: productName,
@@ -196,20 +204,21 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
       return result.product;
     } on Exception catch (e) {
-      final snackBar = SnackBar(
-        // duration: Duration(seconds: 5),
-        backgroundColor: Colors.amber,
-        content: Text(error!),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      print(e);
+      // final snackBar = SnackBar(
+      //   // duration: Duration(seconds: 5),
+      //   backgroundColor: Colors.amber,
+      //   content: Text(error!),
+      // );
+      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
   void addNewProduct(
     String barcode,
     String productName,
-    // String productImage,
     String ingredients,
+    String imagePath,
   ) async {
     // define the product to be added.
     // more attributes available ...
@@ -221,15 +230,116 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       lang: OpenFoodFactsLanguage.ENGLISH,
     );
 
+    SendImage image = SendImage(
+      lang: OpenFoodFactsLanguage.ENGLISH,
+      barcode: barcode,
+      imageUri: Uri.parse(imagePath),
+      imageField: ImageField.FRONT,
+    );
+
     // a registered user login for https://world.openfoodfacts.org/ is required
     User myUser =
         User(userId: 'christian-tsoungui-nkoulou', password: 'Whatsupbro3');
 
     // query the OpenFoodFacts API
     Status result = await OpenFoodAPIClient.saveProduct(myUser, myProduct);
+    Status sendImageResult = await OpenFoodAPIClient.addProductImage(myUser, image);
 
     if (result.status != 1) {
       throw Exception('product could not be added: ${result.error}');
+    }
+    if(sendImageResult.status != 'status ok'){
+      throw Exception('image could not be uploated: ${sendImageResult.error} ${sendImageResult.imageId.toString()}');
+    }
+  }
+
+  void showPicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Container(
+            child: new Wrap(
+              children: [
+                new ListTile(
+                  leading: new Icon(Icons.photo_camera),
+                  title: Text("Camera"),
+                  onTap: () {
+                    getImage(ImageSource.camera);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                new ListTile(
+                  leading: new Icon(Icons.photo_library),
+                  title: Text("Photo Library"),
+                  onTap: () {
+                    getImage(ImageSource.gallery);
+                    // _imgFromGallery();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  getImage(ImageSource source) async {
+    state = ProductInfo(loading: true);
+    imageToUpload = await picker.getImage(source: source);
+
+    if (imageToUpload != null) {
+      File? croppedImage = await ImageCropper.cropImage(
+        sourcePath: imageToUpload!.path,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 100,
+        compressFormat: ImageCompressFormat.jpg,
+        maxHeight: 700,
+        maxWidth: 700,
+        androidUiSettings: AndroidUiSettings(
+          toolbarColor: gradientStartColor,
+          toolbarTitle: "Crop Image",
+          statusBarColor: gradientStartColor,
+          backgroundColor: Colors.white,
+        ),
+      );
+      print(croppedImage!.path);
+      state = ProductInfo(imageToUpLoadPath: croppedImage.path, loading: false);
+    }
+  }
+
+  Future _imgFromCamera() async {
+    try {
+      // _cameraController = CameraController(camera, ResolutionPreset.max);
+      // _initializeControllerFuture = _cameraController!.initialize();
+
+      final _pickedFile = await picker.getImage(
+        maxHeight: 800,
+        maxWidth: 800,
+        source: ImageSource.camera,
+        // preferredCameraDevice: CameraDevice.rear,
+        imageQuality: 100,
+      );
+      imageToUpload = _pickedFile;
+      // if(_pickedFile)
+      state = ProductInfo(imageToUpLoadPath: imageToUpload!.path);
+    } on PlatformException catch (e) {
+      print("PlatformException: $e");
+    }
+  }
+
+  _imgFromGallery() async {
+    try {
+      final _pickedFile =
+          await picker.getImage(source: ImageSource.gallery, imageQuality: 100);
+      imageToUpload = _pickedFile;
+      print("Image Path: ${_pickedFile!.path}");
+      // if(_pickedFile)
+      state = ProductInfo(imageToUpLoadPath: imageToUpload!.path);
+    } on PlatformException catch (e) {
+      print("PlatformException: $e");
     }
   }
 

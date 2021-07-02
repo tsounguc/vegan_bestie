@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:camera_platform_interface/src/types/camera_description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,116 +14,209 @@ class AddProductForm extends HookWidget {
   String? productName;
   String? ingredients;
 
+  AddProductForm(CameraDescription? firstCamera);
+
   @override
   Widget build(BuildContext context) {
     final productScanResults = useProvider(productProvider.state);
-    return Container(
-      margin: EdgeInsets.all(24),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // Expanded(child: imageProfile()),
-            SizedBox(
-              height: 50,
-            ),
-            InputTextFormField(
-              initialValue: productScanResults.barcode,
-              labelText: 'Barcode',
-              // hintText: 'Enter Barcode',
-              validator: (String? value) {
-                if (value!.isEmpty) {
-                  return 'Barcode is required';
-                }
-              },
-              onSaved: (String? value) {
-                barcode = value;
-              },
-            ),
-            InputTextFormField(
-              initialValue: productScanResults.productName,
-              labelText: 'Product Name',
-              // hintText: 'Enter Product Name',
-              validator: (String? value) {
-                if (value!.isEmpty) {
-                  return 'Product Name is required';
-                }
-              },
-              onSaved: (String? value) {
-                productName = value;
-              },
-            ),
-            InputTextFormField(
-              initialValue: productScanResults.ingredients,
-              labelText: 'Ingredients',
-              // hintText: "Enter Ingredients list",
-              minLines: 5,
-              border: OutlineInputBorder(
-                borderSide: BorderSide(),
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.all(24),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              productScanResults.imageToUpLoadPath!.isEmpty
+                  ? Container(
+                      height: 250,
+                      width: 250,
+                      decoration: BoxDecoration(
+                          color: gradientStartColor,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(35),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black38.withOpacity(0.25),
+                              spreadRadius: 2,
+                              blurRadius: 7,
+                              offset: Offset(5, 7),
+                            )
+                          ]),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            iconSize: 200,
+                            icon: Icon(
+                              Icons.add_photo_alternate,
+                              color: Colors.green.shade50,
+                              // size: 50,
+                            ),
+                            onPressed: () {
+                              print("image picker to add picture");
+                              context.read(productProvider).showPicker(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    )
+                  : Container(
+                      height: 250,
+                      width: 250,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(35),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black38.withOpacity(0.25),
+                              spreadRadius: 2,
+                              blurRadius: 7,
+                              offset: Offset(5, 7),
+                            )
+                          ]),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(35),
+                        child: Image.file(
+                          File(productScanResults.imageToUpLoadPath!),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+              SizedBox(
+                height: 25,
               ),
-              validator: (String? value) {
-                if (value!.isEmpty) {
-                  return 'Ingredients list is required';
-                }
-              },
-              onSaved: (String? value) {
-                ingredients = value;
-              },
-            ),
-            SizedBox(
-              height: 100,
-            ),
-            ElevatedButton(
-              child: Text(
-                "Submit",
-                style: TextStyle(),
+              InputTextFormField(
+                focusNode: new FocusNode(),
+                initialValue: productScanResults.barcode,
+                labelText: 'Barcode',
+                hintText: 'Enter Barcode',
+                filled: true,
+                fillColor: Colors.green.shade50,
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent)),
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return 'Barcode is required';
+                  }
+                },
+                onSaved: (String? value) {
+                  barcode = value;
+                },
               ),
-              onPressed: () {
-                if (!_formKey.currentState!.validate()) {
-                  //
-                  print("Please enter info");
-                } else {
-                  _formKey.currentState!.save();
-                  print(barcode);
-                  print(productName);
-                  print(ingredients);
-                  context
-                      .read(productProvider)
-                      .addNewProduct(barcode!, productName!, ingredients!);
-                }
-              },
-            ),
-          ],
+              InputTextFormField(
+                focusNode: new FocusNode(),
+                initialValue: productScanResults.productName,
+                labelText: 'Product Name',
+                hintText: 'Enter Product Name',
+                filled: true,
+                fillColor: Colors.green.shade50,
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent)),
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return 'Product Name is required';
+                  }
+                },
+                onSaved: (String? value) {
+                  productName = value;
+                },
+              ),
+              InputTextFormField(
+                focusNode: new FocusNode(),
+                initialValue: productScanResults.ingredients,
+                labelText: 'Ingredients',
+                hintText: "Enter Ingredients list",
+                filled: true,
+                fillColor: Colors.green.shade50,
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent)),
+                minLines: 5,
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return 'Ingredients list is required';
+                  }
+                },
+                onSaved: (String? value) {
+                  ingredients = value;
+                },
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    child: Text(
+                      "Submit",
+                      style: TextStyle(),
+                    ),
+                    onPressed: () {
+                      if (!_formKey.currentState!.validate()) {
+                        //
+                        print("Please enter info");
+                      } else {
+                        _formKey.currentState!.save();
+                        print(barcode);
+                        print(productName);
+                        print(ingredients);
+                        context.read(productProvider).addNewProduct(
+                            barcode!, productName!, ingredients!, productScanResults.imageToUpLoadPath! );
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget imageProfile() {
-    return Stack(
-      children: [
-        CircleAvatar(
-          radius: 80,
-          backgroundColor: gradientStartColor,
-          child: Icon(
-            Icons.image_outlined,
-            color: Colors.white,
-            size: 100,
+    return Container(
+      height: 250,
+      width: 250,
+      decoration: BoxDecoration(
+          color: gradientStartColor,
+          borderRadius: BorderRadius.all(
+            Radius.circular(35),
           ),
-        ),
-        Positioned(
-          bottom: 5.0,
-          right: 0,
-          child: IconButton(iconSize: 30,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black38.withOpacity(0.25),
+              spreadRadius: 2,
+              blurRadius: 7,
+              offset: Offset(5, 7),
+            )
+          ]),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            iconSize: 200,
             icon: Icon(
-              Icons.camera_alt,
-              color: Colors.black,
+              Icons.add_photo_alternate,
+              color: Colors.green.shade50,
+              // size: 50,
             ),
-            onPressed: () {},
+            onPressed: () {
+              print("image picker to add picture");
+            },
           ),
-        )
-      ],
+          // Text(
+          //   "Take Photo",
+          //   style: TextStyle(
+          //     color: Colors.white,
+          //   ),
+          // )
+        ],
+      ),
     );
   }
 }
