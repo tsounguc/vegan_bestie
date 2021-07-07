@@ -11,15 +11,22 @@ import 'package:sheveegan/widgets/input_text_field.dart';
 
 class AddProductForm extends HookWidget {
   final _formKey = GlobalKey<FormState>();
-  String? barcode;
-  String? productName;
-  String? ingredients;
+  String? barcode = "";
+  String? productName = "";
+  String? ingredients = "";
+  TextEditingController? barcodeController = TextEditingController();
+  TextEditingController? productNameController = TextEditingController();
+  TextEditingController? ingredientController = TextEditingController();
 
   AddProductForm(CameraDescription? firstCamera);
 
   @override
   Widget build(BuildContext context) {
     final productScanResults = useProvider(productProvider.state);
+    barcodeController!.text = productScanResults.barcode!;
+    productNameController!.text = productScanResults.productName!;
+    ingredientController!.text = productScanResults.ingredients!;
+
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.all(24),
@@ -33,8 +40,9 @@ class AddProductForm extends HookWidget {
                 height: 25,
               ),
               InputTextFormField(
+                controller: barcodeController,
                 focusNode: new FocusNode(),
-                initialValue: productScanResults.barcode,
+                // initialValue: productScanResults.barcode,
                 labelText: 'Barcode',
                 hintText: 'Enter Barcode',
                 filled: true,
@@ -51,8 +59,9 @@ class AddProductForm extends HookWidget {
                 },
               ),
               InputTextFormField(
+                controller: productNameController,
                 focusNode: new FocusNode(),
-                initialValue: productScanResults.productName,
+                // initialValue: productScanResults.productName,
                 labelText: 'Product Name',
                 hintText: 'Enter Product Name',
                 filled: true,
@@ -67,10 +76,19 @@ class AddProductForm extends HookWidget {
                 onSaved: (String? value) {
                   productName = value;
                 },
+                suffix: IconButton(
+                  icon: Icon(Icons.camera_alt),
+                  color: Colors.black,
+                  onPressed: () {
+                    productNameController!.text =
+                        context.read(productProvider).imageToText();
+                  },
+                ),
               ),
               InputTextFormField(
+                controller: ingredientController,
                 focusNode: new FocusNode(),
-                initialValue: productScanResults.ingredients,
+                // initialValue: productScanResults.ingredients,
                 labelText: 'Ingredients',
                 hintText: "Enter Ingredients list",
                 filled: true,
@@ -110,9 +128,7 @@ class AddProductForm extends HookWidget {
                         print(productName);
                         print(ingredients);
                         context.read(productProvider).addNewProduct(
-                            barcode!,
-                            productName!,
-                            ingredients!);
+                            barcode!, productName!, ingredients!);
                         Navigator.of(context).pop();
                       }
                     },

@@ -78,7 +78,7 @@ class InputTextFormField extends HookWidget {
               border: border,
               filled: filled,
               fillColor: fillColor,
-              suffix: suffix,
+              suffixIcon: suffix,
             ),
             obscureText: isPassword! ? true : false,
             validator: validator,

@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,11 +30,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   String? ingredientsText;
   String? labels;
   bool sheVegan = true;
-
-  List<CameraDescription>? _cameras;
-  CameraController? _cameraController;
-
-  // Future<void> _initializeControllerFuture;
+  final textDetector = GoogleMlKit.vision.textDetector();
 
   String nonVeganIngredientsInProduct = "";
   List<String> nonVeganIngredients = [
@@ -112,6 +109,8 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       print("PlatformException: $e");
     }
   }
+
+
 
   void initState(Product product) {
     error = "";
@@ -211,6 +210,31 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       // );
       // ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  imageToText()async{
+    // state = ProductInfo(loading: true);
+    imageToUpload = await picker.getImage(source: ImageSource.camera);
+    croppedImage = await ImageCropper.cropImage(
+      sourcePath: imageToUpload!.path,
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      compressQuality: 100,
+      compressFormat: ImageCompressFormat.jpg,
+      maxHeight: 700,
+      maxWidth: 700,
+      androidUiSettings: AndroidUiSettings(
+        toolbarColor: gradientStartColor,
+        toolbarTitle: "Crop Image",
+        statusBarColor: gradientStartColor,
+        backgroundColor: Colors.white,
+      ),
+    );
+    InputImage inputImage = InputImage.fromFilePath(croppedImage!.path);
+    RecognisedText recognisedText = await textDetector.processImage(inputImage);
+    productName = recognisedText.text;
+    print(recognisedText.text);
+    state = ProductInfo(productName: productName, loading: false);
+    // return recognisedText.text;
   }
 
   void addNewProduct(
