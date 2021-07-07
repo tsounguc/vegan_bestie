@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:camera_platform_interface/src/types/camera_description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sheveegan/addProduct/widgets/add_product_form_image.dart';
+import 'package:sheveegan/colors.dart';
 import 'package:sheveegan/productprovider.dart';
 import 'package:sheveegan/widgets/input_text_field.dart';
 
@@ -10,142 +15,114 @@ class AddProductForm extends HookWidget {
   String? productName;
   String? ingredients;
 
+  AddProductForm(CameraDescription? firstCamera);
+
   @override
   Widget build(BuildContext context) {
     final productScanResults = useProvider(productProvider.state);
-    return Container(
-      margin: EdgeInsets.all(24),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            InputTextFormField(
-              initialValue: productScanResults.barcode,
-              labelText: 'Barcode',
-              // hintText: 'Enter Barcode',
-              validator: (String? value) {
-                if (value!.isEmpty) {
-                  return 'Barcode is required';
-                }
-              },
-              onSaved: (String? value) {
-                barcode = value;
-              },
-            ),
-            InputTextFormField(
-              initialValue: productScanResults.productName,
-              labelText: 'Product Name',
-              // hintText: 'Enter Product Name',
-              validator: (String? value) {
-                if (value!.isEmpty) {
-                  return 'Product Name is required';
-                }
-              },
-              onSaved: (String? value) {
-                productName = value;
-              },
-            ),
-            InputTextFormField(
-              initialValue: productScanResults.ingredients,
-              labelText: 'Ingredients',
-              // hintText: "Enter Ingredients list",
-              minLines: 5,
-              border: OutlineInputBorder(
-                borderSide: BorderSide(),
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.all(24),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              AddProductFormImage(),
+              SizedBox(
+                height: 25,
               ),
-              validator: (String? value) {
-                if (value!.isEmpty) {
-                  return 'Ingredients list is required';
-                }
-              },
-              onSaved: (String? value) {
-                ingredients = value;
-              },
-            ),
-            SizedBox(
-              height: 100,
-            ),
-            ElevatedButton(
-              child: Text(
-                "Submit",
-                style: TextStyle(),
+              InputTextFormField(
+                focusNode: new FocusNode(),
+                initialValue: productScanResults.barcode,
+                labelText: 'Barcode',
+                hintText: 'Enter Barcode',
+                filled: true,
+                fillColor: Colors.green.shade50,
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent)),
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return 'Barcode is required';
+                  }
+                },
+                onSaved: (String? value) {
+                  barcode = value;
+                },
               ),
-              onPressed: (){
-                if (!_formKey.currentState!.validate())
-                  {
-                    //
-                    print("Please enter info");
-                  }else{
-                  _formKey.currentState!.save();
-                  print(barcode);
-                  print(productName);
-                  print(ingredients);
-                  context.read(productProvider).addNewProduct(barcode!, productName!, ingredients!);
-                }
-
-
-
-              },
-            ),
-          ],
+              InputTextFormField(
+                focusNode: new FocusNode(),
+                initialValue: productScanResults.productName,
+                labelText: 'Product Name',
+                hintText: 'Enter Product Name',
+                filled: true,
+                fillColor: Colors.green.shade50,
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent)),
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return 'Product Name is required';
+                  }
+                },
+                onSaved: (String? value) {
+                  productName = value;
+                },
+              ),
+              InputTextFormField(
+                focusNode: new FocusNode(),
+                initialValue: productScanResults.ingredients,
+                labelText: 'Ingredients',
+                hintText: "Enter Ingredients list",
+                filled: true,
+                fillColor: Colors.green.shade50,
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent)),
+                minLines: 5,
+                validator: (String? value) {
+                  if (value!.isEmpty) {
+                    return 'Ingredients list is required';
+                  }
+                },
+                onSaved: (String? value) {
+                  ingredients = value;
+                },
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    child: Text(
+                      "Submit",
+                      style: TextStyle(color: primaryTextColor),
+                    ),
+                    style:
+                        ElevatedButton.styleFrom(primary: Colors.green.shade50),
+                    onPressed: () {
+                      if (!_formKey.currentState!.validate()) {
+                        //
+                        print("Please enter info");
+                      } else {
+                        _formKey.currentState!.save();
+                        print(barcode);
+                        print(productName);
+                        print(ingredients);
+                        context.read(productProvider).addNewProduct(
+                            barcode!,
+                            productName!,
+                            ingredients!);
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-    );
-  }
-
-  Widget _buildBarcode(BuildContext context) {
-    return InputTextFormField(
-      initialValue: context.read(productProvider).barcode,
-      labelText: 'Barcode',
-      // hintText: 'Enter Barcode',
-      validator: (String? value) {
-        if (value!.isEmpty) {
-          return 'Barcode is required';
-        }
-      },
-      onSaved: (String? value) {
-        barcode = value;
-      },
-    );
-  }
-
-  Widget _buildProductName(BuildContext context) {
-    return InputTextFormField(
-      initialValue: context.read(productProvider).productName,
-      // != null ? context.read(productProvider).productName : "",
-      labelText: 'Product Name',
-      // hintText: 'Enter Product Name',
-      validator: (String? value) {
-        if (value!.isEmpty) {
-          return 'Product Name is required';
-        }
-      },
-      onSaved: (String? value) {
-        productName = value;
-      },
-    );
-  }
-
-  Widget _buildIngredients(BuildContext context) {
-    return InputTextFormField(
-      initialValue: context.read(productProvider).ingredientsText != null
-          ? context.read(productProvider).ingredientsText
-          : "",
-      labelText: 'Ingredients',
-      // hintText: "Enter Ingredients list",
-      minLines: 5,
-      border: OutlineInputBorder(
-        borderSide: BorderSide(),
-      ),
-      validator: (String? value) {
-        if (value!.isEmpty) {
-          return 'Ingredients is required';
-        }
-      },
-      onSaved: (String? value) {
-        ingredients = value;
-      },
     );
   }
 }
