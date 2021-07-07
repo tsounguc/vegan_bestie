@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
-import 'package:sheveegan/camera_screen.dart';
 import 'package:sheveegan/colors.dart';
 import 'package:sheveegan/product.dart';
 
@@ -22,6 +20,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   String? error;
   String? imageUrl;
   PickedFile? imageToUpload;
+  File? croppedImage;
   CachedNetworkImage? cachedNetworkImage;
   CachedNetworkImageProvider? imageProvider;
   String? barcode;
@@ -87,7 +86,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     "yogurt",
   ];
 
-  Future scan(BuildContext context) async {
+  Future onBarcodeButtonPressed(BuildContext context) async {
     try {
       barcode = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", 'Cancel', true, ScanMode.BARCODE);
@@ -218,7 +217,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     String barcode,
     String productName,
     String ingredients,
-    String imagePath,
+    // String imagePath,
   ) async {
     // define the product to be added.
     // more attributes available ...
@@ -233,7 +232,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     SendImage image = SendImage(
       lang: OpenFoodFactsLanguage.ENGLISH,
       barcode: barcode,
-      imageUri: Uri.parse(imagePath),
+      imageUri: Uri.parse(croppedImage!.path),
       imageField: ImageField.FRONT,
     );
 
@@ -243,13 +242,15 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
     // query the OpenFoodFacts API
     Status result = await OpenFoodAPIClient.saveProduct(myUser, myProduct);
-    Status sendImageResult = await OpenFoodAPIClient.addProductImage(myUser, image);
+    Status sendImageResult =
+        await OpenFoodAPIClient.addProductImage(myUser, image);
 
     if (result.status != 1) {
       throw Exception('product could not be added: ${result.error}');
     }
-    if(sendImageResult.status != 'status ok'){
-      throw Exception('image could not be uploated: ${sendImageResult.error} ${sendImageResult.imageId.toString()}');
+    if (sendImageResult.status != 'status ok') {
+      throw Exception(
+          'image could not be uploated: ${sendImageResult.error} ${sendImageResult.imageId.toString()}');
     }
   }
 
@@ -288,10 +289,12 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
   getImage(ImageSource source) async {
     state = ProductInfo(loading: true);
+    imageToUpload = null;
+    croppedImage = null;
     imageToUpload = await picker.getImage(source: source);
 
     if (imageToUpload != null) {
-      File? croppedImage = await ImageCropper.cropImage(
+      croppedImage = await ImageCropper.cropImage(
         sourcePath: imageToUpload!.path,
         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
         compressQuality: 100,
@@ -306,40 +309,8 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         ),
       );
       print(croppedImage!.path);
-      state = ProductInfo(imageToUpLoadPath: croppedImage.path, loading: false);
-    }
-  }
-
-  Future _imgFromCamera() async {
-    try {
-      // _cameraController = CameraController(camera, ResolutionPreset.max);
-      // _initializeControllerFuture = _cameraController!.initialize();
-
-      final _pickedFile = await picker.getImage(
-        maxHeight: 800,
-        maxWidth: 800,
-        source: ImageSource.camera,
-        // preferredCameraDevice: CameraDevice.rear,
-        imageQuality: 100,
-      );
-      imageToUpload = _pickedFile;
-      // if(_pickedFile)
-      state = ProductInfo(imageToUpLoadPath: imageToUpload!.path);
-    } on PlatformException catch (e) {
-      print("PlatformException: $e");
-    }
-  }
-
-  _imgFromGallery() async {
-    try {
-      final _pickedFile =
-          await picker.getImage(source: ImageSource.gallery, imageQuality: 100);
-      imageToUpload = _pickedFile;
-      print("Image Path: ${_pickedFile!.path}");
-      // if(_pickedFile)
-      state = ProductInfo(imageToUpLoadPath: imageToUpload!.path);
-    } on PlatformException catch (e) {
-      print("PlatformException: $e");
+      state =
+          ProductInfo(imageToUpLoadPath: croppedImage!.path, loading: false);
     }
   }
 

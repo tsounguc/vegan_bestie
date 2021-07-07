@@ -82,7 +82,7 @@ class ErrorStatePage extends HookWidget {
               heroTag: UniqueKey(),
               backgroundColor: Colors.grey.shade600,
               onPressed: () {
-                context.read(productProvider).scan(context);
+                context.read(productProvider).onBarcodeButtonPressed(context);
               },
               child: Icon(
                 BarcodeIcon.barcode_icon,

@@ -4,6 +4,7 @@ import 'package:camera_platform_interface/src/types/camera_description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sheveegan/addProduct/widgets/add_product_form_image.dart';
 import 'package:sheveegan/colors.dart';
 import 'package:sheveegan/productprovider.dart';
 import 'package:sheveegan/widgets/input_text_field.dart';
@@ -27,64 +28,7 @@ class AddProductForm extends HookWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              productScanResults.imageToUpLoadPath!.isEmpty
-                  ? Container(
-                      height: 250,
-                      width: 250,
-                      decoration: BoxDecoration(
-                          color: gradientStartColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(35),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black38.withOpacity(0.25),
-                              spreadRadius: 2,
-                              blurRadius: 7,
-                              offset: Offset(5, 7),
-                            )
-                          ]),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            iconSize: 200,
-                            icon: Icon(
-                              Icons.add_photo_alternate,
-                              color: Colors.green.shade50,
-                              // size: 50,
-                            ),
-                            onPressed: () {
-                              print("image picker to add picture");
-                              context.read(productProvider).showPicker(context);
-                            },
-                          ),
-                        ],
-                      ),
-                    )
-                  : Container(
-                      height: 250,
-                      width: 250,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(35),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black38.withOpacity(0.25),
-                              spreadRadius: 2,
-                              blurRadius: 7,
-                              offset: Offset(5, 7),
-                            )
-                          ]),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(35),
-                        child: Image.file(
-                          File(productScanResults.imageToUpLoadPath!),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ),
+              AddProductFormImage(),
               SizedBox(
                 height: 25,
               ),
@@ -152,8 +96,10 @@ class AddProductForm extends HookWidget {
                   ElevatedButton(
                     child: Text(
                       "Submit",
-                      style: TextStyle(),
+                      style: TextStyle(color: primaryTextColor),
                     ),
+                    style:
+                        ElevatedButton.styleFrom(primary: Colors.green.shade50),
                     onPressed: () {
                       if (!_formKey.currentState!.validate()) {
                         //
@@ -164,7 +110,9 @@ class AddProductForm extends HookWidget {
                         print(productName);
                         print(ingredients);
                         context.read(productProvider).addNewProduct(
-                            barcode!, productName!, ingredients!, productScanResults.imageToUpLoadPath! );
+                            barcode!,
+                            productName!,
+                            ingredients!);
                         Navigator.of(context).pop();
                       }
                     },
@@ -174,48 +122,6 @@ class AddProductForm extends HookWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget imageProfile() {
-    return Container(
-      height: 250,
-      width: 250,
-      decoration: BoxDecoration(
-          color: gradientStartColor,
-          borderRadius: BorderRadius.all(
-            Radius.circular(35),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black38.withOpacity(0.25),
-              spreadRadius: 2,
-              blurRadius: 7,
-              offset: Offset(5, 7),
-            )
-          ]),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          IconButton(
-            iconSize: 200,
-            icon: Icon(
-              Icons.add_photo_alternate,
-              color: Colors.green.shade50,
-              // size: 50,
-            ),
-            onPressed: () {
-              print("image picker to add picture");
-            },
-          ),
-          // Text(
-          //   "Take Photo",
-          //   style: TextStyle(
-          //     color: Colors.white,
-          //   ),
-          // )
-        ],
       ),
     );
   }

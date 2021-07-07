@@ -11,6 +11,7 @@ class Home extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "SheVegan Home",
       theme: ThemeData(
         primaryColor: Colors.green.shade50,
