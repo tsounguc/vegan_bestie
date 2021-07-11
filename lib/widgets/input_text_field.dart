@@ -16,7 +16,7 @@ class InputTextFormField extends HookWidget {
   bool? filled;
   Color? fillColor;
   Widget? prefix;
-  Widget? suffix;
+  Widget? suffixIcon;
   FocusNode? focusNode;
 
   InputTextFormField({
@@ -34,7 +34,7 @@ class InputTextFormField extends HookWidget {
     this.filled = false,
     this.fillColor,
     this.prefix,
-    this.suffix,
+    this.suffixIcon,
   });
 
   @override
@@ -78,7 +78,7 @@ class InputTextFormField extends HookWidget {
               border: border,
               filled: filled,
               fillColor: fillColor,
-              suffix: suffix,
+              suffixIcon: suffixIcon,
             ),
             obscureText: isPassword! ? true : false,
             validator: validator,

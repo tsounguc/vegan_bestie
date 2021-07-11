@@ -57,6 +57,7 @@ class AddProductForm extends HookWidget {
                 hintText: 'Enter Product Name',
                 filled: true,
                 fillColor: Colors.green.shade50,
+                suffixIcon: IconButton(icon: Icon(Icons.camera_alt_outlined), onPressed: (){},),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 validator: (String? value) {
