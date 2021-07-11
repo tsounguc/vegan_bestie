@@ -57,7 +57,14 @@ class AddProductForm extends HookWidget {
                 hintText: 'Enter Product Name',
                 filled: true,
                 fillColor: Colors.green.shade50,
-                suffixIcon: IconButton(icon: Icon(Icons.camera_alt_outlined), onPressed: (){},),
+                suffixIcon: IconButton(
+                  color: Colors.black,
+                  icon: Icon(Icons.camera_alt),
+                  onPressed: () {
+                    //Todo: read product name list from picture and put results in the textfield;
+                    context.read(productProvider).getTextFromImage();
+                  },
+                ),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 validator: (String? value) {
@@ -76,6 +83,14 @@ class AddProductForm extends HookWidget {
                 hintText: "Enter Ingredients list",
                 filled: true,
                 fillColor: Colors.green.shade50,
+                suffixIcon: IconButton(
+                  color: Colors.black,
+                  icon: Icon(Icons.camera_alt),
+                  onPressed: () {
+                    //Todo: read ingredient list from picture and put results in the textfield;
+                    context.read(productProvider).getTextFromImage("Ingredients");
+                  },
+                ),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 minLines: 5,
@@ -111,9 +126,7 @@ class AddProductForm extends HookWidget {
                         print(productName);
                         print(ingredients);
                         context.read(productProvider).addNewProduct(
-                            barcode!,
-                            productName!,
-                            ingredients!);
+                            barcode!, productName!, ingredients!);
                         Navigator.of(context).pop();
                       }
                     },

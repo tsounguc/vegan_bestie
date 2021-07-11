@@ -403,6 +403,13 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
+
+  void getTextFromImage(String textField) {
+    //TODO: Take picture from imagePicker
+    //TODO: use text recognition plugin to get text out of picture
+    //TODO: set productName or IngredientText to text received
+    //TODO: Set states accordingly
+  }
 }
 
 final productProvider = StateNotifierProvider<ProductStateNotifier>(
