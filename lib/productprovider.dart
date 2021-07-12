@@ -406,9 +406,23 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
   void getTextFromImage(String textField) async {
     //TODO: Take picture from imagePicker
-    PickedFile?  pickedImage = await picker.getImage(source: ImageSource.camera);
+    PickedFile?  picture = await picker.getImage(source: ImageSource.camera);
     //TODO: use text recognition plugin to get text out of picture
-    File croppedImage;
+    File? croppedPicture = await ImageCropper.cropImage(
+      sourcePath: picture!.path,
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      compressQuality: 100,
+      compressFormat: ImageCompressFormat.jpg,
+      maxHeight: 700,
+      maxWidth: 700,
+      androidUiSettings: AndroidUiSettings(
+        toolbarColor: gradientStartColor,
+        toolbarTitle: "Crop Image",
+        statusBarColor: gradientStartColor,
+        backgroundColor: Colors.white,
+      ),
+    );
+
 
     //TODO: set productName or IngredientText to text received
     //TODO: Set states accordingly
