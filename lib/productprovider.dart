@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -404,9 +405,11 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     }
   }
 
-  void getTextFromImage(String textField) async {
+  void getTextFromImage(String textFieldID) async {
+    final textDetector = GoogleMlKit.vision.textDetector();
+
     //TODO: Take picture from imagePicker
-    PickedFile?  picture = await picker.getImage(source: ImageSource.camera);
+    PickedFile? picture = await picker.getImage(source: ImageSource.camera);
     //TODO: use text recognition plugin to get text out of picture
     File? croppedPicture = await ImageCropper.cropImage(
       sourcePath: picture!.path,
@@ -423,9 +426,20 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       ),
     );
 
+    InputImage inputImage = InputImage.fromFilePath(croppedImage!.path);
+    RecognisedText recognisedText = await textDetector.processImage(inputImage);
 
     //TODO: set productName or IngredientText to text received
-    //TODO: Set states accordingly
+    // if(textFieldID == "Product Name") {
+    productName = recognisedText.text;
+    print(productName);
+    state = state
+      ..barcode = barcode
+      ..productName = productName
+      ..ingredients = ingredientsText;
+    // }
+
+//TODO: Set states accordingly
   }
 }
 
