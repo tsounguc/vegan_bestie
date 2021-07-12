@@ -404,9 +404,12 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     }
   }
 
-  void getTextFromImage(String textField) {
+  void getTextFromImage(String textField) async {
     //TODO: Take picture from imagePicker
+    PickedFile?  pickedImage = await picker.getImage(source: ImageSource.camera);
     //TODO: use text recognition plugin to get text out of picture
+    File croppedImage;
+
     //TODO: set productName or IngredientText to text received
     //TODO: Set states accordingly
   }

@@ -28,6 +28,7 @@ dependencies:
   openfoodfacts: ^1.1.0-beta
   flutter_barcode_scanner: ^2.0.0
   cached_network_image: ^3.0.0
+  google_ml_kit:
   image_picker:
   image_cropper:
   camera:

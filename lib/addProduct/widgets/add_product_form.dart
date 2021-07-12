@@ -62,7 +62,7 @@ class AddProductForm extends HookWidget {
                   icon: Icon(Icons.camera_alt),
                   onPressed: () {
                     //Todo: read product name list from picture and put results in the textfield;
-                    context.read(productProvider).getTextFromImage();
+                    context.read(productProvider).getTextFromImage("Product Name");
                   },
                 ),
                 border: OutlineInputBorder(
