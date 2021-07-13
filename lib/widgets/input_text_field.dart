@@ -10,6 +10,7 @@ class InputTextFormField extends HookWidget {
   int? minLines;
   String? Function(String?)? validator;
   Function(String?)? onSaved;
+  Function(String?)? onChanged;
   InputBorder? border;
   bool? isPassword;
   bool? isEmail;
@@ -29,6 +30,7 @@ class InputTextFormField extends HookWidget {
     this.border,
     this.validator,
     this.onSaved,
+    this.onChanged,
     this.isEmail = false,
     this.isPassword = false,
     this.filled = false,
@@ -83,6 +85,7 @@ class InputTextFormField extends HookWidget {
             obscureText: isPassword! ? true : false,
             validator: validator,
             onSaved: onSaved,
+            onChanged: onChanged,
             keyboardType:
                 isEmail! ? TextInputType.emailAddress : TextInputType.multiline,
           ),

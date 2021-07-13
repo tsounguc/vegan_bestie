@@ -17,6 +17,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   ProductStateNotifier() : super(ProductInfo());
 
   final ImagePicker picker = ImagePicker();
+  final textDetector = GoogleMlKit.vision.textDetector();
 
   String? error;
   String? imageUrl;
@@ -30,11 +31,6 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   String? ingredientsText;
   String? labels;
   bool sheVegan = true;
-
-  List<CameraDescription>? _cameras;
-  CameraController? _cameraController;
-
-  // Future<void> _initializeControllerFuture;
 
   String nonVeganIngredientsInProduct = "";
   List<String> nonVeganIngredients = [
@@ -289,7 +285,8 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   }
 
   getImage(ImageSource source) async {
-    state = ProductInfo(loading: true);
+    // state = ProductInfo(loading: true);
+    // state = state..loading = true;
     imageToUpload = null;
     croppedImage = null;
     imageToUpload = await picker.getImage(source: source);
@@ -310,8 +307,10 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         ),
       );
       print(croppedImage!.path);
-      state =
-          ProductInfo(imageToUpLoadPath: croppedImage!.path, loading: false);
+      state = state
+        ..imageToUpLoadPath = croppedImage!.path
+        ..loading = false;
+      // ProductInfo(imageToUpLoadPath: croppedImage!.path, loading: false);
     }
   }
 
@@ -405,9 +404,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     }
   }
 
-  void getTextFromImage(String textFieldID) async {
-    final textDetector = GoogleMlKit.vision.textDetector();
-
+  void getProductNameFromImage() async {
     //TODO: Take picture from imagePicker
     PickedFile? picture = await picker.getImage(source: ImageSource.camera);
     //TODO: use text recognition plugin to get text out of picture
@@ -426,20 +423,53 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       ),
     );
 
-    InputImage inputImage = InputImage.fromFilePath(croppedImage!.path);
+    InputImage inputImage = InputImage.fromFilePath(croppedPicture!.path);
     RecognisedText recognisedText = await textDetector.processImage(inputImage);
 
     //TODO: set productName or IngredientText to text received
-    // if(textFieldID == "Product Name") {
+
     productName = recognisedText.text;
     print(productName);
-    state = state
-      ..barcode = barcode
-      ..productName = productName
-      ..ingredients = ingredientsText;
-    // }
 
 //TODO: Set states accordingly
+    state = state..productName = productName;
+  }
+
+  void getIngredientsFromImage() async {
+    //TODO: Take picture from imagePicker
+    PickedFile? picture = await picker.getImage(source: ImageSource.camera);
+    //TODO: use text recognition plugin to get text out of picture
+    File? croppedPicture = await ImageCropper.cropImage(
+      sourcePath: picture!.path,
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      compressQuality: 100,
+      compressFormat: ImageCompressFormat.jpg,
+      maxHeight: 700,
+      maxWidth: 700,
+      androidUiSettings: AndroidUiSettings(
+        toolbarColor: gradientStartColor,
+        toolbarTitle: "Crop Image",
+        statusBarColor: gradientStartColor,
+        backgroundColor: Colors.white,
+      ),
+    );
+
+    InputImage inputImage = InputImage.fromFilePath(croppedPicture!.path);
+    RecognisedText recognisedText = await textDetector.processImage(inputImage);
+
+    //TODO: set productName or IngredientText to text received
+
+    ingredientsText = recognisedText.text;
+    print(ingredientsText);
+
+    //TODO: Set states accordingly
+    state = state..ingredients = ingredientsText;
+  }
+
+  void setIngredients(String? value) {
+    print("set Ingredients: $value");
+    ingredientsText = value;
+    state = state..ingredients = value;
   }
 }
 

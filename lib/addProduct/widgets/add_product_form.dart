@@ -15,11 +15,21 @@ class AddProductForm extends HookWidget {
   String? productName;
   String? ingredients;
 
+
   AddProductForm(CameraDescription? firstCamera);
+
+  final productScanResults = useProvider(productProvider.state);
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final productScanResults = useProvider(productProvider.state);
+    // if(barcode == null || barcode!.isEmpty)
+    //   barcode = productScanResults.barcode;
+    // if(productName == null || productName!.isEmpty)
+    //   productName = productScanResults.productName;
+    // if(ingredients == null || ingredients!.isEmpty)
+    //   ingredients = productScanResults.ingredients;
+
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.all(24),
@@ -53,6 +63,7 @@ class AddProductForm extends HookWidget {
               InputTextFormField(
                 focusNode: new FocusNode(),
                 initialValue: productScanResults.productName,
+                // controller: controller,
                 labelText: 'Product Name',
                 hintText: 'Enter Product Name',
                 filled: true,
@@ -62,7 +73,7 @@ class AddProductForm extends HookWidget {
                   icon: Icon(Icons.camera_alt),
                   onPressed: () {
                     //Todo: read product name list from picture and put results in the textfield;
-                    context.read(productProvider).getTextFromImage("Product Name");
+                    context.read(productProvider).getProductNameFromImage();
                   },
                 ),
                 border: OutlineInputBorder(
@@ -74,6 +85,7 @@ class AddProductForm extends HookWidget {
                 },
                 onSaved: (String? value) {
                   productName = value;
+                  // controller.text = value!;
                 },
               ),
               InputTextFormField(
@@ -88,7 +100,7 @@ class AddProductForm extends HookWidget {
                   icon: Icon(Icons.camera_alt),
                   onPressed: () {
                     //Todo: read ingredient list from picture and put results in the textfield;
-                    context.read(productProvider).getTextFromImage("Ingredients");
+                    context.read(productProvider).getIngredientsFromImage();
                   },
                 ),
                 border: OutlineInputBorder(
@@ -99,8 +111,13 @@ class AddProductForm extends HookWidget {
                     return 'Ingredients list is required';
                   }
                 },
+                // onChanged: (String ? value){
+                //   ingredients = value;
+                //   context.read(productProvider).setIngredients(value);
+                // },
                 onSaved: (String? value) {
                   ingredients = value;
+                  context.read(productProvider).setIngredients(value);
                 },
               ),
               SizedBox(
