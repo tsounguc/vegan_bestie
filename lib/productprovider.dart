@@ -85,8 +85,9 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
   Future onBarcodeButtonPressed(BuildContext context) async {
     try {
-      barcode = await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", 'Cancel', true, ScanMode.BARCODE);
+      // barcode = await FlutterBarcodeScanner.scanBarcode(
+      //     "#ff6666", 'Cancel', true, ScanMode.BARCODE);
+      barcode = "016000277076";
       print("Barcode: " + barcode!);
 
       if (barcode!.isNotEmpty) {
@@ -117,13 +118,17 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     ingredients = [];
     ingredientsText = "";
     labels = "";
-    if (product.productName == null) {
+    if (product.productName == null || product.productName!.isEmpty) {
       productName = '';
+      error = 'This product is missing is missing a name';
     } else {
       productName = product.productName;
     }
 
-    if (product.ingredients == null) {
+    if (product.ingredients == null ||
+        product.ingredientsText == null ||
+        product.ingredients!.length <= 0 ||
+        product.ingredientsText!.isEmpty) {
       ingredients = [];
       ingredientsText = "";
       error = '${product.productName} is missing ingredients list';
@@ -183,16 +188,11 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         if (error!.contains("product not found")) {
           productName = "";
         }
-
-        state = ProductInfo(
-          barcode: barcode,
-          imageUrl: "",
-          productName: productName,
-          ingredients: "",
-          labels: "",
-          error: error,
-          loading: false,
-        );
+        state = state
+          ..barcode = barcode
+          ..productName = productName
+          ..error = error
+          ..loading = false;
 
         throw Exception('Error retrieving the product: ' + error!);
       }
@@ -211,43 +211,44 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   }
 
   void addNewProduct(
-    String barcode,
-    String productName,
-    String ingredients,
-    // String imagePath,
-  ) async {
-    // define the product to be added.
-    // more attributes available ...
-    Product myProduct = Product(
-      barcode: barcode,
-      productName: productName,
-      // imageFrontUrl: Uri.parseproductImage,
-      ingredientsText: ingredients,
-      lang: OpenFoodFactsLanguage.ENGLISH,
-    );
-
-    SendImage image = SendImage(
-      lang: OpenFoodFactsLanguage.ENGLISH,
-      barcode: barcode,
-      imageUri: Uri.parse(croppedImage!.path),
-      imageField: ImageField.FRONT,
-    );
-
+      String barcode, String productName, String ingredients) async {
     // a registered user login for https://world.openfoodfacts.org/ is required
     User myUser =
         User(userId: 'christian-tsoungui-nkoulou', password: 'Whatsupbro3');
 
-    // query the OpenFoodFacts API
-    Status result = await OpenFoodAPIClient.saveProduct(myUser, myProduct);
-    Status sendImageResult =
-        await OpenFoodAPIClient.addProductImage(myUser, image);
+    if (barcode.isNotEmpty &&
+        productName.isNotEmpty &&
+        ingredients.isNotEmpty) {
+      // define the product to be added.
+      // more attributes available ...
+      Product myProduct = Product(
+        barcode: barcode,
+        productName: productName,
+        // imageFrontUrl: Uri.parseproductImage,
+        ingredientsText: ingredients,
+        lang: OpenFoodFactsLanguage.ENGLISH,
+      );
+      // query the OpenFoodFacts API
+      Status result = await OpenFoodAPIClient.saveProduct(myUser, myProduct);
 
-    if (result.status != 1) {
-      throw Exception('product could not be added: ${result.error}');
+      if (result.status != 1) {
+        throw Exception('product could not be added: ${result.error}');
+      }
     }
-    if (sendImageResult.status != 'status ok') {
-      throw Exception(
-          'image could not be uploated: ${sendImageResult.error} ${sendImageResult.imageId.toString()}');
+
+    if (croppedImage != null && croppedImage!.path.isNotEmpty) {
+      SendImage image = SendImage(
+        lang: OpenFoodFactsLanguage.ENGLISH,
+        barcode: barcode,
+        imageUri: Uri.parse(croppedImage!.path),
+        imageField: ImageField.FRONT,
+      );
+      Status sendImageResult =
+          await OpenFoodAPIClient.addProductImage(myUser, image);
+      if (sendImageResult.status != 'status ok') {
+        throw Exception(
+            'image could not be uploated: ${sendImageResult.error} ${sendImageResult.imageId.toString()}');
+      }
     }
   }
 

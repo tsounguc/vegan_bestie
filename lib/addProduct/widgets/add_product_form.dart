@@ -23,12 +23,6 @@ class AddProductForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // if(barcode == null || barcode!.isEmpty)
-    //   barcode = productScanResults.barcode;
-    // if(productName == null || productName!.isEmpty)
-    //   productName = productScanResults.productName;
-    // if(ingredients == null || ingredients!.isEmpty)
-    //   ingredients = productScanResults.ingredients;
 
     return SingleChildScrollView(
       child: Container(
@@ -56,9 +50,15 @@ class AddProductForm extends HookWidget {
                     return 'Barcode is required';
                   }
                 },
-                onSaved: (String? value) {
-                  barcode = value;
-                },
+                  onSaved: (String? value) {
+                    barcode = value;
+                    context.read(productProvider).state.barcode = barcode;
+                  },
+                  onChanged: (String? value){
+                    barcode = value;
+                    print(barcode);
+                    context.read(productProvider).state.barcode = barcode;
+                  }
               ),
               InputTextFormField(
                 focusNode: new FocusNode(),
@@ -85,7 +85,12 @@ class AddProductForm extends HookWidget {
                 },
                 onSaved: (String? value) {
                   productName = value;
-                  // controller.text = value!;
+                  context.read(productProvider).state.productName = productName;
+                },
+                onChanged: (String? value){
+                  productName = value;
+                  print(productName);
+                  context.read(productProvider).state.productName = productName;
                 },
               ),
               InputTextFormField(
@@ -111,14 +116,15 @@ class AddProductForm extends HookWidget {
                     return 'Ingredients list is required';
                   }
                 },
-                // onChanged: (String ? value){
-                //   ingredients = value;
-                //   context.read(productProvider).setIngredients(value);
-                // },
                 onSaved: (String? value) {
                   ingredients = value;
-                  context.read(productProvider).setIngredients(value);
+                  context.read(productProvider).state.ingredients = ingredients;
                 },
+                  onChanged: (String? value){
+                    ingredients = value;
+                    print(ingredients);
+                    context.read(productProvider).state.ingredients = ingredients;
+                  }
               ),
               SizedBox(
                 height: 5,
