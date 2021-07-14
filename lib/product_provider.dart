@@ -4,18 +4,20 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
 import 'package:sheveegan/colors.dart';
-import 'package:sheveegan/product.dart';
+import 'package:sheveegan/product_info.dart';
 
 class ProductStateNotifier extends StateNotifier<ProductInfo> {
   ProductStateNotifier() : super(ProductInfo());
 
   final ImagePicker picker = ImagePicker();
+  final textDetector = GoogleMlKit.vision.textDetector();
 
   String? error;
   String? imageUrl;
@@ -29,11 +31,6 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   String? ingredientsText;
   String? labels;
   bool sheVegan = true;
-
-  List<CameraDescription>? _cameras;
-  CameraController? _cameraController;
-
-  // Future<void> _initializeControllerFuture;
 
   String nonVeganIngredientsInProduct = "";
   List<String> nonVeganIngredients = [
@@ -90,6 +87,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     try {
       barcode = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", 'Cancel', true, ScanMode.BARCODE);
+      // barcode = "016000277076";
       print("Barcode: " + barcode!);
 
       if (barcode!.isNotEmpty) {
@@ -119,14 +117,20 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     productName = "";
     ingredients = [];
     ingredientsText = "";
+    state = ProductInfo();
+
     labels = "";
     if (product.productName == null) {
       productName = '';
+      error = 'This product is missing is missing a name';
     } else {
       productName = product.productName;
     }
 
-    if (product.ingredients == null) {
+    if (product.ingredients == null ||
+        product.ingredientsText == null ||
+        product.ingredients!.length <= 0 ||
+        product.ingredientsText!.isEmpty) {
       ingredients = [];
       ingredientsText = "";
       error = '${product.productName} is missing ingredients list';
@@ -186,16 +190,15 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         if (error!.contains("product not found")) {
           productName = "";
         }
-
-        state = ProductInfo(
-          barcode: barcode,
-          imageUrl: "",
-          productName: productName,
-          ingredients: "",
-          labels: "",
-          error: error,
-          loading: false,
-        );
+        if (error!.contains('no code or invalid code')) {
+          barcode = "";
+          productName = "";
+        }
+        state = state
+          ..barcode = barcode
+          ..productName = productName
+          ..error = error
+          ..loading = false;
 
         throw Exception('Error retrieving the product: ' + error!);
       }
@@ -214,43 +217,45 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   }
 
   void addNewProduct(
-    String barcode,
-    String productName,
-    String ingredients,
-    // String imagePath,
-  ) async {
-    // define the product to be added.
-    // more attributes available ...
-    Product myProduct = Product(
-      barcode: barcode,
-      productName: productName,
-      // imageFrontUrl: Uri.parseproductImage,
-      ingredientsText: ingredients,
-      lang: OpenFoodFactsLanguage.ENGLISH,
-    );
-
-    SendImage image = SendImage(
-      lang: OpenFoodFactsLanguage.ENGLISH,
-      barcode: barcode,
-      imageUri: Uri.parse(croppedImage!.path),
-      imageField: ImageField.FRONT,
-    );
-
+      String barcode, String productName, String ingredients) async {
     // a registered user login for https://world.openfoodfacts.org/ is required
     User myUser =
         User(userId: 'christian-tsoungui-nkoulou', password: 'Whatsupbro3');
 
-    // query the OpenFoodFacts API
-    Status result = await OpenFoodAPIClient.saveProduct(myUser, myProduct);
-    Status sendImageResult =
-        await OpenFoodAPIClient.addProductImage(myUser, image);
+    if (barcode.isNotEmpty &&
+        productName.isNotEmpty &&
+        ingredients.isNotEmpty) {
+      // define the product to be added.
+      // more attributes available ...
+      Product myProduct = Product(
+        barcode: barcode,
+        productName: productName,
+        // imageFrontUrl: Uri.parseproductImage,
+        ingredientsText: ingredients,
+        lang: OpenFoodFactsLanguage.ENGLISH,
+      );
+      // query the OpenFoodFacts API
+      Status result = await OpenFoodAPIClient.saveProduct(myUser, myProduct);
 
-    if (result.status != 1) {
-      throw Exception('product could not be added: ${result.error}');
+      if (result.status != 1) {
+        //TODO: Let user know in the UI that product could not be added
+        throw Exception('product could not be added: ${result.error}');
+      }
     }
-    if (sendImageResult.status != 'status ok') {
-      throw Exception(
-          'image could not be uploated: ${sendImageResult.error} ${sendImageResult.imageId.toString()}');
+
+    if (croppedImage != null && croppedImage!.path.isNotEmpty) {
+      SendImage image = SendImage(
+        lang: OpenFoodFactsLanguage.ENGLISH,
+        barcode: barcode,
+        imageUri: Uri.parse(croppedImage!.path),
+        imageField: ImageField.FRONT,
+      );
+      Status sendImageResult =
+          await OpenFoodAPIClient.addProductImage(myUser, image);
+      if (sendImageResult.status != 'status ok') {
+        throw Exception(
+            'image could not be uploated: ${sendImageResult.error} ${sendImageResult.imageId.toString()}');
+      }
     }
   }
 
@@ -288,7 +293,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   }
 
   getImage(ImageSource source) async {
-    state = ProductInfo(loading: true);
+    state = state..loading = true;
     imageToUpload = null;
     croppedImage = null;
     imageToUpload = await picker.getImage(source: source);
@@ -309,8 +314,9 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         ),
       );
       print(croppedImage!.path);
-      state =
-          ProductInfo(imageToUpLoadPath: croppedImage!.path, loading: false);
+      state = state
+        ..imageToUpLoadPath = croppedImage!.path
+        ..loading = false;
     }
   }
 
@@ -402,6 +408,77 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  void readProductNameFromImage() async {
+    PickedFile? picture = await picker.getImage(source: ImageSource.camera);
+    //Use text recognition plugin to get text out of picture
+    File? croppedPicture = await ImageCropper.cropImage(
+      sourcePath: picture!.path,
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      compressQuality: 100,
+      compressFormat: ImageCompressFormat.jpg,
+      maxHeight: 700,
+      maxWidth: 700,
+      androidUiSettings: AndroidUiSettings(
+        toolbarColor: gradientStartColor,
+        toolbarTitle: "Crop Image",
+        statusBarColor: gradientStartColor,
+        backgroundColor: Colors.white,
+      ),
+    );
+
+    InputImage inputImage = InputImage.fromFilePath(croppedPicture!.path);
+    RecognisedText recognisedText = await textDetector.processImage(inputImage);
+
+    //Set productName to recognized text
+    String formattedText = "";
+    for (TextBlock block in recognisedText.blocks) {
+      for (TextLine line in block.lines) {
+        formattedText = formattedText + " " + line.text;
+      }
+    }
+    productName = formattedText;
+    print(productName);
+
+    //Set state
+    state = state..productName = productName;
+  }
+
+  void readIngredientsFromImage() async {
+    //Take picture from imagePicker
+    PickedFile? picture = await picker.getImage(source: ImageSource.camera);
+    //Use text recognition plugin to get text out of picture
+    File? croppedPicture = await ImageCropper.cropImage(
+      sourcePath: picture!.path,
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      compressQuality: 100,
+      compressFormat: ImageCompressFormat.jpg,
+      maxHeight: 700,
+      maxWidth: 700,
+      androidUiSettings: AndroidUiSettings(
+        toolbarColor: gradientStartColor,
+        toolbarTitle: "Crop Image",
+        statusBarColor: gradientStartColor,
+        backgroundColor: Colors.white,
+      ),
+    );
+
+    InputImage inputImage = InputImage.fromFilePath(croppedPicture!.path);
+    RecognisedText recognisedText = await textDetector.processImage(inputImage);
+
+    //Set IngredientText to recognized text
+    ingredientsText = recognisedText.text;
+    print(ingredientsText);
+
+    //Set state
+    state = state..ingredients = ingredientsText;
+  }
+
+  void setIngredients(String? value) {
+    print("set Ingredients: $value");
+    ingredientsText = value;
+    state = state..ingredients = value;
   }
 }
 

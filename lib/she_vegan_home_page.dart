@@ -9,17 +9,12 @@ import 'package:sheveegan/addProduct/add_product.dart';
 import 'package:sheveegan/error_state_page.dart';
 import 'package:sheveegan/ProductFound/product_found.dart';
 import 'package:sheveegan/loading_state_page.dart';
-import 'package:sheveegan/productprovider.dart';
+import 'package:sheveegan/product_provider.dart';
 
 class SheVeganHomePage extends HookWidget {
-  CameraDescription? firstCamera;
-
-
-
   @override
   Widget build(BuildContext context) {
     final productScanResults = useProvider(productProvider.state);
-    // Size size = MediaQuery.of(context).size;
     if (productScanResults.loading) {
       return LoadingStatePage();
     }
@@ -28,6 +23,5 @@ class SheVeganHomePage extends HookWidget {
     }
 
     return ProductFoundPage();
-    // return AddProduct();
   }
 }

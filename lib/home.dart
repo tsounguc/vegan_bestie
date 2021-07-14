@@ -5,8 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sheveegan/she_vegan_home_page.dart';
 
 class Home extends HookWidget {
-  Home({this.cameras});
-  List<CameraDescription>? cameras;
+
 
   @override
   Widget build(BuildContext context) {

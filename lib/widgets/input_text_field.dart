@@ -10,13 +10,14 @@ class InputTextFormField extends HookWidget {
   int? minLines;
   String? Function(String?)? validator;
   Function(String?)? onSaved;
+  Function(String?)? onChanged;
   InputBorder? border;
   bool? isPassword;
   bool? isEmail;
   bool? filled;
   Color? fillColor;
   Widget? prefix;
-  Widget? suffix;
+  Widget? suffixIcon;
   FocusNode? focusNode;
 
   InputTextFormField({
@@ -29,12 +30,13 @@ class InputTextFormField extends HookWidget {
     this.border,
     this.validator,
     this.onSaved,
+    this.onChanged,
     this.isEmail = false,
     this.isPassword = false,
     this.filled = false,
     this.fillColor,
     this.prefix,
-    this.suffix,
+    this.suffixIcon,
   });
 
   @override
@@ -78,11 +80,12 @@ class InputTextFormField extends HookWidget {
               border: border,
               filled: filled,
               fillColor: fillColor,
-              suffix: suffix,
+              suffixIcon: suffixIcon,
             ),
             obscureText: isPassword! ? true : false,
             validator: validator,
             onSaved: onSaved,
+            onChanged: onChanged,
             keyboardType:
                 isEmail! ? TextInputType.emailAddress : TextInputType.multiline,
           ),

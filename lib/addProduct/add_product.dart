@@ -5,13 +5,6 @@ import 'package:sheveegan/addProduct/widgets/add_product_form.dart';
 import 'package:sheveegan/colors.dart';
 
 class AddProduct extends HookWidget {
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  AddProduct({ this.firstCamera});
-  CameraDescription? firstCamera;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +24,7 @@ class AddProduct extends HookWidget {
               color: Colors.white,
             ),
           ),
-          body: AddProductForm(firstCamera)
+          body: AddProductForm()
         ),
       ),
     );

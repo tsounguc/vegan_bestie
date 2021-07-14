@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sheveegan/colors.dart';
-import 'package:sheveegan/productprovider.dart';
+import 'package:sheveegan/product_provider.dart';
 
 class AddProductFormImage extends HookWidget {
   const AddProductFormImage({Key? key}) : super(key: key);
@@ -12,7 +12,6 @@ class AddProductFormImage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final productScanResults = useProvider(productProvider.state);
-
     return productScanResults.imageToUpLoadPath!.isEmpty
         ? Container(
             height: 250,
@@ -41,7 +40,6 @@ class AddProductFormImage extends HookWidget {
                     // size: 50,
                   ),
                   onPressed: () {
-                    print("image picker to add picture");
                     context.read(productProvider).showPicker(context);
                   },
                 ),
