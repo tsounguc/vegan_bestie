@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
 import 'package:sheveegan/colors.dart';
-import 'package:sheveegan/product.dart';
+import 'package:sheveegan/product_info.dart';
 
 class ProductStateNotifier extends StateNotifier<ProductInfo> {
   ProductStateNotifier() : super(ProductInfo());
@@ -410,7 +410,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     }
   }
 
-  void getProductNameFromImage() async {
+  void readProductNameFromImage() async {
     PickedFile? picture = await picker.getImage(source: ImageSource.camera);
     //Use text recognition plugin to get text out of picture
     File? croppedPicture = await ImageCropper.cropImage(
@@ -445,7 +445,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     state = state..productName = productName;
   }
 
-  void getIngredientsFromImage() async {
+  void readIngredientsFromImage() async {
     //Take picture from imagePicker
     PickedFile? picture = await picker.getImage(source: ImageSource.camera);
     //Use text recognition plugin to get text out of picture

@@ -4,12 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sheveegan/addProduct/add_product.dart';
 import 'package:sheveegan/assets/barcode_icon.dart';
-import 'package:sheveegan/productprovider.dart';
+import 'package:sheveegan/product_provider.dart';
 
 class ErrorStatePage extends HookWidget {
-  ErrorStatePage( {Key? key, this.firstCamera}) : super(key: key);
-  CameraDescription? firstCamera;
-
   @override
   Widget build(BuildContext context) {
     final productScanResults = useProvider(productProvider.state);
@@ -30,13 +27,14 @@ class ErrorStatePage extends HookWidget {
             ),
             Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
                 child: Text(
                   "${productScanResults.error!.substring(0, 1).toUpperCase() + productScanResults.error!.substring(1)}",
                   style: TextStyle(
-                    // color: Colors.white,
-                    // fontSize: 18,
-                  ),
+                      // color: Colors.white,
+                      // fontSize: 18,
+                      ),
                 ),
               ),
             ),
@@ -67,7 +65,7 @@ class ErrorStatePage extends HookWidget {
               backgroundColor: Colors.grey.shade600,
               onPressed: () {
                 Route route =
-                MaterialPageRoute(builder: (context) => AddProduct());
+                    MaterialPageRoute(builder: (context) => AddProduct());
                 Navigator.push(context, route);
               },
               child: Icon(

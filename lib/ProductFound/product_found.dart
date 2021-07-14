@@ -7,7 +7,7 @@ import 'package:sheveegan/addProduct/add_product.dart';
 import 'package:sheveegan/assets/barcode_icon.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
 import 'package:sheveegan/colors.dart';
-import 'package:sheveegan/productprovider.dart';
+import 'package:sheveegan/product_provider.dart';
 
 class ProductFoundPage extends HookWidget {
   @override

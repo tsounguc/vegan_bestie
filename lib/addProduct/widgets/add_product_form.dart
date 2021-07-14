@@ -6,7 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sheveegan/addProduct/widgets/add_product_form_image.dart';
 import 'package:sheveegan/colors.dart';
-import 'package:sheveegan/productprovider.dart';
+import 'package:sheveegan/product_provider.dart';
 import 'package:sheveegan/widgets/input_text_field.dart';
 
 class AddProductForm extends HookWidget {
@@ -14,8 +14,6 @@ class AddProductForm extends HookWidget {
   String? barcode;
   String? productName;
   String? ingredients;
-
-  AddProductForm(CameraDescription? firstCamera);
 
   final productScanResults = useProvider(productProvider.state);
   TextEditingController controller = TextEditingController();
@@ -69,7 +67,7 @@ class AddProductForm extends HookWidget {
                   color: Colors.black,
                   icon: Icon(Icons.camera_alt),
                   onPressed: () {
-                    context.read(productProvider).getProductNameFromImage();
+                    context.read(productProvider).readProductNameFromImage();
                   },
                 ),
                 border: OutlineInputBorder(
@@ -100,7 +98,7 @@ class AddProductForm extends HookWidget {
                     color: Colors.black,
                     icon: Icon(Icons.camera_alt),
                     onPressed: () {
-                      context.read(productProvider).getIngredientsFromImage();
+                      context.read(productProvider).readIngredientsFromImage();
                     },
                   ),
                   border: OutlineInputBorder(
