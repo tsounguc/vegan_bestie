@@ -85,9 +85,9 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
   Future onBarcodeButtonPressed(BuildContext context) async {
     try {
-      // barcode = await FlutterBarcodeScanner.scanBarcode(
-      //     "#ff6666", 'Cancel', true, ScanMode.BARCODE);
-      barcode = "016000277076";
+      barcode = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", 'Cancel', true, ScanMode.BARCODE);
+      // barcode = "016000277076";
       print("Barcode: " + barcode!);
 
       if (barcode!.isNotEmpty) {
@@ -117,8 +117,10 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     productName = "";
     ingredients = [];
     ingredientsText = "";
+    state = ProductInfo();
+
     labels = "";
-    if (product.productName == null || product.productName!.isEmpty) {
+    if (product.productName == null) {
       productName = '';
       error = 'This product is missing is missing a name';
     } else {
@@ -188,6 +190,10 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         if (error!.contains("product not found")) {
           productName = "";
         }
+        if (error!.contains('no code or invalid code')) {
+          barcode = "";
+          productName = "";
+        }
         state = state
           ..barcode = barcode
           ..productName = productName
@@ -232,6 +238,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       Status result = await OpenFoodAPIClient.saveProduct(myUser, myProduct);
 
       if (result.status != 1) {
+        //TODO: Let user know in the UI that product could not be added
         throw Exception('product could not be added: ${result.error}');
       }
     }
@@ -286,8 +293,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   }
 
   getImage(ImageSource source) async {
-    // state = ProductInfo(loading: true);
-    // state = state..loading = true;
+    state = state..loading = true;
     imageToUpload = null;
     croppedImage = null;
     imageToUpload = await picker.getImage(source: source);
@@ -311,7 +317,6 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       state = state
         ..imageToUpLoadPath = croppedImage!.path
         ..loading = false;
-      // ProductInfo(imageToUpLoadPath: croppedImage!.path, loading: false);
     }
   }
 
@@ -406,9 +411,8 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   }
 
   void getProductNameFromImage() async {
-    //TODO: Take picture from imagePicker
     PickedFile? picture = await picker.getImage(source: ImageSource.camera);
-    //TODO: use text recognition plugin to get text out of picture
+    //Use text recognition plugin to get text out of picture
     File? croppedPicture = await ImageCropper.cropImage(
       sourcePath: picture!.path,
       aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
@@ -427,19 +431,24 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     InputImage inputImage = InputImage.fromFilePath(croppedPicture!.path);
     RecognisedText recognisedText = await textDetector.processImage(inputImage);
 
-    //TODO: set productName or IngredientText to text received
-
-    productName = recognisedText.text;
+    //Set productName to recognized text
+    String formattedText = "";
+    for (TextBlock block in recognisedText.blocks) {
+      for (TextLine line in block.lines) {
+        formattedText = formattedText + " " + line.text;
+      }
+    }
+    productName = formattedText;
     print(productName);
 
-//TODO: Set states accordingly
+    //Set state
     state = state..productName = productName;
   }
 
   void getIngredientsFromImage() async {
-    //TODO: Take picture from imagePicker
+    //Take picture from imagePicker
     PickedFile? picture = await picker.getImage(source: ImageSource.camera);
-    //TODO: use text recognition plugin to get text out of picture
+    //Use text recognition plugin to get text out of picture
     File? croppedPicture = await ImageCropper.cropImage(
       sourcePath: picture!.path,
       aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
@@ -458,12 +467,11 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     InputImage inputImage = InputImage.fromFilePath(croppedPicture!.path);
     RecognisedText recognisedText = await textDetector.processImage(inputImage);
 
-    //TODO: set productName or IngredientText to text received
-
+    //Set IngredientText to recognized text
     ingredientsText = recognisedText.text;
     print(ingredientsText);
 
-    //TODO: Set states accordingly
+    //Set state
     state = state..ingredients = ingredientsText;
   }
 

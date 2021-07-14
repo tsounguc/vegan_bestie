@@ -15,7 +15,6 @@ class AddProductForm extends HookWidget {
   String? productName;
   String? ingredients;
 
-
   AddProductForm(CameraDescription? firstCamera);
 
   final productScanResults = useProvider(productProvider.state);
@@ -23,7 +22,6 @@ class AddProductForm extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.all(24),
@@ -37,33 +35,32 @@ class AddProductForm extends HookWidget {
                 height: 25,
               ),
               InputTextFormField(
-                focusNode: new FocusNode(),
-                initialValue: productScanResults.barcode,
-                labelText: 'Barcode',
-                hintText: 'Enter Barcode',
-                filled: true,
-                fillColor: Colors.green.shade50,
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                validator: (String? value) {
-                  if (value!.isEmpty) {
-                    return 'Barcode is required';
-                  }
-                },
+                  focusNode: new FocusNode(),
+                  initialValue: productScanResults.barcode,
+                  labelText: 'Barcode',
+                  hintText: 'Enter Barcode',
+                  filled: true,
+                  fillColor: Colors.green.shade50,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                  ),
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'Barcode is required';
+                    }
+                  },
                   onSaved: (String? value) {
                     barcode = value;
                     context.read(productProvider).state.barcode = barcode;
                   },
-                  onChanged: (String? value){
+                  onChanged: (String? value) {
                     barcode = value;
                     print(barcode);
                     context.read(productProvider).state.barcode = barcode;
-                  }
-              ),
+                  }),
               InputTextFormField(
                 focusNode: new FocusNode(),
                 initialValue: productScanResults.productName,
-                // controller: controller,
                 labelText: 'Product Name',
                 hintText: 'Enter Product Name',
                 filled: true,
@@ -72,7 +69,6 @@ class AddProductForm extends HookWidget {
                   color: Colors.black,
                   icon: Icon(Icons.camera_alt),
                   onPressed: () {
-                    //Todo: read product name list from picture and put results in the textfield;
                     context.read(productProvider).getProductNameFromImage();
                   },
                 ),
@@ -87,45 +83,45 @@ class AddProductForm extends HookWidget {
                   productName = value;
                   context.read(productProvider).state.productName = productName;
                 },
-                onChanged: (String? value){
+                onChanged: (String? value) {
                   productName = value;
                   print(productName);
                   context.read(productProvider).state.productName = productName;
                 },
               ),
               InputTextFormField(
-                focusNode: new FocusNode(),
-                initialValue: productScanResults.ingredients,
-                labelText: 'Ingredients',
-                hintText: "Enter Ingredients list",
-                filled: true,
-                fillColor: Colors.green.shade50,
-                suffixIcon: IconButton(
-                  color: Colors.black,
-                  icon: Icon(Icons.camera_alt),
-                  onPressed: () {
-                    //Todo: read ingredient list from picture and put results in the textfield;
-                    context.read(productProvider).getIngredientsFromImage();
+                  focusNode: new FocusNode(),
+                  initialValue: productScanResults.ingredients,
+                  labelText: 'Ingredients',
+                  hintText: "Enter Ingredients list",
+                  filled: true,
+                  fillColor: Colors.green.shade50,
+                  suffixIcon: IconButton(
+                    color: Colors.black,
+                    icon: Icon(Icons.camera_alt),
+                    onPressed: () {
+                      context.read(productProvider).getIngredientsFromImage();
+                    },
+                  ),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent)),
+                  minLines: 5,
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'Ingredients list is required';
+                    }
                   },
-                ),
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                minLines: 5,
-                validator: (String? value) {
-                  if (value!.isEmpty) {
-                    return 'Ingredients list is required';
-                  }
-                },
-                onSaved: (String? value) {
-                  ingredients = value;
-                  context.read(productProvider).state.ingredients = ingredients;
-                },
-                  onChanged: (String? value){
+                  onSaved: (String? value) {
+                    ingredients = value;
+                    context.read(productProvider).state.ingredients =
+                        ingredients;
+                  },
+                  onChanged: (String? value) {
                     ingredients = value;
                     print(ingredients);
-                    context.read(productProvider).state.ingredients = ingredients;
-                  }
-              ),
+                    context.read(productProvider).state.ingredients =
+                        ingredients;
+                  }),
               SizedBox(
                 height: 5,
               ),
