@@ -15,11 +15,15 @@ class AddProductForm extends HookWidget {
   String? productName;
   String? ingredients;
 
+
   AddProductForm(CameraDescription? firstCamera);
+
+  final productScanResults = useProvider(productProvider.state);
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final productScanResults = useProvider(productProvider.state);
+
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.all(24),
@@ -46,18 +50,32 @@ class AddProductForm extends HookWidget {
                     return 'Barcode is required';
                   }
                 },
-                onSaved: (String? value) {
-                  barcode = value;
-                },
+                  onSaved: (String? value) {
+                    barcode = value;
+                    context.read(productProvider).state.barcode = barcode;
+                  },
+                  onChanged: (String? value){
+                    barcode = value;
+                    print(barcode);
+                    context.read(productProvider).state.barcode = barcode;
+                  }
               ),
               InputTextFormField(
                 focusNode: new FocusNode(),
                 initialValue: productScanResults.productName,
+                // controller: controller,
                 labelText: 'Product Name',
                 hintText: 'Enter Product Name',
                 filled: true,
                 fillColor: Colors.green.shade50,
-                suffixIcon: IconButton(icon: Icon(Icons.camera_alt_outlined), onPressed: (){},),
+                suffixIcon: IconButton(
+                  color: Colors.black,
+                  icon: Icon(Icons.camera_alt),
+                  onPressed: () {
+                    //Todo: read product name list from picture and put results in the textfield;
+                    context.read(productProvider).getProductNameFromImage();
+                  },
+                ),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 validator: (String? value) {
@@ -67,6 +85,12 @@ class AddProductForm extends HookWidget {
                 },
                 onSaved: (String? value) {
                   productName = value;
+                  context.read(productProvider).state.productName = productName;
+                },
+                onChanged: (String? value){
+                  productName = value;
+                  print(productName);
+                  context.read(productProvider).state.productName = productName;
                 },
               ),
               InputTextFormField(
@@ -76,6 +100,14 @@ class AddProductForm extends HookWidget {
                 hintText: "Enter Ingredients list",
                 filled: true,
                 fillColor: Colors.green.shade50,
+                suffixIcon: IconButton(
+                  color: Colors.black,
+                  icon: Icon(Icons.camera_alt),
+                  onPressed: () {
+                    //Todo: read ingredient list from picture and put results in the textfield;
+                    context.read(productProvider).getIngredientsFromImage();
+                  },
+                ),
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 minLines: 5,
@@ -86,7 +118,13 @@ class AddProductForm extends HookWidget {
                 },
                 onSaved: (String? value) {
                   ingredients = value;
+                  context.read(productProvider).state.ingredients = ingredients;
                 },
+                  onChanged: (String? value){
+                    ingredients = value;
+                    print(ingredients);
+                    context.read(productProvider).state.ingredients = ingredients;
+                  }
               ),
               SizedBox(
                 height: 5,
@@ -111,9 +149,7 @@ class AddProductForm extends HookWidget {
                         print(productName);
                         print(ingredients);
                         context.read(productProvider).addNewProduct(
-                            barcode!,
-                            productName!,
-                            ingredients!);
+                            barcode!, productName!, ingredients!);
                         Navigator.of(context).pop();
                       }
                     },
