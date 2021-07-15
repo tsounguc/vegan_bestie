@@ -34,6 +34,9 @@ dependencies:
   camera:
 
 
+#  animated_splash_screen:
+
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -41,7 +44,20 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_native_splash: ^1.2.0
 
+
+flutter_native_splash:
+  android: true
+  ios: true
+  color: "#43A047"
+  #background_image: "assets/background.png"
+  #image: assets/splash.png
+  #color_dark: "#042a49"
+  #background_image_dark: "assets/dark-background.png"
+  #image_dark: assets/splash-invert.png
+  #android_gravity: center
+  #fullscreen: true
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
