@@ -71,13 +71,33 @@ class ProductFoundPage extends HookWidget {
               ],
             ),
             actions: [
-              IconButton(
-                onPressed: () {},
+              PopupMenuButton(
                 icon: Icon(
                   Icons.more_vert,
                   // size: 25,
                   color: titleTextColorOne,
                 ),
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'Edit Product',
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text("Edit Product"),
+                        ),
+                        Icon(Icons.edit),
+                      ],
+                    ),
+                  )
+                ],
+                onSelected: (selectedValue) {
+                  if (selectedValue == 'Edit Product') {
+                    Route route = MaterialPageRoute(
+                        builder: (context) =>
+                            AddProduct(title: "Edit Product"));
+                    Navigator.push(context, route);
+                  }
+                },
               )
             ],
           ),

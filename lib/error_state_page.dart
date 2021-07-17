@@ -65,7 +65,8 @@ class ErrorStatePage extends HookWidget {
               backgroundColor: Colors.grey.shade600,
               onPressed: () {
                 Route route =
-                    MaterialPageRoute(builder: (context) => AddProduct());
+                // MaterialPageRoute(builder: (context) => AddProduct());
+                    MaterialPageRoute(builder: (context) => AddProduct(title: "Add New Product"));
                 Navigator.push(context, route);
               },
               child: Icon(
