@@ -5,6 +5,8 @@ import 'package:sheveegan/addProduct/widgets/add_product_form.dart';
 import 'package:sheveegan/colors.dart';
 
 class AddProduct extends HookWidget {
+  AddProduct({this.title});
+  String? title;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +19,7 @@ class AddProduct extends HookWidget {
           resizeToAvoidBottomInset: true,
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Text('Add New Product', style: TextStyle(color: Colors.white),),
+            title: Text(title!, style: TextStyle(color: Colors.white),),
             elevation: 0,
             backgroundColor: gradientStartColor,
             leading: CloseButton(
