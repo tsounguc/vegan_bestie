@@ -112,11 +112,11 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
   Future onBarcodeButtonPressed(BuildContext context) async {
     try {
-      // barcode = await FlutterBarcodeScanner.scanBarcode(
-      //     "#ff6666", 'Cancel', true, ScanMode.BARCODE);
+      barcode = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", 'Cancel', true, ScanMode.BARCODE);
       // barcode = "016000277076";
       // barcode = "848860002099";
-      barcode = "4099100018677";
+      // barcode = "4099100018677";
       print("Barcode: " + barcode!);
 
       if (barcode!.isNotEmpty) {
