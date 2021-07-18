@@ -34,12 +34,23 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
   String nonVeganIngredientsInProduct = "";
   List<String> nonVeganIngredients = [
+    "acidophilus Milk",
     "anchovies",
     "bee pollen",
     "bee venom",
     "beef",
     "beeswax",
     "butter",
+    "butter extract",
+    "butter fat",
+    "butter solids",
+    "buttermilk",
+    "buttermilk blend",
+    "buttermilk solids",
+    "boar bristles",
+    "bone",
+    "bone char",
+    "bone meal"
     "calamari",
     "carmine",
     "casein",
@@ -49,6 +60,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     "cochineal",
     "crab",
     "cream",
+    "dairy butter",
     "duck",
     "edible bone phosphate",
     "eggs",
@@ -62,9 +74,18 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     "l-cysteine",
     "lamb",
     "lactose",
+    "lactose-free milk",
     "lobster",
+    "malted milk"
     "milk",
+    "milk derivative"
+    "milk protein",
+    "milk powder",
+    "milk solids",
+    "milk solids blend",
     "mussels",
+    "natural butter",
+
     // "omega-3 fatty acids",
     "organ meat",
     "pork",
@@ -74,21 +95,28 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     "scallops",
     "shellac",
     "shrimp",
+    "sour milk"
     "squid",
     "turkey",
     "veal",
     "vitamin d3",
     "whey",
+    "whipped butter",
+    "whole egg",
+    "whole egg solids",
+    "whole eggs",
+    "whole eggs solid",
     "wild meat",
     "yogurt",
   ];
 
   Future onBarcodeButtonPressed(BuildContext context) async {
     try {
-      barcode = await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", 'Cancel', true, ScanMode.BARCODE);
+      // barcode = await FlutterBarcodeScanner.scanBarcode(
+      //     "#ff6666", 'Cancel', true, ScanMode.BARCODE);
       // barcode = "016000277076";
       // barcode = "848860002099";
+      barcode = "4099100018677";
       print("Barcode: " + barcode!);
 
       if (barcode!.isNotEmpty) {
@@ -332,16 +360,17 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         if (ingredient.vegan == null ||
             ingredient.vegan == IngredientSpecialPropertyStatus.MAYBE) {
           nonVeganIngredients.forEach((nonVeganIngredient) {
-            if (ingredient.text == nonVeganIngredient) {
-              nonVeganIngredientsInProduct =
-                  nonVeganIngredientsInProduct + "${ingredient.text!},  ";
+            if (ingredient.text!.toLowerCase() ==
+                nonVeganIngredient.toLowerCase()) {
+              nonVeganIngredientsInProduct = nonVeganIngredientsInProduct +
+                  "${ingredient.text!.toLowerCase()},  ";
               sheVegan = false;
             }
           });
         }
         if (ingredient.vegan == IngredientSpecialPropertyStatus.NEGATIVE) {
-          nonVeganIngredientsInProduct =
-              nonVeganIngredientsInProduct + "${ingredient.text!},  ";
+          nonVeganIngredientsInProduct = nonVeganIngredientsInProduct +
+              "${ingredient.text!.toLowerCase()},  ";
           sheVegan = false;
         }
       });
@@ -353,16 +382,17 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         if (ingredient.vegan == null ||
             ingredient.vegan == IngredientSpecialPropertyStatus.MAYBE) {
           nonVeganIngredients.forEach((nonVeganIngredient) {
-            if (ingredient.text == nonVeganIngredient) {
-              nonVeganIngredientsInProduct =
-                  nonVeganIngredientsInProduct + "${ingredient.text!},  ";
+            if (ingredient.text!.toLowerCase() ==
+                nonVeganIngredient.toLowerCase()) {
+              nonVeganIngredientsInProduct = nonVeganIngredientsInProduct +
+                  "${ingredient.text!.toLowerCase()},  ";
               sheVegan = false;
             }
           });
         }
         if (ingredient.vegan == IngredientSpecialPropertyStatus.NEGATIVE) {
-          nonVeganIngredientsInProduct =
-              nonVeganIngredientsInProduct + "${ingredient.text!},  ";
+          nonVeganIngredientsInProduct = nonVeganIngredientsInProduct +
+              "${ingredient.text!.toLowerCase()},  ";
           sheVegan = false;
         }
       });

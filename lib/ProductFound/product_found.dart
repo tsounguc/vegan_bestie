@@ -44,25 +44,25 @@ class ProductFoundPage extends HookWidget {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'She ',
-                  style: TextStyle(
-                    color: titleTextColorOne,
-                    // color: Colors.green.shade600,
-                    fontSize: 37,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'cursive',
-                  ),
-                ),
                 Icon(
                   VeganIcon.vegan_icon,
                   color: titleTextColorOne,
-                  size: 30,
+                  size: 37,
                 ),
                 Text(
                   'egan',
                   style: TextStyle(
                     color: titleTextColorOne,
+                    fontSize: 37,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'cursive',
+                  ),
+                ),
+                Text(
+                  ' Bestie',
+                  style: TextStyle(
+                    color: titleTextColorOne,
+                    // color: Colors.green.shade600,
                     fontSize: 37,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'cursive',
