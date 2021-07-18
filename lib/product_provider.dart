@@ -85,6 +85,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     "milk solids blend",
     "mussels",
     "natural butter",
+
     // "omega-3 fatty acids",
     "organ meat",
     "pork",
