@@ -120,6 +120,79 @@ class AddProductForm extends HookWidget {
                     context.read(productProvider).state.ingredients =
                         ingredients;
                   }),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Label",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        "Does it have a vegan label?",
+                        style: TextStyle(
+                          color: Colors.white,
+                          // fontWeight: FontWeight.w500,
+                          // fontSize: 18,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Theme(
+                          data:
+                              ThemeData(unselectedWidgetColor: Colors.white54),
+                          child: Radio(
+                            activeColor: Colors.white,
+                            focusColor: Colors.white,
+                            hoverColor: Colors.white,
+                            value: 0,
+                            groupValue:
+                                context.read(productProvider).radioValue,
+                            onChanged: (int? value) => context
+                                .read(productProvider)
+                                .setVeganLabel(value!),
+                          ),
+                        ),
+                        Text(
+                          "Yes",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Theme(
+                          data:
+                              ThemeData(unselectedWidgetColor: Colors.white54),
+                          child: Radio(
+                            activeColor: Colors.white,
+                            focusColor: Colors.white,
+                            hoverColor: Colors.white,
+                            value: 1,
+                            groupValue:
+                                context.read(productProvider).radioValue,
+                            onChanged: (int? value) => context
+                                .read(productProvider)
+                                .setVeganLabel(value!),
+                          ),
+                        ),
+                        Text(
+                          "No",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(
                 height: 5,
               ),

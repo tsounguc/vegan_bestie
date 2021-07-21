@@ -31,6 +31,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
   String? ingredientsText;
   String? labels;
   bool sheVegan = true;
+  int? radioValue = -1;
 
   String nonVeganIngredientsInProduct = "";
   List<String> nonVeganIngredients = [
@@ -112,11 +113,12 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
   Future onBarcodeButtonPressed(BuildContext context) async {
     try {
-      // barcode = await FlutterBarcodeScanner.scanBarcode(
-      //     "#ff6666", 'Cancel', true, ScanMode.BARCODE);
+      barcode = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", 'Cancel', true, ScanMode.BARCODE);
       // barcode = "016000277076";
       // barcode = "848860002099";
-      barcode = "4099100018677";
+      // barcode = "4099100018677";
+      // barcode = "867905000005";
       print("Barcode: " + barcode!);
 
       if (barcode!.isNotEmpty) {
@@ -146,12 +148,12 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     productName = "";
     ingredients = [];
     ingredientsText = "";
-    state = ProductInfo();
-
     labels = "";
+    radioValue = -1;
+    state = ProductInfo();
     if (product.productName == null) {
       productName = '';
-      error = 'This product is missing is missing a name';
+      error = 'This product is missing a name';
     } else {
       productName = product.productName;
     }
@@ -170,8 +172,10 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
     if (product.labels == null) {
       labels = '';
+      print("labels is null");
     } else {
       labels = product.labels;
+      print("labels: $labels");
     }
     if (product.imageFrontUrl != null) {
       imageUrl = product.imageFrontUrl;
@@ -232,6 +236,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         throw Exception('Error retrieving the product: ' + error!);
       }
       print("product found: ${result.product!.productName}");
+      print("labels: ${result.product!.labelsTags}");
 
       return result.product;
     } on Exception catch (e) {
@@ -261,6 +266,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         productName: productName,
         // imageFrontUrl: Uri.parseproductImage,
         ingredientsText: ingredients,
+        labels: labels,
         lang: OpenFoodFactsLanguage.ENGLISH,
       );
       // query the OpenFoodFacts API
@@ -439,6 +445,17 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  setVeganLabel(int value){
+    radioValue = value;
+    if(radioValue == 0){
+      labels = "Vegan";
+    }else{
+      labels = "";
+
+    }
+    state = state..labels = labels;
   }
 
   void readProductNameFromImage() async {
