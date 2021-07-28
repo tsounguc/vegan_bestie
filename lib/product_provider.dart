@@ -51,7 +51,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     "bone",
     "bone char",
     "bone meal"
-    "calamari",
+        "calamari",
     "carmine",
     "casein",
     "castoreum",
@@ -77,9 +77,9 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     "lactose-free milk",
     "lobster",
     "malted milk"
-    "milk",
+        "milk",
     "milk derivative"
-    "milk protein",
+        "milk protein",
     "milk powder",
     "milk solids",
     "milk solids blend",
@@ -96,7 +96,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     "shellac",
     "shrimp",
     "sour milk"
-    "squid",
+        "squid",
     "turkey",
     "veal",
     "vitamin d3",
@@ -112,11 +112,11 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
   Future onBarcodeButtonPressed(BuildContext context) async {
     try {
-      // barcode = await FlutterBarcodeScanner.scanBarcode(
-      //     "#ff6666", 'Cancel', true, ScanMode.BARCODE);
+      barcode = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", 'Cancel', true, ScanMode.BARCODE);
       // barcode = "016000277076";
       // barcode = "848860002099";
-      barcode = "4099100018677";
+      // barcode = "4099100018677";
       print("Barcode: " + barcode!);
 
       if (barcode!.isNotEmpty) {
