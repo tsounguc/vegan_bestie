@@ -50,9 +50,10 @@ dev_dependencies:
 flutter_native_splash:
   android: true
   ios: true
-  color: "#43A047"
+#  color: "#43A047"
+  color: "#FFFFFF"
   #background_image: "assets/background.png"
-  #image: assets/splash.png
+  image: assets/logo/Logo-3.png
   #color_dark: "#042a49"
   #background_image_dark: "assets/dark-background.png"
   #image_dark: assets/splash-invert.png
