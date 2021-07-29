@@ -50,14 +50,16 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     "boar bristles",
     "bone",
     "bone char",
-    "bone meal"
-        "calamari",
+    "bone meal",
+    "calamari",
     "carmine",
     "casein",
     "castoreum",
     "cheese",
     "chicken",
     "cochineal",
+    "collagen",
+    "collagen peptides",
     "crab",
     "cream",
     "dairy butter",
@@ -76,10 +78,10 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     "lactose",
     "lactose-free milk",
     "lobster",
-    "malted milk"
-        "milk",
-    "milk derivative"
-        "milk protein",
+    "malted milk",
+    "milk",
+    "milk derivative",
+    "milk protein",
     "milk powder",
     "milk solids",
     "milk solids blend",
@@ -95,8 +97,8 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     "scallops",
     "shellac",
     "shrimp",
-    "sour milk"
-        "squid",
+    "sour milk",
+    "squid",
     "turkey",
     "veal",
     "vitamin d3",
@@ -117,6 +119,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       // barcode = "016000277076";
       // barcode = "848860002099";
       // barcode = "4099100018677";
+      // barcode = "052000047776";
       print("Barcode: " + barcode!);
 
       if (barcode!.isNotEmpty) {
@@ -162,7 +165,11 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
         product.ingredientsText!.isEmpty) {
       ingredients = [];
       ingredientsText = "";
-      error = '${product.productName} is missing ingredients list';
+      if (product.productName == null) {
+        error = 'This product is missing a name and ingredients list';
+      } else {
+        error = '${product.productName} is missing ingredients list';
+      }
     } else {
       ingredients = product.ingredients;
       ingredientsText = product.ingredientsText;
