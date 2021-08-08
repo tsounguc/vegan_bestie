@@ -14,6 +14,11 @@ class ErrorStatePage extends HookWidget {
     return Container(
       color: Colors.grey.shade200,
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.grey.shade100,
+          elevation: 0,
+          automaticallyImplyLeading: true,
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -65,8 +70,10 @@ class ErrorStatePage extends HookWidget {
               backgroundColor: Colors.grey.shade600,
               onPressed: () {
                 Route route =
-                // MaterialPageRoute(builder: (context) => AddProduct());
-                    MaterialPageRoute(builder: (context) => AddProduct(title: "Add New Product"));
+                    // MaterialPageRoute(builder: (context) => AddProduct());
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            AddProduct(title: "Add New Product"));
                 Navigator.push(context, route);
               },
               child: Icon(

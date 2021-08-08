@@ -6,6 +6,7 @@ import 'package:sheveegan/home.dart';
 import 'package:flutter/services.dart';
 import 'package:sheveegan/she_vegan_home_page.dart';
 import 'package:sheveegan/splash_screen.dart';
+import 'package:sheveegan/vegan_bestie_home_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,51 +19,19 @@ void main() {
         debugShowCheckedModeBanner: false,
         title: "SheVegan Home",
         theme: ThemeData(
-            primaryColor: Colors.green.shade50,
-            primaryColorDark: Colors.green,
-            primaryColorLight: Colors.lime,
-            textTheme: TextTheme(
-              headline1: TextStyle(
-                color: Colors.black,
-                fontSize: 27,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'cursive',
-              ),
-            )),
-        // home: AnimatedSplashScreen(
-        //   backgroundColor: gradientStartColor,
-        //   splash: Row(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: [
-        //       Text(
-        //         'She ',
-        //         style: TextStyle(
-        //           color: titleTextColorOne,
-        //           // color: Colors.green.shade600,
-        //           fontSize: 45,
-        //           fontWeight: FontWeight.bold,
-        //           fontFamily: 'cursive',
-        //         ),
-        //       ),
-        //       Icon(
-        //         VeganIcon.vegan_icon,
-        //         color: titleTextColorOne,
-        //         size: 38,
-        //       ),
-        //       Text(
-        //         'egan',
-        //         style: TextStyle(
-        //           color: titleTextColorOne,
-        //           fontSize: 45,
-        //           fontWeight: FontWeight.bold,
-        //           fontFamily: 'cursive',
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        //   nextScreen: SheVeganHomePage(),
-        // ),
-        home: SheVeganHomePage(),
+          primaryColor: Colors.green.shade50,
+          primaryColorDark: Colors.green,
+          primaryColorLight: Colors.lime,
+          textTheme: TextTheme(
+            headline1: TextStyle(
+              color: Colors.black,
+              fontSize: 27,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'cursive',
+            ),
+          ),
+        ),
+        home: VeganBestieHomePage(),
       ),
     ),
   );

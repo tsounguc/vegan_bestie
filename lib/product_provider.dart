@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -506,7 +505,15 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     RecognisedText recognisedText = await textDetector.processImage(inputImage);
 
     //Set IngredientText to recognized text
-    ingredientsText = recognisedText.text;
+
+    String formattedText = "";
+    for (TextBlock block in recognisedText.blocks) {
+      for (TextLine line in block.lines) {
+        formattedText = formattedText + " " + line.text;
+      }
+    }
+
+    ingredientsText = formattedText;
     print(ingredientsText);
 
     //Set state

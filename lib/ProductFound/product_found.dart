@@ -125,6 +125,5 @@ class ProductFoundPage extends HookWidget {
         ),
       ),
     );
-    ;
   }
 }
