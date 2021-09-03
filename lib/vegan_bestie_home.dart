@@ -18,21 +18,6 @@ class VeganBestieHome extends HookWidget {
       decoration: BoxDecoration(color: Colors.green.shade800),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        // appBar: AppBar(
-        //   backgroundColor: Colors.transparent,
-        //   elevation: 0,
-        //   centerTitle: true,
-        //   actions: [
-        //     IconButton(
-        //       icon: Icon(
-        //         Icons.search,
-        //         color: Colors.white,
-        //       ),
-        //       // iconSize: 35,
-        //       onPressed: () {},
-        //     )
-        //   ],
-        // ),
         body: Container(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

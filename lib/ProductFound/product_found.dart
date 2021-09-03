@@ -8,12 +8,14 @@ import 'package:sheveegan/assets/barcode_icon.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
 import 'package:sheveegan/colors.dart';
 import 'package:sheveegan/product_provider.dart';
+import 'package:sheveegan/size_config.dart';
 
 class ProductFoundPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final productScanResults = useProvider(productProvider.state);
     Size size = MediaQuery.of(context).size;
+    SizeConfig().init(context);
     return Container(
       decoration: productScanResults.imageUrl != null &&
               productScanResults.imageUrl!.isNotEmpty
@@ -37,34 +39,19 @@ class ProductFoundPage extends HookWidget {
         filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: Scaffold(
           appBar: AppBar(
-            // toolbarHeight: size.height * 0.12,
+            iconTheme: IconThemeData(color: Colors.white),
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  VeganIcon.vegan_icon,
-                  color: titleTextColorOne,
-                  size: 37,
-                ),
                 Text(
-                  'egan',
+                  'Vegan Bestie',
                   style: TextStyle(
                     color: titleTextColorOne,
                     fontSize: 37,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'cursive',
-                  ),
-                ),
-                Text(
-                  ' Bestie',
-                  style: TextStyle(
-                    color: titleTextColorOne,
-                    // color: Colors.green.shade600,
-                    fontSize: 37,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     fontFamily: 'cursive',
                   ),
                 ),
