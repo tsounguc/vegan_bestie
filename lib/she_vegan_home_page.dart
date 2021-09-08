@@ -18,7 +18,7 @@ class SheVeganHomePage extends HookWidget {
     if (productScanResults.error!.isNotEmpty) {
       return ErrorStatePage();
     }
-
+ 
     return ProductFoundPage();
   }
 }
