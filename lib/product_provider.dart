@@ -8,6 +8,8 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:openfoodfacts/model/parameter/SearchTerms.dart';
+import 'package:openfoodfacts/model/parameter/TagFilter.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
 import 'package:sheveegan/colors.dart';
@@ -251,6 +253,29 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       // );
       // ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  searchProducts(String query) async {
+    var parameters = <Parameter>[
+      SortBy(option: SortOption.PRODUCT_NAME),
+      TagFilter(
+        contains: true,
+        tagName: query,
+        tagType: 'all',
+      )
+    ];
+
+    ProductSearchQueryConfiguration configuration =
+        ProductSearchQueryConfiguration(
+      parametersList: parameters,
+      language: OpenFoodFactsLanguage.ENGLISH,
+      fields: [ProductField.ALL],
+    );
+    User myUser =
+        User(userId: 'christian-tsoungui-nkoulou', password: 'Whatsupbro3');
+
+    SearchResult results =
+        await OpenFoodAPIClient.searchProducts(myUser, configuration);
   }
 
   void addNewProduct(
