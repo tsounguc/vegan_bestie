@@ -8,7 +8,7 @@ import 'package:sheveegan/ProductFound/product_found.dart';
 import 'package:sheveegan/loading_state_page.dart';
 import 'package:sheveegan/product_provider.dart';
 
-class SheVeganHomePage extends HookWidget {
+class VeganBestieRouter extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final productScanResults = useProvider(productProvider.state);
@@ -18,7 +18,7 @@ class SheVeganHomePage extends HookWidget {
     if (productScanResults.error!.isNotEmpty) {
       return ErrorStatePage();
     }
- 
+
     return ProductFoundPage();
   }
 }

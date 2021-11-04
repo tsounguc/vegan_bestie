@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -8,15 +7,14 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:openfoodfacts/model/parameter/SearchTerms.dart';
 import 'package:openfoodfacts/model/parameter/TagFilter.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
 import 'package:sheveegan/colors.dart';
-import 'package:sheveegan/product_info.dart';
+import 'package:sheveegan/product_scanned_model.dart';
 
-class ProductStateNotifier extends StateNotifier<ProductInfo> {
-  ProductStateNotifier() : super(ProductInfo());
+class ProductStateNotifier extends StateNotifier<ProductScannedModel> {
+  ProductStateNotifier() : super(ProductScannedModel());
 
   final ImagePicker picker = ImagePicker();
   final textDetector = GoogleMlKit.vision.textDetector();
@@ -114,9 +112,56 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     "yogurt",
   ];
 
+  //----------------Search bar provider------------------------
+  static const historyLength = 5;
+
+  // The raw history that we don't access from the UI, prefilled with values
+  List<String> _searchHistory = ['almond milk', 'chocolate', 'cereal', 'bread'];
+
+  // The filtered & ordered history that's accessed from the UI
+  List<String>? filteredSearchHistory = [];
+
+  //The currently searched-for term
+  String? selectedTerm;
+
+  List<String> filterSearchTerms({
+    String? filter,
+  }) {
+    if (filter!.isNotEmpty)
+      return _searchHistory.reversed
+          .where((term) => term.startsWith(filter))
+          .toList();
+    else
+      return _searchHistory.reversed.toList();
+  }
+
+  void addSearchTerm(String term) {
+    if (_searchHistory.contains(term)) {
+      putSearchTermFirst(term);
+      return;
+    }
+
+    _searchHistory.add(term);
+    if (_searchHistory.length > historyLength) {
+      _searchHistory.removeRange(0, _searchHistory.length - historyLength);
+    }
+
+    filteredSearchHistory = filterSearchTerms(filter: "");
+  }
+
+  void deleteSearchTerm(String term) {
+    _searchHistory.removeWhere((t) => t == term);
+  }
+
+  void putSearchTermFirst(String term) {
+    deleteSearchTerm(term);
+    addSearchTerm(term);
+  }
+
+//-------------------------------------------------------------
   Future onBarcodeButtonPressed(BuildContext context) async {
     try {
-      state = ProductInfo(loading: true);
+      state = ProductScannedModel(loading: true);
       barcode = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", 'Cancel', true, ScanMode.BARCODE);
       // barcode = "016000277076";
@@ -130,7 +175,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
         Product? product = await getProduct(context);
         initState(product!);
-        state = ProductInfo(
+        state = ProductScannedModel(
           barcode: barcode,
           productName: productName,
           ingredients: ingredientsText,
@@ -152,7 +197,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     productName = "";
     ingredients = [];
     ingredientsText = "";
-    state = ProductInfo();
+    state = ProductScannedModel();
 
     labels = "";
     if (product.productName == null) {
@@ -205,7 +250,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       imageUrl: '$imageUrl',
     );
     imageProvider = CachedNetworkImageProvider(imageUrl!);
-    state = ProductInfo(
+    state = ProductScannedModel(
       barcode: barcode,
       imageUrl: imageUrl,
       productName: productName,
@@ -246,12 +291,6 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       return result.product;
     } on Exception catch (e) {
       print(e);
-      // final snackBar = SnackBar(
-      //   // duration: Duration(seconds: 5),
-      //   backgroundColor: Colors.amber,
-      //   content: Text(error!),
-      // );
-      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -261,7 +300,7 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
       TagFilter(
         contains: true,
         tagName: query,
-        tagType: 'all',
+        tagType: 'categories',
       )
     ];
 
@@ -276,6 +315,9 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
 
     SearchResult results =
         await OpenFoodAPIClient.searchProducts(myUser, configuration);
+    for (int i = 0; i < results.products!.length; i++) {
+      print('${results.products![i].productName}');
+    }
   }
 
   void addNewProduct(

@@ -1,4 +1,4 @@
-class ProductInfo {
+class ProductScannedModel {
   String? error;
   String? barcode;
   String? imageUrl;
@@ -9,15 +9,14 @@ class ProductInfo {
 
   bool loading;
 
-
-  ProductInfo({
+  ProductScannedModel({
     this.barcode = "",
     this.imageUrl = "",
     this.imageToUpLoadPath = "",
     this.productName = "",
     this.ingredients = "",
     this.labels = "",
-    this.error  = "",
+    this.error = "",
     this.loading = false,
   });
 }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
 import 'package:sheveegan/colors.dart';
-import 'package:sheveegan/home.dart';
+// import 'package:sheveegan/home.dart';
 import 'package:flutter/services.dart';
-import 'package:sheveegan/she_vegan_home_page.dart';
+import 'package:sheveegan/router.dart';
 import 'package:sheveegan/splash_screen.dart';
 import 'package:sheveegan/vegan_bestie_home.dart';
 
