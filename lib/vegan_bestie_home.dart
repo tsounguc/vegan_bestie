@@ -1,8 +1,11 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:openfoodfacts/model/Product.dart';
 import 'package:sheveegan/colors.dart';
 import 'package:sheveegan/product_provider.dart';
 import 'package:sheveegan/she_vegan_home_page.dart';
@@ -35,7 +38,12 @@ class VeganBestieHome extends HookWidget {
                         size: SizeConfig.blockSizeVertical! * 5,
                         color: Colors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        showSearch(
+                          context: context,
+                          delegate: ProductSearchDelegate(),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -120,5 +128,106 @@ class VeganBestieHome extends HookWidget {
         ),
       ),
     );
+  }
+}
+
+class ProductSearchDelegate extends SearchDelegate {
+  late UnmodifiableListView<Product> products;
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = "";
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    if (query.length < 3) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Text(
+              "Search term must be longer than two letters.",
+            ),
+          )
+        ],
+      );
+    }
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Center(child: Icon(Icons.location_city, size: 120)),
+        const SizedBox(height: 48),
+        Center(child: Text(query, style: TextStyle(color: Colors.black, fontSize: 64, fontWeight: FontWeight.bold),))
+        //Build the results based on the searchResults stream in the searchBloc
+        // StreamBuilder(
+        //   stream: context.read(productProvider).searchProducts(query),
+        //   builder: (context, AsyncSnapshot<List<Result>> snapshot) {
+        //     if (!snapshot.hasData) {
+        //       return Column(
+        //         crossAxisAlignment: CrossAxisAlignment.center,
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         children: <Widget>[
+        //           Center(child: CircularProgressIndicator()),
+        //         ],
+        //       );
+        //     } else if (snapshot.data.length == 0) {
+        //       return Column(
+        //         children: <Widget>[
+        //           Text(
+        //             "No Results Found.",
+        //           ),
+        //         ],
+        //       );
+        //     } else {
+        //       var results = snapshot.data;
+        //       return ListView.builder(
+        //         itemCount: results.length,
+        //         itemBuilder: (context, index) {
+        //           var result = results[index];
+        //           return ListTile(
+        //             title: Text(result.title),
+        //           );
+        //         },
+        //       );
+        //     }
+        //   },
+        // ),
+      ],
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Column();
+    // return StreamBuilder(
+    //   stream: context.read(productProvider).searchProducts(query),
+    //   builder: (context, snapshot) {
+    //     if (!snapshot.hasData) {
+    //       return Container();
+    //     } else {
+    //       return ListView.builder(itemCount: 5, itemBuilder: (context, index) {
+    //         return ListTile();
+    //       });
+    //     }
+    //   },
+    // );
   }
 }

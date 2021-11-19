@@ -255,27 +255,36 @@ class ProductStateNotifier extends StateNotifier<ProductInfo> {
     }
   }
 
-  searchProducts(String query) async {
-    var parameters = <Parameter>[
-      SortBy(option: SortOption.PRODUCT_NAME),
-      TagFilter(
-        contains: true,
-        tagName: query,
-        tagType: 'all',
-      )
-    ];
+   searchProducts(String query) async {
+    try {
+      var parameters = <Parameter>[
+        SortBy(option: SortOption.PRODUCT_NAME),
+        TagFilter(
+          contains: true,
+          tagName: query,
+          tagType: 'category',
+        )
+      ];
 
-    ProductSearchQueryConfiguration configuration =
-        ProductSearchQueryConfiguration(
-      parametersList: parameters,
-      language: OpenFoodFactsLanguage.ENGLISH,
-      fields: [ProductField.ALL],
-    );
-    User myUser =
-        User(userId: 'christian-tsoungui-nkoulou', password: 'Whatsupbro3');
+      ProductSearchQueryConfiguration configuration =
+      ProductSearchQueryConfiguration(
+        parametersList: parameters,
+        language: OpenFoodFactsLanguage.ENGLISH,
+        fields: [ProductField.ALL],
+      );
+      User myUser =
+      User(userId: 'christian-tsoungui-nkoulou', password: 'Whatsupbro3');
 
-    SearchResult results =
-        await OpenFoodAPIClient.searchProducts(myUser, configuration);
+      SearchResult results =
+      await OpenFoodAPIClient.searchProducts(myUser, configuration);
+      for (int i = 0; i < results.products!.length; i++) {
+        print(results.products![i].productName! + "\n");
+      }
+      return results.products;
+    }on Exception catch(e){
+      print(e);
+    }
+
   }
 
   void addNewProduct(
