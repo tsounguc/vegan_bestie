@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
-import 'package:sheveegan/colors.dart';
+import 'package:sheveegan/constants/colors.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);

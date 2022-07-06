@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sheveegan/colors.dart';
+import 'package:sheveegan/constants/colors.dart';
 
 class LoginPage extends StatelessWidget {
   // const LoginPage({Key? key}) : super(key: key);

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:sheveegan/colors.dart';
+import 'package:sheveegan/constants/colors.dart';
 
-class LoadingStatePage extends HookWidget {
+class LoadingStatePage extends StatelessWidget {
   const LoadingStatePage({Key? key}) : super(key: key);
 
   @override

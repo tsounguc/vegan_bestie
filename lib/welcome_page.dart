@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
-import 'package:sheveegan/colors.dart';
+import 'package:sheveegan/constants/colors.dart';
 import 'package:sheveegan/login_page.dart';
 import 'package:sheveegan/sign_up.dart';
 

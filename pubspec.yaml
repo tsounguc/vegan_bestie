@@ -23,16 +23,26 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  flutter_hooks: ^0.16.0-nullsafety.0
-  hooks_riverpod: ^0.13.1+1
-  openfoodfacts: ^1.1.0-beta
+  flutter_bloc:
+  bloc:
+  test:
+  bloc_test:
+  equatable:
   flutter_barcode_scanner: ^2.0.0
-  cached_network_image: ^3.0.0
-  google_ml_kit:
-  image_picker:
-  image_cropper:
-  camera:
+  flutter_barcode_sdk:
+  http:
+  simple_animations:
+  device_preview: ^1.1.0
+  sizer: ^2.0.15
+#  barcode_scanner: ^3.1.2
+#  cached_network_image: ^3.0.0
+#  google_ml_kit: ^0.11.0
+#  scan: ^1.6.0
+#  barcode_scan2:
+#  qr_code_scanner:
+#  image_picker:
+#  image_cropper:
+#  camera:
 
 
 #  animated_splash_screen:
