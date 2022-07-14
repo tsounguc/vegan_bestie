@@ -23,11 +23,11 @@ class BarcodeFoundState extends BarcodeScannerState{
   List<Object?> get props => [];
 }
 
-class ScanningCancelled extends BarcodeScannerState{
+class ScanningCancelledState extends BarcodeScannerState{
   final String barcode;
   final String message;
 
-  ScanningCancelled({required this.barcode, required this.message});
+  ScanningCancelledState({required this.barcode, required this.message});
 
   @override
   List<Object?> get props => [barcode];

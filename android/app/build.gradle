@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 32
-//     
+//
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -38,6 +38,7 @@ android {
         applicationId "com.example.sheveegan"
         minSdkVersion 21
         targetSdkVersion 32
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -57,4 +58,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:multidex:1.0.3'
 }

@@ -44,6 +44,7 @@ class AppTheme {
               fontFamily: 'cursive',
             ),
           ),
+    iconTheme: IconThemeData(color: lightPrimaryColor),
     snackBarTheme: SnackBarThemeData(contentTextStyle: TextStyle(color: Colors.white)),
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
@@ -79,6 +80,7 @@ class AppTheme {
               fontFamily: 'cursive',
             ),
           ),
+    iconTheme: IconThemeData(color: darkPrimaryColor),
     snackBarTheme: SnackBarThemeData(contentTextStyle: TextStyle(color: Colors.white)),
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
