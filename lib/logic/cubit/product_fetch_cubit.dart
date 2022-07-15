@@ -40,9 +40,10 @@ class ProductFetchCubit extends Cubit<ProductFetchState> {
         emit(ProductFoundState(product: productInfo));
       }
     } on Error catch (e) {
-      emit(ProductFetchErrorState(error: e));
+      emit(ProductFetchErrorState(error: "$e \n${e.stackTrace} "));
       throw Exception(e);
     } catch (e) {
+      emit(ProductFetchErrorState(error: "$e"));
       debugPrint('Error: $e');
     }
   }

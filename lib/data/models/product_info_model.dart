@@ -875,8 +875,8 @@ class OriginsOfIngredients {
   });
 
   List<AggregatedOrigin>? aggregatedOrigins;
-  int? epiScore;
-  int? epiValue;
+  double? epiScore;
+  double? epiValue;
   List<String>? originsFromOriginsField;
   Map<String?, int?> transportationScores;
   Map<String?, int?> transportationValues;
@@ -885,8 +885,8 @@ class OriginsOfIngredients {
 
   factory OriginsOfIngredients.fromJson(Map<String, dynamic>? json) => OriginsOfIngredients(
     aggregatedOrigins: json?["aggregated_origins"] != null ? List<AggregatedOrigin>.from(json?["aggregated_origins"].map((x) => AggregatedOrigin.fromJson(x))) : [],
-    epiScore: json?["epi_score"],
-    epiValue: json?["epi_value"],
+    epiScore: json?["epi_score"].toDouble(),
+    epiValue: json?["epi_value"].toDouble(),
     originsFromOriginsField: json?["origins_from_origins_field"] != null ? List<String>.from(json?["origins_from_origins_field"].map((x) => x)) : [],
     transportationScores: json?["transportation_scores"] != null ? Map.from(json?["transportation_scores"]).map((k, v) => MapEntry<String, int>(k, v)) : Map<String, int>(),
     transportationValues: json?["transportation_values"] != null ? Map.from(json?["transportation_values"]).map((k, v) => MapEntry<String, int>(k, v)) : Map<String, int>(),
@@ -913,11 +913,11 @@ class AggregatedOrigin {
   });
 
   String? origin;
-  int? percent;
+  double? percent;
 
   factory AggregatedOrigin.fromJson(Map<String, dynamic> json) => AggregatedOrigin(
     origin: json["origin"],
-    percent: json["percent"],
+    percent: json["percent"].toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -934,12 +934,12 @@ class Packaging {
   });
 
   int? nonRecyclableAndNonBiodegradableMaterials;
-  int? value;
+  double? value;
   String? warning;
 
   factory Packaging.fromJson(Map<String, dynamic>? json) => Packaging(
     nonRecyclableAndNonBiodegradableMaterials: json?["non_recyclable_and_non_biodegradable_materials"],
-    value: json?["value"],
+    value: json?["value"].toDouble(),
     warning: json?["warning"],
   );
 
@@ -958,12 +958,12 @@ class ProductionSystem {
   });
 
   List<dynamic>? labels;
-  int? value;
+  double? value;
   String? warning;
 
   factory ProductionSystem.fromJson(Map<String, dynamic>? json) => ProductionSystem(
     labels: json?["labels"] != null ? List<dynamic>.from(json?["labels"].map((x) => x)) : [],
-    value: json?["value"],
+    value: json?["value"].toDouble(),
     warning: json?["warning"],
   );
 
@@ -1093,7 +1093,7 @@ class En {
     required this.y2,
   });
 
-  int? angle;
+  dynamic angle;
   String? geometry;
   String? imgid;
   dynamic normalize;
@@ -1168,12 +1168,12 @@ class The100 {
     required this.w,
   });
 
-  int? h;
-  int? w;
+  double? h;
+  double? w;
 
   factory The100.fromJson(Map<String, dynamic>? json) => The100(
-    h: json?["h"],
-    w: json?["w"],
+    h: json?["h"].toDouble(),
+    w: json?["w"].toDouble(),
   );
 
   Map<String, dynamic> toJson() => {

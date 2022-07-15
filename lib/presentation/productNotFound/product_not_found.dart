@@ -39,9 +39,12 @@ class ProductNotFoundPage extends StatelessWidget {
               size: 170.r,
               color: Colors.grey,
             ),
-            Text(
-              "We couldn't find this product",
-              style: TextStyle(color: Colors.grey, fontSize: 16.sp),
+            Padding(
+              padding: EdgeInsets.only(left: 8.0.w),
+              child: Text(
+                "We are not able this product",
+                style: TextStyle(color: Colors.grey, fontSize: 18.sp),
+              ),
             ),
             Spacer(),
           ],

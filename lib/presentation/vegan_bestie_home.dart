@@ -159,12 +159,4 @@ class VeganBestieHome extends StatelessWidget {
           ),
         ));
   }
-
-  startBarcodeScanner({bool shouldSnapImage = false}) async {
-    // BlocProvider.of<BarcodeScannerCubit>(context).scanBarcode();
-
-    // Repository _repository = Repository();
-    //
-    // _repository.fetchProduct("0889392010145");
-  }
 }
