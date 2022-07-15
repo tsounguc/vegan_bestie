@@ -60,19 +60,19 @@ class ProductFoundBodyInfo extends StatelessWidget {
                         SizedBox(
                           width: 20.w,
                         ),
-                        if (state.product.code != null && state.product.code!.isNotEmpty
-                        // && context.read(productProvider).sheVegan
-                        )
-                          Tooltip(
-                            message: 'She Vegan! 😊',
-                            decoration: BoxDecoration(color: Colors.green),
-                            height: 50,
-                            child: Icon(
-                              VeganIcon.vegan_icon,
-                              color: Theme.of(context).backgroundColor,
-                              size: 40,
-                            ),
-                          ),
+                        // if (state.product.product?.ingredients![1].vegan == 'yes'
+                        // // && context.read(productProvider).sheVegan
+                        // )
+                        //   Tooltip(
+                        //     message: 'She Vegan! 😊',
+                        //     decoration: BoxDecoration(color: Colors.green),
+                        //     height: 50,
+                        //     child: Icon(
+                        //       VeganIcon.vegan_icon,
+                        //       color: Theme.of(context).backgroundColor,
+                        //       size: 40,
+                        //     ),
+                        //   ),
                         // if (productScanResults.barcode != null &&
                         //     productScanResults.barcode!.isNotEmpty &&
                         //     !context.read(productProvider).sheVegan)
