@@ -16,7 +16,9 @@ class ProductLoadingState extends ProductFetchState {
 
 class ProductFoundState extends ProductFetchState {
   final ProductInfoModel product;
-  ProductFoundState({required this.product});
+  final bool? isVegan;
+  final String? nonVeganIngredientsInProduct;
+  ProductFoundState({required this.product, this.isVegan, this.nonVeganIngredientsInProduct});
 
   @override
   List<Object> get props => [];

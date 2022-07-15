@@ -51,26 +51,27 @@ class VeganBestieHome extends StatelessWidget {
           backgroundColor: Theme.of(buildContext).backgroundColor,
           body: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.only(top: 86.h, right: 16.w, bottom: 8.h, left: 16.w),
+              padding: EdgeInsets.only(top: 56.h, right: 16.w, bottom: 8.h, left: 16.w),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.end,
-                  //   children: [
-                  //     IconButton(
-                  //       icon: Icon(
-                  //         Icons.search,
-                  //         size: 30.r,
-                  //         color: Colors.white,
-                  //       ),
-                  //       onPressed: () {},
-                  //     ),
-                  //   ],
-                  // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(height: 40.r,) // Todo: place holder for search button/bar
+                      // IconButton(
+                      //   icon: Icon(
+                      //     Icons.search,
+                      //     size: 30.r,
+                      //     color: Colors.white,
+                      //   ),
+                      //   onPressed: () {},
+                      // ),
+                    ],
+                  ),
                   SizedBox(
-                    height: 135.h,
+                    height: 105.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -106,8 +107,8 @@ class VeganBestieHome extends StatelessWidget {
                       CustomAnimation<double>(
                         control: CustomAnimationControl.mirror,
                         tween: Tween(
-                          begin: 210.r,
-                          end: 206.r,
+                          begin: 200.r,
+                          end: 185.r,
                         ),
                         duration: Duration(milliseconds: 1000),
                         delay: const Duration(milliseconds: 500),

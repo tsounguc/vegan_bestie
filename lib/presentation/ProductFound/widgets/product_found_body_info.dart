@@ -60,37 +60,37 @@ class ProductFoundBodyInfo extends StatelessWidget {
                         SizedBox(
                           width: 20.w,
                         ),
-                        // if (state.product.product?.ingredients![1].vegan == 'yes'
-                        // // && context.read(productProvider).sheVegan
-                        // )
-                        //   Tooltip(
-                        //     message: 'She Vegan! 😊',
-                        //     decoration: BoxDecoration(color: Colors.green),
-                        //     height: 50,
-                        //     child: Icon(
-                        //       VeganIcon.vegan_icon,
-                        //       color: Theme.of(context).backgroundColor,
-                        //       size: 40,
-                        //     ),
-                        //   ),
-                        // if (productScanResults.barcode != null &&
-                        //     productScanResults.barcode!.isNotEmpty &&
-                        //     !context.read(productProvider).sheVegan)
-                        //   Tooltip(
-                        //     decoration: BoxDecoration(color: Colors.red),
-                        //     height: 50,
-                        //     message:
-                        //         "She ain\'t Vegan 😞 \ncontains ${context.read(productProvider).nonVeganIngredientsInProduct}",
-                        //     child: Icon(
-                        //       Icons.not_interested_outlined,
-                        //       size: 40,
-                        //       color: Colors.red,
-                        //     ),
-                        //     showDuration: Duration(seconds: 10),
-                        //   ),
+                        if (state.isVegan!)
+                          Tooltip(
+                            height: 50.h,
+                            message: 'She Vegan! 😊',
+                            textStyle: TextStyle(fontSize: 14.sp),
+                            decoration: BoxDecoration(color: Colors.green),
+                            child: Icon(
+                              VeganIcon.vegan_icon,
+                              color: Theme.of(context).backgroundColor,
+                              size: 40.r,
+                            ),
+                            showDuration: Duration(seconds: 5),
+                          ),
+                        if (!state.isVegan!)
+                          Tooltip(
+                            decoration: BoxDecoration(color: Colors.red),
+                            height: 50.h,
+                            message: "She ain\'t Vegan 😞 \ncontains ${state.nonVeganIngredientsInProduct!}",
+                            textStyle: TextStyle(fontSize: 14.sp),
+                            child: Icon(
+                              Icons.not_interested_outlined,
+                              size: 40.r,
+                              color: Colors.red,
+                            ),
+                            showDuration: Duration(seconds: 5),
+                          ),
                       ],
                     ),
-                    SizedBox(height: 20.h,),
+                    SizedBox(
+                      height: 20.h,
+                    ),
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
