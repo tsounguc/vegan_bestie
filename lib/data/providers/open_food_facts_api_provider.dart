@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class OpenFoodFactsApiProvider {
@@ -17,5 +18,16 @@ class OpenFoodFactsApiProvider {
 
     }
 
+  }
+
+  Future<http.Response>searchProductInfo(String query) async{
+    String url = "$_baseUrl/cgi/search.pl?search_terms=${query.replaceAll(" ", "%20")}&json=1";
+    debugPrint("Search URL: $url");
+    try{
+      return await http.get(Uri.parse(url));
+    }catch(e){
+      throw Exception(e);
+
+    }
   }
 }

@@ -14,17 +14,13 @@ class ProductFoundBody extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(
-            // height: size!.height,
-            child: Stack(
-              // overflow: ,
-              children: [
-                ProductFoundBodyInfo(
-                  // size: size,
-                ),
-                ProductFoundImage()
-              ],
-            ),
+          Stack(
+            children: [
+              ProductFoundBodyInfo(
+                // size: size,
+              ),
+              ProductFoundImage()
+            ],
           ),
         ],
       ),

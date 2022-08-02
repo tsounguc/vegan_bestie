@@ -1,22 +1,19 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:sheveegan/data/models/product_info_model.dart';
-import 'package:sheveegan/data/repositoryLayer/repository.dart';
+import 'package:flutter/cupertino.dart';
 
-import '../../data/models/scan_model.dart';
+import '../../data/models/product_info_model.dart';
+import '../../data/models/search_model.dart';
+import '../../data/repositoryLayer/repository.dart';
 
-part 'product_fetch_state.dart';
+part 'search_event.dart';
 
-class ProductFetchCubit extends Cubit<ProductFetchState> {
+part 'search_state.dart';
+
+class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final Repository repository;
-
-  // final BarcodeScannerCubit barcodeScannerCubit;
-
-  // late StreamSubscription barcodeScannerSubscription;
-
-  bool? isVegan = true;
   String nonVeganIngredientsInProduct = "";
   List<String> nonVeganIngredients = [
     "acidophilus Milk",
@@ -105,48 +102,62 @@ class ProductFetchCubit extends Cubit<ProductFetchState> {
     "wild meat",
     "yogurt",
   ];
+  bool? isVegan = true;
+  SearchModel? _results;
+  TextEditingController searchTextController = TextEditingController();
 
-  ProductFetchCubit({
-    required this.repository,
-    // required this.barcodeScannerCubit,
-  }) : super(ProductFetchInitial());
+  SearchBloc({required this.repository}) : super(InitialSearchState()) {
 
-  // {
-  //   print("before listener: Listening");
-  //   barcodeScannerSubscription = barcodeScannerCubit.stream.listen((barcodeScannerState){
-  //     if (barcodeScannerState is BarcodeFoundState) {
-  //       print("listener: Listening");
-  //       fetchProduct(barcodeScannerState.barcode);
-  //     }
-  //   });
-  // }
+    on<SearchQueryChangedEvent>((event, emit){
+      emit(SearchQueryChangedState(textControllerText: event.searchQuery));
+    });
 
-  Future<void> fetchProduct(String barcode) async {
-    try {
-      emit(ProductLoadingState());
-      final scannedProductInfo = await repository.fetchProduct(barcode);
-      if (scannedProductInfo!.status == 0) {
-        emit(ProductNotFoundState(message: scannedProductInfo.statusVerbose!));
-      } else if (scannedProductInfo.status == 1) {
-        print("Product Name: ${scannedProductInfo.product?.productName}");
-        veganCheck(scannedProductInfo);
-        emit(ProductFoundState(
-            product: scannedProductInfo, nonVeganIngredientsInProduct: nonVeganIngredientsInProduct, isVegan: isVegan));
+    on<SearchQueryClearedEvent>((event, emit) {
+      emit(InitialSearchState());
+      // searchTextController.clear();
+    });
+
+    on<SearchQuerySubmittedEvent>((event, emit) async {
+      try {
+        emit(SearchingState());
+        _results = await repository.searchQuery(event.query);
+        if (_results?.count == 0 || _results?.count == null) {
+          emit(SearchQueryNotFoundState(message: event.query));
+        } else if (_results?.count != null && _results!.count! > 0) {
+          emit(SearchFoundState(searchResults: _results));
+        }
+      } on Error catch (e) {
+        emit(SearchErrorState(error: "$e \n${e.stackTrace} "));
+        throw Exception(e);
+      } catch (e) {
+        emit(SearchErrorState(error: "$e"));
+        debugPrint('Error: $e');
       }
-    } on Error catch (e) {
-      emit(ProductFetchErrorState(error: "$e \n${e.stackTrace} "));
-      throw Exception(e);
-    } catch (e) {
-      emit(ProductFetchErrorState(error: "$e"));
-      debugPrint('Error: $e');
-    }
+    });
+
+
+    on<SearchProductPressedEvent>((event, emit) {
+      veganCheck(event.selectedProduct);
+      emit(SearchProductDetailState(
+          selectedProduct: event.selectedProduct,
+          nonVeganIngredientsInProduct: nonVeganIngredientsInProduct,
+          isVegan: isVegan));
+    });
+
+    on<SearchDetailBackButtonPressedEvent>((event, emit) {
+      emit(SearchFoundState(searchResults: _results));
+    });
+
+    on<SearchButtonPressedEvent>((event, emit){
+      emit(InitialSearchState());
+    });
   }
 
-  void veganCheck(ScanModel productInfo) {
+  void veganCheck(Product? productInfo) {
     isVegan = true;
     nonVeganIngredientsInProduct = "";
-    if (productInfo.product?.labels == null || productInfo.product!.labels!.isEmpty) {
-      productInfo.product!.ingredients?.forEach((ingredient) {
+    if (productInfo?.labels == null || productInfo!.labels!.isEmpty) {
+      productInfo!.ingredients?.forEach((ingredient) {
         debugPrint("is ${ingredient.text} vegan: ${ingredient.vegan}");
         if (ingredient.vegan == null || ingredient.vegan == "maybe") {
           nonVeganIngredients.forEach((nonVeganIngredient) {
@@ -161,9 +172,9 @@ class ProductFetchCubit extends Cubit<ProductFetchState> {
           isVegan = false;
         }
       });
-    } else if (!(productInfo.product!.labels!.toLowerCase().contains('vegan') ||
-        productInfo.product!.labels!.toLowerCase().contains('contains no animal ingredients'))) {
-      productInfo.product?.ingredients?.forEach((ingredient) {
+    } else if (!(productInfo.labels!.toLowerCase().contains('vegan') ||
+        productInfo.labels!.toLowerCase().contains('contains no animal ingredients'))) {
+      productInfo.ingredients?.forEach((ingredient) {
         debugPrint("is ${ingredient.text} vegan: ${ingredient.vegan}");
         if (ingredient.vegan == null || ingredient.vegan == "maybe") {
           nonVeganIngredients.forEach((nonVeganIngredient) {

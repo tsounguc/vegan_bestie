@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTheme {
   const AppTheme._();
@@ -26,7 +27,6 @@ class AppTheme {
       700: Colors.green.shade700,
       800: Colors.green.shade800,
       900: Colors.green.shade900,
-
     }),
     brightness: Brightness.light,
     primaryColor: lightPrimaryColor,
@@ -36,15 +36,15 @@ class AppTheme {
         secondary: lightAccentColor,
         background: lightBackgroundColor),
     backgroundColor: lightPrimaryColor,
-      textTheme: TextTheme(
-            headline1: TextStyle(
-              color: Colors.black,
-              fontSize: 27,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'cursive',
-            ),
-          ),
-    iconTheme: IconThemeData(color: lightPrimaryColor),
+    textTheme: TextTheme(
+      headline1: TextStyle(
+        color: Colors.black,
+        fontSize: 27,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'cursive',
+      ),
+    ),
+    iconTheme: IconThemeData(color: lightParticles),
     snackBarTheme: SnackBarThemeData(contentTextStyle: TextStyle(color: Colors.white)),
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
@@ -61,9 +61,7 @@ class AppTheme {
       700: Colors.green.shade700,
       800: Colors.green.shade800,
       900: Colors.green.shade900,
-
     }),
-
     brightness: Brightness.dark,
     primaryColor: darkPrimaryColor,
     colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -72,15 +70,15 @@ class AppTheme {
         secondary: darkAccentColor,
         background: darkBackgroundColor),
     backgroundColor: darkPrimaryColor,
-      textTheme: TextTheme(
-            headline1: TextStyle(
-              color: Colors.black,
-              fontSize: 27,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'cursive',
-            ),
-          ),
-    iconTheme: IconThemeData(color: darkPrimaryColor),
+    textTheme: TextTheme(
+      headline1: TextStyle(
+        color: Colors.black,
+        fontSize: 27.sp,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'cursive',
+      ),
+    ),
+    iconTheme: IconThemeData(color: Colors.white),
     snackBarTheme: SnackBarThemeData(contentTextStyle: TextStyle(color: Colors.white)),
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );

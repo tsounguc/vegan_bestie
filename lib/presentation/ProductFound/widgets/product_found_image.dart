@@ -18,12 +18,12 @@ class ProductFoundImage extends StatelessWidget {
         if (state is ProductFoundState) {
           print("Url:  ${state.product.product!.imageFrontUrl}");
           return Padding(
-            padding: EdgeInsets.only(top: 50.h, right: 135.w),
+            padding: EdgeInsets.only(top: 50.h, left: 10.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     state.product.product!.imageFrontUrl == null

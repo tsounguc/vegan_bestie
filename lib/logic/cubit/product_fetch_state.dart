@@ -15,7 +15,7 @@ class ProductLoadingState extends ProductFetchState {
 }
 
 class ProductFoundState extends ProductFetchState {
-  final ProductInfoModel product;
+  final ScanModel product;
   final bool? isVegan;
   final String? nonVeganIngredientsInProduct;
   ProductFoundState({required this.product, this.isVegan, this.nonVeganIngredientsInProduct});
@@ -41,7 +41,6 @@ class ProductFetchErrorState extends ProductFetchState {
   ProductFetchErrorState({required this.error});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 
 }

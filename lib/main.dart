@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/data/providers/open_food_facts_api_provider.dart';
+import 'package:sheveegan/logic/bloc/search_bloc.dart';
 import 'package:sheveegan/logic/cubit/barcode_scanner_cubit.dart';
 import 'package:sheveegan/logic/cubit/product_fetch_cubit.dart';
 import 'package:sheveegan/presentation/router/app_router.dart';
@@ -23,7 +24,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final OpenFoodFactsApiProvider openFoodFactsApiProvider = OpenFoodFactsApiProvider();
+  final Repository repository = Repository(openFoodFactApiProvider: OpenFoodFactsApiProvider());
 
   MyApp({Key? key});
 
@@ -34,14 +35,14 @@ class MyApp extends StatelessWidget {
         BlocProvider<BarcodeScannerCubit>(
           create: (context) => BarcodeScannerCubit(),
         ),
+
         BlocProvider<ProductFetchCubit>(
           create: (context) =>
               ProductFetchCubit(
-                repository: Repository(
-                    openFoodFactApiProvider: openFoodFactsApiProvider
-                ),
+                repository: repository,
               ),
         ),
+        BlocProvider<SearchBloc>(create: (context) => SearchBloc(repository: repository),),
       ],
       child: ScreenUtilInit(
         builder: (context, child) =>

@@ -7,11 +7,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/constants/colors.dart';
 import 'package:sheveegan/constants/size_config.dart';
+import 'package:sheveegan/data/providers/open_food_facts_api_provider.dart';
 import 'package:sheveegan/logic/cubit/product_fetch_cubit.dart';
 import 'package:sheveegan/presentation/ProductFound/product_found.dart';
 import 'package:sheveegan/presentation/productNotFound/product_not_found.dart';
+import 'package:sheveegan/presentation/search/search.dart';
 import 'package:simple_animations/stateless_animation/custom_animation.dart';
 import '../constants/strings.dart';
+import '../data/repositoryLayer/repository.dart';
+import '../logic/bloc/search_bloc.dart';
 import '../logic/cubit/barcode_scanner_cubit.dart';
 import 'barcode_product_search_results_screen.dart';
 
@@ -59,15 +63,21 @@ class VeganBestieHome extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      SizedBox(height: 40.r,) // Todo: place holder for search button/bar
-                      // IconButton(
-                      //   icon: Icon(
-                      //     Icons.search,
-                      //     size: 30.r,
-                      //     color: Colors.white,
-                      //   ),
-                      //   onPressed: () {},
-                      // ),
+                      // SizedBox(height: 40.r,) // Todo: place holder for search button/bar
+                      IconButton(
+                          icon: Icon(
+                            Icons.search,
+                            size: 30.r,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            BlocProvider.of<SearchBloc>(buildContext).add(SearchButtonPressedEvent());
+                            Navigator.of(buildContext).push(MaterialPageRoute(builder: (_) => SearchPage()));
+                            // final result = await OpenFoodFactsApiProvider().searchProductInfo("blue chips");
+                            // print(result.body);
+                            // },
+                          },
+                          ),
                     ],
                   ),
                   SizedBox(

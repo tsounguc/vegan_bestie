@@ -1,40 +1,4 @@
-// To parse this JSON data, do
-//
-//     final productInfoModel = productInfoModelFromJson(jsonString);
 
-import 'dart:convert';
-
-ProductInfoModel productInfoModelFromJson(String str) => ProductInfoModel.fromJson(json.decode(str));
-
-String productInfoModelToJson(ProductInfoModel data) => json.encode(data.toJson());
-
-class ProductInfoModel {
-  ProductInfoModel({
-    required this.code,
-    required this.product,
-    required this.status,
-    required this.statusVerbose,
-  });
-
-  String? code;
-  Product? product;
-  int? status;
-  String? statusVerbose;
-
-  factory ProductInfoModel.fromJson(Map<String, dynamic>? json) => ProductInfoModel(
-    code: json?["code"],
-    product: Product.fromJson(json?["product"]),
-    status: json?["status"],
-    statusVerbose: json?["status_verbose"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "code": code!,
-    "product": product!.toJson(),
-    "status": status!,
-    "status_verbose": statusVerbose!,
-  };
-}
 
 class Product {
   Product({
@@ -305,7 +269,7 @@ class Product {
   int? ingredientsFromPalmOilN;
   List<dynamic>? ingredientsFromPalmOilTags;
   List<String>? ingredientsHierarchy;
-  int? ingredientsN;
+  dynamic ingredientsN;
   List<String>? ingredientsNTags;
   List<String>? ingredientsOriginalTags;
   int? ingredientsPercentAnalysis;
@@ -316,10 +280,10 @@ class Product {
   String? ingredientsTextWithAllergensEn;
   int? ingredientsThatMayBeFromPalmOilN;
   List<dynamic>? ingredientsThatMayBeFromPalmOilTags;
-  int? ingredientsWithSpecifiedPercentN;
-  int? ingredientsWithSpecifiedPercentSum;
-  int? ingredientsWithUnspecifiedPercentN;
-  int? ingredientsWithUnspecifiedPercentSum;
+  double? ingredientsWithSpecifiedPercentN;
+  double? ingredientsWithSpecifiedPercentSum;
+  double? ingredientsWithUnspecifiedPercentN;
+  double? ingredientsWithUnspecifiedPercentSum;
   String? interfaceVersionCreated;
   String? interfaceVersionModified;
   int? knownIngredientsN;
@@ -343,7 +307,7 @@ class Product {
   List<dynamic>? mainCountriesTags;
   String? manufacturingPlaces;
   List<dynamic>? manufacturingPlacesTags;
-  String? maxImgid;
+  dynamic maxImgid;
   List<dynamic>? mineralsTags;
   List<String>? miscTags;
   String? noNutritionData;
@@ -392,7 +356,7 @@ class Product {
   int? rev;
   int? scansN;
   SelectedImages? selectedImages;
-  String? servingQuantity;
+  dynamic servingQuantity;
   String? servingSize;
   int? sortkey;
   String? states;
@@ -406,12 +370,12 @@ class Product {
   List<dynamic>? tracesHierarchy;
   String? tracesLc;
   List<dynamic>? tracesTags;
-  int? uniqueScansN;
-  int? unknownIngredientsN;
+  dynamic uniqueScansN;
+  dynamic unknownIngredientsN;
   List<dynamic>? unknownNutrientsTags;
   String? updateKey;
   List<dynamic>? vitaminsTags;
-  int? withSweeteners;
+  dynamic withSweeteners;
 
   factory Product.fromJson(Map<String, dynamic>? json) => Product(
     id: json?["_id"],
@@ -504,10 +468,10 @@ class Product {
     ingredientsTextWithAllergensEn: json?["ingredients_text_with_allergens_en"],
     ingredientsThatMayBeFromPalmOilN: json?["ingredients_that_may_be_from_palm_oil_n"],
     ingredientsThatMayBeFromPalmOilTags: json?["ingredients_that_may_be_from_palm_oil_tags"] != null ? List<dynamic>.from(json?["ingredients_that_may_be_from_palm_oil_tags"].map((x) => x == null ? "" : x)) : [],
-    ingredientsWithSpecifiedPercentN: json?["ingredients_with_specified_percent_n"],
-    ingredientsWithSpecifiedPercentSum: json?["ingredients_with_specified_percent_sum"],
-    ingredientsWithUnspecifiedPercentN: json?["ingredients_with_unspecified_percent_n"],
-    ingredientsWithUnspecifiedPercentSum: json?["ingredients_with_unspecified_percent_sum"],
+    ingredientsWithSpecifiedPercentN: json?["ingredients_with_specified_percent_n"]?.toDouble(),
+    ingredientsWithSpecifiedPercentSum: json?["ingredients_with_specified_percent_sum"]?.toDouble(),
+    ingredientsWithUnspecifiedPercentN: json?["ingredients_with_unspecified_percent_n"]?.toDouble(),
+    ingredientsWithUnspecifiedPercentSum: json?["ingredients_with_unspecified_percent_sum"]?.toDouble(),
     interfaceVersionCreated: json?["interface_version_created"],
     interfaceVersionModified: json?["interface_version_modified"],
     knownIngredientsN: json?["known_ingredients_n"],
@@ -720,7 +684,7 @@ class Product {
     "main_countries_tags": List<dynamic>.from(mainCountriesTags!.map((x) => x)),
     "manufacturing_places": manufacturingPlaces,
     "manufacturing_places_tags": List<dynamic>.from(manufacturingPlacesTags!.map((x) => x)),
-    "max_imgid": maxImgid!,
+    "max_imgid": maxImgid,
     "minerals_tags": List<dynamic>.from(mineralsTags!.map((x) => x)),
     "misc_tags": List<dynamic>.from(miscTags!.map((x) => x)),
     "no_nutrition_data": noNutritionData!,
@@ -836,26 +800,26 @@ class EcoscoreData {
 
 class Adjustments {
   Adjustments({
-    required this.originsOfIngredients,
+    // required this.originsOfIngredients,
     required this.packaging,
     required this.productionSystem,
     required this.threatenedSpecies,
   });
 
-  OriginsOfIngredients? originsOfIngredients;
+  // OriginsOfIngredients? originsOfIngredients;
   Packaging? packaging;
   ProductionSystem? productionSystem;
   CategoriesProperties? threatenedSpecies;
 
   factory Adjustments.fromJson(Map<String, dynamic>? json) => Adjustments(
-    originsOfIngredients: OriginsOfIngredients.fromJson(json?["origins_of_ingredients"]),
+    // originsOfIngredients: OriginsOfIngredients.fromJson(json?["origins_of_ingredients"]),
     packaging: Packaging.fromJson(json?["packaging"]),
     productionSystem: ProductionSystem.fromJson(json?["production_system"]),
     threatenedSpecies: CategoriesProperties.fromJson(json?["threatened_species"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "origins_of_ingredients": originsOfIngredients!.toJson(),
+    // "origins_of_ingredients": originsOfIngredients!.toJson(),
     "packaging": packaging!.toJson(),
     "production_system": productionSystem!.toJson(),
     "threatened_species": threatenedSpecies!.toJson(),
@@ -885,8 +849,8 @@ class OriginsOfIngredients {
 
   factory OriginsOfIngredients.fromJson(Map<String, dynamic>? json) => OriginsOfIngredients(
     aggregatedOrigins: json?["aggregated_origins"] != null ? List<AggregatedOrigin>.from(json?["aggregated_origins"].map((x) => AggregatedOrigin.fromJson(x))) : [],
-    epiScore: json?["epi_score"].toDouble(),
-    epiValue: json?["epi_value"].toDouble(),
+    epiScore: json?["epi_score"]?.toDouble(),
+    epiValue: json?["epi_value"]?.toDouble(),
     originsFromOriginsField: json?["origins_from_origins_field"] != null ? List<String>.from(json?["origins_from_origins_field"].map((x) => x)) : [],
     transportationScores: json?["transportation_scores"] != null ? Map.from(json?["transportation_scores"]).map((k, v) => MapEntry<String, int>(k, v)) : Map<String, int>(),
     transportationValues: json?["transportation_values"] != null ? Map.from(json?["transportation_values"]).map((k, v) => MapEntry<String, int>(k, v)) : Map<String, int>(),
@@ -917,7 +881,7 @@ class AggregatedOrigin {
 
   factory AggregatedOrigin.fromJson(Map<String, dynamic> json) => AggregatedOrigin(
     origin: json["origin"],
-    percent: json["percent"].toDouble(),
+    percent: json["percent"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -939,7 +903,7 @@ class Packaging {
 
   factory Packaging.fromJson(Map<String, dynamic>? json) => Packaging(
     nonRecyclableAndNonBiodegradableMaterials: json?["non_recyclable_and_non_biodegradable_materials"],
-    value: json?["value"].toDouble(),
+    value: json?["value"]?.toDouble(),
     warning: json?["warning"],
   );
 
@@ -963,7 +927,7 @@ class ProductionSystem {
 
   factory ProductionSystem.fromJson(Map<String, dynamic>? json) => ProductionSystem(
     labels: json?["labels"] != null ? List<dynamic>.from(json?["labels"].map((x) => x)) : [],
-    value: json?["value"].toDouble(),
+    value: json?["value"]?.toDouble(),
     warning: json?["warning"],
   );
 
@@ -1095,15 +1059,15 @@ class En {
 
   dynamic angle;
   String? geometry;
-  String? imgid;
+  dynamic imgid;
   dynamic normalize;
-  String? rev;
+  dynamic rev;
   Sizes? sizes;
   dynamic whiteMagic;
-  String? x1;
-  String? x2;
-  String? y1;
-  String? y2;
+  dynamic x1;
+  dynamic x2;
+  dynamic y1;
+  dynamic y2;
 
   factory En.fromJson(Map<String, dynamic>? json) => En(
     angle: json?["angle"],
@@ -1172,8 +1136,8 @@ class The100 {
   double? w;
 
   factory The100.fromJson(Map<String, dynamic>? json) => The100(
-    h: json?["h"].toDouble(),
-    w: json?["w"].toDouble(),
+    h: json?["h"]?.toDouble(),
+    w: json?["w"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -1218,18 +1182,18 @@ class Ingredient {
   });
 
   String? id;
-  double? percentEstimate;
-  double? percentMax;
-  double? percentMin;
+  dynamic percentEstimate;
+  dynamic percentMax;
+  dynamic percentMin;
   String? text;
   String? vegan;
   String? vegetarian;
 
   factory Ingredient.fromJson(Map<String, dynamic>? json) => Ingredient(
     id: json?["id"],
-    percentEstimate: json?["percent_estimate"]?.toDouble(),
-    percentMax: json?["percent_max"]?.toDouble(),
-    percentMin: json?["percent_min"]?.toDouble(),
+    percentEstimate: json?["percent_estimate"],
+    percentMax: json?["percent_max"],
+    percentMin: json?["percent_min"],
     text: json?["text"],
     vegan: json?["vegan"] == null ? null : json?["vegan"],
     vegetarian: json?["vegetarian"] == null ? null : json?["vegetarian"],

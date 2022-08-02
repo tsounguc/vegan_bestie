@@ -28,23 +28,23 @@ class ProductNotFoundPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Spacer(),
+            Spacer(),
             Text(
               "Product Not Found",
               style: Theme.of(context).textTheme.headline5!.copyWith(
                     color: Colors.grey,
                   ),
             ),
+            Spacer(),
             ImageIcon(
               AssetImage('assets/logo/VeganBestie_NoBackground_Fixed2.png'),
               size: 170.r,
               color: Colors.grey,
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 8.0.w),
-              child: Text(
-                "We are not able this product",
-                style: TextStyle(color: Colors.grey, fontSize: 18.sp),
-              ),
+            Spacer(),
+            Text(
+              "We were not able find this product",
+              style: TextStyle(color: Colors.grey, fontSize: 16.sp),
             ),
             Spacer(),
           ],

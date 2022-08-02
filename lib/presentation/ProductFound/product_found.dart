@@ -15,27 +15,26 @@ class ProductFoundPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductFetchCubit, ProductFetchState>(
       builder: (context, state) {
-        if(state is ProductLoadingState){
+        if (state is ProductLoadingState) {
           return CircularProgressIndicator();
-        } else if( state is ProductFoundState){
+        } else if (state is ProductFoundState) {
           debugPrint("Product Found");
           // debugPrint(state.product.product!.productName);
           return Container(
-            decoration: state.product.product!.imageFrontUrl != null &&
-                state.product.product!.imageFrontUrl!.isNotEmpty
-                ? BoxDecoration(
-              color: Theme.of(context).backgroundColor,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                colorFilter: new ColorFilter.mode(
-                    Colors.black.withOpacity(0.2), BlendMode.saturation),
-                image: CachedNetworkImageProvider(state.product.product!.imageFrontUrl!)
-                // image: NetworkImage(state.product.product!.imageFrontUrl!),
-              ),
-            )
-                : BoxDecoration(
-              color: Theme.of(context).backgroundColor,
-            ),
+            decoration:
+                state.product.product!.imageFrontUrl != null && state.product.product!.imageFrontUrl!.isNotEmpty
+                       ? BoxDecoration(
+                        color: state.isVegan! ? Theme.of(context).backgroundColor : Colors.red,
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.saturation),
+                            image: CachedNetworkImageProvider(state.product.product!.imageFrontUrl!)
+                            // image: NetworkImage(state.product.product!.imageFrontUrl!),
+                            ),
+                      )
+                    : BoxDecoration(
+                        color: state.isVegan! ? Theme.of(context).backgroundColor : Colors.red,
+                      ),
             child: BackdropFilter(
               filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
               child: Scaffold(
@@ -84,23 +83,16 @@ class ProductFoundPage extends StatelessWidget {
                   //   )
                   // ],
                 ),
-                backgroundColor: state.product.product!.imageFrontUrl != null ? Colors.transparent : Theme.of(context).backgroundColor,
+                backgroundColor: state.product.product!.imageFrontUrl != null
+                    ? Colors.transparent
+                    : state.isVegan!
+                        ? Theme.of(context).backgroundColor
+                        : Colors.red,
                 body: ProductFoundBody(),
-                // floatingActionButton: FloatingActionButton(
-                //   heroTag: UniqueKey(),
-                //   backgroundColor: Theme.of(context).backgroundColor,
-                //   onPressed: () {
-                //     // context.read(productProvider).onBarcodeButtonPressed(context);
-                //   },
-                //   child: Icon(
-                //     BarcodeIcon.barcode_icon,
-                //     color: Colors.white,
-                //   ),
-                // ),
               ),
             ),
           );
-        }else {
+        } else {
           return Container();
         }
       },

@@ -6,6 +6,7 @@ import 'package:sheveegan/logic/cubit/product_fetch_cubit.dart';
 import 'package:sheveegan/product_provider.dart';
 
 import '../../../constants/size_config.dart';
+import '../../../constants/strings.dart';
 
 class ProductFoundBodyInfo extends StatelessWidget {
   const ProductFoundBodyInfo({
@@ -60,10 +61,12 @@ class ProductFoundBodyInfo extends StatelessWidget {
                         SizedBox(
                           width: 20.w,
                         ),
-                        if (state.isVegan!)
+                        if ((state.product.product!.ingredientsText != null &&
+                                state.product.product!.ingredientsText!.isNotEmpty) &&
+                            state.isVegan!)
                           Tooltip(
                             height: 50.h,
-                            message: 'She Vegan! 😊',
+                            message: Strings.toolTipVeganMessage,
                             textStyle: TextStyle(fontSize: 14.sp),
                             decoration: BoxDecoration(color: Colors.green),
                             child: Icon(
@@ -73,7 +76,9 @@ class ProductFoundBodyInfo extends StatelessWidget {
                             ),
                             showDuration: Duration(seconds: 5),
                           ),
-                        if (!state.isVegan!)
+                        if ((state.product.product!.ingredientsText != null &&
+                                state.product.product!.ingredientsText!.isNotEmpty) &&
+                            !state.isVegan!)
                           Tooltip(
                             decoration: BoxDecoration(color: Colors.red),
                             height: 50.h,
@@ -129,7 +134,10 @@ class ProductFoundBodyInfo extends StatelessWidget {
                                   right: 48.0.w,
                                 ),
                                 child: Text(
-                                  '${state.product.product?.ingredientsText ?? ""}',
+                                  state.product.product?.ingredientsText != null &&
+                                          state.product.product!.ingredientsText!.isNotEmpty
+                                      ? state.product.product!.ingredientsText!
+                                      : 'Ingredients not found'.toUpperCase(),
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     color: Colors.black,
@@ -139,9 +147,10 @@ class ProductFoundBodyInfo extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 20.h,
+                            height: 50.h,
                           ),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Flexible(
                                 child: Text(
