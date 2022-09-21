@@ -12,7 +12,6 @@ import 'package:sheveegan/logic/bloc/search_bloc.dart';
 import 'package:sheveegan/logic/cubit/barcode_scanner_cubit.dart';
 import 'package:sheveegan/logic/cubit/product_fetch_cubit.dart';
 import 'package:sheveegan/presentation/router/app_router.dart';
-import 'package:sheveegan/presentation/vegan_bestie_home.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 import 'data/providers/yelp_fusion_api_provider.dart';
 import 'data/repositoryLayer/repository.dart';
@@ -70,8 +69,7 @@ class MyApp extends StatelessWidget {
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.system,
           initialRoute: AppRouter.home,
-          home: VeganBestieHome(),
-          // onGenerateRoute: AppRouter.onGenerateRoute,
+          onGenerateRoute: AppRouter.onGenerateRoute,
           // onUnknownRoute: AppRouter.onUnknownRoute,
         ),
       ),

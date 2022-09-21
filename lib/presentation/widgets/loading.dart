@@ -17,14 +17,11 @@ class LoadingPage extends StatelessWidget {
             SizedBox(
               height: 10.h,
             ),
-            Visibility(
-              visible: false,
-              child: Text(
-                "Searching...",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18.sp,
-                ),
+            Text(
+              "Searching...",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18.sp,
               ),
             ),
             Spacer(),
