@@ -1,11 +1,10 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 class YelpFusionApiProvider {
-  static const String _yelpFusionApiKey =
-      "Bearer IcjcftI_MF2Sm3zEz4wgo14s_fTjQSBMDeQLUZRzZX5NyxgU67nqmd8DTrnJrAc3HRWHZIhQE5mXmx3uwPS8V3CUaDieR9rQiahil6Yjk3_CjatDuLL4qPqrfrHyYnYx";
   final Map<String, String> _header = {
-    'Authorization': _yelpFusionApiKey,
+    'Authorization': "Bearer ${dotenv.env['YELP_FUSION_API_KEY']}",
   };
 
   final _baseUrl = "https://api.yelp.com/v3";

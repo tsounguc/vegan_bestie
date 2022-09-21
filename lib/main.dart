@@ -2,6 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/data/providers/google_places_api_provider.dart';
 import 'package:sheveegan/data/providers/open_food_facts_api_provider.dart';
@@ -16,7 +17,8 @@ import 'package:sheveegan/themes/app_theme.dart';
 import 'data/providers/yelp_fusion_api_provider.dart';
 import 'data/repositoryLayer/repository.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
   runApp(
