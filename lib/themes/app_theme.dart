@@ -62,6 +62,9 @@ class AppTheme {
       800: Colors.green.shade800,
       900: Colors.green.shade900,
     }),
+    // splashColor: Colors.transparent,
+    // highlightColor: Colors.transparent,
+    // hoverColor: Colors.transparent,
     brightness: Brightness.dark,
     primaryColor: darkPrimaryColor,
     colorScheme: ColorScheme.fromSwatch().copyWith(

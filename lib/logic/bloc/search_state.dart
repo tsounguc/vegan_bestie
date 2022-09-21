@@ -5,7 +5,7 @@ abstract class SearchState extends Equatable {
   const SearchState();
 }
 
-class InitialSearchState extends SearchState {
+class SearchInitialState extends SearchState {
   // TODO: Search result variable
 
   @override
@@ -16,7 +16,6 @@ class InitialSearchState extends SearchState {
 }
 
 class SearchingState extends SearchState {
-
   @override
   List<Object> get props => [];
 
@@ -28,18 +27,15 @@ class SearchFoundState extends SearchState {
   final SearchModel? searchResults;
   final bool? isVegan;
 
-
   SearchFoundState({required this.searchResults, this.isVegan});
   @override
   List<Object?> get props => [];
 
   @override
   bool get hasReachedEndOfResults => true;
-
 }
 
 class SearchQueryChangedState extends SearchState {
-
   final String textControllerText;
 
   SearchQueryChangedState({required this.textControllerText});
@@ -49,7 +45,6 @@ class SearchQueryChangedState extends SearchState {
 
   @override
   List<Object?> get props => [];
-
 }
 
 class SearchProductDetailState extends SearchState {
@@ -75,7 +70,6 @@ class SearchQueryNotFoundState extends SearchState {
 
   @override
   List<Object?> get props => [];
-
 }
 
 class SearchErrorState extends SearchState {
@@ -88,7 +82,6 @@ class SearchErrorState extends SearchState {
 
   @override
   List<Object?> get props => [];
-
 }
 
 // class SearchDetailBackButtonPressedState extends SearchState {

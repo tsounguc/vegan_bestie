@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sheveegan/presentation/ProductFound/widgets/product_found_body_info.dart';
-import 'package:sheveegan/presentation/ProductFound/widgets/product_found_image.dart';
+import 'package:sheveegan/presentation/barcodeProduct/barcodeProductFound/widgets/product_found_body_info.dart';
+import 'package:sheveegan/presentation/barcodeProduct/barcodeProductFound/widgets/product_found_image.dart';
 
 class ProductFoundBody extends StatelessWidget {
   const ProductFoundBody({
@@ -17,8 +17,8 @@ class ProductFoundBody extends StatelessWidget {
           Stack(
             children: [
               ProductFoundBodyInfo(
-                // size: size,
-              ),
+                  // size: size,
+                  ),
               ProductFoundImage()
             ],
           ),

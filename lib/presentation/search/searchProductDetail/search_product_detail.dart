@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/constants/size_config.dart';
 
-import '../../assets/vegan_icon.dart';
-import '../../constants/strings.dart';
-import '../../logic/bloc/search_bloc.dart';
+import '../../../assets/vegan_icon.dart';
+import '../../../constants/strings.dart';
+import '../../../logic/bloc/search_bloc.dart';
 
 class SearchProductDetail extends StatelessWidget {
   const SearchProductDetail({
@@ -268,7 +268,9 @@ class SearchProductDetail extends StatelessWidget {
                                               height: 213.r,
                                               width: 187.r,
                                               decoration: BoxDecoration(
-                                                  color: Theme.of(context).backgroundColor,
+                                                  color: state.isVegan!
+                                                      ? Theme.of(context).backgroundColor
+                                                      : Colors.red,
                                                   borderRadius: BorderRadius.all(
                                                     Radius.circular(35.r),
                                                   ),
@@ -282,12 +284,7 @@ class SearchProductDetail extends StatelessWidget {
                                                   ]),
                                               child: Icon(
                                                 Icons.image_outlined,
-                                                color:
-                                                    // context.read(productProvider).sheVegan
-                                                    //     ?
-                                                    Colors.green.shade50
-                                                // : Colors.red.shade50
-                                                ,
+                                                color: state.isVegan! ? Colors.green.shade50 : Colors.red.shade50,
                                                 size: 175.r,
                                               ),
                                             )

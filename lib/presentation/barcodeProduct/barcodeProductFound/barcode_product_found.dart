@@ -4,13 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheveegan/assets/barcode_icon.dart';
-import 'package:sheveegan/presentation/ProductFound/widgets/product_found_body.dart';
 
-import '../../constants/strings.dart';
-import '../../logic/cubit/product_fetch_cubit.dart';
+import '../../../../constants/strings.dart';
+import '../../../../logic/cubit/product_fetch_cubit.dart';
+import 'widgets/product_found_body.dart';
 
-class ProductFoundPage extends StatelessWidget {
+class BarcodeProductFoundPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductFetchCubit, ProductFetchState>(
@@ -23,7 +22,7 @@ class ProductFoundPage extends StatelessWidget {
           return Container(
             decoration:
                 state.product.product!.imageFrontUrl != null && state.product.product!.imageFrontUrl!.isNotEmpty
-                       ? BoxDecoration(
+                    ? BoxDecoration(
                         color: state.isVegan! ? Theme.of(context).backgroundColor : Colors.red,
                         image: DecorationImage(
                             fit: BoxFit.cover,
@@ -97,6 +96,5 @@ class ProductFoundPage extends StatelessWidget {
         }
       },
     );
-    ;
   }
 }

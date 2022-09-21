@@ -106,15 +106,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchModel? _results;
   TextEditingController searchTextController = TextEditingController();
 
-  SearchBloc({required this.repository}) : super(InitialSearchState()) {
-
-    on<SearchQueryChangedEvent>((event, emit){
+  SearchBloc({required this.repository}) : super(SearchInitialState()) {
+    on<SearchQueryChangedEvent>((event, emit) {
       emit(SearchQueryChangedState(textControllerText: event.searchQuery));
     });
 
     on<SearchQueryClearedEvent>((event, emit) {
-      emit(InitialSearchState());
-      // searchTextController.clear();
+      emit(SearchInitialState());
     });
 
     on<SearchQuerySubmittedEvent>((event, emit) async {
@@ -135,7 +133,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       }
     });
 
-
     on<SearchProductPressedEvent>((event, emit) {
       veganCheck(event.selectedProduct);
       emit(SearchProductDetailState(
@@ -148,8 +145,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       emit(SearchFoundState(searchResults: _results));
     });
 
-    on<SearchButtonPressedEvent>((event, emit){
-      emit(InitialSearchState());
+    on<SearchButtonPressedEvent>((event, emit) {
+      emit(SearchInitialState());
     });
   }
 

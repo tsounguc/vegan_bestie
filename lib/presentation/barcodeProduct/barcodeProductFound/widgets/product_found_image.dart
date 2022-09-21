@@ -45,12 +45,7 @@ class ProductFoundImage extends StatelessWidget {
                                 ]),
                             child: Icon(
                               Icons.image_outlined,
-                              color:
-                                  // context.read(productProvider).sheVegan
-                                  //     ?
-                                  Colors.green.shade50
-                              // : Colors.red.shade50
-                              ,
+                              color: state.isVegan! ? Colors.green.shade50 : Colors.red.shade50,
                               size: 175.r,
                             ),
                           )
@@ -73,8 +68,7 @@ class ProductFoundImage extends StatelessWidget {
                                 height: 213.r,
                                 width: 187.r,
                                 fit: BoxFit.fill,
-                                imageUrl:
-                                    state.product.product!.imageFrontUrl!,
+                                imageUrl: state.product.product!.imageFrontUrl!,
                               ),
                             ),
                           ),

@@ -34,15 +34,11 @@ dependencies:
   simple_animations:
   device_preview: ^1.1.0
   flutter_screenutil: ^5.5.3+2
-#  barcode_scanner: ^3.1.2
   cached_network_image: ^3.2.1
-#  google_ml_kit: ^0.11.0
-#  scan: ^1.6.0
-#  barcode_scan2:
-#  qr_code_scanner:
-#  image_picker:
-#  image_cropper:
-#  camera:
+#  location: ^4.2.0
+  flutter_rating_bar: ^4.0.1
+  geolocator: ^9.0.1
+#  googleapis: ^9.1.0
 
 
 #  animated_splash_screen:
@@ -55,7 +51,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_native_splash: ^1.2.0
+  flutter_native_splash: ^2.1.6
 
 
 flutter_native_splash:

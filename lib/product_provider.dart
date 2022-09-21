@@ -112,7 +112,7 @@
 //
 //   Future onBarcodeButtonPressed(BuildContext context) async {
 //     try {
-//       // final barcodeScanner = BarcodeScanner(formats: formats);
+//       // final barcodeProduct = BarcodeScanner(formats: formats);
 //       state = ProductInfo(loading: true);
 //       // barcode = await FlutterBarcodeScanner.scanBarcode(
 //       //     "#ff6666", 'Cancel', true, ScanMode.BARCODE);

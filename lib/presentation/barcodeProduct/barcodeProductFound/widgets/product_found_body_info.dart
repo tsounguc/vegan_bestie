@@ -5,8 +5,8 @@ import 'package:sheveegan/assets/vegan_icon.dart';
 import 'package:sheveegan/logic/cubit/product_fetch_cubit.dart';
 import 'package:sheveegan/product_provider.dart';
 
-import '../../../constants/size_config.dart';
-import '../../../constants/strings.dart';
+import '../../../../constants/size_config.dart';
+import '../../../../constants/strings.dart';
 
 class ProductFoundBodyInfo extends StatelessWidget {
   const ProductFoundBodyInfo({
