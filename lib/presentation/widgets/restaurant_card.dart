@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheveegan/presentation/widgets/web_view_screen.dart';
+import 'package:sheveegan/presentation/webviewScreen/web_view_screen.dart';
 
 import '../../data/models/yelp_restaurants_search_model.dart';
 
