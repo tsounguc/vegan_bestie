@@ -33,7 +33,54 @@ class BottomNavigationRestaurants extends StatelessWidget {
         child: BlocBuilder<RestaurantsBloc, RestaurantsState>(
           builder: (context, state) {
             if (state is RestaurantsLoadingState) {
-              return LoadingPage();
+              return Scaffold(
+                appBar: AppBar(
+                  // iconTheme: Theme.of(context).iconTheme,
+                  toolbarHeight: 65.h,
+                  automaticallyImplyLeading: false,
+                  centerTitle: true,
+                  title: Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: Text(
+                      Strings.appTitle,
+                      style: TextStyle(
+                        // color: Theme.of(context).backgroundColor,
+                        color: Colors.white,
+                        fontSize: 36.sp,
+                        fontWeight: FontWeight.w800,
+                        fontFamily: 'cursive',
+                      ),
+                    ),
+                  ),
+                  // elevation: 0,
+                  backgroundColor: Theme.of(context).backgroundColor,
+                  // backgroundColor: Colors.green.shade50,
+                ),
+                backgroundColor: Colors.white,
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Spacer(),
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Visibility(
+                        visible: false,
+                        child: Text(
+                          "Searching...",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.sp,
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+                    ],
+                  ),
+                ),
+              );
             } else if (state is RestaurantsFoundState) {
               return Scaffold(
                 appBar: AppBar(

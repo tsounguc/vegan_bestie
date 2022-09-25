@@ -19,9 +19,8 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
     on<LoadGeolocationEvent>((event, emit) async {
       try {
         emit(GeolocationLoadingState());
-        // _geolocationSubscription?.cancel();
         _position = await repository.getCurrentLocation();
-        debugPrint("Latitude: ${_position!.latitude} Longitude: ${_position!.longitude}");
+        // debugPrint("Latitude: ${_position!.latitude} Longitude: ${_position!.longitude}");
         if (_position != null) {
           emit(GeolocationLoadedState(position: _position!));
         }
