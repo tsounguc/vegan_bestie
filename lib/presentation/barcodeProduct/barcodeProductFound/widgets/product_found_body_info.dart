@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheveegan/assets/vegan_icon.dart';
+import 'package:sheveegan/core/assets/vegan_icon.dart';
 import 'package:sheveegan/logic/cubit/product_fetch_cubit.dart';
 import 'package:sheveegan/presentation/barcodeProduct/barcodeProductFound/widgets/product_found_tabbar_view.dart';
 import 'package:sheveegan/product_provider.dart';

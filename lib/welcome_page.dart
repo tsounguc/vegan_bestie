@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sheveegan/assets/vegan_icon.dart';
+import 'package:sheveegan/core/assets/vegan_icon.dart';
 import 'package:sheveegan/core/constants/colors.dart';
 import 'package:sheveegan/login_page.dart';
 import 'package:sheveegan/sign_up.dart';

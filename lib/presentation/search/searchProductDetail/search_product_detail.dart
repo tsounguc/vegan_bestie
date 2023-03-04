@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/constants/size_config.dart';
 
-import '../../../assets/vegan_icon.dart';
+import '../../../core/assets/vegan_icon.dart';
 import '../../../core/constants/strings.dart';
 import '../../../logic/bloc/search_bloc.dart';
 
