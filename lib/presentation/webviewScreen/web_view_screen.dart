@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../constants/strings.dart';
+import '../../core/constants/strings.dart';
 import 'navigation_controls.dart';
 
 class WebViewScreen extends StatefulWidget {
@@ -17,6 +17,7 @@ class WebViewScreen extends StatefulWidget {
 
 class _WebViewScreenState extends State<WebViewScreen> {
   final Completer<WebViewController> _controller = Completer<WebViewController>();
+  late WebViewController _webViewController;
   var loadingPercentage = 0;
   @override
   void initState() {
@@ -55,8 +56,13 @@ class _WebViewScreenState extends State<WebViewScreen> {
               gestureNavigationEnabled: true,
               zoomEnabled: true,
               initialUrl: widget.url!,
+              // initialUrl: widget.url! + "&native=true",
               javascriptMode: JavascriptMode.unrestricted,
               onPageStarted: (url) {
+                // _webViewController
+                //     .runJavascript("document.getElementsByTagName('header')[0].style.display='none'");
+                // _webViewController
+                //     .runJavascript("document.getElementsByTagName('footer')[0].style.display='none'");
                 setState(() {
                   loadingPercentage = 0;
                 });
@@ -67,12 +73,31 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 });
               },
               onPageFinished: (url) {
+                print("onPageFinished " + url);
+                // _webViewController.runJavascript(
+                //     "document.getElementById('consumer-header-container__09f24__ieW2P border--bottom__09f24___mg5X border-color--default__09f24__NPAKY background-color--white__09f24__ulvSM').style.display='none'");
+                // _webViewController
+                //     .runJavascript("document.getElementsByTagName('footer')[0].style.display='none'");
+                // _webViewController
+                //     .runJavascriptReturningResult("javascript:(function() { " +
+                //         "var head = document.getElementsByTagName('header')[0];" +
+                //         "head.parentNode.removeChild(head);" +
+                //         "var footer = document.getElementsByTagName('footer')[0];" +
+                //         "footer.parentNode.removeChild(footer);" +
+                //         "})()")
+                //     .then((value) => debugPrint('Page finished loading Javascript'))
+                //     .catchError((onError) => debugPrint('$onError'));
                 setState(() {
                   loadingPercentage = 100;
                 });
               },
               onWebViewCreated: (WebViewController webViewController) {
+                _webViewController = webViewController;
                 _controller.complete(webViewController);
+                // _webViewController
+                //     .runJavascript("document.getElementsByTagName('header')[0].style.display='none'");
+                // _webViewController
+                //     .runJavascript("document.getElementsByTagName('footer')[0].style.display='none'");
               },
             ),
           ),

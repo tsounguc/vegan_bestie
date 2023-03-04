@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
 import 'package:sheveegan/logic/cubit/product_fetch_cubit.dart';
+import 'package:sheveegan/presentation/barcodeProduct/barcodeProductFound/widgets/product_found_tabbar_view.dart';
 import 'package:sheveegan/product_provider.dart';
 
-import '../../../../constants/size_config.dart';
-import '../../../../constants/strings.dart';
+import '../../../../core/constants/size_config.dart';
+import '../../../../core/constants/strings.dart';
 
 class ProductFoundBodyInfo extends StatelessWidget {
   const ProductFoundBodyInfo({
@@ -18,6 +19,7 @@ class ProductFoundBodyInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool tabBarViewMode = false;
     SizeConfig().init(context);
     return BlocBuilder<ProductFetchCubit, ProductFetchState>(
       builder: (context, state) {
@@ -91,76 +93,101 @@ class ProductFoundBodyInfo extends StatelessWidget {
                             ),
                             showDuration: Duration(seconds: 5),
                           ),
+                        // IconButton(
+                        //   padding: EdgeInsets.zero,
+                        //   onPressed: () {},
+                        //   // iconSize: 20,
+                        //   icon: CircleAvatar(
+                        //     radius: 20,
+                        //     backgroundColor: Colors.black,
+                        //     child: Icon(
+                        //       Icons.question_mark_rounded,
+                        //       color: Colors.white,
+                        //       size: 20,
+                        //     ),
+                        //   ),
+                        // )
                       ],
+                    ),
+                    Visibility(
+                      visible: tabBarViewMode,
+                      child: Expanded(
+                        child: ProductFoundTabBarView(
+                          product: state.product.product!,
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: 20.h,
                     ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Barcode: ${state.product.code}',
+                    Visibility(
+                      visible: !tabBarViewMode,
+                      child: Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Barcode: ${state.product.code}',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 8.0.h),
+                              child: Text(
+                                "Ingredients: ",
                                 style: TextStyle(
                                   fontSize: 16.sp,
                                   color: Colors.black,
                                 ),
                               ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 8.0.h),
-                            child: Text(
-                              "Ingredients: ",
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                color: Colors.black,
-                              ),
                             ),
-                          ),
-                          Flexible(
-                            child: SingleChildScrollView(
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: 8.0.w,
-                                  right: 48.0.w,
-                                ),
-                                child: Text(
-                                  state.product.product?.ingredientsText != null &&
-                                          state.product.product!.ingredientsText!.isNotEmpty
-                                      ? state.product.product!.ingredientsText!
-                                      : 'Ingredients not found'.toUpperCase(),
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: Colors.black,
+                            Flexible(
+                              child: SingleChildScrollView(
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 8.0.w,
+                                    right: 48.0.w,
+                                  ),
+                                  child: Text(
+                                    state.product.product?.ingredientsText != null &&
+                                            state.product.product!.ingredientsText!.isNotEmpty
+                                        ? state.product.product!.ingredientsText!
+                                        : 'Ingredients not found'.toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 50.h,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  '${state.product.product?.labels ?? ""}',
-                                  style: TextStyle(fontSize: 14.sp, color: Colors.black),
+                            SizedBox(
+                              height: 50.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    '${state.product.product?.labels ?? ""}',
+                                    style: TextStyle(fontSize: 14.sp, color: Colors.black),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

@@ -18,7 +18,9 @@ class RestaurantCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => WebViewScreen(url: business!.url),
+            builder: (_) => WebViewScreen(
+              url: business!.url,
+            ),
           ),
         );
 

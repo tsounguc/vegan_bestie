@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../constants/strings.dart';
+import '../../../../core/constants/strings.dart';
 import '../../../../logic/cubit/product_fetch_cubit.dart';
 import 'widgets/product_found_body.dart';
 

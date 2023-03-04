@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sheveegan/constants/colors.dart';
+import 'package:sheveegan/core/constants/colors.dart';
 
 class SignUpPage extends StatelessWidget {
   // const LoginPage({Key? key}) : super(key: key);
@@ -34,8 +34,7 @@ class SignUpPage extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8.0, top: 25.0, bottom: 50.0, right: 8.0),
+                  padding: const EdgeInsets.only(left: 8.0, top: 25.0, bottom: 50.0, right: 8.0),
                   child: Text(
                     "Sign up",
                     style: TextStyle(
@@ -46,8 +45,7 @@ class SignUpPage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 40.0, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10),
                   child: TextFormField(
                     autofocus: false,
                     obscureText: false,
@@ -59,8 +57,7 @@ class SignUpPage extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                     ),
                   ),
                 ),
@@ -77,14 +74,12 @@ class SignUpPage extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 40.0, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10),
                   child: TextFormField(
                     autofocus: false,
                     obscureText: true,
@@ -96,8 +91,7 @@ class SignUpPage extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                      contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                     ),
                   ),
                 ),

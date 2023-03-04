@@ -10,8 +10,8 @@ import 'package:sheveegan/logic/bloc/restaurants_bloc.dart';
 import 'package:sheveegan/logic/bloc/restaurants_bloc.dart';
 import 'package:sheveegan/presentation/widgets/loading.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/strings.dart';
+import '../../core/constants/colors.dart';
+import '../../core/constants/strings.dart';
 import '../../logic/bloc/geolocation_bloc.dart';
 import '../widgets/restaurant_card.dart';
 

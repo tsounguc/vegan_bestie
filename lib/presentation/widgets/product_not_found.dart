@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheveegan/constants/strings.dart';
+import 'package:sheveegan/core/constants/strings.dart';
 
 class ProductNotFoundPage extends StatelessWidget {
   final String? message;

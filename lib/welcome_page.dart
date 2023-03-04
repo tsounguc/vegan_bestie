@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sheveegan/assets/vegan_icon.dart';
-import 'package:sheveegan/constants/colors.dart';
+import 'package:sheveegan/core/constants/colors.dart';
 import 'package:sheveegan/login_page.dart';
 import 'package:sheveegan/sign_up.dart';
 
@@ -62,8 +62,7 @@ class WelcomePage extends StatelessWidget {
                     height: 50,
                     color: Colors.white,
                     onPressed: () {
-                      Route route =
-                          MaterialPageRoute(builder: (context) => LoginPage());
+                      Route route = MaterialPageRoute(builder: (context) => LoginPage());
                       Navigator.push(context, route);
                     },
                     shape: RoundedRectangleBorder(
@@ -86,8 +85,7 @@ class WelcomePage extends StatelessWidget {
                       height: 50,
                       color: Colors.white,
                       onPressed: () {
-                        Route route = MaterialPageRoute(
-                            builder: (context) => SignUpPage());
+                        Route route = MaterialPageRoute(builder: (context) => SignUpPage());
                         Navigator.push(context, route);
                       },
                       shape: RoundedRectangleBorder(

@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_animations/stateless_animation/custom_animation.dart';
 
-import '../../constants/colors.dart';
-import '../../constants/strings.dart';
+import '../../core/constants/colors.dart';
+import '../../core/constants/strings.dart';
 import '../../logic/bloc/search_bloc.dart';
 import '../../logic/cubit/barcode_scanner_cubit.dart';
 import '../../logic/cubit/product_fetch_cubit.dart';
