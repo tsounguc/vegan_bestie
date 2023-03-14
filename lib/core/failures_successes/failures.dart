@@ -1,0 +1,24 @@
+abstract class Failure {
+  final String? message;
+  const Failure({this.message});
+}
+
+class FetchProductFailure extends Failure {
+  const FetchProductFailure({String? message}) : super(message: message);
+}
+
+class ScanningFailure extends Failure {
+  const ScanningFailure({String? message}) : super(message: message);
+}
+
+class CreateWithEmailAndPasswordFailure extends Failure {
+  const CreateWithEmailAndPasswordFailure({String? message}) : super(message: message);
+}
+
+class SignInWithEmailAndPasswordFailure extends Failure {
+  const SignInWithEmailAndPasswordFailure({String? message}) : super(message: message);
+}
+
+class SignOutFailure extends Failure {
+  SignOutFailure({String? message}) : super(message: message);
+}

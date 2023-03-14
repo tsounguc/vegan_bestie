@@ -23,6 +23,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  fl_chart:
+  google_fonts:
+  get_it:
+  dartz:
   flutter_bloc:
   bloc:
   test:
@@ -31,12 +35,16 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   flutter_barcode_sdk:
   http: ^0.13.4
-  simple_animations:
+  simple_animations: ^5.0.0+3
   device_preview: ^1.1.0
   flutter_screenutil: ^5.5.3+2
   cached_network_image: ^3.2.1
   webview_flutter: ^3.0.4
   flutter_dotenv: ^5.0.2
+  font_awesome_flutter:
+  firebase_core:
+  firebase_auth:
+  cloud_firestore:
 #  location: ^4.2.0
   flutter_rating_bar: ^4.0.1
   geolocator: ^9.0.1

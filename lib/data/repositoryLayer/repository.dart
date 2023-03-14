@@ -9,24 +9,19 @@ import 'package:sheveegan/data/providers/google_places_api_provider.dart';
 import 'package:sheveegan/data/providers/restaurants_api_provider.dart';
 import 'package:sheveegan/data/providers/yelp_fusion_api_provider.dart';
 
-import '../models/product_info_model.dart';
+import '../../features/scan_product/data/models/product_info_model.dart';
 import '../models/restaurants_search_model.dart';
 import '../models/scan_model.dart';
-import '../providers/open_food_facts_api_provider.dart';
+import '../../core/services/food_facts_api_service.dart';
 
 class Repository {
-  final OpenFoodFactsApiProvider openFoodFactApiProvider;
+  final FoodFactsApiServiceImpl openFoodFactApiProvider;
   final YelpFusionApiProvider yelpFusionApiProvider;
 
   const Repository({
     required this.openFoodFactApiProvider,
     required this.yelpFusionApiProvider,
   });
-  Future<ScanModel?> fetchProduct(String barcode) async {
-    final fetchResponse = await openFoodFactApiProvider.fetchProductInfo(barcode);
-    ScanModel productInfo = scanModelFromJson(fetchResponse.body.toString());
-    return productInfo;
-  }
 
   Future<SearchModel> searchQuery(String query) async {
     final searchResponse = await openFoodFactApiProvider.searchProductInfo(query);

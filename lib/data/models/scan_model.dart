@@ -4,15 +4,15 @@
 
 import 'dart:convert';
 
-import 'package:sheveegan/data/models/product_info_model.dart';
+import 'package:sheveegan/features/scan_product/data/models/product_info_model.dart';
 
-ScanModel scanModelFromJson(String str) => ScanModel.fromJson(json.decode(str));
+ScanModel scanModelFromJson(Map<String, dynamic> jsonBody) => ScanModel.fromJson(jsonBody);
 
 String scanModelToJson(ScanModel data) => json.encode(data.toJson());
 
 class ScanModel {
   String? code;
-  Product? product;
+  ProductInfoModel? product;
   int? status;
   String? statusVerbose;
   ScanModel({
@@ -24,7 +24,7 @@ class ScanModel {
 
   factory ScanModel.fromJson(Map<String, dynamic>? json) => ScanModel(
         code: json?["code"],
-        product: Product.fromJson(json?["product"]),
+        product: ProductInfoModel.fromJson(json?["product"]),
         status: json?["status"],
         statusVerbose: json?["status_verbose"],
       );

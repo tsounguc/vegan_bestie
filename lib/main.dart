@@ -1,27 +1,36 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/service_locator.dart';
 import 'package:sheveegan/data/providers/google_places_api_provider.dart';
-import 'package:sheveegan/data/providers/open_food_facts_api_provider.dart';
+import 'package:sheveegan/core/services/food_facts_api_service.dart';
 import 'package:sheveegan/data/providers/restaurants_api_provider.dart';
-import 'package:sheveegan/logic/bloc/geolocation_bloc.dart';
-import 'package:sheveegan/logic/bloc/restaurants_bloc.dart';
-import 'package:sheveegan/logic/bloc/search_bloc.dart';
-import 'package:sheveegan/logic/cubit/barcode_scanner_cubit.dart';
-import 'package:sheveegan/logic/cubit/product_fetch_cubit.dart';
-import 'package:sheveegan/presentation/router/app_router.dart';
-import 'package:sheveegan/presentation/vegan_bestie_home.dart';
+import 'package:sheveegan/features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
+import 'package:sheveegan/features/search/presentation/search_bloc/search_bloc.dart';
+import 'package:sheveegan/features/scan_product/presentation/barcode_scanner_cubit/barcode_scanner_cubit.dart';
+import 'package:sheveegan/features/scan_product/presentation/fetch_product_cubit/product_fetch_cubit.dart';
+import 'package:sheveegan/home_page.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 import 'data/providers/yelp_fusion_api_provider.dart';
 import 'data/repositoryLayer/repository.dart';
+import 'features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'features/auth/presentation/pages/auth_page.dart';
+import 'features/auth/presentation/pages/welcome_page.dart';
+import 'features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'features/auth/presentation/pages/login_page.dart';
+import 'router/app_router.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+  setUpServices();
   runApp(
     DevicePreview(
       enabled: false,
@@ -30,26 +39,37 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
-  final Repository repository = Repository(
-    openFoodFactApiProvider: OpenFoodFactsApiProvider(), yelpFusionApiProvider: YelpFusionApiProvider(),
-    // googlePlacesApiProvider: GooglePlacesApiProvider(),
-    // restaurantsApiProvider: RestaurantsApiProvider(),
-  );
-
+class MyApp extends StatefulWidget {
   MyApp({Key? key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final Repository repository = Repository(
+    openFoodFactApiProvider: FoodFactsApiServiceImpl(), yelpFusionApiProvider: YelpFusionApiProvider(),
+    // googlePlacesApiProvider: GooglePlacesApiProvider(),
+    // restaurantsApiProvider: RestaurantsApiProvider(),
+  );
+  User? currentUser;
+  @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (currentUser != user) {
+        currentUser = user;
+      }
+    });
     return MultiBlocProvider(
       providers: [
+        BlocProvider<AuthCubit>(
+          create: (context) => AuthCubit(),
+        ),
         BlocProvider<BarcodeScannerCubit>(
           create: (context) => BarcodeScannerCubit(),
         ),
         BlocProvider<ProductFetchCubit>(
-          create: (context) => ProductFetchCubit(
-            repository: repository,
-          ),
+          create: (context) => ProductFetchCubit(),
         ),
         BlocProvider<SearchBloc>(
           create: (context) => SearchBloc(repository: repository),
@@ -71,9 +91,8 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.system,
-          initialRoute: AppRouter.home,
-          home: VeganBestieHome(),
-          // onGenerateRoute: AppRouter.onGenerateRoute,
+          home: AuthPage(),
+          onGenerateRoute: AppRouter.onGenerateRoute,
           // onUnknownRoute: AppRouter.onUnknownRoute,
         ),
       ),

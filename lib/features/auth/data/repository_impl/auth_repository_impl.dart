@@ -1,0 +1,63 @@
+import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sheveegan/core/failures_successes/exceptions.dart';
+
+import '../../../../core/failures_successes/failures.dart';
+import '../../../../core/service_locator.dart';
+import '../../domain/entities/user_entity.dart';
+import '../../domain/repositories_contracts/auth_repository_contract.dart';
+import '../data_sources/auth_remote_data_source.dart';
+import '../mappers/user_mapper.dart';
+import '../models/user_model.dart';
+
+class AuthRepositoryImpl implements AuthRepositoryContract {
+  AuthRemoteDataSourceContract authRemoteDataSourceContract = serviceLocator<AuthRemoteDataSourceContract>();
+
+  @override
+  Future<Either<CreateWithEmailAndPasswordFailure, UserEntity>> createUserAccount(
+      String userName, String email, String password) async {
+    try {
+      UserModel userModel = await authRemoteDataSourceContract.createUserAccount(userName, email, password);
+      UserMapper mapper = UserMapper();
+      UserEntity userEntity = mapper.mapToEntity(userModel);
+      return Right(userEntity);
+    } on CreateWithEmailAndPasswordException catch (e) {
+      throw Left(CreateWithEmailAndPasswordFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<SignInWithEmailAndPasswordFailure, UserEntity>> signInWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      UserModel userModel = await authRemoteDataSourceContract.signInWithEmailAndPassword(email, password);
+      UserMapper mapper = UserMapper();
+      UserEntity userEntity = mapper.mapToEntity(userModel);
+      return Right(userEntity);
+    } on SignInWithEmailAndPasswordException catch (e) {
+      throw Left(SignInWithEmailAndPasswordFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<SignOutFailure, void>> signOut() async {
+    try {
+      void signOutResult = await authRemoteDataSourceContract.signOut();
+      return Right(signOutResult);
+    } on SignOutException catch (e) {
+      throw Left(SignOutFailure(message: e.message));
+    }
+  }
+
+  @override
+  Either<String, UserEntity> currentUser() {
+    UserModel currentUserModel = authRemoteDataSourceContract.currentUser();
+    UserMapper mapper = UserMapper();
+    UserEntity currentUserEntity = mapper.mapToEntity(currentUserModel);
+    if (currentUserModel.uid != null) {
+      return Right(currentUserEntity);
+    } else {
+      return Left("");
+    }
+  }
+}

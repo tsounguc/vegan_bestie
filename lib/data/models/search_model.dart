@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:sheveegan/data/models/product_info_model.dart';
+import 'package:sheveegan/features/scan_product/data/models/product_info_model.dart';
 
 SearchModel searchModelFromJson(String str) => SearchModel.fromJson(json.decode(str));
 
@@ -24,7 +24,7 @@ class SearchModel {
   int? page;
   int? pageCount;
   int pageSize;
-  List<Product>? products;
+  List<ProductInfoModel>? products;
   int? skip;
 
   factory SearchModel.fromJson(Map<String, dynamic>? json) => SearchModel(
@@ -32,7 +32,7 @@ class SearchModel {
     page: json?["page"],
     pageCount: json?["page_count"],
     pageSize: json?["page_size"],
-    products: List<Product>.from(json?["products"].map((x) => Product.fromJson(x))),
+    products: List<ProductInfoModel>.from(json?["products"].map((x) => ProductInfoModel.fromJson(x))),
     skip: json?["skip"],
   );
 

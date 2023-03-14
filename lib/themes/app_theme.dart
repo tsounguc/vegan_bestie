@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   const AppTheme._();
@@ -31,19 +32,27 @@ class AppTheme {
     brightness: Brightness.light,
     primaryColor: lightPrimaryColor,
     colorScheme: ColorScheme.fromSwatch().copyWith(
-        brightness: Brightness.light,
-        primary: lightPrimaryColor,
-        secondary: lightAccentColor,
-        background: lightBackgroundColor),
-    backgroundColor: lightPrimaryColor,
-    textTheme: TextTheme(
-      headline1: TextStyle(
-        color: Colors.black,
-        fontSize: 27,
-        fontWeight: FontWeight.bold,
-        fontFamily: 'cursive',
-      ),
+      brightness: Brightness.light,
+      primary: lightPrimaryColor,
+      secondary: lightAccentColor,
+      background: lightBackgroundColor,
     ),
+    // textTheme: GoogleFonts.montserratTextTheme().copyWith(
+    //   displayLarge: TextStyle(
+    //     color: Colors.black,
+    //     fontSize: 27,
+    //     fontWeight: FontWeight.bold,
+    //     fontFamily: 'cursive',
+    //   ),
+    // ),
+    // textTheme: TextTheme(
+    //   headline1: TextStyle(
+    //     color: Colors.black,
+    //     fontSize: 27,
+    //     fontWeight: FontWeight.bold,
+    //     fontFamily: 'cursive',
+    //   ),
+    // ),
     iconTheme: IconThemeData(color: lightParticles),
     snackBarTheme: SnackBarThemeData(contentTextStyle: TextStyle(color: Colors.white)),
     visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -68,19 +77,22 @@ class AppTheme {
     brightness: Brightness.dark,
     primaryColor: darkPrimaryColor,
     colorScheme: ColorScheme.fromSwatch().copyWith(
-        brightness: Brightness.dark,
-        primary: darkPrimaryColor,
-        secondary: darkAccentColor,
-        background: darkBackgroundColor),
-    backgroundColor: darkPrimaryColor,
-    textTheme: TextTheme(
-      headline1: TextStyle(
-        color: Colors.black,
-        fontSize: 27.sp,
-        fontWeight: FontWeight.bold,
-        fontFamily: 'cursive',
-      ),
+      brightness: Brightness.dark,
+      primary: darkPrimaryColor,
+      secondary: darkAccentColor,
+      background: darkBackgroundColor,
+      tertiary: darkParticles,
     ),
+    backgroundColor: darkPrimaryColor,
+    textTheme: GoogleFonts.openSansTextTheme(),
+    // textTheme: TextTheme(
+    //   headline1: TextStyle(
+    //     color: Colors.black,
+    //     fontSize: 27.sp,
+    //     fontWeight: FontWeight.bold,
+    //     fontFamily: 'cursive',
+    //   ),
+    // ),
     iconTheme: IconThemeData(color: Colors.white),
     snackBarTheme: SnackBarThemeData(contentTextStyle: TextStyle(color: Colors.white)),
     visualDensity: VisualDensity.adaptivePlatformDensity,

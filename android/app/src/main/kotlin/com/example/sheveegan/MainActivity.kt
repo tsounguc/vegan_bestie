@@ -1,4 +1,4 @@
-package com.example.sheveegan
+package com.example.veganbestie
 
 import io.flutter.embedding.android.FlutterActivity
 

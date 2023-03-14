@@ -12,3 +12,7 @@ Color navigationColor = Color(0xFF6751B5);
 Color gradientStartColor = Colors.green.shade600;
 
 Color gradientEndColor = Color(0xFF9354B9);
+
+Color proteinsColor = Colors.purple.shade600;
+Color carbsColor = Colors.green.shade600;
+Color fatColor = Colors.orange.shade600;
