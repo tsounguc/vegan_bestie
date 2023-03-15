@@ -8,13 +8,9 @@ import '../../features/auth/data/models/user_model.dart';
 abstract class AuthServiceContract<T, U> {
   Future<U> signInWithEmailAndPassword(String email, String password);
 
-  Future<U> createWithEmailAndPassword(
-    String userName,
-    String email,
-    String password,
-  );
+  Future<U> createWithEmailAndPassword(String userName, String email, String password);
 
-  T? currentUser();
+  Future<T> currentUser();
 
   Future<void> signOut();
 }
@@ -27,17 +23,21 @@ class AuthServiceImpl implements AuthServiceContract<User?, UserCredential> {
   Future<UserCredential> createWithEmailAndPassword(String userName, String email, String password) async {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
     //Create the user in firestore with the user data
-    storeUserInfo(
-      userCredential.user!.uid,
-      userName,
-      email,
-    );
+    await storeUserInfo(userCredential.user?.uid, userName, email);
     return userCredential;
   }
 
   @override
-  User? currentUser() {
-    return _auth.currentUser;
+  Future<User?> currentUser() async {
+    User? currentUser = _auth.currentUser;
+    // return _auth.authStateChanges().first;
+    await currentUser?.reload();
+    // return currentUser;
+
+    // _auth.authStateChanges().listen((user) {
+    //   currentUser = user;
+    // });
+    return currentUser;
   }
 
   @override
@@ -52,7 +52,7 @@ class AuthServiceImpl implements AuthServiceContract<User?, UserCredential> {
   }
 
   //This method is used to create the user in firestore
-  Future<void> storeUserInfo(String uid, String username, String email) async {
+  Future<void> storeUserInfo(String? uid, String username, String email) async {
     //Creates the user doc named whatever the user uid is in te collection "users"
     //and adds the user data
     await db.collection("users").doc(uid).set({

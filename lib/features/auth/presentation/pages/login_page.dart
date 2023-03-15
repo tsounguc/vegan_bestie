@@ -6,6 +6,7 @@ import 'package:sheveegan/core/constants/colors.dart';
 
 import '../../../../home_page.dart';
 import '../auth_cubit/auth_cubit.dart';
+import 'auth_page.dart';
 import 'forgot_password.dart';
 import 'sign_up.dart';
 
@@ -22,7 +23,10 @@ class LoginPage extends StatelessWidget {
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is LoggedInState) {
-            Navigator.pushReplacementNamed(context, HomePage.id);
+            if (Navigator.canPop(context)) {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            }
+            Navigator.pushReplacementNamed(context, AuthPage.id);
           }
         },
         child: Container(
@@ -199,7 +203,8 @@ class LoginPage extends StatelessWidget {
                           color: Colors.white,
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              BlocProvider.of<AuthCubit>(context).signInWithEmailAndPassword(_email!, _password!);
+                              BlocProvider.of<AuthCubit>(context)
+                                  .signInWithEmailAndPassword(_email!.trim(), _password!.trim());
                             }
                           },
                           shape: RoundedRectangleBorder(
@@ -328,8 +333,10 @@ class LoginPage extends StatelessWidget {
                           TextButton(
                             onPressed: () {
                               if (!Navigator.canPop(context)) {
+                                debugPrint("Register now can't pop");
                                 Navigator.of(context).pushReplacementNamed(SignUpPage.id);
                               } else {
+                                debugPrint("Register now can pop");
                                 Navigator.of(context).pushNamed(SignUpPage.id);
                               }
                             },

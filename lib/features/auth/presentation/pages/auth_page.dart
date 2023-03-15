@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,6 +10,7 @@ import 'login_page.dart';
 import 'welcome_page.dart';
 
 class AuthPage extends StatefulWidget {
+  static const String id = "/authPage";
   const AuthPage({Key? key}) : super(key: key);
 
   @override
@@ -16,23 +18,37 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  User? user;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    user = FirebaseAuth.instance.currentUser;
     // BlocProvider.of<AuthCubit>(context).currentUser();
+    FirebaseAuth.instance.authStateChanges().listen((currentUser) {
+      if (currentUser != null) {
+        // if (mounted) {
+        BlocProvider.of<AuthCubit>(context).currentUser();
+        // }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<AuthCubit>(context).currentUser();
+    var currentUser = FirebaseAuth.instance.currentUser;
+    if (user?.uid != currentUser?.uid) {
+      BlocProvider.of<AuthCubit>(context).currentUser();
+    }
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         if (state is AuthLoadingState) {
           return LoadingPage();
         }
         if (state is AuthErrorState) {
-          return ErrorPage();
+          return ErrorPage(
+            error: state.error,
+          );
         }
         if (state is LoggedInState) {
           return HomePage();

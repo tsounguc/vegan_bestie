@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:sheveegan/features/auth/domain/usecases/sign_in_with_email_and_password_usecase.dart';
 
 import '../../../../core/failures_successes/failures.dart';
@@ -23,7 +24,6 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoadingState());
     Either<CreateWithEmailAndPasswordFailure, UserEntity> registrationResult =
         await _createUserAccountUseCase.createUserAccount(userName, email, password);
-
     registrationResult.fold(
       (registrationFailure) => emit(AuthErrorState(error: registrationFailure.message)),
       (userEntity) => emit(LoggedInState(currentUser: userEntity)),
@@ -36,7 +36,19 @@ class AuthCubit extends Cubit<AuthState> {
         await _signInWithEmailAndPasswordUseCase.signInWithEmailAndPassword(email, password);
     signInResult.fold(
       (signInFailure) => emit(AuthErrorState(error: signInFailure.message)),
-      (userEntity) => emit(LoggedInState(currentUser: userEntity)),
+      (userEntity) {
+        debugPrint("Name in cubit: ${userEntity.name}");
+        emit(LoggedInState(currentUser: userEntity));
+      },
+    );
+  }
+
+  void currentUser() async {
+    emit(AuthLoadingState());
+    Either<String, UserEntity> userLoginStatus = await _currentUserUseCase.currentUser();
+    userLoginStatus.fold(
+      (notSignedIn) => emit(SignedOutState()),
+      (currentUser) => emit(LoggedInState(currentUser: currentUser)),
     );
   }
 
@@ -46,15 +58,6 @@ class AuthCubit extends Cubit<AuthState> {
     signOutResult.fold(
       (signOutFailure) => emit(AuthErrorState(error: signOutFailure.message)),
       (signOutSuccess) => emit(SignedOutState()),
-    );
-  }
-
-  void currentUser() async {
-    emit(AuthLoadingState());
-    Either<String, UserEntity> userLoginStatus = _currentUserUseCase.currentUser();
-    userLoginStatus.fold(
-      (notSignedIn) => emit(SignedOutState()),
-      (currentUser) => emit(LoggedInState(currentUser: currentUser)),
     );
   }
 }

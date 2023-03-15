@@ -7,6 +7,8 @@ import 'package:sheveegan/features/auth/presentation/auth_cubit/auth_cubit.dart'
 import 'package:sheveegan/features/auth/presentation/pages/login_page.dart';
 import 'package:sheveegan/home_page.dart';
 
+import 'auth_page.dart';
+
 class SignUpPage extends StatelessWidget {
   static const String id = "/signUpPage";
   String? _userName, _email, _password, _confirmPassword;
@@ -18,7 +20,10 @@ class SignUpPage extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is LoggedInState) {
-          Navigator.pushReplacementNamed(context, HomePage.id);
+          if (Navigator.canPop(context)) {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          }
+          Navigator.pushReplacementNamed(context, AuthPage.id);
         }
       },
       child: Container(
@@ -218,7 +223,7 @@ class SignUpPage extends StatelessWidget {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               BlocProvider.of<AuthCubit>(context)
-                                  .createUserAccount(_userName!, _email!, _password!);
+                                  .createUserAccount(_userName!.trim(), _email!.trim(), _password!.trim());
                             }
                           },
                           shape: RoundedRectangleBorder(

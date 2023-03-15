@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 
 import '../../../../core/failures_successes/failures.dart';
@@ -18,8 +19,10 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
       String userName, String email, String password) async {
     try {
       UserModel userModel = await authRemoteDataSourceContract.createUserAccount(userName, email, password);
+      debugPrint("Repo Implementation User Model Name: ${userModel.name}");
       UserMapper mapper = UserMapper();
       UserEntity userEntity = mapper.mapToEntity(userModel);
+      debugPrint("Repo Implementation User Entity Name: ${userModel.name}");
       return Right(userEntity);
     } on CreateWithEmailAndPasswordException catch (e) {
       throw Left(CreateWithEmailAndPasswordFailure(message: e.message));
@@ -31,8 +34,10 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
       String email, String password) async {
     try {
       UserModel userModel = await authRemoteDataSourceContract.signInWithEmailAndPassword(email, password);
+      debugPrint("Repo Implementation User Model Name: ${userModel.name}");
       UserMapper mapper = UserMapper();
       UserEntity userEntity = mapper.mapToEntity(userModel);
+      debugPrint("Repo Implementation User Entity Name: ${userModel.name}");
       return Right(userEntity);
     } on SignInWithEmailAndPasswordException catch (e) {
       throw Left(SignInWithEmailAndPasswordFailure(message: e.message));
@@ -50,8 +55,8 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
   }
 
   @override
-  Either<String, UserEntity> currentUser() {
-    UserModel currentUserModel = authRemoteDataSourceContract.currentUser();
+  Future<Either<String, UserEntity>> currentUser() async {
+    UserModel currentUserModel = await authRemoteDataSourceContract.currentUser();
     UserMapper mapper = UserMapper();
     UserEntity currentUserEntity = mapper.mapToEntity(currentUserModel);
     if (currentUserModel.uid != null) {

@@ -21,15 +21,6 @@ class WelcomePage extends StatelessWidget {
           elevation: 0,
           backgroundColor: Theme.of(context).colorScheme.background,
           automaticallyImplyLeading: false,
-          // leading: !Navigator.of(context).canPop()
-          //     ? null
-          //     : IconButton(
-          //         color: Colors.white,
-          //         icon: Icon(Icons.arrow_back_ios),
-          //         onPressed: () {
-          //           Navigator.of(context).pop();
-          //         },
-          //       ),
         ),
         body: SafeArea(
           child: Container(
@@ -53,30 +44,6 @@ class WelcomePage extends StatelessWidget {
                         fontFamily: 'cursive',
                       ),
                     ),
-                    // Text(
-                    //   'She ',
-                    //   style: TextStyle(
-                    //     color: titleTextColorOne,
-                    //     // color: Colors.green.shade600,
-                    //     fontSize: 37,
-                    //     fontWeight: FontWeight.bold,
-                    //     fontFamily: 'cursive',
-                    //   ),
-                    // ),
-                    // Icon(
-                    //   VeganIcon.vegan_icon,
-                    //   color: titleTextColorOne,
-                    //   size: 30,
-                    // ),
-                    // Text(
-                    //   'egan',
-                    //   style: TextStyle(
-                    //     color: titleTextColorOne,
-                    //     fontSize: 37,
-                    //     fontWeight: FontWeight.bold,
-                    //     fontFamily: 'cursive',
-                    //   ),
-                    // ),
                   ],
                 ),
                 Column(
@@ -86,7 +53,7 @@ class WelcomePage extends StatelessWidget {
                       height: 50,
                       color: Colors.white,
                       onPressed: () {
-                        Navigator.pushNamed(context, LoginPage.id);
+                        Navigator.pushReplacementNamed(context, LoginPage.id);
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -109,13 +76,13 @@ class WelcomePage extends StatelessWidget {
                         height: 50,
                         color: Colors.white,
                         onPressed: () {
-                          Navigator.pushNamed(context, SignUpPage.id);
+                          Navigator.pushReplacementNamed(context, SignUpPage.id);
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),
                         child: Text(
-                          "Sign up",
+                          "Register",
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 18,

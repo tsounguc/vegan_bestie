@@ -6,7 +6,7 @@ import '../repositories_contracts/auth_repository_contract.dart';
 
 class CurrentUserUseCase {
   final AuthRepositoryContract _authRepositoryContract = serviceLocator<AuthRepositoryContract>();
-  Either<String, UserEntity> currentUser() {
+  Future<Either<String, UserEntity>> currentUser() {
     return _authRepositoryContract.currentUser();
   }
 }

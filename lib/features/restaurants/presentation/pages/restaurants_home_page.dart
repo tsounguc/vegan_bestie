@@ -53,30 +53,7 @@ class RestaurantsHomePage extends StatelessWidget {
               );
             } else if (state is RestaurantsFoundState) {
               return Scaffold(
-                appBar: AppBar(
-                  // iconTheme: Theme.of(context).iconTheme,
-                  toolbarHeight: 65.h,
-                  automaticallyImplyLeading: false,
-                  centerTitle: true,
-                  title: Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Text(
-                      Strings.appTitle,
-                      style: TextStyle(
-                        // color: Theme.of(context).backgroundColor,
-                        color: Colors.white,
-                        fontSize: 36.sp,
-                        fontWeight: FontWeight.w800,
-                        fontFamily: 'cursive',
-                      ),
-                    ),
-                  ),
-                  // elevation: 0,
-                  backgroundColor: Theme.of(context).backgroundColor,
-                  // backgroundColor: Colors.green.shade50,
-                ),
-                backgroundColor: Theme.of(context).backgroundColor,
-                // backgroundColor: Colors.green.shade50,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 body: ListView.builder(
                   shrinkWrap: true,
                   itemCount: state.results?.businesses?.length,
@@ -99,25 +76,7 @@ class RestaurantsHomePage extends StatelessWidget {
               );
             } else {
               return Scaffold(
-                // appBar: AppBar(
-                //   iconTheme: Theme.of(context).iconTheme,
-                //   toolbarHeight: 100.h,
-                //   automaticallyImplyLeading: false,
-                //   centerTitle: true,
-                //   title: Text(
-                //     Strings.appTitle,
-                //     style: TextStyle(
-                //       color: titleTextColorOne,
-                //       fontSize: 36.sp,
-                //       fontWeight: FontWeight.w800,
-                //       fontFamily: 'cursive',
-                //     ),
-                //   ),
-                //   elevation: 0,
-                //   backgroundColor: Theme.of(context).backgroundColor,
-                // ),
-                // backgroundColor: Theme.of(context).backgroundColor,
-                backgroundColor: Theme.of(context).backgroundColor,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 body: Container(
                   padding: EdgeInsets.only(top: 56.h, right: 16.w, bottom: 8.h, left: 16.w),
                   child: Column(
@@ -136,7 +95,7 @@ class RestaurantsHomePage extends StatelessWidget {
                             decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.search,
-                                color: Theme.of(context).backgroundColor,
+                                color: Theme.of(context).colorScheme.background,
                               ),
                               // suffixIcon: IconButton(
                               //   icon: Icon(
@@ -146,7 +105,8 @@ class RestaurantsHomePage extends StatelessWidget {
                               //   onPressed: () {},
                               // ),
                               hintText: 'Find Restaurants',
-                              hintStyle: TextStyle(color: Theme.of(context).backgroundColor, fontSize: 16.sp),
+                              hintStyle:
+                                  TextStyle(color: Theme.of(context).colorScheme.background, fontSize: 16.sp),
                               border: InputBorder.none,
                             ),
                             style: TextStyle(color: Colors.black),
