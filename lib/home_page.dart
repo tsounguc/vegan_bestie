@@ -10,6 +10,7 @@ import 'package:sheveegan/features/auth/presentation/pages/login_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
 
 import 'core/constants/strings.dart';
+import 'core/custom_circle_avatar.dart';
 import 'core/custom_drawer.dart';
 import 'core/error.dart';
 import 'features/auth/presentation/auth_cubit/auth_cubit.dart';
@@ -37,9 +38,14 @@ class _HomePageState extends State<HomePage> {
       _currentIndex = value;
       if (_currentIndex == 1) {
         BlocProvider.of<GeolocationBloc>(context).add(LoadGeolocationEvent());
-        // BlocProvider.of<RestaurantsBloc>(context).add(GetRestaurantsEvent());
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<AuthCubit>(context).currentUser();
   }
 
   @override
@@ -59,12 +65,8 @@ class _HomePageState extends State<HomePage> {
               leadingWidth: 80,
               toolbarHeight: 80,
               leading: IconButton(
-                icon: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.black,
-                  ),
+                icon: CustomCircleAvatar(
+                  size: 25,
                 ),
                 onPressed: () => scaffoldKey.currentState!.openDrawer(),
               ),

@@ -8,5 +8,5 @@ abstract class AuthRepositoryContract {
   Future<Either<SignInWithEmailAndPasswordFailure, UserEntity>> signInWithEmailAndPassword(
       String email, String password);
   Future<Either<SignOutFailure, void>> signOut();
-  Future<Either<String, UserEntity>> currentUser();
+  Future<Either<CurrentUserFailure, UserEntity>> currentUser();
 }

@@ -1,6 +1,7 @@
 // import 'package:openfoodfacts/model/User.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 import '../failures_successes/exceptions.dart';
 import '../../features/auth/data/models/user_model.dart';
@@ -15,29 +16,32 @@ abstract class AuthServiceContract<T, U> {
   Future<void> signOut();
 }
 
-class AuthServiceImpl implements AuthServiceContract<User?, UserCredential> {
+class FireBaseAuthServiceImpl implements AuthServiceContract<User?, UserCredential> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final db = FirebaseFirestore.instance;
 
   @override
   Future<UserCredential> createWithEmailAndPassword(String userName, String email, String password) async {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    await userCredential.user?.updateDisplayName(userName);
+    await _auth.signOut();
+    userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
     //Create the user in firestore with the user data
+    debugPrint("Auth Service User Name: ${userCredential.user?.displayName}");
     await storeUserInfo(userCredential.user?.uid, userName, email);
+
     return userCredential;
   }
 
   @override
   Future<User?> currentUser() async {
     User? currentUser = _auth.currentUser;
-    // return _auth.authStateChanges().first;
     await currentUser?.reload();
-    // return currentUser;
-
-    // _auth.authStateChanges().listen((user) {
-    //   currentUser = user;
-    // });
-    return currentUser;
+    if (currentUser != null) {
+      return currentUser;
+    } else {
+      throw Exception("User not signed In");
+    }
   }
 
   @override

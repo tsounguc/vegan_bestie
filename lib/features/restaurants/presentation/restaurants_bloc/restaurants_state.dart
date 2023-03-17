@@ -10,13 +10,27 @@ class RestaurantsInitialState extends RestaurantsState {
 }
 
 class RestaurantsFoundState extends RestaurantsState {
-  final YelpRestaurantsSearchModel? results;
-  RestaurantsFoundState({required this.results});
+  final List<RestaurantEntity> restaurants;
+  RestaurantsFoundState({required this.restaurants});
   @override
   List<Object> get props => [];
 }
 
 class RestaurantsLoadingState extends RestaurantsState {
+  @override
+  List<Object?> get props => [];
+}
+
+class RestaurantsErrorState extends RestaurantsState {
+  final error;
+  RestaurantsErrorState({required this.error});
+  @override
+  List<Object?> get props => [];
+}
+
+class RestaurantsNotFoundState extends RestaurantsState {
+  final String message;
+  RestaurantsNotFoundState({required this.message});
   @override
   List<Object?> get props => [];
 }

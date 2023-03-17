@@ -4,7 +4,7 @@ import 'package:sheveegan/features/scan_product/presentation/pages/scan_product_
 import '../core/product_not_found.dart';
 import '../features/auth/presentation/pages/auth_page.dart';
 import '../features/auth/presentation/pages/forgot_password.dart';
-import '../features/auth/presentation/pages/sign_up.dart';
+import '../features/auth/presentation/pages/registration_page.dart';
 import '../features/auth/presentation/pages/welcome_page.dart';
 import '../features/restaurants/presentation/pages/restaurants_home_page.dart';
 import '../features/scan_product/presentation/pages/scan_results_page.dart';
@@ -27,8 +27,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => AuthPage());
       case LoginPage.id:
         return MaterialPageRoute(builder: (context) => LoginPage());
-      case SignUpPage.id:
-        return MaterialPageRoute(builder: (context) => SignUpPage());
+      case RegistrationPage.id:
+        return MaterialPageRoute(builder: (context) => RegistrationPage());
       case WelcomePage.id:
         return MaterialPageRoute(builder: (context) => WelcomePage());
       case ForgotPasswordPage.id:

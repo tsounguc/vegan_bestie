@@ -2,15 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 
 import '../../../../../core/webviewScreen/web_view_screen.dart';
-import '../../../../../data/models/yelp_restaurants_search_model.dart';
+import '../../../data/models/yelp_restaurants_model.dart';
 
 class RestaurantCard extends StatelessWidget {
   const RestaurantCard({Key? key, required this.dietRestrictions, required this.business}) : super(key: key);
 
   final String? dietRestrictions;
-  final Business? business;
+  final RestaurantEntity? business;
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +20,12 @@ class RestaurantCard extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => WebViewScreen(
-              url: business!.url,
+              url: business?.url,
             ),
           ),
         );
 
-        debugPrint("${business!.name}:  ${business!.url}");
+        debugPrint("${business?.name}:  ${business?.url}");
       },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 6.w),

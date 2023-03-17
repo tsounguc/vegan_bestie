@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/assets/vegan_icon.dart';
 import 'package:sheveegan/core/constants/colors.dart';
 import 'package:sheveegan/features/auth/presentation/pages/login_page.dart';
-import 'package:sheveegan/features/auth/presentation/pages/sign_up.dart';
+import 'package:sheveegan/features/auth/presentation/pages/registration_page.dart';
 
 import '../../../../core/constants/strings.dart';
+import '../auth_cubit/auth_cubit.dart';
 
 class WelcomePage extends StatelessWidget {
   // const WelcomePage({Key? key}) : super(key: key);
@@ -53,7 +55,8 @@ class WelcomePage extends StatelessWidget {
                       height: 50,
                       color: Colors.white,
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, LoginPage.id);
+                        BlocProvider.of<AuthCubit>(context).goToLoginPage();
+                        // Navigator.pushReplacementNamed(context, LoginPage.id);
                       },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -76,7 +79,8 @@ class WelcomePage extends StatelessWidget {
                         height: 50,
                         color: Colors.white,
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, SignUpPage.id);
+                          BlocProvider.of<AuthCubit>(context).goToRegister();
+                          // Navigator.pushReplacementNamed(context, SignUpPage.id);
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),

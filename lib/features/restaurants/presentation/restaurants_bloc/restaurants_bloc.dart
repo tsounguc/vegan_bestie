@@ -1,30 +1,34 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:sheveegan/data/models/google_restaurants_search_model.dart';
-import 'package:sheveegan/data/models/yelp_restaurants_search_model.dart';
-import 'package:sheveegan/data/repositoryLayer/repository.dart';
 
-import '../../../../data/models/restaurants_search_model.dart';
+import '../../../../core/failures_successes/failures.dart';
+import '../../../../core/service_locator.dart';
+import '../../domain/entities/restaurant_entity.dart';
+import '../../domain/usecases/get_restaurants_near_me_usecase.dart';
 
 part 'restaurants_event.dart';
 part 'restaurants_state.dart';
 
 class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
-  final Repository repository;
-  YelpRestaurantsSearchModel? _results;
-  RestaurantsBloc({required this.repository}) : super(RestaurantsInitialState()) {
+  final GetRestaurantsNearMeUseCase _getRestaurantsNearMeUseCase = serviceLocator<GetRestaurantsNearMeUseCase>();
+  RestaurantsBloc() : super(RestaurantsInitialState()) {
     on<GetRestaurantsEvent>((event, emit) async {
-      try {
-        emit(RestaurantsLoadingState());
-        _results = await repository.getRestaurantsNearMe(event.position!);
-        emit(RestaurantsFoundState(results: _results));
-      } on Error catch (e) {
-        print(e);
-        throw Exception(e.stackTrace);
-      } catch (e) {}
+      emit(RestaurantsLoadingState());
+      final Either<FetchRestaurantsNearMeFailure, List<RestaurantEntity>> restaurantsResults =
+          await _getRestaurantsNearMeUseCase.getRestaurantsNearMe(event.position!);
+      restaurantsResults.fold(
+        (fetchRestaurantNearMeFailure) => emit(RestaurantsErrorState(error: fetchRestaurantNearMeFailure.message)),
+        (restaurants) {
+          if (restaurants == null || restaurants.isEmpty) {
+            emit(RestaurantsNotFoundState(message: "No restaurant found near you"));
+          } else {
+            emit(RestaurantsFoundState(restaurants: restaurants));
+          }
+        },
+      );
     });
   }
 }

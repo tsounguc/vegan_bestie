@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sheveegan/features/auth/presentation/auth_cubit/auth_cubit.dart';
 
+import 'custom_circle_avatar.dart';
+
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key}) : super(key: key);
 
@@ -22,63 +24,57 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 children: [
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 3.5,
-                    child: DrawerHeader(
-                      margin: EdgeInsets.zero,
-                      padding: EdgeInsets.zero,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade600,
-                        // image: DecorationImage(
-                        //     fit: BoxFit.cover,
-                        //     image: NetworkImage(
-                        //         "https://media.licdn.com/dms/image/C5603AQFq3ET1ktm-qQ/profile-displayphoto-shrink_800_800/0/1588221581935?e=2147483647&v=beta&t=LDoGtLa7sXY1VQhXrnPVSAMmoCNQIw_qDA79H6wmNeY")),
-                        // gradient: LinearGradient(
-                        //   colors: <Color>[
-                        //     Theme.of(context).colorScheme.background,
-                        //     Colors.green.shade800,
-                        //   ],
-                        // ),
-                      ),
-                      // child: Container(),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          CircleAvatar(
-                            backgroundColor: Theme.of(context).colorScheme.background,
-                            //TODO: find a way to put profile image in database and reference it here
-                            backgroundImage: NetworkImage(
-                              "https://media.licdn.com/dms/image/C5603AQFq3ET1ktm-qQ/profile-displayphoto-shrink_800_800/0/1588221581935?e=2147483647&v=beta&t=LDoGtLa7sXY1VQhXrnPVSAMmoCNQIw_qDA79H6wmNeY",
+                    child: GestureDetector(
+                      onTap: () {
+                        // Navigator.pushNamed(context, ProfilePage.id);
+                      },
+                      child: DrawerHeader(
+                        margin: EdgeInsets.zero,
+                        padding: EdgeInsets.zero,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade600,
+                          // image: DecorationImage(
+                          //     fit: BoxFit.cover,
+                          //     image: NetworkImage(
+                          //         "https://media.licdn.com/dms/image/C5603AQFq3ET1ktm-qQ/profile-displayphoto-shrink_800_800/0/1588221581935?e=2147483647&v=beta&t=LDoGtLa7sXY1VQhXrnPVSAMmoCNQIw_qDA79H6wmNeY")),
+                          // gradient: LinearGradient(
+                          //   colors: <Color>[
+                          //     Theme.of(context).colorScheme.background,
+                          //     Colors.green.shade800,
+                          //   ],
+                          // ),
+                        ),
+                        // child: Container(),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            CustomCircleAvatar(
+                              size: 75,
                             ),
-                            // backgroundImage:
-                            //     state.currentUser.photoUrl != null ? NetworkImage(state.currentUser.photoUrl!) : null,
-                            // child: state.currentUser.photoUrl != null
-                            //     ? null
-                            //     : Icon(Icons.person, size: 50, color: Colors.white),
-                            radius: 75,
-                          ),
-                          Container(
-                            // height: 60,
-                            child: Center(
-                              child: ListTile(
-                                title: Text(
-                                  "${state.currentUser.name}",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                            Container(
+                              child: Center(
+                                child: ListTile(
+                                  title: Text(
+                                    "${state.currentUser.name}",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
-                                ),
-                                subtitle: Text(
-                                  "See your profile",
-                                  style: TextStyle(
-                                    color: Colors.grey.shade200,
-                                    fontSize: 14,
+                                  subtitle: Text(
+                                    "See your profile",
+                                    style: TextStyle(
+                                      color: Colors.grey.shade200,
+                                      fontSize: 14,
+                                    ),
                                   ),
+                                  trailing: Icon(Icons.arrow_right),
                                 ),
-                                trailing: Icon(Icons.arrow_right),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

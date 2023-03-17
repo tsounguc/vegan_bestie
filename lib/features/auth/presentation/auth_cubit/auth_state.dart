@@ -21,9 +21,21 @@ class AuthErrorState extends AuthState {
   List<Object?> get props => [];
 }
 
+class CreateUserErrorState extends AuthState {
+  final error;
+  CreateUserErrorState({required this.error});
+  @override
+  List<Object?> get props => [];
+}
+
 class LoggedInState extends AuthState {
   final UserEntity currentUser;
   LoggedInState({required this.currentUser});
+  @override
+  List<Object?> get props => [];
+}
+
+class RegisterState extends AuthState {
   @override
   List<Object?> get props => [];
 }

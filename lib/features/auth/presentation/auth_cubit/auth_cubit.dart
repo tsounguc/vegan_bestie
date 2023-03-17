@@ -26,7 +26,10 @@ class AuthCubit extends Cubit<AuthState> {
         await _createUserAccountUseCase.createUserAccount(userName, email, password);
     registrationResult.fold(
       (registrationFailure) => emit(AuthErrorState(error: registrationFailure.message)),
-      (userEntity) => emit(LoggedInState(currentUser: userEntity)),
+      (userEntity) {
+        debugPrint("Name in cubit: ${userEntity.name}");
+        emit(LoggedInState(currentUser: userEntity));
+      },
     );
   }
 
@@ -37,7 +40,7 @@ class AuthCubit extends Cubit<AuthState> {
     signInResult.fold(
       (signInFailure) => emit(AuthErrorState(error: signInFailure.message)),
       (userEntity) {
-        debugPrint("Name in cubit: ${userEntity.name}");
+        debugPrint("Sign In Name in cubit: ${userEntity.name}");
         emit(LoggedInState(currentUser: userEntity));
       },
     );
@@ -45,11 +48,23 @@ class AuthCubit extends Cubit<AuthState> {
 
   void currentUser() async {
     emit(AuthLoadingState());
-    Either<String, UserEntity> userLoginStatus = await _currentUserUseCase.currentUser();
+    Either<CurrentUserFailure, UserEntity> userLoginStatus = await _currentUserUseCase.currentUser();
     userLoginStatus.fold(
       (notSignedIn) => emit(SignedOutState()),
       (currentUser) => emit(LoggedInState(currentUser: currentUser)),
     );
+  }
+
+  setStateToInitial() {
+    emit(AuthInitialState());
+  }
+
+  goToLoginPage() {
+    emit(SignedOutState());
+  }
+
+  goToRegister() {
+    emit(RegisterState());
   }
 
   void signOut() async {

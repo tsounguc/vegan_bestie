@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sheveegan/core/constants/colors.dart';
 
 import 'login_page.dart';
-import 'sign_up.dart';
+import 'registration_page.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   static const String id = "/forgotPasswordPage";

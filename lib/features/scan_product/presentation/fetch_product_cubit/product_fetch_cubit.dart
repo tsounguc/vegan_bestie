@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/failures_successes/failures.dart';
 import '../../../../core/service_locator.dart';
 import '../../domain/entities/product_info_entity.dart';
-import '../../domain/usescases/fetch_product_usecase.dart';
+import '../../domain/usecases/fetch_product_usecase.dart';
 
 part 'product_fetch_state.dart';
 

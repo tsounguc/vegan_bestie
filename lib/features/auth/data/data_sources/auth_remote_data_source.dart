@@ -26,28 +26,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
       UserModel user = UserModel(
         uid: userInfo.user?.uid,
         email: userInfo.user?.email,
-        name: userName,
+        name: userInfo.user?.displayName,
         photoUrl: userInfo.user?.photoURL,
       );
-      debugPrint("User Model Name: ${user.name}");
+      debugPrint("Auth Remote Data Source User Model Name: ${user.name}");
       return user;
     } on FirebaseAuthException catch (e) {
       throw CreateWithEmailAndPasswordException(message: e.message);
     }
-  }
-
-  @override
-  Future<UserModel> currentUser() async {
-    User? currentUser = await authServiceContract.currentUser();
-    String? name = await getUserName(currentUser?.uid);
-    UserModel currentUserModel = UserModel(
-      uid: currentUser?.uid,
-      name: name,
-      email: currentUser?.email,
-      photoUrl: currentUser?.photoURL,
-    );
-
-    return currentUserModel;
   }
 
   @override
@@ -58,13 +44,31 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
       UserModel user = UserModel(
         uid: userInfo.user?.uid,
         email: userInfo.user?.email,
-        name: name,
+        name: userInfo.user?.displayName,
         photoUrl: userInfo.user?.photoURL,
       );
       debugPrint("User Model Name: ${user.name}");
       return user;
     } on FirebaseAuthException catch (e) {
       throw SignInWithEmailAndPasswordException(message: e.message);
+    }
+  }
+
+  @override
+  Future<UserModel> currentUser() async {
+    try {
+      User? currentUser = await authServiceContract.currentUser();
+      String? name = await getUserName(currentUser?.uid);
+      UserModel currentUserModel = UserModel(
+        uid: currentUser?.uid,
+        name: currentUser?.displayName,
+        email: currentUser?.email,
+        photoUrl: currentUser?.photoURL,
+      );
+      return currentUserModel;
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      throw CurrentUserException(message: e.toString());
     }
   }
 

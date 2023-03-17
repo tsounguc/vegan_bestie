@@ -19,6 +19,8 @@ class GeolocationLoadedState extends GeolocationState {
 }
 
 class GeolocationErrorState extends GeolocationState {
+  final error;
+  GeolocationErrorState({this.error});
   @override
   List<Object> get props => [];
 }

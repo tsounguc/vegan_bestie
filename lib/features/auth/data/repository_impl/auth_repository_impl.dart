@@ -1,8 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:sheveegan/core/failures_successes/exceptions.dart';
 
+import '../../../../core/failures_successes/exceptions.dart';
 import '../../../../core/failures_successes/failures.dart';
 import '../../../../core/service_locator.dart';
 import '../../domain/entities/user_entity.dart';
@@ -25,7 +24,7 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
       debugPrint("Repo Implementation User Entity Name: ${userModel.name}");
       return Right(userEntity);
     } on CreateWithEmailAndPasswordException catch (e) {
-      throw Left(CreateWithEmailAndPasswordFailure(message: e.message));
+      return Left(CreateWithEmailAndPasswordFailure(message: e.message));
     }
   }
 
@@ -40,7 +39,19 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
       debugPrint("Repo Implementation User Entity Name: ${userModel.name}");
       return Right(userEntity);
     } on SignInWithEmailAndPasswordException catch (e) {
-      throw Left(SignInWithEmailAndPasswordFailure(message: e.message));
+      return Left(SignInWithEmailAndPasswordFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<CurrentUserFailure, UserEntity>> currentUser() async {
+    try {
+      UserModel currentUserModel = await authRemoteDataSourceContract.currentUser();
+      UserMapper mapper = UserMapper();
+      UserEntity currentUserEntity = mapper.mapToEntity(currentUserModel);
+      return Right(currentUserEntity);
+    } on CurrentUserException catch (e) {
+      return Left(CurrentUserFailure(message: e.message));
     }
   }
 
@@ -50,19 +61,7 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
       void signOutResult = await authRemoteDataSourceContract.signOut();
       return Right(signOutResult);
     } on SignOutException catch (e) {
-      throw Left(SignOutFailure(message: e.message));
-    }
-  }
-
-  @override
-  Future<Either<String, UserEntity>> currentUser() async {
-    UserModel currentUserModel = await authRemoteDataSourceContract.currentUser();
-    UserMapper mapper = UserMapper();
-    UserEntity currentUserEntity = mapper.mapToEntity(currentUserModel);
-    if (currentUserModel.uid != null) {
-      return Right(currentUserEntity);
-    } else {
-      return Left("");
+      return Left(SignOutFailure(message: e.message));
     }
   }
 }

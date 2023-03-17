@@ -7,16 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/service_locator.dart';
-import 'package:sheveegan/data/providers/google_places_api_provider.dart';
-import 'package:sheveegan/core/services/food_facts_api_service.dart';
-import 'package:sheveegan/data/providers/restaurants_api_provider.dart';
+import 'package:sheveegan/core/services/restaurants_services/restaurants_service.dart';
+import 'package:sheveegan/core/services/food_facts_services/food_facts_api_service.dart';
 import 'package:sheveegan/features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
 import 'package:sheveegan/features/search/presentation/search_bloc/search_bloc.dart';
 import 'package:sheveegan/features/scan_product/presentation/barcode_scanner_cubit/barcode_scanner_cubit.dart';
 import 'package:sheveegan/features/scan_product/presentation/fetch_product_cubit/product_fetch_cubit.dart';
 import 'package:sheveegan/home_page.dart';
 import 'package:sheveegan/themes/app_theme.dart';
-import 'data/providers/yelp_fusion_api_provider.dart';
 import 'data/repositoryLayer/repository.dart';
 import 'features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'features/auth/presentation/pages/auth_page.dart';
@@ -48,7 +46,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Repository repository = Repository(
-    openFoodFactApiProvider: FoodFactsApiServiceImpl(), yelpFusionApiProvider: YelpFusionApiProvider(),
+    openFoodFactApiProvider: OpenFoodFactsApiServiceImpl(),
+    yelpFusionApiProvider: YelpFusionRestaurantsApiServiceImpl(),
     // googlePlacesApiProvider: GooglePlacesApiProvider(),
     // restaurantsApiProvider: RestaurantsApiProvider(),
   );
@@ -70,16 +69,16 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider<ProductFetchCubit>(
           create: (context) => ProductFetchCubit(),
+        ),BlocProvider<GeolocationBloc>(
+          create: (context) => GeolocationBloc(),
+        ),
+        BlocProvider<RestaurantsBloc>(
+          create: (context) => RestaurantsBloc(),
         ),
         BlocProvider<SearchBloc>(
           create: (context) => SearchBloc(repository: repository),
         ),
-        BlocProvider<RestaurantsBloc>(
-          create: (context) => RestaurantsBloc(repository: repository),
-        ),
-        BlocProvider<GeolocationBloc>(
-          create: (context) => GeolocationBloc(repository: repository),
-        ),
+
       ],
       child: ScreenUtilInit(
         builder: (context, child) => MaterialApp(

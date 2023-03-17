@@ -7,7 +7,7 @@ abstract class FoodFactsApiServiceContract {
   Future<Map<String, dynamic>> getProductData({required String barcode});
 }
 
-class FoodFactsApiServiceImpl implements FoodFactsApiServiceContract {
+class OpenFoodFactsApiServiceImpl implements FoodFactsApiServiceContract {
   // final apikey = "";
   // final _baseUrl = "https://world.openfoodfacts.org/api/v2/product/0889392010145";
   final _baseUrl = "https://us.openfoodfacts.org";

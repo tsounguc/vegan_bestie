@@ -4,37 +4,37 @@
 
 import 'dart:convert';
 
-YelpRestaurantsSearchModel yelpRestaurantsSearchModelFromJson(String str) =>
-    YelpRestaurantsSearchModel.fromJson(json.decode(str));
+// YelpRestaurantsModel yelpRestaurantsSearchModelFromJson(String str) =>
+//     YelpRestaurantsModel.fromJson(json.decode(str));
 
 // String yelpRestaurantsSearchModelToJson(YelpRestaurantsSearchModel data) => json.encode(data.toJson());
 
-class YelpRestaurantsSearchModel {
-  YelpRestaurantsSearchModel({
-    required this.businesses,
-    required this.total,
-    required this.region,
-  });
+// class YelpRestaurantsModel {
+//   YelpRestaurantsModel({
+//     required this.businesses,
+//     required this.total,
+//     required this.region,
+//   });
+//
+//   List<YelpRestaurantModel>? businesses;
+//   int? total;
+//   Region? region;
+//
+//   factory YelpRestaurantsModel.fromJson(Map<String, dynamic>? json) => YelpRestaurantsModel(
+//         businesses: List<YelpRestaurantModel>.from(json?["businesses"].map((x) => YelpRestaurantModel.fromJson(x))),
+//         total: json?["total"],
+//         region: Region.fromJson(json?["region"]),
+//       );
+//
+//   // Map<String, dynamic> toJson() => {
+//   //       "businesses": List<dynamic>.from(businesses.map((x) => x.toJson())),
+//   //       "total": total,
+//   //       "region": region.toJson(),
+//   //     };
+// }
 
-  List<Business>? businesses;
-  int? total;
-  Region? region;
-
-  factory YelpRestaurantsSearchModel.fromJson(Map<String, dynamic>? json) => YelpRestaurantsSearchModel(
-        businesses: List<Business>.from(json?["businesses"].map((x) => Business.fromJson(x))),
-        total: json?["total"],
-        region: Region.fromJson(json?["region"]),
-      );
-
-  // Map<String, dynamic> toJson() => {
-  //       "businesses": List<dynamic>.from(businesses.map((x) => x.toJson())),
-  //       "total": total,
-  //       "region": region.toJson(),
-  //     };
-}
-
-class Business {
-  Business({
+class YelpRestaurantModel {
+  YelpRestaurantModel({
     required this.id,
     required this.alias,
     required this.name,
@@ -70,7 +70,7 @@ class Business {
   String? displayPhone;
   double? distance;
 
-  factory Business.fromJson(Map<String, dynamic>? json) => Business(
+  factory YelpRestaurantModel.fromJson(Map<String, dynamic>? json) => YelpRestaurantModel(
         id: json?["id"],
         alias: json?["alias"],
         name: json?["name"],

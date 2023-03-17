@@ -22,3 +22,15 @@ class SignInWithEmailAndPasswordFailure extends Failure {
 class SignOutFailure extends Failure {
   SignOutFailure({String? message}) : super(message: message);
 }
+
+class CurrentUserFailure extends Failure {
+  const CurrentUserFailure({String? message}) : super(message: message);
+}
+
+class FetchRestaurantsNearMeFailure extends Failure {
+  const FetchRestaurantsNearMeFailure({String? message}) : super(message: message);
+}
+
+class LocationFailure extends Failure {
+  const LocationFailure({String? message}) : super(message: message);
+}

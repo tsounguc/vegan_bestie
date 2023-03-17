@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/loading.dart';
 import '../geolocation_bloc/geolocation_bloc.dart';
 import 'componets/restaurant_card.dart';
 import '../restaurants_bloc/restaurants_bloc.dart';
@@ -27,113 +28,90 @@ class RestaurantsHomePage extends StatelessWidget {
         },
         child: BlocBuilder<RestaurantsBloc, RestaurantsState>(
           builder: (context, state) {
-            if (state is RestaurantsLoadingState) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Spacer(),
-                    CircularProgressIndicator(),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Visibility(
-                      visible: false,
-                      child: Text(
-                        "Searching...",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18.sp,
-                        ),
-                      ),
-                    ),
-                    Spacer(),
-                  ],
-                ),
-              );
-            } else if (state is RestaurantsFoundState) {
+            if (state is RestaurantsFoundState) {
               return Scaffold(
                 backgroundColor: Theme.of(context).colorScheme.background,
                 body: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: state.results?.businesses?.length,
-                  itemBuilder: (context, index) {
-                    int? length = state.results?.businesses?[index].categories?.length;
+                  itemCount: state.restaurants.length,
+                  itemBuilder: (context, restaurantIndex) {
+                    int? length = state.restaurants[restaurantIndex].categories?.length;
                     String? dietRestrictions = "";
-                    for (int i = 0; i < length!; i++) {
-                      dietRestrictions =
-                          dietRestrictions! + "${state.results?.businesses?[index].categories?[i].title}";
-                      if (i < length - 1) {
+                    for (int categoryIndex = 0; categoryIndex < length!; categoryIndex++) {
+                      dietRestrictions = dietRestrictions! +
+                          "${state.restaurants[restaurantIndex].categories?[categoryIndex].title}";
+                      if (categoryIndex < length - 1) {
                         dietRestrictions = dietRestrictions + " | ";
                       }
                     }
                     return RestaurantCard(
                       dietRestrictions: dietRestrictions,
-                      business: state.results!.businesses![index],
+                      business: state.restaurants[restaurantIndex],
                     );
                   },
                 ),
               );
             } else {
-              return Scaffold(
-                backgroundColor: Theme.of(context).colorScheme.background,
-                body: Container(
-                  padding: EdgeInsets.only(top: 56.h, right: 16.w, bottom: 8.h, left: 16.w),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: 40.h,
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade50,
-                          borderRadius: BorderRadius.circular(5.r),
-                        ),
-                        child: Center(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Theme.of(context).colorScheme.background,
-                              ),
-                              // suffixIcon: IconButton(
-                              //   icon: Icon(
-                              //     Icons.cancel,
-                              //     color: Theme.of(context).backgroundColor,
-                              //   ),
-                              //   onPressed: () {},
-                              // ),
-                              hintText: 'Find Restaurants',
-                              hintStyle:
-                                  TextStyle(color: Theme.of(context).colorScheme.background, fontSize: 16.sp),
-                              border: InputBorder.none,
-                            ),
-                            style: TextStyle(color: Colors.black),
-                            onSubmitted: (searchQuery) {
-                              // RestaurantsApiProvider().searchRestaurants(searchQuery);
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 96.h,
-                      ),
-                      Text(
-                        Strings.appTitle,
-                        style: TextStyle(
-                          color: titleTextColorOne,
-                          fontSize: 36.sp,
-                          fontWeight: FontWeight.w800,
-                          fontFamily: 'cursive',
-                        ),
-                      ),
-                      Spacer(),
-                      Spacer()
-                    ],
-                  ),
-                ),
-              );
+              return LoadingPage();
+              // return Scaffold(
+              //   backgroundColor: Theme.of(context).colorScheme.background,
+              //   body: Container(
+              //     padding: EdgeInsets.only(top: 56.h, right: 16.w, bottom: 8.h, left: 16.w),
+              //     child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.start,
+              //       crossAxisAlignment: CrossAxisAlignment.center,
+              //       children: [
+              //         Container(
+              //           width: double.infinity,
+              //           height: 40.h,
+              //           decoration: BoxDecoration(
+              //             color: Colors.green.shade50,
+              //             borderRadius: BorderRadius.circular(5.r),
+              //           ),
+              //           child: Center(
+              //             child: TextField(
+              //               decoration: InputDecoration(
+              //                 prefixIcon: Icon(
+              //                   Icons.search,
+              //                   color: Theme.of(context).colorScheme.background,
+              //                 ),
+              //                 // suffixIcon: IconButton(
+              //                 //   icon: Icon(
+              //                 //     Icons.cancel,
+              //                 //     color: Theme.of(context).backgroundColor,
+              //                 //   ),
+              //                 //   onPressed: () {},
+              //                 // ),
+              //                 hintText: 'Find Restaurants',
+              //                 hintStyle:
+              //                     TextStyle(color: Theme.of(context).colorScheme.background, fontSize: 16.sp),
+              //                 border: InputBorder.none,
+              //               ),
+              //               style: TextStyle(color: Colors.black),
+              //               onSubmitted: (searchQuery) {
+              //                 // RestaurantsApiProvider().searchRestaurants(searchQuery);
+              //               },
+              //             ),
+              //           ),
+              //         ),
+              //         SizedBox(
+              //           height: 96.h,
+              //         ),
+              //         Text(
+              //           Strings.appTitle,
+              //           style: TextStyle(
+              //             color: titleTextColorOne,
+              //             fontSize: 36.sp,
+              //             fontWeight: FontWeight.w800,
+              //             fontFamily: 'cursive',
+              //           ),
+              //         ),
+              //         Spacer(),
+              //         Spacer()
+              //       ],
+              //     ),
+              //   ),
+              // );
             }
           },
         ),
