@@ -24,10 +24,9 @@ class SearchingState extends SearchState {
 }
 
 class SearchFoundState extends SearchState {
-  final SearchModel? searchResults;
-  final bool? isVegan;
+  final List<SearchProductEntity> searchProducts;
 
-  SearchFoundState({required this.searchResults, this.isVegan});
+  SearchFoundState({required this.searchProducts});
   @override
   List<Object?> get props => [];
 
@@ -48,7 +47,7 @@ class SearchQueryChangedState extends SearchState {
 }
 
 class SearchProductDetailState extends SearchState {
-  final ProductInfoModel? selectedProduct;
+  final SearchProductEntity? selectedProduct;
   final bool? isVegan;
   final String? nonVeganIngredientsInProduct;
   SearchProductDetailState({this.selectedProduct, this.isVegan, this.nonVeganIngredientsInProduct});

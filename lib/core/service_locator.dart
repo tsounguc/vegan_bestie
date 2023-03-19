@@ -8,7 +8,7 @@ import '../features/auth/domain/usecases/current_user_usecase.dart';
 import '../features/auth/domain/usecases/sign_in_with_email_and_password_usecase.dart';
 import '../features/auth/domain/usecases/sign_out_usecase.dart';
 import '../features/restaurants/data/data_sources/current_location_from_plugin.dart';
-import '../features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
+import '../features/restaurants/data/data_sources/restaurants_from_remote_data_source.dart';
 import '../features/restaurants/data/repositories_impl/current_location_respository_impl.dart';
 import '../features/restaurants/data/repositories_impl/restaurants_repository_impl.dart';
 import '../features/restaurants/domain/repositories_contracts/current_location_repository_contract.dart';
@@ -21,9 +21,12 @@ import '../features/scan_product/data/repositories_impl/fetch_product_repository
 import '../features/scan_product/data/repositories_impl/scan_barcode_repository_impl.dart';
 import '../features/scan_product/domain/repositories_contracts/fetch_product_repository_contract.dart';
 import '../features/scan_product/domain/repositories_contracts/scan_barcode_repository_contract.dart';
-
 import '../features/scan_product/domain/usecases/fetch_product_usecase.dart';
 import '../features/scan_product/domain/usecases/scan_barcode_usecase.dart';
+import '../features/search/data/data_sources/search_products_from_remote_data_source.dart';
+import '../features/search/data/repositories_impl/search_product_repository_impl.dart';
+import '../features/search/domain/respositories_contracts/search_product_repository_contract.dart';
+import '../features/search/domain/usecases/search_product_usecase.dart';
 import 'services/auth_service.dart';
 import 'services/barcode_scanner_plugin.dart';
 import 'services/food_facts_services/food_facts_api_service.dart';
@@ -42,12 +45,19 @@ void setUpServices() {
   serviceLocator.registerSingleton<CurrentUserUseCase>(CurrentUserUseCase());
   serviceLocator.registerSingleton<SignInWithEmailAndPasswordUseCase>(SignInWithEmailAndPasswordUseCase());
 
-  //--- Food Service
+  //--- Scan Food Service
   serviceLocator.registerSingleton<FoodFactsApiServiceContract>(OpenFoodFactsApiServiceImpl());
   serviceLocator
       .registerSingleton<FetchProductFromRemoteDataSourceContract>(FetchProductFromRemoteDataSourceImpl());
   serviceLocator.registerSingleton<FetchProductRepositoryContract>(FetchProductRepositoryImpl());
   serviceLocator.registerSingleton<FetchProductUseCase>(FetchProductUseCase());
+
+  //--- Search Food Service
+  // Currently uses the same api as scanner
+  serviceLocator
+      .registerSingleton<SearchProductsFromRemoteDataSourceContract>(SearchProductsFromRemoteDataSourceImpl());
+  serviceLocator.registerSingleton<SearchProductRepositoryContract>(SearchProductRepositoryImpl());
+  serviceLocator.registerSingleton<SearchProductUseCase>(SearchProductUseCase());
 
   //--- Scanner Service
   serviceLocator.registerSingleton<BarcodeScannerServiceContract>(BarcodeScannerServiceImpl());
@@ -60,9 +70,11 @@ void setUpServices() {
   serviceLocator.registerSingleton<CurrentLocationFromPluginContract>(CurrentLocationFromGeoLocatorPluginImpl());
   serviceLocator.registerSingleton<CurrentLocationRepositoryContract>(CurrentLocationRepositoryImpl());
   serviceLocator.registerSingleton<GetCurrentLocationUseCase>(GetCurrentLocationUseCase());
+
   //--- Restaurants Service
   serviceLocator.registerSingleton<RestaurantsApiServiceContract>(YelpFusionRestaurantsApiServiceImpl());
-  serviceLocator.registerSingleton<RestaurantsRemoteDataSourceContract>(RestaurantsRemoteDataSourceYelpImpl());
+  serviceLocator
+      .registerSingleton<RestaurantsFromRemoteDataSourceContract>(RestaurantsFromRemoteDataSourceYelpImpl());
   serviceLocator.registerSingleton<RestaurantsRepositoryContract>(RestaurantsRepositoryYelpImpl());
   serviceLocator.registerSingleton<GetRestaurantsNearMeUseCase>(GetRestaurantsNearMeUseCase());
 }

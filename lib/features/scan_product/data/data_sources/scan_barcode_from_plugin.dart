@@ -1,4 +1,5 @@
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/service_locator.dart';
 import 'package:sheveegan/core/services/barcode_scanner_plugin.dart';
 
@@ -13,7 +14,11 @@ class ScanBarcodeFromPluginImpl implements ScanBarcodeFromPluginContract {
       serviceLocator<BarcodeScannerServiceContract>();
   @override
   Future<BarcodeModel> scanBarcode() async {
-    String barcode = await barcodeScannerServiceContract.scanBarcode();
-    return BarcodeModel(barcode: barcode);
+    try {
+      String barcode = await barcodeScannerServiceContract.scanBarcode();
+      return BarcodeModel(barcode: barcode);
+    } catch (e) {
+      throw const ScanBarcodeException(message: "Failed to scan barcode");
+    }
   }
 }

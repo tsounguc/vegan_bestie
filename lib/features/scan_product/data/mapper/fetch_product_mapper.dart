@@ -1,40 +1,40 @@
-import 'package:sheveegan/features/scan_product/data/models/product_info_model.dart';
-import 'package:sheveegan/features/scan_product/domain/entities/product_info_entity.dart';
+import '../../domain/entities/scan_product_entity.dart';
+import '../models/product_info_model.dart';
 
-class ProductMapper {
-  ProductInfoEntity mapToEntity(ProductInfoModel productInfoModel) {
+class ScanProductMapper {
+  ScanProductEntity mapToEntity(ScanProductModel scanProductModel) {
     List<IngredientEntity> ingredients = [];
-    for (int index = 0; index < productInfoModel.ingredients!.length; index++) {
+    for (int index = 0; index < scanProductModel.ingredients!.length; index++) {
       IngredientEntity ingredient = IngredientEntity(
-        id: productInfoModel.ingredients?[index].id,
-        percentEstimate: productInfoModel.ingredients?[index].percentEstimate,
-        percentMax: productInfoModel.ingredients?[index].percentMax,
-        percentMin: productInfoModel.ingredients?[index].percentMin,
-        text: productInfoModel.ingredients?[index].text,
-        vegan: productInfoModel.ingredients?[index].vegan,
-        vegetarian: productInfoModel.ingredients?[index].vegetarian,
+        id: scanProductModel.ingredients?[index].id,
+        percentEstimate: scanProductModel.ingredients?[index].percentEstimate,
+        percentMax: scanProductModel.ingredients?[index].percentMax,
+        percentMin: scanProductModel.ingredients?[index].percentMin,
+        text: scanProductModel.ingredients?[index].text,
+        vegan: scanProductModel.ingredients?[index].vegan,
+        vegetarian: scanProductModel.ingredients?[index].vegetarian,
       );
       ingredients.add(ingredient);
     }
-    return ProductInfoEntity(
-      code: productInfoModel.code,
-      productName: productInfoModel.productName,
+    return ScanProductEntity(
+      code: scanProductModel.code,
+      productName: scanProductModel.productName,
       ingredients: ingredients,
-      ingredientsText: productInfoModel.ingredientsText,
-      labels: productInfoModel.labels,
-      imageFrontUrl: productInfoModel.imageFrontUrl,
-      proteins: productInfoModel.nutriments?.proteins,
-      proteins100G: productInfoModel.nutriments?.proteins100G,
-      proteinsUnit: productInfoModel.nutriments?.proteinsUnit,
-      proteinsValue: productInfoModel.nutriments?.proteinsValue,
-      carbohydrates: productInfoModel.nutriments?.carbohydrates,
-      carbohydrates100G: productInfoModel.nutriments?.carbohydrates100G,
-      carbohydratesUnit: productInfoModel.nutriments?.carbohydratesUnit,
-      carbohydratesValue: productInfoModel.nutriments?.carbohydratesValue,
-      fat: productInfoModel.nutriments?.fat,
-      fat100G: productInfoModel.nutriments?.fat100G,
-      fatUnit: productInfoModel.nutriments?.fatUnit,
-      fatValue: productInfoModel.nutriments?.fatValue,
+      ingredientsText: scanProductModel.ingredientsText,
+      labels: scanProductModel.labels,
+      imageFrontUrl: scanProductModel.imageFrontUrl,
+      proteins: scanProductModel.nutriments?.proteins,
+      proteins100G: scanProductModel.nutriments?.proteins100G,
+      proteinsUnit: scanProductModel.nutriments?.proteinsUnit,
+      proteinsValue: scanProductModel.nutriments?.proteinsValue,
+      carbohydrates: scanProductModel.nutriments?.carbohydrates,
+      carbohydrates100G: scanProductModel.nutriments?.carbohydrates100G,
+      carbohydratesUnit: scanProductModel.nutriments?.carbohydratesUnit,
+      carbohydratesValue: scanProductModel.nutriments?.carbohydratesValue,
+      fat: scanProductModel.nutriments?.fat,
+      fat100G: scanProductModel.nutriments?.fat100G,
+      fatUnit: scanProductModel.nutriments?.fatUnit,
+      fatValue: scanProductModel.nutriments?.fatValue,
     );
   }
 }

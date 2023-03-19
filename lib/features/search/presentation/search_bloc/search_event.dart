@@ -30,7 +30,7 @@ class SearchQueryClearedEvent extends SearchEvent {
 }
 
 class SearchProductPressedEvent extends SearchEvent {
-  final ProductInfoModel selectedProduct;
+  final SearchProductEntity selectedProduct;
   SearchProductPressedEvent({required this.selectedProduct});
 
   @override

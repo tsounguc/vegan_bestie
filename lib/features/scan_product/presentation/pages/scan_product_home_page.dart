@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/scan_results_page.dart';
 import 'package:simple_animations/simple_animations.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../core/constants/size_config.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../search/presentation/search_bloc/search_bloc.dart';
 import '../barcode_scanner_cubit/barcode_scanner_cubit.dart';
@@ -67,7 +68,7 @@ class ScanProductHomePage extends StatelessWidget {
               //   ],
               // ),
               SizedBox(
-                height: 100.h,
+                height: 120.h - toolbarHeight,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

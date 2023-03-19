@@ -1,5 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 
+import '../../../../core/failures_successes/exceptions.dart';
 import '../../../../core/service_locator.dart';
 import '../../../../core/services/restaurants_services/current_location_plugin.dart';
 import '../models/location_model.dart';
@@ -13,7 +14,11 @@ class CurrentLocationFromGeoLocatorPluginImpl implements CurrentLocationFromPlug
       serviceLocator<CurrentLocationPluginContract>();
   @override
   Future<LocationModel> getCurrentLocation() async {
-    Position position = await currentLocationPluginContract.getCurrentLocation();
-    return LocationModel(position: position);
+    try {
+      Position position = await currentLocationPluginContract.getCurrentLocation();
+      return LocationModel(position: position);
+    } catch (e) {
+      throw LocationException(message: "Failed to get current location");
+    }
   }
 }

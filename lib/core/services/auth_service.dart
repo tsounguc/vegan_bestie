@@ -19,6 +19,7 @@ abstract class AuthServiceContract<T, U> {
 class FireBaseAuthServiceImpl implements AuthServiceContract<User?, UserCredential> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final db = FirebaseFirestore.instance;
+  final DateTime timeStamp = DateTime.now();
 
   @override
   Future<UserCredential> createWithEmailAndPassword(String userName, String email, String password) async {
@@ -28,8 +29,14 @@ class FireBaseAuthServiceImpl implements AuthServiceContract<User?, UserCredenti
     userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
     //Create the user in firestore with the user data
     debugPrint("Auth Service User Name: ${userCredential.user?.displayName}");
-    await storeUserInfo(userCredential.user?.uid, userName, email);
+    await storeUserInfo(userCredential);
 
+    return userCredential;
+  }
+
+  @override
+  Future<UserCredential> signInWithEmailAndPassword(String email, String password) async {
+    UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
     return userCredential;
   }
 
@@ -45,23 +52,20 @@ class FireBaseAuthServiceImpl implements AuthServiceContract<User?, UserCredenti
   }
 
   @override
-  Future<UserCredential> signInWithEmailAndPassword(String email, String password) async {
-    UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
-    return userCredential;
-  }
-
-  @override
   Future<void> signOut() async {
     await _auth.signOut();
   }
 
   //This method is used to create the user in firestore
-  Future<void> storeUserInfo(String? uid, String username, String email) async {
+  Future<void> storeUserInfo(UserCredential userCredential) async {
     //Creates the user doc named whatever the user uid is in te collection "users"
     //and adds the user data
-    await db.collection("users").doc(uid).set({
-      'Name': username,
-      'Email': email,
+    await db.collection("users").doc(userCredential.user?.uid).set({
+      'Name': userCredential.user?.displayName,
+      'Email': userCredential.user?.email,
+      'photoUrl': userCredential.user?.photoURL,
+      'bio': '',
+      // 'timeStamp': timeStamp,
     });
   }
 }

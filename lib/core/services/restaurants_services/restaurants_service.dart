@@ -41,7 +41,7 @@ class YelpFusionRestaurantsApiServiceImpl implements RestaurantsApiServiceContra
             : "";
     final response = await http.get(
       Uri.parse(
-          "$_baseUrl/businesses/search?limit=50&distance=50000&latitude=${position.latitude}&longitude=${position.longitude}&term=vegan, vegetarian&categories=restaurants&device_platform=$platform"),
+          "$_baseUrl/businesses/search?limit=50&distance=50000&latitude=${position.latitude}&longitude=${position.longitude}&term=vegan,vegetarian&categories=restaurants&sort_by=best_match&device_platform=$platform"),
       headers: _header,
     );
 

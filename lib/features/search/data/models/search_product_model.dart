@@ -1,7 +1,7 @@
 import '../../../../core/food_product_info_models.dart';
 
-class ScanProductModel {
-  ScanProductModel({
+class SearchProductModel {
+  SearchProductModel({
     required this.id,
     required this.keywords,
     required this.addedCountriesTags,
@@ -189,7 +189,6 @@ class ScanProductModel {
     required this.vitaminsTags,
     required this.withSweeteners,
   });
-
   String? id;
   List<String>? keywords;
   List<dynamic>? addedCountriesTags;
@@ -377,7 +376,7 @@ class ScanProductModel {
   List<dynamic>? vitaminsTags;
   dynamic withSweeteners;
 
-  factory ScanProductModel.fromJson(Map<String, dynamic>? json) => ScanProductModel(
+  factory SearchProductModel.fromJson(Map<String, dynamic>? json) => SearchProductModel(
         id: json?["_id"],
         keywords: json?["_keywords"] != null ? List<String>.from(json?["_keywords"].map((x) => x)) : [],
         addedCountriesTags: json?["added_countries_tags"] != null

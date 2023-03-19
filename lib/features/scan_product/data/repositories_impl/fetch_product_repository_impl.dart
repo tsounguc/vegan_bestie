@@ -7,17 +7,17 @@ import 'package:sheveegan/features/scan_product/data/mapper/fetch_product_mapper
 import 'package:sheveegan/features/scan_product/domain/repositories_contracts/fetch_product_repository_contract.dart';
 
 import '../models/product_info_model.dart';
-import '../../domain/entities/product_info_entity.dart';
+import '../../domain/entities/scan_product_entity.dart';
 
 class FetchProductRepositoryImpl implements FetchProductRepositoryContract {
   FetchProductFromRemoteDataSourceContract fetchProductFromRemoteDataSourceContract =
       serviceLocator<FetchProductFromRemoteDataSourceContract>();
   @override
-  Future<Either<FetchProductFailure, ProductInfoEntity>> fetchProduct(String barcode) async {
+  Future<Either<FetchProductFailure, ScanProductEntity>> fetchProduct(String barcode) async {
     try {
-      ProductInfoModel productInfoModel = await fetchProductFromRemoteDataSourceContract.fetchProduct(barcode);
-      ProductMapper mapper = ProductMapper();
-      ProductInfoEntity productInfoEntity = mapper.mapToEntity(productInfoModel);
+      ScanProductModel productInfoModel = await fetchProductFromRemoteDataSourceContract.fetchProduct(barcode);
+      ScanProductMapper mapper = ScanProductMapper();
+      ScanProductEntity productInfoEntity = mapper.mapToEntity(productInfoModel);
       return Right(productInfoEntity);
     } on FetchProductException catch (e) {
       return Left(FetchProductFailure(message: e.message));

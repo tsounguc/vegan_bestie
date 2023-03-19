@@ -7,11 +7,15 @@ abstract class BarcodeScannerServiceContract {
 class BarcodeScannerServiceImpl implements BarcodeScannerServiceContract {
   @override
   Future<String> scanBarcode() async {
-    return await FlutterBarcodeScanner.scanBarcode(
-      "#ff6666",
-      'Cancel',
-      true,
-      ScanMode.DEFAULT,
-    );
+    try {
+      return await FlutterBarcodeScanner.scanBarcode(
+        "#ff6666",
+        'Cancel',
+        true,
+        ScanMode.DEFAULT,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
   }
 }

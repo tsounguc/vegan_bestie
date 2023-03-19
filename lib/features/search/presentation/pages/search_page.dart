@@ -45,22 +45,22 @@ class SearchPage extends StatelessWidget {
             } else if (state is SearchFoundState) {
               return NotificationListener<ScrollNotification>(
                 child: ListView.builder(
-                  itemCount: state.searchResults?.products!.length,
+                  itemCount: state.searchProducts.length,
                   itemBuilder: (context, index) {
-                    if (state.searchResults?.products![index].productName != null &&
-                        state.searchResults!.products![index].productName!.isNotEmpty) {
+                    if (state.searchProducts[index].productName != null &&
+                        state.searchProducts[index].productName!.isNotEmpty) {
                       return Card(
                         color: Colors.white,
                         child: Padding(
                           padding: EdgeInsets.only(right: 8.0.r, top: 16.r, left: 8.0, bottom: 16.0.r),
                           child: ListTile(
-                            leading: state.searchResults?.products![index].imageThumbUrl != null &&
-                                    state.searchResults!.products![index].imageThumbUrl!.isNotEmpty
+                            leading: state.searchProducts[index].imageFrontUrl != null &&
+                                    state.searchProducts[index].imageFrontUrl!.isNotEmpty
                                 ? CachedNetworkImage(
                                     height: 50.r,
                                     width: 50.r,
                                     fit: BoxFit.fill,
-                                    imageUrl: state.searchResults!.products![index].imageThumbUrl!,
+                                    imageUrl: state.searchProducts[index].imageFrontUrl!,
                                   )
                                 : Icon(
                                     Icons.image_outlined,
@@ -68,7 +68,7 @@ class SearchPage extends StatelessWidget {
                                     color: Colors.black,
                                   ),
                             title: Text(
-                              state.searchResults!.products![index].productName!,
+                              state.searchProducts[index].productName!,
                               style: TextStyle(
                                 fontSize: 18.sp,
                                 fontStyle: FontStyle.normal,
@@ -82,8 +82,8 @@ class SearchPage extends StatelessWidget {
                                 color: Colors.black,
                               ),
                               onPressed: () {
-                                BlocProvider.of<SearchBloc>(context).add(SearchProductPressedEvent(
-                                    selectedProduct: state.searchResults!.products![index]));
+                                BlocProvider.of<SearchBloc>(context)
+                                    .add(SearchProductPressedEvent(selectedProduct: state.searchProducts[index]));
                                 Navigator.of(context)
                                     .push(MaterialPageRoute(builder: (_) => SearchProductDetail()));
                               },

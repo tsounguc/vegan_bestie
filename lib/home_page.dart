@@ -1,18 +1,16 @@
 // import 'dart:html';
 
-// import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/loading.dart';
-import 'package:sheveegan/features/auth/presentation/pages/login_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
 
+import 'core/constants/size_config.dart';
 import 'core/constants/strings.dart';
 import 'core/custom_circle_avatar.dart';
 import 'core/custom_drawer.dart';
-import 'core/error.dart';
 import 'features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'features/scan_product/presentation/pages/scan_product_home_page.dart';
 import 'features/restaurants/presentation/pages/restaurants_home_page.dart';
@@ -63,7 +61,7 @@ class _HomePageState extends State<HomePage> {
               elevation: 0,
               backgroundColor: Theme.of(buildContext).colorScheme.background,
               leadingWidth: 80,
-              toolbarHeight: 80,
+              toolbarHeight: toolbarHeight,
               leading: IconButton(
                 icon: CustomCircleAvatar(
                   size: 25,

@@ -6,18 +6,18 @@ import '../../../../core/failures_successes/failures.dart';
 import '../../../../core/service_locator.dart';
 import '../../domain/entities/restaurant_entity.dart';
 import '../../domain/repositories_contracts/restaurants_repository_contract.dart';
-import '../data_sources/restaurants_remote_data_source.dart';
+import '../data_sources/restaurants_from_remote_data_source.dart';
 import '../mapper/restaurant_mapper.dart';
 import '../models/yelp_restaurants_model.dart';
 
 class RestaurantsRepositoryYelpImpl implements RestaurantsRepositoryContract {
-  RestaurantsRemoteDataSourceContract restaurantsRemoteDataSourceContract =
-      serviceLocator<RestaurantsRemoteDataSourceContract>();
+  RestaurantsFromRemoteDataSourceContract restaurantsFromRemoteDataSourceContract =
+      serviceLocator<RestaurantsFromRemoteDataSourceContract>();
   @override
   Future<Either<FetchRestaurantsNearMeFailure, List<RestaurantEntity>>> getRestaurantsNearMe(
       Position position) async {
     try {
-      var restaurantModelsList = await restaurantsRemoteDataSourceContract.getRestaurantsNearMe(position);
+      var restaurantModelsList = await restaurantsFromRemoteDataSourceContract.getRestaurantsNearMe(position);
 
       /// Yelp Implementation. Everything from here can be changed base on which api is used
       RestaurantMapper mapper = RestaurantMapper();
@@ -34,8 +34,8 @@ class RestaurantsRepositoryYelpImpl implements RestaurantsRepositoryContract {
 }
 
 class RestaurantsRepositoryGoogleImpl implements RestaurantsRepositoryContract {
-  RestaurantsRemoteDataSourceContract restaurantsRemoteDataSourceContract =
-      serviceLocator<RestaurantsRemoteDataSourceContract>();
+  RestaurantsFromRemoteDataSourceContract restaurantsRemoteDataSourceContract =
+      serviceLocator<RestaurantsFromRemoteDataSourceContract>();
   @override
   Future<Either<FetchRestaurantsNearMeFailure, List<RestaurantEntity>>> getRestaurantsNearMe(
       Position position) async {

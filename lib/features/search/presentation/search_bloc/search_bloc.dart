@@ -1,112 +1,27 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../scan_product/data/models/product_info_model.dart';
-import '../../../../data/models/search_model.dart';
-import '../../../../data/repositoryLayer/repository.dart';
+import '../../../../core/failures_successes/failures.dart';
+import '../../../../core/service_locator.dart';
+import '../../../../core/vegan_checker.dart';
+import '../../domain/entities/search_product_entity.dart';
+import '../../domain/usecases/search_product_usecase.dart';
 
 part 'search_event.dart';
 
 part 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  final Repository repository;
-  String nonVeganIngredientsInProduct = "";
-  List<String> nonVeganIngredients = [
-    "acidophilus Milk",
-    "anchovies",
-    "bee pollen",
-    "bee venom",
-    "beef",
-    "beeswax",
-    "butter",
-    "butter extract",
-    "butter fat",
-    "butter solids",
-    "buttermilk",
-    "buttermilk blend",
-    "buttermilk solids",
-    "boar bristles",
-    "bone",
-    "bone char",
-    "bone meal",
-    "calamari",
-    "carmine",
-    "casein",
-    "castoreum",
-    "cheese",
-    "chicken",
-    "cochineal",
-    "collagen",
-    "collagen peptides",
-    "crab",
-    "cream",
-    "dairy butter",
-    "duck",
-    "edible bone phosphate",
-    "eggs",
-    "fish",
-    "fish sauce",
-    "gelatin",
-    "goose",
-    "honey",
-    "horse",
-    "isinglass",
-    "l-cysteine",
-    "lamb",
-    "lactose",
-    "lactose-free milk",
-    "lobster",
-    "malted milk",
-    "milk",
-    "milk derivative",
-    "milk protein",
-    "milk powder",
-    "milk skimmed",
-    "milk skimmed powder",
-    "milk skimmed powder 8",
-    "milk solids",
-    "milk solids blend",
-    "mussels",
-    "natural butter",
-
-    // "omega-3 fatty acids",
-    "organ meat",
-    "pork",
-    "propolis",
-    "quail",
-    "royal jelly",
-    "scallops",
-    "shellac",
-    "shrimp",
-    "skim milk",
-    "skim milk powder",
-    "skim milk powder 8",
-    "skimmed milk",
-    "skimmed milk powder",
-    "skimmed milk powder 8",
-    "sour milk",
-    "squid",
-    "turkey",
-    "veal",
-    "vitamin d3",
-    "whey",
-    "whipped butter",
-    "whole egg",
-    "whole egg solids",
-    "whole eggs",
-    "whole eggs solid",
-    "wild meat",
-    "yogurt",
-  ];
-  bool? isVegan = true;
-  SearchModel? _results;
+  final SearchProductUseCase _searchProductUseCase = serviceLocator<SearchProductUseCase>();
+  VeganChecker veganChecker = VeganChecker();
+  List<SearchProductEntity>? _products;
   TextEditingController searchTextController = TextEditingController();
 
-  SearchBloc({required this.repository}) : super(SearchInitialState()) {
+  SearchBloc() : super(SearchInitialState()) {
     on<SearchQueryChangedEvent>((event, emit) {
       emit(SearchQueryChangedState(textControllerText: event.searchQuery));
     });
@@ -116,78 +31,34 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     });
 
     on<SearchQuerySubmittedEvent>((event, emit) async {
-      try {
-        emit(SearchingState());
-        _results = await repository.searchQuery(event.query);
-        if (_results?.count == 0 || _results?.count == null) {
-          emit(SearchQueryNotFoundState(message: event.query));
-        } else if (_results?.count != null && _results!.count! > 0) {
-          emit(SearchFoundState(searchResults: _results));
+      emit(SearchingState());
+      final Either<SearchProductFailure, List<SearchProductEntity>> searchProductResults =
+          await _searchProductUseCase.searchProduct(event.query);
+      searchProductResults.fold(
+          (searchProductFailure) => emit(SearchErrorState(error: searchProductFailure.message)), (searchProducts) {
+        _products = searchProducts;
+        if (searchProducts == null || searchProducts.isEmpty) {
+          emit(SearchQueryNotFoundState(message: "No products found"));
+        } else {
+          emit(SearchFoundState(searchProducts: searchProducts));
         }
-      } on Error catch (e) {
-        emit(SearchErrorState(error: "$e \n${e.stackTrace} "));
-        throw Exception(e);
-      } catch (e) {
-        emit(SearchErrorState(error: "$e"));
-        debugPrint('Error: $e');
-      }
+      });
     });
 
     on<SearchProductPressedEvent>((event, emit) {
-      veganCheck(event.selectedProduct);
+      bool isVegan = veganChecker.veganCheck(event.selectedProduct);
       emit(SearchProductDetailState(
           selectedProduct: event.selectedProduct,
-          nonVeganIngredientsInProduct: nonVeganIngredientsInProduct,
+          nonVeganIngredientsInProduct: veganChecker.nonVeganIngredientsInProduct,
           isVegan: isVegan));
     });
 
     on<SearchDetailBackButtonPressedEvent>((event, emit) {
-      emit(SearchFoundState(searchResults: _results));
+      emit(SearchFoundState(searchProducts: _products!));
     });
 
     on<SearchButtonPressedEvent>((event, emit) {
       emit(SearchInitialState());
     });
-  }
-
-  void veganCheck(ProductInfoModel? productInfo) {
-    isVegan = true;
-    nonVeganIngredientsInProduct = "";
-    if (productInfo?.labels == null || productInfo!.labels!.isEmpty) {
-      productInfo!.ingredients?.forEach((ingredient) {
-        debugPrint("is ${ingredient.text} vegan: ${ingredient.vegan}");
-        if (ingredient.vegan == null || ingredient.vegan == "maybe") {
-          nonVeganIngredients.forEach((nonVeganIngredient) {
-            if (ingredient.text!.toLowerCase() == nonVeganIngredient.toLowerCase()) {
-              nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!.toLowerCase()}, ";
-              isVegan = false;
-            }
-          });
-        }
-        if (ingredient.vegan == "no") {
-          nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!.toLowerCase()}, ";
-          isVegan = false;
-        }
-      });
-    } else if (!(productInfo.labels!.toLowerCase().contains('vegan') ||
-        productInfo.labels!.toLowerCase().contains('contains no animal ingredients'))) {
-      productInfo.ingredients?.forEach((ingredient) {
-        debugPrint("is ${ingredient.text} vegan: ${ingredient.vegan}");
-        if (ingredient.vegan == null || ingredient.vegan == "maybe") {
-          nonVeganIngredients.forEach((nonVeganIngredient) {
-            if (ingredient.text!.toLowerCase() == nonVeganIngredient.toLowerCase()) {
-              nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!.toLowerCase()}, ";
-              isVegan = false;
-            }
-          });
-        }
-        if (ingredient.vegan == "no") {
-          nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!.toLowerCase()}, ";
-          isVegan = false;
-        }
-      });
-    }
-
-    debugPrint("Non Vegan ingredients: " + nonVeganIngredientsInProduct);
   }
 }

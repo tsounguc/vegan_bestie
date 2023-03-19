@@ -37,3 +37,8 @@ class LocationException implements Exception {
   final String? message;
   const LocationException({this.message});
 }
+
+class SearchProductException implements Exception {
+  final String? message;
+  const SearchProductException({this.message});
+}

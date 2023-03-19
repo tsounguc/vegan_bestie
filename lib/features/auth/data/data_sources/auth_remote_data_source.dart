@@ -8,11 +8,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../core/services/auth_service.dart';
 
 abstract class AuthRemoteDataSourceContract {
-  Future signInWithEmailAndPassword(String email, String password);
+  Future<UserModel> signInWithEmailAndPassword(String email, String password);
 
-  Future createUserAccount(String userName, String email, String password);
+  Future<UserModel> createUserAccount(String userName, String email, String password);
 
-  Future currentUser();
+  Future<UserModel> currentUser();
 
   Future<void> signOut();
 }
@@ -40,7 +40,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
   Future<UserModel> signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential userInfo = await authServiceContract.signInWithEmailAndPassword(email, password);
-      String? name = await getUserName(userInfo.user?.uid);
       UserModel user = UserModel(
         uid: userInfo.user?.uid,
         email: userInfo.user?.email,
@@ -58,7 +57,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
   Future<UserModel> currentUser() async {
     try {
       User? currentUser = await authServiceContract.currentUser();
-      String? name = await getUserName(currentUser?.uid);
       UserModel currentUserModel = UserModel(
         uid: currentUser?.uid,
         name: currentUser?.displayName,

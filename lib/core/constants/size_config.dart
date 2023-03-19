@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
+double toolbarHeight = 80;
 class SizeConfig {
   static MediaQueryData? _mediaQueryData;
   static double? screenWidth;
