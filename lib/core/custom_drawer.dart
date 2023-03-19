@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sheveegan/features/auth/presentation/auth_cubit/auth_cubit.dart';
 
+import '../features/auth/presentation/auth_cubit/auth_cubit.dart';
+import '../features/social_network/presentation/pages/profile_page.dart';
 import 'custom_circle_avatar.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -26,7 +27,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     height: MediaQuery.of(context).size.height / 3.5,
                     child: GestureDetector(
                       onTap: () {
-                        // Navigator.pushNamed(context, ProfilePage.id);
+                        Navigator.pushNamed(context, ProfilePage.id);
                       },
                       child: DrawerHeader(
                         margin: EdgeInsets.zero,
@@ -95,6 +96,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           title: Text(
                             'Logout',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 16,
                             ),
                           ),
@@ -118,41 +120,42 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           },
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey),
-                          ),
-                        ),
-                        child: ListTile(
-                          tileColor: Colors.white,
-                          contentPadding: const EdgeInsets.all(0.0),
-                          title: Text(
-                            'Delete Account',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          leading: IconButton(
-                            icon: Icon(Icons.clear, color: Colors.black),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              _displayDeleteAccountWarning(context);
-                            },
-                          ),
-                          trailing: IconButton(
-                            icon: Icon(Icons.arrow_right, color: Colors.black),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              _displayDeleteAccountWarning(context);
-                            },
-                          ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            _displayDeleteAccountWarning(context);
-                          },
-                        ),
-                      )
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //     border: Border(
+                      //       bottom: BorderSide(color: Colors.grey),
+                      //     ),
+                      //   ),
+                      //   child: ListTile(
+                      //     tileColor: Colors.white,
+                      //     contentPadding: const EdgeInsets.all(0.0),
+                      //     title: Text(
+                      //       'Delete Account',
+                      //       style: TextStyle(
+                      //         color: Colors.black,
+                      //         fontSize: 16,
+                      //       ),
+                      //     ),
+                      //     leading: IconButton(
+                      //       icon: Icon(Icons.clear, color: Colors.black),
+                      //       onPressed: () {
+                      //         Navigator.pop(context);
+                      //         _displayDeleteAccountWarning(context);
+                      //       },
+                      //     ),
+                      //     trailing: IconButton(
+                      //       icon: Icon(Icons.arrow_right, color: Colors.black),
+                      //       onPressed: () {
+                      //         Navigator.pop(context);
+                      //         _displayDeleteAccountWarning(context);
+                      //       },
+                      //     ),
+                      //     onTap: () {
+                      //       Navigator.pop(context);
+                      //       _displayDeleteAccountWarning(context);
+                      //     },
+                      //   ),
+                      // )
                     ],
                   ),
                 ],

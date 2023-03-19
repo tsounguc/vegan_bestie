@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/error.dart';
 import '../../../../core/loading.dart';
 import '../geolocation_bloc/geolocation_bloc.dart';
 import 'componets/restaurant_card.dart';
@@ -50,6 +51,10 @@ class RestaurantsHomePage extends StatelessWidget {
                     );
                   },
                 ),
+              );
+            } else if (state is RestaurantsErrorState) {
+              return ErrorPage(
+                error: state.error,
               );
             } else {
               return LoadingPage();

@@ -84,7 +84,7 @@ class AppTheme {
       tertiary: darkParticles,
     ),
     backgroundColor: darkPrimaryColor,
-    textTheme: GoogleFonts.openSansTextTheme(),
+    // textTheme: GoogleFonts.openSansTextTheme(),
     // textTheme: TextTheme(
     //   headline1: TextStyle(
     //     color: Colors.black,
