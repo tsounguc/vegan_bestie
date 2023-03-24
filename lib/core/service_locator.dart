@@ -6,6 +6,8 @@ import '../features/auth/domain/repositories_contracts/auth_repository_contract.
 import '../features/auth/domain/usecases/create_with_email_and_password_usecases.dart';
 import '../features/auth/domain/usecases/current_user_usecase.dart';
 import '../features/auth/domain/usecases/sign_in_with_email_and_password_usecase.dart';
+import '../features/auth/domain/usecases/sign_in_with_facebook_usecase.dart';
+import '../features/auth/domain/usecases/sign_in_with_google_usecase.dart';
 import '../features/auth/domain/usecases/sign_out_usecase.dart';
 import '../features/restaurants/data/data_sources/current_location_from_plugin.dart';
 import '../features/restaurants/data/data_sources/restaurants_from_remote_data_source.dart';
@@ -44,6 +46,8 @@ void setUpServices() {
   serviceLocator.registerSingleton<SignOutUseCase>(SignOutUseCase());
   serviceLocator.registerSingleton<CurrentUserUseCase>(CurrentUserUseCase());
   serviceLocator.registerSingleton<SignInWithEmailAndPasswordUseCase>(SignInWithEmailAndPasswordUseCase());
+  serviceLocator.registerSingleton<SignInWithGoogleUseCase>(SignInWithGoogleUseCase());
+  serviceLocator.registerSingleton<SignInWithFacebookUseCase>(SignInWithFacebookUseCase());
 
   //--- Scan Food Service
   serviceLocator.registerSingleton<FoodFactsApiServiceContract>(OpenFoodFactsApiServiceImpl());

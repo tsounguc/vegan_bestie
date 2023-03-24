@@ -7,6 +7,7 @@ import '../../../../core/error.dart';
 import '../../../../core/loading.dart';
 import '../../../../home_page.dart';
 import '../auth_cubit/auth_cubit.dart';
+import 'forgot_password.dart';
 import 'login_page.dart';
 import 'welcome_page.dart';
 
@@ -56,6 +57,11 @@ class _AuthPageState extends State<AuthPage> {
         } else if (state is RegisterState) {
           previousState = RegisterState();
           currentPage = RegistrationPage();
+          return RegistrationPage();
+        } else if (state is ForgotPasswordState) {
+          previousState = ForgotPasswordState();
+          currentPage = ForgotPasswordPage();
+          return ForgotPasswordPage();
           return RegistrationPage();
         } else if (state is AuthInitialState) {
           previousState = state;

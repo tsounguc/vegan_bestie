@@ -19,6 +19,14 @@ class SignInWithEmailAndPasswordFailure extends Failure {
   const SignInWithEmailAndPasswordFailure({String? message}) : super(message: message);
 }
 
+class SignInWithGoogleFailure extends Failure {
+  const SignInWithGoogleFailure({String? message}) : super(message: message);
+}
+
+class SignInWithFacebookFailure extends Failure{
+  const SignInWithFacebookFailure({String? message}) : super(message: message);
+}
+
 class SignOutFailure extends Failure {
   SignOutFailure({String? message}) : super(message: message);
 }
@@ -35,6 +43,8 @@ class LocationFailure extends Failure {
   const LocationFailure({String? message}) : super(message: message);
 }
 
-class SearchProductFailure extends Failure{
+class SearchProductFailure extends Failure {
   const SearchProductFailure({String? message}) : super(message: message);
 }
+
+

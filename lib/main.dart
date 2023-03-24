@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
           builder: DevicePreview.appBuilder,
           locale: DevicePreview.locale(context),
           debugShowCheckedModeBanner: false,
-          title: "SheVegan Home",
+          title: "Vegan Bestie",
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.system,

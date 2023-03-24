@@ -30,13 +30,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                 icon: Icon(Icons.arrow_back, color: Colors.white),
               ),
+              title: Text(
+                state.currentUser.name!,
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              centerTitle: true,
             ),
             backgroundColor: Theme.of(context).colorScheme.background,
             body: ListView(
               padding: EdgeInsets.symmetric(horizontal: 48, vertical: 16),
               physics: BouncingScrollPhysics(),
               children: [
-                ProfileWidget(),
+                ProfileWidget(isOnEditProfilePage: false),
                 SizedBox(
                   height: 24,
                 ),
@@ -91,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 SizedBox(
-                  height: 24,
+                  height: 50,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,12 +106,21 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                     SizedBox(
-                      height: 16,
+                      height: 24,
                     ),
-                    Text(
-                      "I'm a Cameroonian born and raised in Chad. US Citizen. Friendly vegan atheist.",
-                      // state.currentUser.bio,
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: Text(
+                        // "I'm a Cameroonian born and raised in Chad. US Citizen. Friendly vegan atheist.",
+                        state.currentUser.bio != null && state.currentUser.bio!.isNotEmpty
+                            ? state.currentUser.bio!
+                            : "Tell us about yourself",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: state.currentUser.bio != null && state.currentUser.bio!.isNotEmpty
+                                ? Colors.white
+                                : Colors.grey),
+                      ),
                     )
                   ],
                 )

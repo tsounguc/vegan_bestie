@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="app_name">Vegan Bestie</string>
+    <string name="facebook_client_token">7b2d6c53ff6f044dfb38dd66d1261c6d</string>
+    <string name="facebook_app_id">750758953315875</string>
+    <string name="fb_login_protocol_scheme">fb750758953315875</string>
+</resources>

@@ -20,6 +20,7 @@ class _NumberButtonState extends State<NumberButton> {
           Text(
             widget.value,
             style: TextStyle(
+              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 24,
             ),
@@ -29,7 +30,10 @@ class _NumberButtonState extends State<NumberButton> {
           ),
           Text(
             widget.text,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           )
         ],
       ),

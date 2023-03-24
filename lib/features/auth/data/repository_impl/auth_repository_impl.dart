@@ -44,6 +44,34 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
   }
 
   @override
+  Future<Either<SignInWithGoogleFailure, UserEntity>> signInWithGoogle() async {
+    try {
+      UserModel userModel = await authRemoteDataSourceContract.signInWithGoogle();
+      debugPrint("Repo Implementation User Model Name: ${userModel.name}");
+      UserMapper mapper = UserMapper();
+      UserEntity userEntity = mapper.mapToEntity(userModel);
+      debugPrint("Repo Implementation User Entity Name: ${userModel.name}");
+      return Right(userEntity);
+    } on SignInWithGoogleException catch (e) {
+      return Left(SignInWithGoogleFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<SignInWithFacebookFailure, UserEntity>> signInWithFacebook() async {
+    try {
+      UserModel userModel = await authRemoteDataSourceContract.signInWithFacebook();
+      debugPrint("Repo Implementation User Model Name: ${userModel.name}");
+      UserMapper mapper = UserMapper();
+      UserEntity userEntity = mapper.mapToEntity(userModel);
+      debugPrint("Repo Implementation User Entity Name: ${userModel.name}");
+      return Right(userEntity);
+    } on SignInWithFacebookException catch (e) {
+      return Left(SignInWithFacebookFailure(message: e.message));
+    }
+  }
+
+  @override
   Future<Either<CurrentUserFailure, UserEntity>> currentUser() async {
     try {
       UserModel currentUserModel = await authRemoteDataSourceContract.currentUser();

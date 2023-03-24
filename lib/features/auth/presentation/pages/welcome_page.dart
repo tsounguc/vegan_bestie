@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/assets/vegan_icon.dart';
+import 'package:sheveegan/core/buttons.dart';
 import 'package:sheveegan/core/constants/colors.dart';
 import 'package:sheveegan/features/auth/presentation/pages/login_page.dart';
 import 'package:sheveegan/features/auth/presentation/pages/registration_page.dart';
@@ -50,51 +51,21 @@ class WelcomePage extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    MaterialButton(
-                      minWidth: double.infinity,
-                      height: 50,
-                      color: Colors.white,
+                    LongButton(
                       onPressed: () {
                         BlocProvider.of<AuthCubit>(context).goToLoginPage();
-                        // Navigator.pushReplacementNamed(context, LoginPage.id);
                       },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        "Login",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: Colors.green.shade900,
-                        ),
-                      ),
+                      text: "Login",
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    Container(
-                      child: MaterialButton(
-                        minWidth: double.infinity,
-                        height: 50,
-                        color: Colors.white,
-                        onPressed: () {
-                          BlocProvider.of<AuthCubit>(context).goToRegister();
-                          // Navigator.pushReplacementNamed(context, SignUpPage.id);
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: Text(
-                          "Register",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                            color: Colors.green.shade900,
-                          ),
-                        ),
-                      ),
-                    ),
+                    LongButton(
+                      onPressed: () {
+                        BlocProvider.of<AuthCubit>(context).goToRegister();
+                      },
+                      text: "Register",
+                    )
                   ],
                 )
               ],

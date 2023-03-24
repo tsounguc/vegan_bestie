@@ -4,10 +4,10 @@ import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
 class UserMapper {
   UserEntity mapToEntity(UserModel userModel) {
     return UserEntity(
-      uid: userModel.uid,
-      name: userModel.name,
-      email: userModel.email,
-      photoUrl: userModel.photoUrl,
-    );
+        uid: userModel.uid,
+        name: userModel.name,
+        email: userModel.email,
+        photoUrl: userModel.photoUrl,
+        bio: userModel.bio);
   }
 }

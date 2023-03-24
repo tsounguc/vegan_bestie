@@ -29,9 +29,18 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
         iconTheme: Theme.of(context).iconTheme,
-        // toolbarHeight: 60.h,
         automaticallyImplyLeading: true,
+        leading: !Navigator.of(context).canPop()
+            ? null
+            : IconButton(
+                color: Colors.white,
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
         centerTitle: true,
         title: Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
@@ -46,7 +55,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
             ),
           ),
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
         actions: [NavigationControls(controller: _controller)],
       ),
       body: Stack(

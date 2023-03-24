@@ -45,7 +45,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           //   ],
                           // ),
                         ),
-                        // child: Container(),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -70,7 +69,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       fontSize: 14,
                                     ),
                                   ),
-                                  trailing: Icon(Icons.arrow_right),
+                                  trailing: Icon(Icons.arrow_right, color: Colors.white),
                                 ),
                               ),
                             )
@@ -175,24 +174,27 @@ class _CustomDrawerState extends State<CustomDrawer> {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            backgroundColor: Colors.yellow[600],
-            title: Text(
-              'WARNING',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            backgroundColor: Colors.white,
+            // title: Text(
+            //   'You are',
+            //   style: TextStyle(fontWeight: FontWeight.bold),
+            // ),
             content: Text(
               'Are you sure you want to logout?',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('CANCEL'),
+                child: Text(
+                  'CANCEL',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
               TextButton(
-                child: Text('LOG OUT'),
+                child: Text('LOGOUT', style: TextStyle(fontWeight: FontWeight.w600)),
                 onPressed: () {
                   Navigator.pop(context);
                   BlocProvider.of<AuthCubit>(context).signOut();

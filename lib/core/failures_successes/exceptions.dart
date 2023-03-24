@@ -18,6 +18,16 @@ class SignInWithEmailAndPasswordException implements Exception {
   const SignInWithEmailAndPasswordException({this.message});
 }
 
+class SignInWithGoogleException implements Exception {
+  final String? message;
+  const SignInWithGoogleException({this.message});
+}
+
+class SignInWithFacebookException implements Exception {
+  final String? message;
+  const SignInWithFacebookException({this.message});
+}
+
 class SignOutException implements Exception {
   final String? message;
   const SignOutException({this.message});

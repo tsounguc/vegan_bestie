@@ -8,6 +8,7 @@ import '../features/auth/presentation/pages/registration_page.dart';
 import '../features/auth/presentation/pages/welcome_page.dart';
 import '../features/restaurants/presentation/pages/restaurants_home_page.dart';
 import '../features/scan_product/presentation/pages/scan_results_page.dart';
+import '../features/social_network/presentation/pages/edit_profile_page.dart';
 import '../features/social_network/presentation/pages/profile_page.dart';
 import '../home_page.dart';
 import '../features/auth/presentation/pages/login_page.dart';
@@ -30,6 +31,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => LoginPage());
       case ProfilePage.id:
         return MaterialPageRoute(builder: (context) => ProfilePage());
+      case EditProfilePage.id:
+        return MaterialPageRoute(builder: (context) => EditProfilePage());
       case RegistrationPage.id:
         return MaterialPageRoute(builder: (context) => RegistrationPage());
       case WelcomePage.id:

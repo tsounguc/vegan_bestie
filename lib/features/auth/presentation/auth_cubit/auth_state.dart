@@ -40,6 +40,11 @@ class RegisterState extends AuthState {
   List<Object?> get props => [];
 }
 
+class ForgotPasswordState extends AuthState {
+  @override
+  List<Object?> get props => [];
+}
+
 class SignedOutState extends AuthState {
   @override
   List<Object?> get props => [];

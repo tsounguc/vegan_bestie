@@ -37,7 +37,8 @@ class AppTheme {
       secondary: lightAccentColor,
       background: lightBackgroundColor,
     ),
-    // textTheme: GoogleFonts.montserratTextTheme().copyWith(
+    textTheme: GoogleFonts.openSansTextTheme(),
+    //     .copyWith(
     //   displayLarge: TextStyle(
     //     color: Colors.black,
     //     fontSize: 27,
@@ -84,7 +85,7 @@ class AppTheme {
       tertiary: darkParticles,
     ),
     backgroundColor: darkPrimaryColor,
-    // textTheme: GoogleFonts.openSansTextTheme(),
+    textTheme: GoogleFonts.openSansTextTheme(),
     // textTheme: TextTheme(
     //   headline1: TextStyle(
     //     color: Colors.black,

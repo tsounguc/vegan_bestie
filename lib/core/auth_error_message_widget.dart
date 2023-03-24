@@ -9,9 +9,9 @@ class AuthErrorMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-      if (state is AuthErrorState) {
+      if (state is AuthErrorState && state.error != null) {
         return Card(
-          margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+          margin: EdgeInsets.symmetric(vertical: 15),
           elevation: 2,
           color: Colors.white,
           child: SizedBox(
@@ -47,7 +47,10 @@ class AuthErrorMessageWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
+                ),
+                SizedBox(
+                  width: 15,
+                ),
               ],
             ),
           ),

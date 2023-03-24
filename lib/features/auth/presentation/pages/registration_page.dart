@@ -8,8 +8,10 @@ import 'package:sheveegan/features/auth/presentation/pages/login_page.dart';
 import 'package:sheveegan/home_page.dart';
 
 import '../../../../core/auth_error_message_widget.dart';
+import '../../../../core/buttons.dart';
 import '../../../../core/loading.dart';
 import 'auth_page.dart';
+import 'components/other_auth_options.dart';
 
 class RegistrationPage extends StatefulWidget {
   static const String id = "/signUpPage";
@@ -38,6 +40,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       builder: (context, state) {
         if (state is AuthLoadingState) {
           _passwordController.clear();
+          _confirmPasswordController.clear();
           return LoadingPage();
         }
         return Container(
@@ -64,25 +67,35 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
               ),
               body: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 25.0, bottom: 50.0, right: 8.0),
-                        child: Text(
-                          "Register to get started",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Center(
+                          child: Text(
+                            "Register to get started",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                      AuthErrorMessageWidget(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 15),
-                        child: TextFormField(
+                        SizedBox(
+                          height: 60.0,
+                        ),
+                        AuthErrorMessageWidget(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
                           controller: _nameController,
                           validator: (userNameText) {
                             if (userNameText!.isEmpty) {
@@ -121,10 +134,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10),
-                        child: TextFormField(
+                        SizedBox(
+                          height: 25,
+                        ),
+                        TextFormField(
                           controller: _emailController,
                           validator: (emailText) {
                             if (emailText!.isEmpty) {
@@ -163,10 +176,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 15),
-                        child: TextFormField(
+                        SizedBox(
+                          height: 25,
+                        ),
+                        TextFormField(
                           controller: _passwordController,
                           validator: (passwordText) {
                             if (passwordText!.length < 6) {
@@ -212,10 +225,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 7.5),
-                        child: TextFormField(
+                        SizedBox(
+                          height: 25,
+                        ),
+                        TextFormField(
                           controller: _confirmPasswordController,
                           validator: (confirmPasswordText) {
                             if (_confirmPasswordController.text.trim().isEmpty) {
@@ -272,39 +285,22 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
-                        child: Container(
-                          child: MaterialButton(
-                            minWidth: double.infinity,
-                            height: 50,
-                            color: Colors.white,
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                BlocProvider.of<AuthCubit>(context).createUserAccount(_nameController.text.trim(),
-                                    _emailController.text.trim(), _passwordController.text.trim());
-                              }
-                            },
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Text(
-                              "Register",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18,
-                                color: Colors.green.shade900,
-                              ),
-                            ),
-                          ),
+                        SizedBox(
+                          height: 40,
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 40,
+                        LongButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              BlocProvider.of<AuthCubit>(context).createUserAccount(_nameController.text.trim(),
+                                  _emailController.text.trim(), _passwordController.text.trim());
+                            }
+                          },
+                          text: "Register",
                         ),
-                        child: Row(
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
@@ -323,81 +319,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             )
                           ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 40,
+                        SizedBox(
+                          height: 40,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              height: 50,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.black, width: 1),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Center(
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    FontAwesomeIcons.facebookF,
-                                    // size: 35,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 50,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.black, width: 1),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Center(
-                                child: IconButton(
-                                  onPressed: () {},
-                                  // icon: Icon(
-                                  //   FontAwesomeIcons.google,
-                                  //   color: Colors.black,
-                                  //   // size: 35,
-                                  // ),
-                                  icon: Image.network(
-                                    'http://pngimg.com/uploads/google/google_PNG19635.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 50,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.black, width: 1),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  FontAwesomeIcons.apple,
-                                  // size: 35,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
+                        OtherAuthOptions(
+                          pageId: RegistrationPage.id,
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 40,
+                        SizedBox(
+                          height: 40,
                         ),
-                        child: Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
@@ -421,8 +352,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 40,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
