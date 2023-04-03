@@ -23,4 +23,16 @@ class CurrentLocationRepositoryImpl implements CurrentLocationRepositoryContract
       return Left(LocationFailure(message: e.message));
     }
   }
+
+  @override
+  Future<Either<LocationFailure, LocationEntity>> getLastLocation() async {
+    try {
+      LocationModel locationModel = await currentLocationFromPluginContract.getLastLocation();
+      LocationMapper mapper = LocationMapper();
+      LocationEntity locationEntity = mapper.mapToEntity(locationModel);
+      return Right(locationEntity);
+    } on LocationException catch (e) {
+      return Left(LocationFailure(message: e.message));
+    }
+  }
 }

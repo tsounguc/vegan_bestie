@@ -4,6 +4,11 @@ abstract class GeolocationState extends Equatable {
   const GeolocationState();
 }
 
+class GeolocationInitialState extends GeolocationState {
+  @override
+  List<Object> get props => [];
+}
+
 class GeolocationLoadingState extends GeolocationState {
   @override
   List<Object> get props => [];
@@ -20,7 +25,9 @@ class GeolocationLoadedState extends GeolocationState {
 
 class GeolocationErrorState extends GeolocationState {
   final error;
+
   GeolocationErrorState({this.error});
+
   @override
   List<Object> get props => [];
 }

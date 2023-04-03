@@ -8,6 +8,7 @@ import 'components/profile_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   static const String id = "/profilePage";
+
   const ProfilePage({Key? key}) : super(key: key);
 
   @override
@@ -31,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 icon: Icon(Icons.arrow_back, color: Colors.white),
               ),
               title: Text(
-                state.currentUser.name!,
+                state.currentUser?.name ?? "",
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               centerTitle: true,
@@ -49,11 +50,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      state.currentUser.name!,
+                      state.currentUser?.name ?? "",
                       style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      state.currentUser.email!,
+                      state.currentUser?.email ?? "",
                       style: TextStyle(
                         color: Colors.grey.shade400,
                       ),
@@ -112,12 +113,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       padding: const EdgeInsets.only(left: 16.0),
                       child: Text(
                         // "I'm a Cameroonian born and raised in Chad. US Citizen. Friendly vegan atheist.",
-                        state.currentUser.bio != null && state.currentUser.bio!.isNotEmpty
-                            ? state.currentUser.bio!
+                        state.currentUser?.bio != null && state.currentUser!.bio!.isNotEmpty
+                            ? state.currentUser!.bio!
                             : "Tell us about yourself",
                         style: TextStyle(
                             fontSize: 16,
-                            color: state.currentUser.bio != null && state.currentUser.bio!.isNotEmpty
+                            color: state.currentUser?.bio != null && state.currentUser!.bio!.isNotEmpty
                                 ? Colors.white
                                 : Colors.grey),
                       ),

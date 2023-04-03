@@ -1,122 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 
-import '../../../../core/constants/colors.dart';
-import '../../../../core/constants/strings.dart';
 import '../../../../core/error.dart';
 import '../../../../core/loading.dart';
 import '../geolocation_bloc/geolocation_bloc.dart';
-import 'componets/restaurant_card.dart';
+import '../map_cubit/map_cubit.dart';
 import '../restaurants_bloc/restaurants_bloc.dart';
+import 'componets/restaurant_card.dart';
+import 'componets/restaurants_found_state_page.dart';
+import 'map_page.dart';
 
-class RestaurantsHomePage extends StatelessWidget {
+class RestaurantsHomePage extends StatefulWidget {
   static const String id = "/restaurantsHomepage";
-  const RestaurantsHomePage({Key? key}) : super(key: key);
+
+  RestaurantsHomePage({Key? key}) : super(key: key);
+
+  @override
+  State<RestaurantsHomePage> createState() => _RestaurantsHomePageState();
+}
+
+class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
+  RestaurantsState? previousState;
+  Position? userCurrentLocation;
+
+  Widget currentPage = Container();
 
   @override
   Widget build(BuildContext buildContext) {
     // BlocProvider.of<RestaurantsBloc>(context).add(GetRestaurantsEvent());
-    return BlocListener<GeolocationBloc, GeolocationState>(
-      listener: (context, state) {
-        if (state is GeolocationLoadedState) {
-          BlocProvider.of<RestaurantsBloc>(context).add(GetRestaurantsEvent(position: state.position));
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<GeolocationBloc, GeolocationState>(
+          listener: (context, state) {
+            userCurrentLocation = BlocProvider.of<GeolocationBloc>(context).currentLocation;
+            // if (userCurrentLocation == null) {
+            //   BlocProvider.of<GeolocationBloc>(context).add(LoadGeolocationEvent());
+            // }
+            if (state is GeolocationLoadedState) {
+              if (userCurrentLocation == null ||
+                  userCurrentLocation?.latitude.toStringAsFixed(3) != state.position.latitude.toStringAsFixed(3) ||
+                  userCurrentLocation?.longitude.toStringAsFixed(3) !=
+                      state.position.longitude.toStringAsFixed(3)) {
+                debugPrint("Getting Restaurants");
+                BlocProvider.of<GeolocationBloc>(context).currentLocation = state.position;
+                BlocProvider.of<RestaurantsBloc>(context).add(GetRestaurantsEvent(position: state.position));
+                BlocProvider.of<MapCubit>(context).setUserLocation(userLocation: state.position);
+              }
+            }
+          },
+        ),
+        BlocListener<RestaurantsBloc, RestaurantsState>(
+          listener: (context, state) {
+            if (state is RestaurantsFoundState) {
+              debugPrint("restaurants found");
+              BlocProvider.of<MapCubit>(context).displayRestaurants(state.restaurants);
+            }
+          },
+        ),
+      ],
       child: GestureDetector(
         onTap: () {
           FocusScope.of(buildContext).requestFocus(new FocusNode());
         },
         child: BlocBuilder<RestaurantsBloc, RestaurantsState>(
           builder: (context, state) {
-            if (state is RestaurantsFoundState) {
-              return Scaffold(
-                backgroundColor: Theme.of(context).colorScheme.background,
-                body: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: state.restaurants.length,
-                  itemBuilder: (context, restaurantIndex) {
-                    int? length = state.restaurants[restaurantIndex].categories?.length;
-                    String? dietRestrictions = "";
-                    for (int categoryIndex = 0; categoryIndex < length!; categoryIndex++) {
-                      dietRestrictions = dietRestrictions! +
-                          "${state.restaurants[restaurantIndex].categories?[categoryIndex].title}";
-                      if (categoryIndex < length - 1) {
-                        dietRestrictions = dietRestrictions + " | ";
-                      }
-                    }
-                    return RestaurantCard(
-                      dietRestrictions: dietRestrictions,
-                      business: state.restaurants[restaurantIndex],
-                    );
-                  },
-                ),
-              );
+            if (state is RestaurantsLoadingState) {
+              currentPage = LoadingPage();
+              return LoadingPage();
+            } else if (state is RestaurantsFoundState) {
+              currentPage = RestaurantsFoundStatePage();
+              return RestaurantsFoundStatePage();
             } else if (state is RestaurantsErrorState) {
+              currentPage = ErrorPage(error: state.error);
               return ErrorPage(
                 error: state.error,
               );
             } else {
-              return LoadingPage();
-              // return Scaffold(
-              //   backgroundColor: Theme.of(context).colorScheme.background,
-              //   body: Container(
-              //     padding: EdgeInsets.only(top: 56.h, right: 16.w, bottom: 8.h, left: 16.w),
-              //     child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.start,
-              //       crossAxisAlignment: CrossAxisAlignment.center,
-              //       children: [
-              //         Container(
-              //           width: double.infinity,
-              //           height: 40.h,
-              //           decoration: BoxDecoration(
-              //             color: Colors.green.shade50,
-              //             borderRadius: BorderRadius.circular(5.r),
-              //           ),
-              //           child: Center(
-              //             child: TextField(
-              //               decoration: InputDecoration(
-              //                 prefixIcon: Icon(
-              //                   Icons.search,
-              //                   color: Theme.of(context).colorScheme.background,
-              //                 ),
-              //                 // suffixIcon: IconButton(
-              //                 //   icon: Icon(
-              //                 //     Icons.cancel,
-              //                 //     color: Theme.of(context).backgroundColor,
-              //                 //   ),
-              //                 //   onPressed: () {},
-              //                 // ),
-              //                 hintText: 'Find Restaurants',
-              //                 hintStyle:
-              //                     TextStyle(color: Theme.of(context).colorScheme.background, fontSize: 16.sp),
-              //                 border: InputBorder.none,
-              //               ),
-              //               style: TextStyle(color: Colors.black),
-              //               onSubmitted: (searchQuery) {
-              //                 // RestaurantsApiProvider().searchRestaurants(searchQuery);
-              //               },
-              //             ),
-              //           ),
-              //         ),
-              //         SizedBox(
-              //           height: 96.h,
-              //         ),
-              //         Text(
-              //           Strings.appTitle,
-              //           style: TextStyle(
-              //             color: titleTextColorOne,
-              //             fontSize: 36.sp,
-              //             fontWeight: FontWeight.w800,
-              //             fontFamily: 'cursive',
-              //           ),
-              //         ),
-              //         Spacer(),
-              //         Spacer()
-              //       ],
-              //     ),
-              //   ),
-              // );
+              if (userCurrentLocation == null) {
+                currentPage = LoadingPage();
+              }
+              return currentPage;
             }
           },
         ),

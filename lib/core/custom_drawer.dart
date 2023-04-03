@@ -55,7 +55,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               child: Center(
                                 child: ListTile(
                                   title: Text(
-                                    "${state.currentUser.name}",
+                                    "${state.currentUser?.name}",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,

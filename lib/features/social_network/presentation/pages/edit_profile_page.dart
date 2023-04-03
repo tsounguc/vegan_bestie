@@ -9,6 +9,7 @@ import 'components/profile_widget.dart';
 
 class EditProfilePage extends StatefulWidget {
   static const String id = "/editProfilePage";
+
   const EditProfilePage({Key? key}) : super(key: key);
 
   @override
@@ -23,6 +24,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _bioController = TextEditingController();
   bool isFirstTimeLoaded = false;
+
   @override
   void initState() {
     super.initState();
@@ -40,9 +42,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             // setState(() {
             isFirstTimeLoaded = false;
             // });
-            _nameController.text = state.currentUser.name!;
-            _emailController.text = state.currentUser.email!;
-            _bioController.text = state.currentUser.bio!;
+            _nameController.text = state.currentUser?.name ?? "";
+            _emailController.text = state.currentUser?.email ?? "";
+            _bioController.text = state.currentUser?.bio ?? "";
           }
           return GestureDetector(
             onTap: () {
@@ -60,7 +62,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   icon: Icon(Icons.arrow_back, color: Colors.white),
                 ),
                 title: Text(
-                  state.currentUser.name!,
+                  state.currentUser?.name ?? "",
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 centerTitle: true,

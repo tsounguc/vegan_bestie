@@ -13,6 +13,7 @@ import 'welcome_page.dart';
 
 class AuthPage extends StatefulWidget {
   static const String id = "/authPage";
+
   const AuthPage({Key? key}) : super(key: key);
 
   @override
@@ -23,6 +24,7 @@ class _AuthPageState extends State<AuthPage> {
   User? user;
   AuthState? previousState;
   Widget? currentPage;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -46,7 +48,7 @@ class _AuthPageState extends State<AuthPage> {
     }
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
-        if (state is LoggedInState) {
+        if (state is LoggedInState || state is ContinueAsGuestState) {
           previousState = state;
           currentPage = HomePage();
           return HomePage();
@@ -62,7 +64,6 @@ class _AuthPageState extends State<AuthPage> {
           previousState = ForgotPasswordState();
           currentPage = ForgotPasswordPage();
           return ForgotPasswordPage();
-          return RegistrationPage();
         } else if (state is AuthInitialState) {
           previousState = state;
           currentPage = WelcomePage();

@@ -224,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                                   _emailController.text.trim(), _passwordController.text.trim());
                             }
                           },
-                          text: "Login",
+                          text: "Log In",
                         ),
                         SizedBox(
                           height: 40,
@@ -238,7 +238,7 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.grey,
                             ),
                             Text(
-                              "Or Login with",
+                              "Or Continue With",
                               style: TextStyle(color: Colors.white),
                             ),
                             Container(
@@ -284,6 +284,29 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                BlocProvider.of<AuthCubit>(context).continueAsGuest();
+                              },
+                              child: Text(
+                                "Continue as a guest",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  // decoration: TextDecoration.underline,
+                                  // decorationThickness: 5,
+                                  // fontSize: 18,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),

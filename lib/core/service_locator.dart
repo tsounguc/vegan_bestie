@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:sheveegan/core/services/restaurants_services/map_service.dart';
+import 'package:sheveegan/features/restaurants/data/data_sources/map_info_from_remote_data_source_contract.dart';
 
 import '../features/auth/data/data_sources/auth_remote_data_source.dart';
 import '../features/auth/data/repository_impl/auth_repository_impl.dart';
@@ -12,11 +14,14 @@ import '../features/auth/domain/usecases/sign_out_usecase.dart';
 import '../features/restaurants/data/data_sources/current_location_from_plugin.dart';
 import '../features/restaurants/data/data_sources/restaurants_from_remote_data_source.dart';
 import '../features/restaurants/data/repositories_impl/current_location_respository_impl.dart';
+import '../features/restaurants/data/repositories_impl/map_repository_impl.dart';
 import '../features/restaurants/data/repositories_impl/restaurants_repository_impl.dart';
 import '../features/restaurants/domain/repositories_contracts/current_location_repository_contract.dart';
+import '../features/restaurants/domain/repositories_contracts/map_repository_contract.dart';
 import '../features/restaurants/domain/repositories_contracts/restaurants_repository_contract.dart';
 import '../features/restaurants/domain/usecases/get_current_location_usecase.dart';
 import '../features/restaurants/domain/usecases/get_restaurants_near_me_usecase.dart';
+import '../features/restaurants/domain/usecases/map_usecase.dart';
 import '../features/scan_product/data/data_sources/fetch_product_from_remote_data_source.dart';
 import '../features/scan_product/data/data_sources/scan_barcode_from_plugin.dart';
 import '../features/scan_product/data/repositories_impl/fetch_product_repository_impl.dart';
@@ -74,6 +79,7 @@ void setUpServices() {
   serviceLocator.registerSingleton<CurrentLocationFromPluginContract>(CurrentLocationFromGeoLocatorPluginImpl());
   serviceLocator.registerSingleton<CurrentLocationRepositoryContract>(CurrentLocationRepositoryImpl());
   serviceLocator.registerSingleton<GetCurrentLocationUseCase>(GetCurrentLocationUseCase());
+  serviceLocator.registerSingleton<GetLastLocationUseCase>(GetLastLocationUseCase());
 
   //--- Restaurants Service
   serviceLocator.registerSingleton<RestaurantsApiServiceContract>(YelpFusionRestaurantsApiServiceImpl());
@@ -81,4 +87,10 @@ void setUpServices() {
       .registerSingleton<RestaurantsFromRemoteDataSourceContract>(RestaurantsFromRemoteDataSourceYelpImpl());
   serviceLocator.registerSingleton<RestaurantsRepositoryContract>(RestaurantsRepositoryYelpImpl());
   serviceLocator.registerSingleton<GetRestaurantsNearMeUseCase>(GetRestaurantsNearMeUseCase());
+
+  //--- Map Service
+  serviceLocator.registerSingleton<MapServiceContract>(GoogleMapPluginImpl());
+  serviceLocator.registerSingleton<MapInfoFromRemoteDataSourceContract>(MapInfoFromRemoteDataSourceImpl());
+  serviceLocator.registerSingleton<MapRepositoryContract>(MapRepositoryImpl());
+  serviceLocator.registerSingleton<MapUseCase>(MapUseCase());
 }

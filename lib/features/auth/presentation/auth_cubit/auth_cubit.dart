@@ -23,7 +23,9 @@ class AuthCubit extends Cubit<AuthState> {
   final SignInWithFacebookUseCase _signInWithFacebookUseCase = serviceLocator<SignInWithFacebookUseCase>();
   final SignOutUseCase _signOutUseCase = serviceLocator<SignOutUseCase>();
   final CurrentUserUseCase _currentUserUseCase = serviceLocator<CurrentUserUseCase>();
+
   AuthCubit() : super(AuthInitialState());
+
   void createUserAccount(String userName, String email, String password) async {
     emit(AuthLoadingState());
     Either<CreateWithEmailAndPasswordFailure, UserEntity> registrationResult =
@@ -98,6 +100,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   goToRegister() {
     emit(RegisterState());
+  }
+
+  continueAsGuest() {
+    emit(ContinueAsGuestState());
   }
 
   void signOut() async {

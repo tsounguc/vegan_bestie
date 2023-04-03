@@ -12,3 +12,11 @@ class GetCurrentLocationUseCase {
     return _currentLocationRepositoryContract.getCurrentLocation();
   }
 }
+
+class GetLastLocationUseCase {
+  final CurrentLocationRepositoryContract _currentLocationRepositoryContract =
+      serviceLocator<CurrentLocationRepositoryContract>();
+  Future<Either<LocationFailure, LocationEntity>> getLastLocation() {
+    return _currentLocationRepositoryContract.getLastLocation();
+  }
+}

@@ -134,7 +134,7 @@ class RestaurantCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${business!.price}",
+                            business!.price ?? "",
                             style: TextStyle(color: Colors.black, fontSize: 10.sp),
                           )
                         ],

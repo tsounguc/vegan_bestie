@@ -47,13 +47,15 @@ dependencies:
   cloud_firestore:
   google_sign_in:
   flutter_facebook_auth:
-#  location: ^4.2.0
+  #  location: ^4.2.0
   flutter_rating_bar: ^4.0.1
   geolocator: ^9.0.1
-#  googleapis: ^9.1.0
+  geocoding:
+  google_maps_flutter:
+  #  googleapis: ^9.1.0
 
 
-#  animated_splash_screen:
+  #  animated_splash_screen:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -70,12 +72,12 @@ flutter_native_splash:
   android: true
   ios: true
   color: "#43A047"
-#  color: "#FFFFFF"
+  #  color: "#FFFFFF"
   #background_image: "assets/background.png"
   image: assets/logo/VeganBestie_NoBackground_Fixed2.png
-#  image: assets/logo/VeganBestie_BlackLogp.png
-#  image: assets/logo/VeganBestie_nobackground_fixed.png
-#  image: assets/logo/Logo-3.png
+  #  image: assets/logo/VeganBestie_BlackLogp.png
+  #  image: assets/logo/VeganBestie_nobackground_fixed.png
+  #  image: assets/logo/Logo-3.png
   #color_dark: "#042a49"
   #background_image_dark: "assets/dark-background.png"
   #image_dark: assets/splash-invert.png
@@ -117,8 +119,8 @@ flutter:
     - family: BarcodeIcon
       fonts:
         - asset: assets/icon/Barcode.ttf
-#         - asset: fonts/TrajanPro_Bold.ttf
-#           weight: 700
+  #         - asset: fonts/TrajanPro_Bold.ttf
+  #           weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -1,5 +1,6 @@
 abstract class Failure {
   final String? message;
+
   const Failure({this.message});
 }
 
@@ -23,7 +24,7 @@ class SignInWithGoogleFailure extends Failure {
   const SignInWithGoogleFailure({String? message}) : super(message: message);
 }
 
-class SignInWithFacebookFailure extends Failure{
+class SignInWithFacebookFailure extends Failure {
   const SignInWithFacebookFailure({String? message}) : super(message: message);
 }
 
@@ -47,4 +48,6 @@ class SearchProductFailure extends Failure {
   const SearchProductFailure({String? message}) : super(message: message);
 }
 
-
+class MapFailure extends Failure {
+  const MapFailure({String? message}) : super(message: message);
+}

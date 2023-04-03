@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheveegan/core/assets/vegan_icon.dart';
 import 'package:sheveegan/core/buttons.dart';
 import 'package:sheveegan/core/constants/colors.dart';
-import 'package:sheveegan/features/auth/presentation/pages/login_page.dart';
-import 'package:sheveegan/features/auth/presentation/pages/registration_page.dart';
 
 import '../../../../core/constants/strings.dart';
 import '../auth_cubit/auth_cubit.dart';
@@ -65,7 +62,25 @@ class WelcomePage extends StatelessWidget {
                         BlocProvider.of<AuthCubit>(context).goToRegister();
                       },
                       text: "Register",
-                    )
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        BlocProvider.of<AuthCubit>(context).continueAsGuest();
+                      },
+                      child: Text(
+                        "Continue as a guest",
+                        style: TextStyle(
+                          color: Colors.white,
+                          // decoration: TextDecoration.underline,
+                          // decorationThickness: 5,
+                          // fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
                   ],
                 )
               ],

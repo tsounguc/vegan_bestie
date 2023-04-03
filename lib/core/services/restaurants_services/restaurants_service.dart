@@ -16,7 +16,7 @@ class GooglePlacesRestaurantsApiServiceImpl implements RestaurantsApiServiceCont
   Future<http.Response> getRestaurantsNearMe(Position position) async {
     try {
       return http.get(Uri.parse(
-          "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${_apiKey}&type=restaurant&latitude=${position.latitude}&longitude${position.longitude}&rankby=distance"));
+          "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${_apiKey}&type=restaurant&location=${position.latitude},${position.longitude}&rankby=distance"));
     } catch (e) {
       throw Exception(e);
     }

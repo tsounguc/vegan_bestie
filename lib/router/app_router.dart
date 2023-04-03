@@ -22,10 +22,8 @@ class AppRouter {
     final arguments = settings.arguments;
     switch (settings.name) {
       case HomePage.id:
-        debugPrint("$arguments");
         return MaterialPageRoute(builder: (context) => HomePage());
       case AuthPage.id:
-        debugPrint("$arguments");
         return MaterialPageRoute(builder: (context) => AuthPage());
       case LoginPage.id:
         return MaterialPageRoute(builder: (context) => LoginPage());

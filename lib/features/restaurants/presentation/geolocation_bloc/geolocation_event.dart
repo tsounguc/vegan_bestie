@@ -11,7 +11,14 @@ class LoadGeolocationEvent extends GeolocationEvent {
 
 class UpdateGeolocationEvent extends GeolocationEvent {
   final Position position;
+
   UpdateGeolocationEvent({required this.position});
+
   @override
   List<Object?> get props => [position];
+}
+
+class TappedRestaurantTabEvent extends GeolocationEvent {
+  @override
+  List<Object?> get props => throw UnimplementedError();
 }
