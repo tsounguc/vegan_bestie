@@ -99,9 +99,12 @@ class VeganChecker {
   bool veganCheck(productEntity) {
     bool isVegan = true;
     _nonVeganIngredientsInProduct = "";
+    if (productEntity?.ingredients == null || productEntity?.ingredients.isEmpty) {
+      isVegan = false;
+    }
+    debugPrint(productEntity?.ingredients.toString());
     if (productEntity?.labels == null || productEntity!.labels!.isEmpty) {
       productEntity!.ingredients?.forEach((ingredient) {
-        debugPrint("is ${ingredient.text} vegan: ${ingredient.vegan}");
         if (ingredient.vegan == null || ingredient.vegan == "maybe") {
           nonVeganIngredients.forEach((nonVeganIngredient) {
             if (ingredient.text!.toLowerCase() == nonVeganIngredient.toLowerCase()) {

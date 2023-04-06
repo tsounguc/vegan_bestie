@@ -20,7 +20,7 @@ class RestaurantsFoundStatePage extends StatelessWidget {
               }),
               DraggableScrollableSheet(
                   initialChildSize: 0.5,
-                  minChildSize: 0.07,
+                  minChildSize: 0.15,
                   maxChildSize: 0.90,
                   expand: true,
                   builder: (BuildContext context, ScrollController scrollController) {
@@ -33,7 +33,7 @@ class RestaurantsFoundStatePage extends StatelessWidget {
                             height: 25,
                             child: Divider(
                               thickness: 5,
-                              color: Colors.white,
+                              color: Theme.of(context).primaryColor,
                             ),
                           ),
                           Expanded(

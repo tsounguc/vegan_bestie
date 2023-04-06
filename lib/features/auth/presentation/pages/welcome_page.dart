@@ -5,6 +5,7 @@ import 'package:sheveegan/core/buttons.dart';
 import 'package:sheveegan/core/constants/colors.dart';
 
 import '../../../../core/constants/strings.dart';
+import '../../../../themes/app_theme.dart';
 import '../auth_cubit/auth_cubit.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -37,12 +38,14 @@ class WelcomePage extends StatelessWidget {
                   children: [
                     Text(
                       Strings.appTitle,
-                      style: TextStyle(
-                        color: titleTextColorOne,
-                        fontSize: 36.sp,
-                        fontWeight: FontWeight.w800,
-                        fontFamily: 'cursive',
-                      ),
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(color: AppTheme.lightPrimaryColor),
+
+                      // style: TextStyle(
+                      //   color: titleTextColorOne,
+                      //   fontSize: 36.sp,
+                      //   fontWeight: FontWeight.w800,
+                      //   fontFamily: 'cursive',
+                      // ),
                     ),
                   ],
                 ),

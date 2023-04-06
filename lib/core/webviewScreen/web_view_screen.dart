@@ -5,10 +5,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../core/constants/strings.dart';
+import '../constants/size_config.dart';
+import '../custom_appbar_title_widget.dart';
 import 'navigation_controls.dart';
 
 class WebViewScreen extends StatefulWidget {
   final String? url;
+
   const WebViewScreen({Key? key, this.url}) : super(key: key);
 
   @override
@@ -19,6 +22,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   final Completer<WebViewController> _controller = Completer<WebViewController>();
   late WebViewController _webViewController;
   var loadingPercentage = 0;
+
   @override
   void initState() {
     super.initState();
@@ -29,32 +33,23 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leadingWidth: 80,
+        toolbarHeight: toolbarHeight,
         backgroundColor: Theme.of(context).colorScheme.background,
-        iconTheme: Theme.of(context).iconTheme,
         automaticallyImplyLeading: true,
         leading: !Navigator.of(context).canPop()
             ? null
             : IconButton(
-                color: Colors.white,
-                icon: Icon(Icons.arrow_back),
+                color: Colors.black,
+                icon: Icon(
+                  Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
         centerTitle: true,
-        title: Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: Text(
-            Strings.appTitle,
-            style: TextStyle(
-              // color: Theme.of(context).backgroundColor,
-              color: Colors.white,
-              fontSize: 28.sp,
-              fontWeight: FontWeight.w800,
-              fontFamily: 'cursive',
-            ),
-          ),
-        ),
+        title: CustomAppbarTitleWidget(imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
         actions: [NavigationControls(controller: _controller)],
       ),
       body: Stack(

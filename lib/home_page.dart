@@ -7,8 +7,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:sheveegan/core/loading.dart';
 import 'package:sheveegan/features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
 
+import 'core/constants/clipping_class.dart';
 import 'core/constants/size_config.dart';
 import 'core/constants/strings.dart';
+import 'core/custom_appbar_title_widget.dart';
 import 'core/custom_circle_avatar.dart';
 import 'core/custom_drawer.dart';
 import 'features/auth/presentation/auth_cubit/auth_cubit.dart';
@@ -38,11 +40,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _currentIndex = value;
       if (_currentIndex == 1) {
-        // if (userLocation == null ||
-        //     userLocation!.longitude != currentUserLocation?.longitude ||
-        //     userLocation!.latitude != currentUserLocation?.latitude) {
         BlocProvider.of<GeolocationBloc>(context).add(LoadGeolocationEvent());
-        // }
       }
     });
   }
@@ -61,79 +59,111 @@ class _HomePageState extends State<HomePage> {
           return LoadingPage();
         }
         // if (state is LoggedInState) {
-        return Scaffold(
-          key: scaffoldKey,
-          backgroundColor: Theme.of(buildContext).colorScheme.background,
-          resizeToAvoidBottomInset: true,
-          appBar: AppBar(
-            elevation: 0,
-            backgroundColor: Theme.of(buildContext).colorScheme.background,
-            leadingWidth: 80,
-            toolbarHeight: toolbarHeight,
-            leading: Visibility(
-              visible: state is LoggedInState,
-              child: IconButton(
-                icon: CustomCircleAvatar(
-                  size: 25,
-                ),
-                onPressed: () => scaffoldKey.currentState!.openDrawer(),
-              ),
-            ),
-            centerTitle: true,
-            title: _currentIndex == 0
-                ? null
-                : Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Text(
-                      Strings.appTitle,
-                      style: TextStyle(
-                        // color: Theme.of(context).backgroundColor,
-                        color: Colors.white,
-                        fontSize: 36.sp,
-                        fontWeight: FontWeight.w800,
-                        fontFamily: 'cursive',
+        return Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+          ),
+          child: Stack(
+            children: [
+              // Padding(
+              //   padding: EdgeInsets.only(bottom: 2.h),
+              // child: ClipPath(
+              //   clipper: ClippingClassTwo(),
+              //   child: Container(
+              //     width: MediaQuery.of(context).size.width,
+              //     height: MediaQuery.of(context).size.height,
+              //     decoration: BoxDecoration(
+              //       // color: Theme.of(context).colorScheme.background.withOpacity(0.9),
+              //       color: Colors.green.withOpacity(0.6),
+              //       // gradient: LinearGradient(
+              //       //   begin: Alignment.topLeft,
+              //       //   end: Alignment.bottomRight,
+              //       //   colors: [
+              //       //     Colors.green.shade900,
+              //       //     Colors.green.shade700,
+              //       //     Colors.green.shade500,
+              //       //     Colors.green.shade300,
+              //       //   ],
+              //       // ),
+              //     ),
+              //   ),
+              // ),
+              // ),
+              Scaffold(
+                key: scaffoldKey,
+                backgroundColor: Colors.transparent,
+                resizeToAvoidBottomInset: true,
+                extendBody: true,
+                appBar: AppBar(
+                  leadingWidth: 80,
+                  toolbarHeight: toolbarHeight,
+                  backgroundColor: Colors.transparent,
+                  leading: Visibility(
+                    visible: state is LoggedInState,
+                    child: IconButton(
+                      icon: CustomCircleAvatar(
+                        size: 25,
                       ),
+                      onPressed: () => scaffoldKey.currentState!.openDrawer(),
                     ),
                   ),
-            actions: [
-              Visibility(
-                  visible: false,
-                  // visible: !(state is LoggedInState),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 12.0),
-                    child: TextButton(
-                        onPressed: () {
-                          BlocProvider.of<AuthCubit>(context).goToLoginPage();
-                        },
-                        child: Text(
-                          "Log In",
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-                        )),
-                  ))
-            ],
-          ),
-          drawer: state is LoggedInState ? CustomDrawer() : null,
-          body: _pages[_currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            elevation: 1,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            // fixedColor: Colors.purple,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.grey.shade500,
-            type: BottomNavigationBarType.fixed,
-            currentIndex: _currentIndex,
-            iconSize: 35,
-            selectedLabelStyle: TextStyle(fontWeight: FontWeight.w700),
-
-            onTap: _updateIndex,
-            items: [
-              BottomNavigationBarItem(
-                label: "Home",
-                icon: Icon(Icons.home),
-              ),
-              BottomNavigationBarItem(
-                label: "Restaurants",
-                icon: Icon(Icons.dinner_dining),
+                  centerTitle: true,
+                  title: _currentIndex == 0
+                      ? null
+                      : CustomAppbarTitleWidget(
+                          imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
+                  actions: [
+                    Visibility(
+                        visible: false,
+                        // visible: !(state is LoggedInState),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 12.0),
+                          child: TextButton(
+                              onPressed: () {
+                                BlocProvider.of<AuthCubit>(context).goToLoginPage();
+                              },
+                              child: Text("Log In", style: Theme.of(context).textTheme.bodyLarge
+                                  // style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                                  )),
+                        ))
+                  ],
+                ),
+                drawer: state is LoggedInState ? CustomDrawer() : null,
+                body: _pages[_currentIndex],
+                bottomNavigationBar: Container(
+                  // height: MediaQuery.of(context).size.height / 12,
+                  decoration: BoxDecoration(
+                    // color: Theme.of(context).colorScheme.background,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
+                    ),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
+                    ),
+                    child: BottomNavigationBar(
+                      type: BottomNavigationBarType.fixed,
+                      currentIndex: _currentIndex,
+                      onTap: _updateIndex,
+                      items: [
+                        BottomNavigationBarItem(
+                          label: "Home",
+                          icon: Icon(_currentIndex == 0 ? Icons.home : Icons.home_outlined),
+                        ),
+                        BottomNavigationBarItem(
+                          label: "Restaurants",
+                          icon: Icon(_currentIndex == 1 ? Icons.dinner_dining : Icons.dinner_dining_outlined),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               )
             ],
           ),

@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/service_locator.dart';
 import 'features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'features/auth/presentation/pages/auth_page.dart';
 import 'features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
 import 'features/restaurants/presentation/map_cubit/map_cubit.dart';
 import 'features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
@@ -76,7 +77,7 @@ class _MyAppState extends State<MyApp> {
           title: "Vegan Bestie",
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-          themeMode: ThemeMode.system,
+          themeMode: ThemeMode.light,
           home: HomePage(),
           onGenerateRoute: AppRouter.onGenerateRoute,
           // onUnknownRoute: AppRouter.onUnknownRoute,

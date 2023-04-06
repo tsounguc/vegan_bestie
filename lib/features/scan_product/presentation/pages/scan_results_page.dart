@@ -6,9 +6,11 @@ import 'package:sheveegan/core/loading.dart';
 import 'package:sheveegan/core/product_not_found.dart';
 
 import 'product_found_page.dart';
+import 'product_found_page2.dart';
 
 class ScanResultsPage extends StatelessWidget {
   static const String id = "/scanResultsPage";
+
   const ScanResultsPage({Key? key}) : super(key: key);
 
   @override
@@ -22,7 +24,8 @@ class ScanResultsPage extends StatelessWidget {
         } else if (state is ProductNotFoundState) {
           return ProductNotFoundPage();
         }
-        return ProductFoundPage();
+        return ProductFoundPageTwo();
+        // return ProductFoundPage();
       },
     );
   }

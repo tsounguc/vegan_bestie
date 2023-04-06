@@ -6,12 +6,15 @@ import 'package:simple_animations/simple_animations.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/size_config.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/vegan_bestie_logo_widget.dart';
+import '../../../../themes/app_theme.dart';
 import '../../../search/presentation/search_bloc/search_bloc.dart';
 import '../barcode_scanner_cubit/barcode_scanner_cubit.dart';
 import '../fetch_product_cubit/product_fetch_cubit.dart';
 
 class ScanProductHomePage extends StatelessWidget {
   static const String id = "/scanProductHomePage";
+
   const ScanProductHomePage({Key? key}) : super(key: key);
 
   @override
@@ -68,35 +71,19 @@ class ScanProductHomePage extends StatelessWidget {
               //   ],
               // ),
               SizedBox(
-                height: 120.h - toolbarHeight,
+                height: 130 - toolbarHeight,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    Strings.appTitle,
-                    style: TextStyle(
-                      color: titleTextColorOne,
-                      fontSize: 36.sp,
-                      fontWeight: FontWeight.w800,
-                      fontFamily: 'cursive',
-                    ),
-                  ),
-                ],
-              ),
+              VeganBestieLogoWidget(size: 45),
               SizedBox(
-                height: 100.h,
+                height: 130,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     Strings.tapToScan,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style:
+                        Theme.of(buildContext).textTheme.titleMedium?.copyWith(color: AppTheme.lightPrimaryColor),
                   ),
                   SizedBox(
                     height: 20.0.h,

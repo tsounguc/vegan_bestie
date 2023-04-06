@@ -28,21 +28,26 @@ class RestaurantCard extends StatelessWidget {
         debugPrint("${business?.name}:  ${business?.url}");
       },
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 6.w),
+        padding: EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 4,
+        ),
         child: Card(
-          color: Colors.green.shade50,
+          color: Colors.white,
           clipBehavior: Clip.antiAlias,
+          elevation: 5,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
           child: Row(
             children: [
               business!.imageUrl!.isNotEmpty && business!.imageUrl != null
                   ? Padding(
-                      padding: EdgeInsets.only(left: 8.0.w),
+                      padding: EdgeInsets.only(left: 4.0.w),
                       child: Ink(
                         height: 100.r,
                         width: 100.r,
                         decoration: BoxDecoration(
                           color: Colors.green.shade50,
+                          borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: CachedNetworkImageProvider(business!.imageUrl!),
@@ -61,7 +66,7 @@ class RestaurantCard extends StatelessWidget {
                         child: Icon(
                           Icons.restaurant,
                           size: 30.r,
-                          color: Colors.white,
+                          color: Colors.grey,
                         ),
                       ),
                     ),

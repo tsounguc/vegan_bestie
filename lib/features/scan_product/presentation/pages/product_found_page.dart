@@ -11,6 +11,7 @@ import 'components/product_found_body.dart';
 
 class ProductFoundPage extends StatelessWidget {
   static const String id = "/productFoundPage";
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductFetchCubit, ProductFetchState>(
@@ -41,15 +42,7 @@ class ProductFoundPage extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   centerTitle: true,
-                  title: Text(
-                    Strings.appTitle,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 31.sp,
-                      fontWeight: FontWeight.w800,
-                      fontFamily: 'cursive',
-                    ),
-                  ),
+                  title: Text(Strings.appTitle, style: Theme.of(context).textTheme.titleLarge),
                   // actions: [
                   //   PopupMenuButton(
                   //     icon: Icon(
@@ -82,12 +75,7 @@ class ProductFoundPage extends StatelessWidget {
                   // ],
                 ),
                 backgroundColor: Colors.transparent,
-                // backgroundColor: state.product.imageFrontUrl != null
-                //     ? Colors.transparent
-                //     : state.isVegan!
-                //         ? Theme.of(context).colorScheme.background
-                //         : Colors.red,
-                body: Container(child: ProductFoundBody()),
+                body: ProductFoundBody(),
               ),
             ),
           );
