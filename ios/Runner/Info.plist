@@ -16,7 +16,7 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>sheveegan</string>
+		<string>Vegan Bestie</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
@@ -48,5 +48,9 @@
 		<false/>
 		<key>UIStatusBarHidden</key>
 		<false/>
-	</dict>
+		<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+</dict>
 </plist>
