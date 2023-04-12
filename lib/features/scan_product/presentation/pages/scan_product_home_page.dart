@@ -80,12 +80,12 @@ class ScanProductHomePage extends StatelessWidget {
               // ),
               SizedBox(
                 // height: 100 - toolbarHeight,
-                height: MediaQuery.of(buildContext).size.height * 0.055,
+                height: MediaQuery.of(buildContext).size.height * 0.036,
               ),
               VeganBestieLogoWidget(size: 45),
               SizedBox(
                 // height: 100,
-                height: MediaQuery.of(buildContext).size.height * 0.13,
+                height: MediaQuery.of(buildContext).size.height * 0.14,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -98,13 +98,15 @@ class ScanProductHomePage extends StatelessWidget {
                         ?.copyWith(color: AppTheme.lightPrimaryColor),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(buildContext).size.height * 0.02,
+                    height: MediaQuery.of(buildContext).size.height * 0.03,
                   ),
                   CustomAnimationBuilder<double>(
                     control: Control.mirror,
                     tween: Tween(
-                      begin: 200,
-                      end: 185,
+                      begin: MediaQuery.of(buildContext).size.width * 0.55,
+                      end: MediaQuery.of(buildContext).size.width * 0.50,
+                      // begin: 200.r,
+                      // end: 185.r,
                     ),
                     duration: Duration(milliseconds: 1000),
                     delay: const Duration(milliseconds: 500),
@@ -130,7 +132,7 @@ class ScanProductHomePage extends StatelessWidget {
                         elevation: MaterialStateProperty.all(6.0),
                         shadowColor: MaterialStateProperty.all(Colors.black),
                         fixedSize: MaterialStateProperty.all(
-                          Size.fromRadius(105),
+                          Size.fromRadius(105.r),
                         ),
                         backgroundColor:
                             MaterialStateProperty.all(Colors.white),
@@ -140,7 +142,7 @@ class ScanProductHomePage extends StatelessWidget {
                       ),
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.only(right: 10.0),
+                          padding: EdgeInsets.only(right: 10.0.r),
                           child: ImageIcon(
                             AssetImage(
                                 'assets/logo/VeganBestie_NoBackground_Fixed2.png'),
