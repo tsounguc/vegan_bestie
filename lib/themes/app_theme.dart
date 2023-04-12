@@ -10,7 +10,7 @@ class AppTheme {
   // static Color lightBackgroundColor = const Color(0XFF2E7D32);
   static Color lightBackgroundColor = Colors.white;
 
-  static Color lightPrimaryColor = const Color(0XFF2E7D32);
+  static Color lightPrimaryColor = const Color(0XFF66b032);
   static Color lightSecondaryColor = Colors.green.shade300;
   static Color lightAccentColor = Colors.greenAccent;
   static Color lightParticles = Colors.green.shade900;
@@ -21,7 +21,7 @@ class AppTheme {
   static Color darkParticles = const Color(0XFF2E7D32);
 
   static final lightTheme = ThemeData(
-    primarySwatch: MaterialColor(500, <int, Color>{
+    primarySwatch: MaterialColor(lightPrimaryColor.value, <int, Color>{
       50: Colors.green.shade50,
       100: Colors.green.shade100,
       200: Colors.green.shade200,
@@ -35,8 +35,8 @@ class AppTheme {
     }),
     appBarTheme: AppBarTheme(elevation: 0, backgroundColor: lightBackgroundColor),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: lightPrimaryColor,
-      selectedItemColor: lightBackgroundColor,
+      backgroundColor: lightBackgroundColor,
+      selectedItemColor: lightPrimaryColor,
       selectedLabelStyle: TextStyle(fontWeight: FontWeight.w700),
       unselectedItemColor: Colors.grey.shade500,
     ),

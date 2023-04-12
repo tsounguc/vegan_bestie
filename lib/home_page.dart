@@ -99,6 +99,7 @@ class _HomePageState extends State<HomePage> {
                   toolbarHeight: toolbarHeight,
                   backgroundColor: Colors.transparent,
                   leading: Visibility(
+                    maintainSize: false,
                     visible: state is LoggedInState,
                     child: IconButton(
                       icon: CustomCircleAvatar(
@@ -135,17 +136,17 @@ class _HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(
                     // color: Theme.of(context).colorScheme.background,
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25),
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
                     ),
-                    boxShadow: [
-                      BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
-                    ],
+                    // boxShadow: [
+                    //   BoxShadow(color: Colors.black38, spreadRadius: 2, blurRadius: 5),
+                    // ],
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25),
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
                     ),
                     child: BottomNavigationBar(
                       type: BottomNavigationBarType.fixed,
