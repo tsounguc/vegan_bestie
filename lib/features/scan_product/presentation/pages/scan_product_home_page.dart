@@ -85,7 +85,7 @@ class ScanProductHomePage extends StatelessWidget {
               VeganBestieLogoWidget(size: 45),
               SizedBox(
                 // height: 100,
-                height: MediaQuery.of(buildContext).size.height * 0.14,
+                height: MediaQuery.of(buildContext).size.height * 0.15,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -98,7 +98,7 @@ class ScanProductHomePage extends StatelessWidget {
                         ?.copyWith(color: AppTheme.lightPrimaryColor),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(buildContext).size.height * 0.03,
+                    height: MediaQuery.of(buildContext).size.height * 0.02,
                   ),
                   CustomAnimationBuilder<double>(
                     control: Control.mirror,
