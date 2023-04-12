@@ -30,7 +30,8 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
       final dynamic toolTip = _toolTipKey.currentState;
 
-      ProductFetchState state = BlocProvider.of<ProductFetchCubit>(context).state;
+      ProductFetchState state =
+          BlocProvider.of<ProductFetchCubit>(context).state;
       if (state is ProductFoundState && state.isVegan == true) {
         await Future.delayed(Duration(milliseconds: 10));
         toolTip.ensureTooltipVisible();
@@ -52,7 +53,9 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
           if (state.product.proteins100G != null &&
               state.product.carbohydrates100G != null &&
               state.product.fat100G != null) {
-            total = state.product.proteins100G! + state.product.carbohydrates100G! + state.product.fat100G!;
+            total = state.product.proteins100G! +
+                state.product.carbohydrates100G! +
+                state.product.fat100G!;
             proteinsPercentage = state.product.proteins100G! / total;
             carbohydratesPercentage = state.product.carbohydrates100G! / total;
             fatPercentage = state.product.fat100G! / total;
@@ -86,8 +89,10 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                               // height: 35,
                               child: Text(
                                 "${state.product.productName}",
-                                style:
-                                    TextStyle(color: Colors.black, fontSize: 26, overflow: TextOverflow.ellipsis),
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 26,
+                                    overflow: TextOverflow.ellipsis),
                               ),
                             ),
                             if (state.isVegan!)
@@ -113,8 +118,10 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                   // verticalOffset: 20,
                                   textAlign: TextAlign.start,
                                   message: Strings.toolTipVeganMessage,
-                                  textStyle:
-                                      TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600),
                                   decoration: BoxDecoration(
                                     color: Colors.green,
                                     borderRadius: BorderRadius.only(
@@ -140,7 +147,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                               ),
                           ],
                         ),
-                        SizedBox(height: 15),
+                        SizedBox(height: 0),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0),
                           child: Row(
@@ -149,13 +156,15 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                               children: [
                                 Text(
                                   "Macros",
-                                  style: TextStyle(color: Colors.black, fontSize: 18),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 18),
                                 ),
                               ]),
                         ),
                         SizedBox(height: 5),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 5),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,7 +222,8 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                             children: [
                               Text(
                                 "Ingredients",
-                                style: TextStyle(color: Colors.black, fontSize: 18),
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 18),
                               ),
                             ],
                           ),
@@ -229,14 +239,18 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                             child: SingleChildScrollView(
                               controller: _scrollController,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0, vertical: 5),
                                 child: Text(
                                     state.product.ingredientsText != null &&
-                                            state.product.ingredientsText!.isNotEmpty
+                                            state.product.ingredientsText!
+                                                .isNotEmpty
                                         ? state.product.ingredientsText!
                                         : 'Ingredients not found'.toUpperCase(),
-                                    style:
-                                        TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.normal)
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal)
                                     // style: Theme.of(context).textTheme.bodySmall,
                                     ),
                               ),
@@ -255,7 +269,8 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                     height: MediaQuery.of(context).size.height * 0.43,
                     width: MediaQuery.of(context).size.width * 0.80,
                     decoration: BoxDecoration(
-                      gradient: RadialGradient(colors: [Color(0XFF2E7D32), Colors.green.shade500]),
+                      gradient: RadialGradient(
+                          colors: [Color(0XFF2E7D32), Colors.green.shade500]),
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(25),
                         bottomRight: Radius.circular(25),
@@ -275,7 +290,9 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                           bottomRight: Radius.circular(25),
                         ),
                         child: CachedNetworkImage(
-                          progressIndicatorBuilder: (context, text, downloadProgress) => LoadingPage(),
+                          progressIndicatorBuilder:
+                              (context, text, downloadProgress) =>
+                                  LoadingPage(),
                           fit: BoxFit.cover,
                           imageUrl: state.product.imageFrontUrl ?? "",
                           errorWidget: (context, error, value) => Container(),
@@ -293,7 +310,9 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                           Navigator.pop(context);
                         },
                         icon: Icon(
-                          Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+                          Platform.isIOS
+                              ? Icons.arrow_back_ios
+                              : Icons.arrow_back,
                           color: Colors.white,
                         ),
                       ),
