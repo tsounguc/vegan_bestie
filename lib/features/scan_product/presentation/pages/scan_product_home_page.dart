@@ -104,7 +104,7 @@ class ScanProductHomePage extends StatelessWidget {
                     control: Control.mirror,
                     tween: Tween(
                       begin: MediaQuery.of(buildContext).size.width * 0.55,
-                      end: MediaQuery.of(buildContext).size.width * 0.50,
+                      end: MediaQuery.of(buildContext).size.width * 0.53,
                       // begin: 200.r,
                       // end: 185.r,
                     ),
