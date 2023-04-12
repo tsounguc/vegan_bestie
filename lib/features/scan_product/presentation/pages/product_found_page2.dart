@@ -147,7 +147,8 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                               ),
                           ],
                         ),
-                        SizedBox(height: 0),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.005),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0),
                           child: Row(
@@ -161,10 +162,14 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                 ),
                               ]),
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(
+                            height:
+                                MediaQuery.of(context).size.height * 0.0025),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 5),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical:
+                                  MediaQuery.of(context).size.height * 0.0025),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,7 +187,8 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                 per100G: state.product.proteins100G,
                               ),
                               SizedBox(
-                                height: 15,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.0075,
                               ),
                               MacroNutrientWidget(
                                 title: 'Carbs',
@@ -197,7 +203,8 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                 per100G: state.product.carbohydrates100G,
                               ),
                               SizedBox(
-                                height: 15,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.0075,
                               ),
                               MacroNutrientWidget(
                                   title: 'Fat',
@@ -213,7 +220,8 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 25),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0),
                           child: Row(
@@ -228,6 +236,8 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                             ],
                           ),
                         ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.005),
                         Scrollbar(
                           controller: _scrollController,
                           thumbVisibility: true,
@@ -239,8 +249,11 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                             child: SingleChildScrollView(
                               controller: _scrollController,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0, vertical: 5),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15.0,
+                                    vertical:
+                                        MediaQuery.of(context).size.height *
+                                            0.0025),
                                 child: Text(
                                     state.product.ingredientsText != null &&
                                             state.product.ingredientsText!
