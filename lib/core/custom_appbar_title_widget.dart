@@ -6,7 +6,8 @@ class CustomAppbarTitleWidget extends StatelessWidget {
   final String imageOneName;
   final String imageTwoName;
 
-  const CustomAppbarTitleWidget({Key? key, required this.imageOneName, required this.imageTwoName})
+  const CustomAppbarTitleWidget(
+      {Key? key, required this.imageOneName, required this.imageTwoName})
       : super(key: key);
 
   @override

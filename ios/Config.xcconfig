@@ -1,0 +1,11 @@
+//
+//  Config.xcconfig
+//  Runner
+//
+//  Created by Kellie Corbett on 4/12/23.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+GOOGLE_MAPS_API_KEY=AIzaSyAE0cQg1w7k4FPPQIj65eZn3y_G4dzqylQ
