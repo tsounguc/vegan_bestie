@@ -80,7 +80,7 @@ class ScanProductHomePage extends StatelessWidget {
               // ),
               SizedBox(
                 // height: 100 - toolbarHeight,
-                height: MediaQuery.of(buildContext).size.height * 0.036,
+                height: MediaQuery.of(buildContext).size.height * 0.06,
               ),
               VeganBestieLogoWidget(size: 45),
               SizedBox(
