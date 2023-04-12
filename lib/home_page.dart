@@ -36,7 +36,8 @@ class _HomePageState extends State<HomePage> {
   ];
 
   void _updateIndex(int value) {
-    Position? currentUserLocation = BlocProvider.of<GeolocationBloc>(context).currentLocation;
+    Position? currentUserLocation =
+        BlocProvider.of<GeolocationBloc>(context).currentLocation;
     setState(() {
       _currentIndex = value;
       if (_currentIndex == 1) {
@@ -112,7 +113,8 @@ class _HomePageState extends State<HomePage> {
                   title: _currentIndex == 0
                       ? null
                       : CustomAppbarTitleWidget(
-                          imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
+                          imageOneName: 'assets/bread.png',
+                          imageTwoName: 'assets/tomato.png'),
                   actions: [
                     Visibility(
                         visible: false,
@@ -121,9 +123,11 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.only(right: 12.0),
                           child: TextButton(
                               onPressed: () {
-                                BlocProvider.of<AuthCubit>(context).goToLoginPage();
+                                BlocProvider.of<AuthCubit>(context)
+                                    .goToLoginPage();
                               },
-                              child: Text("Log In", style: Theme.of(context).textTheme.bodyLarge
+                              child: Text("Log In",
+                                  style: Theme.of(context).textTheme.bodyLarge
                                   // style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                                   )),
                         ))
@@ -155,11 +159,15 @@ class _HomePageState extends State<HomePage> {
                       items: [
                         BottomNavigationBarItem(
                           label: "Home",
-                          icon: Icon(_currentIndex == 0 ? Icons.home : Icons.home_outlined),
+                          icon: Icon(_currentIndex == 0
+                              ? Icons.home
+                              : Icons.home_outlined),
                         ),
                         BottomNavigationBarItem(
                           label: "Restaurants",
-                          icon: Icon(_currentIndex == 1 ? Icons.dinner_dining : Icons.dinner_dining_outlined),
+                          icon: Icon(_currentIndex == 1
+                              ? Icons.dinner_dining
+                              : Icons.dinner_dining_outlined),
                         )
                       ],
                     ),

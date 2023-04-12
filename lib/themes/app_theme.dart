@@ -33,7 +33,8 @@ class AppTheme {
       800: Colors.green.shade800,
       900: Colors.green.shade900,
     }),
-    appBarTheme: AppBarTheme(elevation: 0, backgroundColor: lightBackgroundColor),
+    appBarTheme:
+        AppBarTheme(elevation: 0, backgroundColor: lightBackgroundColor),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: lightBackgroundColor,
       selectedItemColor: lightPrimaryColor,
@@ -51,17 +52,25 @@ class AppTheme {
     ),
     textTheme: GoogleFonts.openSansTextTheme().copyWith(
       headlineLarge: TextStyle(color: lightPrimaryColor),
-      displayMedium: TextStyle(color: lightPrimaryColor, fontWeight: FontWeight.bold, fontFamily: 'cursive'),
-      displaySmall: TextStyle(color: lightPrimaryColor, fontWeight: FontWeight.bold, fontFamily: 'cursive'),
-      titleLarge: TextStyle(
+      displayMedium: GoogleFonts.dancingScript().copyWith(
+        color: lightPrimaryColor,
+        fontWeight: FontWeight.bold,
+      ),
+      displaySmall: GoogleFonts.dancingScript().copyWith(
+        color: lightPrimaryColor,
+        fontWeight: FontWeight.bold,
+      ),
+      titleLarge: GoogleFonts.dancingScript().copyWith(
         color: lightPrimaryColor,
         fontSize: 30,
         fontWeight: FontWeight.bold,
-        fontFamily: 'cursive',
       ),
-      titleMedium: TextStyle(color: lightPrimaryColor, fontWeight: FontWeight.w600),
-      bodyLarge: TextStyle(color: lightPrimaryColor, fontSize: 24, fontWeight: FontWeight.w600),
-      bodyMedium: TextStyle(color: lightPrimaryColor, fontSize: 16, fontWeight: FontWeight.w600),
+      titleMedium:
+          TextStyle(color: lightPrimaryColor, fontWeight: FontWeight.w600),
+      bodyLarge: TextStyle(
+          color: lightPrimaryColor, fontSize: 24, fontWeight: FontWeight.w600),
+      bodyMedium: TextStyle(
+          color: lightPrimaryColor, fontSize: 16, fontWeight: FontWeight.w600),
       bodySmall: TextStyle(color: Colors.black),
     ),
   );
@@ -100,7 +109,10 @@ class AppTheme {
     ),
     textTheme: GoogleFonts.openSansTextTheme().copyWith(
       headlineLarge: TextStyle(color: Colors.white),
-      displaySmall: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'cursive'),
+      displaySmall: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'cursive'),
       titleLarge: TextStyle(
         color: Colors.white,
         fontSize: 30,
@@ -108,8 +120,10 @@ class AppTheme {
         fontFamily: 'cursive',
       ),
       titleMedium: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-      bodyLarge: TextStyle(color: Colors.black, fontSize: 24, fontWeight: FontWeight.w600),
-      bodyMedium: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+      bodyLarge: TextStyle(
+          color: Colors.black, fontSize: 24, fontWeight: FontWeight.w600),
+      bodyMedium: TextStyle(
+          color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
       bodySmall: TextStyle(color: Colors.black),
     ),
   );
@@ -117,9 +131,13 @@ class AppTheme {
   static setStatusBarAndNavigationBarColors(ThemeMode themeMode) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
-        systemNavigationBarIconBrightness: themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
-        systemNavigationBarColor: themeMode == ThemeMode.light ? lightBackgroundColor : darkBackgroundColor,
+        statusBarIconBrightness:
+            themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
+        systemNavigationBarIconBrightness:
+            themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
+        systemNavigationBarColor: themeMode == ThemeMode.light
+            ? lightBackgroundColor
+            : darkBackgroundColor,
         systemNavigationBarDividerColor: Colors.transparent));
   }
 }

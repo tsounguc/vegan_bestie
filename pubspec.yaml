@@ -33,7 +33,7 @@ dependencies:
   bloc_test:
   equatable:
   flutter_barcode_scanner: ^2.0.0
-  flutter_barcode_sdk:
+#  flutter_barcode_sdk:
   http: ^0.13.4
   simple_animations: ^5.0.0+3
   device_preview: ^1.1.0

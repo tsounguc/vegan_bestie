@@ -42,7 +42,10 @@ class VeganBestieLogoWidget extends StatelessWidget {
             children: [
               Text(
                 Strings.appTitle,
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(color: AppTheme.lightPrimaryColor),
+                style: Theme.of(context)
+                    .textTheme
+                    .displayMedium
+                    ?.copyWith(fontSize: 52),
               ),
             ],
           ),

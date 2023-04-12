@@ -326,14 +326,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
-  flutter_barcode_sdk:
-    dependency: "direct main"
-    description:
-      name: flutter_barcode_sdk
-      sha256: "42b875e6c211be5275420c9ffe3c30496929778b3e7088d46ca1b12be4b566f4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.1"
   flutter_bloc:
     dependency: "direct main"
     description:
