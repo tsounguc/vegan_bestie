@@ -9,6 +9,9 @@
 .history
 .svn/
 .env
+ios/Config.xcconfig
+ios/Flutter/Debug.xcconfig
+ios/Flutter/Release.xcconfig
 
 # IntelliJ related
 *.iml
@@ -31,8 +34,7 @@
 .pub-cache/
 .pub/
 /build/
-ios/Config.xcconfig
-ios/Flutter/Debug.xcconfig
+
 
 # Web related
 lib/generated_plugin_registrant.dart
