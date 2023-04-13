@@ -33,7 +33,7 @@ dependencies:
   bloc_test:
   equatable:
   flutter_barcode_scanner: ^2.0.0
-#  flutter_barcode_sdk:
+  #  flutter_barcode_sdk:
   http: ^0.13.4
   simple_animations: ^5.0.0+3
   device_preview: ^1.1.0
@@ -67,6 +67,25 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_native_splash: ^2.1.6
+  flutter_launcher_icons: ^0.13.0
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo/Logo-3.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+#  web:
+#    generate: true
+#    image_path: "path/to/image.png"
+#    background_color: "#hexcode"
+#    theme_color: "#hexcode"
+#  windows:
+#    generate: true
+#    image_path: "path/to/image.png"
+#    icon_size: 48 # min:48, max:256, default: 48
+#  macos:
+#    generate: true
+#    image_path: "path/to/image.png"
 
 
 flutter_native_splash:
