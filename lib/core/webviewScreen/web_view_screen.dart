@@ -49,8 +49,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 },
               ),
         centerTitle: true,
-        title: Center(
-            child: CustomAppbarTitleWidget(imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png')),
+        title: CustomAppbarTitleWidget(imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
         // actions: [NavigationControls(controller: _controller)],
       ),
       body: Stack(
