@@ -6,8 +6,7 @@ class CustomAppbarTitleWidget extends StatelessWidget {
   final String imageOneName;
   final String imageTwoName;
 
-  const CustomAppbarTitleWidget(
-      {Key? key, required this.imageOneName, required this.imageTwoName})
+  const CustomAppbarTitleWidget({Key? key, required this.imageOneName, required this.imageTwoName})
       : super(key: key);
 
   @override
@@ -22,9 +21,14 @@ class CustomAppbarTitleWidget extends StatelessWidget {
           height: MediaQuery.of(context).size.width * 0.07,
           width: MediaQuery.of(context).size.width * 0.07,
         ),
-        Text(
-          Strings.appTitle,
-          style: Theme.of(context).textTheme.titleLarge,
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.40,
+          child: Center(
+            child: Text(
+              Strings.appTitle,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.003,
