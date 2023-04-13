@@ -31,6 +31,8 @@
 .pub-cache/
 .pub/
 /build/
+ios/Config.xcconfig
+ios/Flutter/Debug.xcconfig
 
 # Web related
 lib/generated_plugin_registrant.dart
