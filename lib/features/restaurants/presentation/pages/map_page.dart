@@ -18,9 +18,13 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   GoogleMapController? _controller;
 
-  static final CameraPosition _kGooglePlex = CameraPosition(target: LatLng(37.4279, -122.0857), zoom: 14.4746);
-  static final CameraPosition _kLake =
-      CameraPosition(bearing: 192.8334, target: LatLng(37.4329, -122.0883), tilt: 59.4407, zoom: 19.1519);
+  static final CameraPosition _kGooglePlex =
+      CameraPosition(target: LatLng(37.4279, -122.0857), zoom: 14.4746);
+  static final CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334,
+      target: LatLng(37.4329, -122.0883),
+      tilt: 59.4407,
+      zoom: 19.1519);
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +41,13 @@ class _MapPageState extends State<MapPage> {
             markers: state.markers,
             initialCameraPosition: CameraPosition(
               bearing: 190,
-              target: LatLng(state.userLocation.latitude, state.userLocation.longitude),
+              target: LatLng(
+                  state.userLocation.latitude, state.userLocation.longitude),
               zoom: 11.4746,
             ),
             // initialCameraPosition: _kGooglePlex,
-            onMapCreated: (GoogleMapController controller) => onMapCreated(controller, state),
+            onMapCreated: (GoogleMapController controller) =>
+                onMapCreated(controller, state),
           );
         } else {
           return LoadingPage();
@@ -50,7 +56,8 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  void onMapCreated(GoogleMapController controller, MapLocationsFound state) async {
+  void onMapCreated(
+      GoogleMapController controller, MapLocationsFound state) async {
     _controller = controller;
     //   CameraPosition(
     //         bearing: 190,
