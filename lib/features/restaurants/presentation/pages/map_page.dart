@@ -18,6 +18,12 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   GoogleMapController? _controller;
 
+  @override
+  void dispose() {
+    super.dispose();
+    _controller?.dispose();
+  }
+
   static final CameraPosition _kGooglePlex =
       CameraPosition(target: LatLng(37.4279, -122.0857), zoom: 14.4746);
   static final CameraPosition _kLake = CameraPosition(
