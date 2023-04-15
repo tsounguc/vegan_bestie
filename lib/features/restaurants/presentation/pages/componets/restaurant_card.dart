@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_detail_page.dart';
 
 import '../../../../../core/webviewScreen/web_view_screen.dart';
 import '../../../data/models/yelp_restaurants_model.dart';
 
 class RestaurantCard extends StatelessWidget {
-  const RestaurantCard({Key? key, required this.dietRestrictions, required this.business}) : super(key: key);
+  const RestaurantCard(
+      {Key? key, required this.dietRestrictions, required this.business})
+      : super(key: key);
 
   final String? dietRestrictions;
   final RestaurantEntity? business;
@@ -19,9 +22,10 @@ class RestaurantCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => WebViewScreen(
-              url: business?.url,
-            ),
+            builder: (_) => RestaurantDetailPage(restaurant: business),
+            // builder: (_) => WebViewScreen(
+            //   url: business?.url,
+            // ),
           ),
         );
 
@@ -36,7 +40,8 @@ class RestaurantCard extends StatelessWidget {
           color: Colors.white,
           clipBehavior: Clip.antiAlias,
           elevation: 5,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
           child: Row(
             children: [
               business!.imageUrl!.isNotEmpty && business!.imageUrl != null
@@ -50,7 +55,8 @@ class RestaurantCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: CachedNetworkImageProvider(business!.imageUrl!),
+                            image:
+                                CachedNetworkImageProvider(business!.imageUrl!),
                           ),
                         ),
                       ),
@@ -122,7 +128,8 @@ class RestaurantCard extends StatelessWidget {
                                 Flexible(
                                   child: Text(
                                     "${business!.location!.city}",
-                                    style: TextStyle(color: Colors.black, fontSize: 10.sp),
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 10.sp),
                                   ),
                                 ),
                                 SizedBox(
@@ -140,7 +147,8 @@ class RestaurantCard extends StatelessWidget {
                           ),
                           Text(
                             business!.price ?? "",
-                            style: TextStyle(color: Colors.black, fontSize: 10.sp),
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 10.sp),
                           )
                         ],
                       ),
@@ -159,14 +167,15 @@ class RestaurantCard extends StatelessWidget {
                               );
                             },
                             unratedColor: Colors.grey.shade400,
-                            itemSize: 15.r,
+                            itemSize: 15,
                           ),
                           SizedBox(
                             width: 7.w,
                           ),
                           Text(
                             "${business!.reviewCount} reviews",
-                            style: TextStyle(color: Colors.black, fontSize: 10.sp),
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 10.sp),
                           ),
                         ],
                       ),
@@ -178,7 +187,8 @@ class RestaurantCard extends StatelessWidget {
                           Flexible(
                             child: Text(
                               dietRestrictions!,
-                              style: TextStyle(color: Colors.black, fontSize: 10.sp),
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 10.sp),
                             ),
                           ),
                         ],

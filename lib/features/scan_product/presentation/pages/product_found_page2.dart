@@ -6,6 +6,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sheveegan/core/constants/strings.dart';
+import 'package:sheveegan/core/custom_back_button.dart';
+import 'package:sheveegan/core/custom_image_widget.dart';
 
 import '../../../../core/assets/vegan_icon.dart';
 import '../../../../core/loading.dart';
@@ -278,59 +280,14 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                   width: MediaQuery.of(context).size.width * 1,
                   top: MediaQuery.of(context).size.height * 0.0,
                   left: MediaQuery.of(context).size.width * 0.0,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.43,
-                    width: MediaQuery.of(context).size.width * 0.80,
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                          colors: [Color(0XFF2E7D32), Colors.green.shade500]),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(25),
-                        bottomRight: Radius.circular(25),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black45,
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(4, 2),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(25),
-                          bottomRight: Radius.circular(25),
-                        ),
-                        child: CachedNetworkImage(
-                          progressIndicatorBuilder:
-                              (context, text, downloadProgress) =>
-                                  LoadingPage(),
-                          fit: BoxFit.cover,
-                          imageUrl: state.product.imageFrontUrl ?? "",
-                          errorWidget: (context, error, value) => Container(),
-                        )),
+                  child: CustomImageWidget(
+                    imageUrl: state.product.imageFrontUrl,
                   ),
                 ),
                 Positioned(
                   top: MediaQuery.of(context).size.height * 0.05,
                   left: MediaQuery.of(context).size.width * 0.01,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Platform.isIOS
-                              ? Icons.arrow_back_ios
-                              : Icons.arrow_back,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: CustomBackButton(),
                 ),
               ],
             ),

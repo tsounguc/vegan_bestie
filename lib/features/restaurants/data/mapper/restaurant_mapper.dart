@@ -16,6 +16,32 @@ class RestaurantMapper {
         );
       }
     }
+    List<HourEntity> hoursEntity = [];
+    List<Hour>? hours = restaurantModel.hours;
+    if (hours != null) {
+      for (int index = 0; index < hours.length; index++) {
+        List<OpenHourEntity> openHoursEntitiy = [];
+        List<OpenHour> openHours = restaurantModel.hours![index].openHours;
+        for (int i = 0; i < openHours.length; i++) {
+          openHoursEntitiy.add(
+            OpenHourEntity(
+              day: openHours[i].day,
+              start: openHours[i].start,
+              end: openHours[i].end,
+              isOvernight: openHours[i].isOvernight,
+            ),
+          );
+        }
+        hoursEntity.add(
+          HourEntity(
+            hourType: hours[index].hourType,
+            openHours: openHoursEntitiy,
+            isOpenNow: hours[index].isOpenNow,
+          ),
+        );
+      }
+    }
+
     return RestaurantEntity(
       name: restaurantModel.name,
       categories: categoryEntities,
@@ -34,6 +60,10 @@ class RestaurantMapper {
       price: restaurantModel.price,
       rating: restaurantModel.rating,
       reviewCount: restaurantModel.reviewCount,
+      // isOpenNow: restaurantModel.isOpenNow,
+      hours: hoursEntity,
+      displayPhone: restaurantModel.displayPhone,
+      phone: restaurantModel.phone,
     );
   }
 }

@@ -40,6 +40,8 @@ class YelpRestaurantModel {
     required this.name,
     required this.imageUrl,
     required this.isClosed,
+    // required this.isOpenNow,
+    required this.hours,
     required this.url,
     required this.reviewCount,
     required this.categories,
@@ -58,6 +60,9 @@ class YelpRestaurantModel {
   String? name;
   String? imageUrl;
   bool? isClosed;
+
+  // bool? isOpenNow;
+  List<Hour>? hours;
   String? url;
   int? reviewCount;
   List<Category>? categories;
@@ -70,15 +75,19 @@ class YelpRestaurantModel {
   String? displayPhone;
   double? distance;
 
-  factory YelpRestaurantModel.fromJson(Map<String, dynamic>? json) => YelpRestaurantModel(
+  factory YelpRestaurantModel.fromJson(Map<String, dynamic>? json) =>
+      YelpRestaurantModel(
         id: json?["id"],
         alias: json?["alias"],
         name: json?["name"],
         imageUrl: json?["image_url"],
         isClosed: json?["is_closed"],
+        // isOpenNow: json?['is_open_now'],
+        hours: List<Hour>.from(json?["hours"].map((x) => Hour.fromJson(x))),
         url: json?["url"],
         reviewCount: json?["review_count"],
-        categories: List<Category>.from(json?["categories"].map((x) => Category.fromJson(x))),
+        categories: List<Category>.from(
+            json?["categories"].map((x) => Category.fromJson(x))),
         rating: json?["rating"].toDouble(),
         coordinates: Coordinates.fromJson(json?["coordinates"]),
         transactions: List<String>.from(json?["transactions"].map((x) => x)),
@@ -89,24 +98,65 @@ class YelpRestaurantModel {
         distance: json?["distance"].toDouble(),
       );
 
-  // Map<String, dynamic> toJson() => {
-  //       "id": id,
-  //       "alias": alias,
-  //       "name": name,
-  //       "image_url": imageUrl,
-  //       "is_closed": isClosed,
-  //       "url": url,
-  //       "review_count": reviewCount,
-  //       "categories": List<dynamic>.from(categories.map((x) => x.toJson())),
-  //       "rating": rating,
-  //       "coordinates": coordinates.toJson(),
-  //       "transactions": List<dynamic>.from(transactions.map((x) => transactionValues.reverse[x])),
-  //       "price": price == null ? null : priceValues.reverse[price],
-  //       "location": location.toJson(),
-  //       "phone": phone,
-  //       "display_phone": displayPhone,
-  //       "distance": distance,
-  //     };
+// Map<String, dynamic> toJson() => {
+//       "id": id,
+//       "alias": alias,
+//       "name": name,
+//       "image_url": imageUrl,
+//       "is_closed": isClosed,
+//       "url": url,
+//       "review_count": reviewCount,
+//       "categories": List<dynamic>.from(categories.map((x) => x.toJson())),
+//       "rating": rating,
+//       "coordinates": coordinates.toJson(),
+//       "transactions": List<dynamic>.from(transactions.map((x) => transactionValues.reverse[x])),
+//       "price": price == null ? null : priceValues.reverse[price],
+//       "location": location.toJson(),
+//       "phone": phone,
+//       "display_phone": displayPhone,
+//       "distance": distance,
+//     };
+}
+
+class Hour {
+  Hour({
+    required this.hourType,
+    required this.openHours,
+    required this.isOpenNow,
+  });
+
+  String? hourType;
+  List<OpenHour> openHours;
+  bool? isOpenNow;
+
+  factory Hour.fromJson(Map<String, dynamic>? json) => Hour(
+        hourType: json?['hour_type'],
+        openHours: List<OpenHour>.from(
+          json?['open_hour'].map((x) => OpenHour.fromJson(x)),
+        ),
+        isOpenNow: json?['is_open_now'],
+      );
+}
+
+class OpenHour {
+  OpenHour({
+    required this.day,
+    required this.start,
+    required this.end,
+    required this.isOvernight,
+  });
+
+  int? day;
+  String? start;
+  String? end;
+  bool? isOvernight;
+
+  factory OpenHour.fromJson(Map<String, dynamic>? json) => OpenHour(
+        day: json?['day'],
+        start: json?['start'],
+        end: json?['end'],
+        isOvernight: json?['is_overnight'],
+      );
 }
 
 class Category {
@@ -123,10 +173,10 @@ class Category {
         title: json?["title"],
       );
 
-  // Map<String, dynamic> toJson() => {
-  //       "alias": alias,
-  //       "title": title,
-  //     };
+// Map<String, dynamic> toJson() => {
+//       "alias": alias,
+//       "title": title,
+//     };
 }
 
 class Coordinates {
@@ -143,10 +193,10 @@ class Coordinates {
         longitude: json?["longitude"].toDouble(),
       );
 
-  // Map<String, dynamic> toJson() => {
-  //       "latitude": latitude,
-  //       "longitude": longitude,
-  //     };
+// Map<String, dynamic> toJson() => {
+//       "latitude": latitude,
+//       "longitude": longitude,
+//     };
 }
 
 class Location {
@@ -178,19 +228,20 @@ class Location {
         zipCode: json?["zip_code"],
         country: json?["country"],
         state: json?["state"],
-        displayAddress: List<String>.from(json?["display_address"].map((x) => x)),
+        displayAddress:
+            List<String>.from(json?["display_address"].map((x) => x)),
       );
 
-  // Map<String, dynamic> toJson() => {
-  //       "address1": address1,
-  //       "address2": address2 == null ? null : address2Values.reverse[address2],
-  //       "address3": address3 == null ? null : address3,
-  //       "city": city,
-  //       "zip_code": zipCode,
-  //       "country": countryValues.reverse[country],
-  //       "state": stateValues.reverse[state],
-  //       "display_address": List<dynamic>.from(displayAddress.map((x) => x)),
-  //     };
+// Map<String, dynamic> toJson() => {
+//       "address1": address1,
+//       "address2": address2 == null ? null : address2Values.reverse[address2],
+//       "address3": address3 == null ? null : address3,
+//       "city": city,
+//       "zip_code": zipCode,
+//       "country": countryValues.reverse[country],
+//       "state": stateValues.reverse[state],
+//       "display_address": List<dynamic>.from(displayAddress.map((x) => x)),
+//     };
 }
 
 // enum Transaction { DELIVERY, PICKUP }
@@ -208,7 +259,7 @@ class Region {
         center: Coordinates.fromJson(json["center"]),
       );
 
-  // Map<String, dynamic> toJson() => {
-  //       "center": center.toJson(),
-  //     };
+// Map<String, dynamic> toJson() => {
+//       "center": center.toJson(),
+//     };
 }

@@ -4,11 +4,17 @@ class RestaurantEntity {
   List<CategoryEntity>? categories;
   String? url;
   String? imageUrl;
+
+  // bool? isOpenNow;
+  List<HourEntity> hours;
   double? distance;
   LocationEntity? location;
   String? price;
   double? rating;
   int? reviewCount;
+  String? phone;
+  String? displayPhone;
+
   RestaurantEntity({
     required this.name,
     required this.categories,
@@ -19,6 +25,10 @@ class RestaurantEntity {
     required this.price,
     required this.rating,
     required this.reviewCount,
+    // required this.isOpenNow,
+    required this.hours,
+    required this.displayPhone,
+    required this.phone,
   });
 }
 
@@ -31,10 +41,10 @@ class CategoryEntity {
   String? alias;
   String? title;
 
-  // factory CategoryEntity.fromJson(Map<String, dynamic>? json) => Category(
-  //   alias: json?["alias"],
-  //   title: json?["title"],
-  // );
+// factory CategoryEntity.fromJson(Map<String, dynamic>? json) => Category(
+//   alias: json?["alias"],
+//   title: json?["title"],
+// );
 
 // Map<String, dynamic> toJson() => {
 //       "alias": alias,
@@ -62,26 +72,30 @@ class LocationEntity {
   String? country;
   String? state;
   List<String>? displayAddress;
+}
 
-  // factory Location.fromJson(Map<String, dynamic>? json) => Location(
-  //   address1: json?["address1"],
-  //   address2: json?["address2"],
-  //   address3: json?["address3"],
-  //   city: json?["city"],
-  //   zipCode: json?["zip_code"],
-  //   country: json?["country"],
-  //   state: json?["state"],
-  //   displayAddress: List<String>.from(json?["display_address"].map((x) => x)),
-  // );
+class HourEntity {
+  HourEntity({
+    required this.hourType,
+    required this.openHours,
+    required this.isOpenNow,
+  });
 
-// Map<String, dynamic> toJson() => {
-//       "address1": address1,
-//       "address2": address2 == null ? null : address2Values.reverse[address2],
-//       "address3": address3 == null ? null : address3,
-//       "city": city,
-//       "zip_code": zipCode,
-//       "country": countryValues.reverse[country],
-//       "state": stateValues.reverse[state],
-//       "display_address": List<dynamic>.from(displayAddress.map((x) => x)),
-//     };
+  String? hourType;
+  List<OpenHourEntity> openHours;
+  bool? isOpenNow;
+}
+
+class OpenHourEntity {
+  OpenHourEntity({
+    required this.day,
+    required this.start,
+    required this.end,
+    required this.isOvernight,
+  });
+
+  int? day;
+  String? start;
+  String? end;
+  bool? isOvernight;
 }
