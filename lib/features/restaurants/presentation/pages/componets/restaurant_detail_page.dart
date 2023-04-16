@@ -6,6 +6,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sheveegan/core/custom_image_widget.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 
+import '../../../../../core/custom_back_button.dart';
 import '../../../../../core/loading.dart';
 
 class RestaurantDetailPage extends StatelessWidget {
@@ -116,23 +117,9 @@ class RestaurantDetailPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.05,
-            left: MediaQuery.of(context).size.width * 0.01,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
+              top: MediaQuery.of(context).size.height * 0.05,
+              left: MediaQuery.of(context).size.width * 0.01,
+              child: CustomBackButton()),
         ],
       ),
     );

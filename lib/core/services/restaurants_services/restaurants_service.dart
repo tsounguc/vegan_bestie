@@ -9,9 +9,11 @@ abstract class RestaurantsApiServiceContract {
   Future getRestaurantsNearMe(Position position);
 }
 
-class GooglePlacesRestaurantsApiServiceImpl implements RestaurantsApiServiceContract {
+class GooglePlacesRestaurantsApiServiceImpl
+    implements RestaurantsApiServiceContract {
   final _apiKey = dotenv.env['GOOGLE_PLACES_API_KEY'];
   final _baseUrl = "https://maps.googleapis.com";
+
   @override
   Future<http.Response> getRestaurantsNearMe(Position position) async {
     try {
@@ -23,7 +25,8 @@ class GooglePlacesRestaurantsApiServiceImpl implements RestaurantsApiServiceCont
   }
 }
 
-class YelpFusionRestaurantsApiServiceImpl implements RestaurantsApiServiceContract {
+class YelpFusionRestaurantsApiServiceImpl
+    implements RestaurantsApiServiceContract {
   var _apiKey = dotenv.env['YELP_FUSION_API_KEY']!;
   Map<String, String>? _header;
 
@@ -46,8 +49,8 @@ class YelpFusionRestaurantsApiServiceImpl implements RestaurantsApiServiceContra
     );
 
     if (response.statusCode == 200) {
-      print(response.statusCode);
-      print(response.body);
+      // print(response.statusCode);
+      // print(response.body);
       return json.decode(response.body) as Map<String, dynamic>;
     } else {
       throw Exception("Status code: ${response.statusCode}");
@@ -55,7 +58,8 @@ class YelpFusionRestaurantsApiServiceImpl implements RestaurantsApiServiceContra
   }
 }
 
-class WorldWideRestaurantsApiServiceImp implements RestaurantsApiServiceContract {
+class WorldWideRestaurantsApiServiceImp
+    implements RestaurantsApiServiceContract {
   final _baseUrl = "https://worldwide-restaurants.p.rapidapi.com/search";
 
   final Map<String, String> _headers = {
@@ -63,6 +67,7 @@ class WorldWideRestaurantsApiServiceImp implements RestaurantsApiServiceContract
     "X-RapidAPI-Key": dotenv.env['WORLD_WIDE_API_KEY']!,
     "X-RapidAPI-Host": "worldwide-restaurants.p.rapidapi.com",
   };
+
 // "42130" dearborn
 //   "42139" detroit
   final body = "language=en_US&limit=100&location_id=42130&currency=USD";

@@ -41,7 +41,7 @@ class YelpRestaurantModel {
     required this.imageUrl,
     required this.isClosed,
     // required this.isOpenNow,
-    required this.hours,
+    // required this.hours,
     required this.url,
     required this.reviewCount,
     required this.categories,
@@ -62,7 +62,7 @@ class YelpRestaurantModel {
   bool? isClosed;
 
   // bool? isOpenNow;
-  List<Hour>? hours;
+  // List<Hour>? hours;
   String? url;
   int? reviewCount;
   List<Category>? categories;
@@ -83,7 +83,7 @@ class YelpRestaurantModel {
         imageUrl: json?["image_url"],
         isClosed: json?["is_closed"],
         // isOpenNow: json?['is_open_now'],
-        hours: List<Hour>.from(json?["hours"].map((x) => Hour.fromJson(x))),
+        // hours: List<Hour>.from(json?["hours"].map((x) => Hour.fromJson(x))),
         url: json?["url"],
         reviewCount: json?["review_count"],
         categories: List<Category>.from(
@@ -120,20 +120,20 @@ class YelpRestaurantModel {
 
 class Hour {
   Hour({
-    required this.hourType,
-    required this.openHours,
+    // required this.hourType,
+    // required this.openHours,
     required this.isOpenNow,
   });
 
-  String? hourType;
-  List<OpenHour> openHours;
+  // String? hourType;
+  // List<OpenHour> openHours;
   bool? isOpenNow;
 
   factory Hour.fromJson(Map<String, dynamic>? json) => Hour(
-        hourType: json?['hour_type'],
-        openHours: List<OpenHour>.from(
-          json?['open_hour'].map((x) => OpenHour.fromJson(x)),
-        ),
+        // hourType: json?['hour_type'],
+        // openHours: List<OpenHour>.from(
+        //   json?['open'].map((x) => OpenHour.fromJson(x)),
+        // ),
         isOpenNow: json?['is_open_now'],
       );
 }
