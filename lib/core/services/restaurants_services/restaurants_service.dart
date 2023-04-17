@@ -7,10 +7,11 @@ import 'package:http/http.dart' as http;
 
 abstract class RestaurantsApiServiceContract {
   Future getRestaurantsNearMe(Position position);
+
+  Future getRestaurantDetails(String? id);
 }
 
-class GooglePlacesRestaurantsApiServiceImpl
-    implements RestaurantsApiServiceContract {
+class GooglePlacesRestaurantsApiServiceImpl implements RestaurantsApiServiceContract {
   final _apiKey = dotenv.env['GOOGLE_PLACES_API_KEY'];
   final _baseUrl = "https://maps.googleapis.com";
 
@@ -23,10 +24,15 @@ class GooglePlacesRestaurantsApiServiceImpl
       throw Exception(e);
     }
   }
+
+  @override
+  Future getRestaurantDetails(String? id) {
+    // TODO: implement getRestaurantDetails
+    throw UnimplementedError();
+  }
 }
 
-class YelpFusionRestaurantsApiServiceImpl
-    implements RestaurantsApiServiceContract {
+class YelpFusionRestaurantsApiServiceImpl implements RestaurantsApiServiceContract {
   var _apiKey = dotenv.env['YELP_FUSION_API_KEY']!;
   Map<String, String>? _header;
 
@@ -56,10 +62,33 @@ class YelpFusionRestaurantsApiServiceImpl
       throw Exception("Status code: ${response.statusCode}");
     }
   }
+
+  @override
+  Future getRestaurantDetails(String? id) async {
+    _header = {
+      'Authorization': "Bearer " + _apiKey,
+    };
+    String platform = Platform.isAndroid
+        ? "android"
+        : Platform.isIOS
+            ? "ios"
+            : "";
+
+    final response = await http.get(
+      Uri.parse("$_baseUrl/businesses/$id?device_platform=$platform"),
+      headers: _header,
+    );
+    if (response.statusCode == 200) {
+      // print(response.statusCode);
+      // print(response.body);
+      return json.decode(response.body) as Map<String, dynamic>;
+    } else {
+      throw Exception("Status code: ${response.statusCode}");
+    }
+  }
 }
 
-class WorldWideRestaurantsApiServiceImp
-    implements RestaurantsApiServiceContract {
+class WorldWideRestaurantsApiServiceImp implements RestaurantsApiServiceContract {
   final _baseUrl = "https://worldwide-restaurants.p.rapidapi.com/search";
 
   final Map<String, String> _headers = {
@@ -82,5 +111,11 @@ class WorldWideRestaurantsApiServiceImp
     print(response.statusCode);
     print(response.body);
     return response;
+  }
+
+  @override
+  Future getRestaurantDetails(String? id) {
+    // TODO: implement getRestaurantDetails
+    throw UnimplementedError();
   }
 }

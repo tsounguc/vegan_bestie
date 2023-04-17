@@ -52,6 +52,8 @@ dependencies:
   geolocator: ^9.0.1
   geocoding:
   google_maps_flutter:
+  intl:
+  url_launcher:
   #  flutter_launcher_icons: ^0.13.0
   #  lint:
   #  googleapis: ^9.1.0

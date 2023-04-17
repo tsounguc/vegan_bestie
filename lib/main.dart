@@ -12,6 +12,7 @@ import 'features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'features/auth/presentation/pages/auth_page.dart';
 import 'features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
 import 'features/restaurants/presentation/map_cubit/map_cubit.dart';
+import 'features/restaurants/presentation/restaurant_cubit/restaurant_details_cubit.dart';
 import 'features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 import 'features/scan_product/presentation/barcode_scanner_cubit/barcode_scanner_cubit.dart';
 import 'features/scan_product/presentation/fetch_product_cubit/product_fetch_cubit.dart';
@@ -67,6 +68,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<SearchBloc>(
           create: (context) => SearchBloc(),
         ),
+        BlocProvider<RestaurantDetailsCubit>(
+          create: (context) => RestaurantDetailsCubit(),
+        )
       ],
       child: ScreenUtilInit(
         builder: (context, child) => MaterialApp(

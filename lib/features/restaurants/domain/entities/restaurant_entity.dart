@@ -1,12 +1,13 @@
 class RestaurantEntity {
   //TODO: complete RestaurantEntity class
+  String? id;
   String? name;
   List<CategoryEntity>? categories;
   String? url;
   String? imageUrl;
 
   // bool? isOpenNow;
-  List<HourEntity> hours;
+  // List<HourEntity> hours;
   double? distance;
   LocationEntity? location;
   String? price;
@@ -16,6 +17,7 @@ class RestaurantEntity {
   String? displayPhone;
 
   RestaurantEntity({
+    required this.id,
     required this.name,
     required this.categories,
     required this.url,
@@ -26,7 +28,7 @@ class RestaurantEntity {
     required this.rating,
     required this.reviewCount,
     // required this.isOpenNow,
-    required this.hours,
+    // required this.hours,
     required this.displayPhone,
     required this.phone,
   });
@@ -74,28 +76,28 @@ class LocationEntity {
   List<String>? displayAddress;
 }
 
-class HourEntity {
-  HourEntity({
-    required this.hourType,
-    required this.openHours,
-    required this.isOpenNow,
-  });
-
-  String? hourType;
-  List<OpenHourEntity> openHours;
-  bool? isOpenNow;
-}
-
-class OpenHourEntity {
-  OpenHourEntity({
-    required this.day,
-    required this.start,
-    required this.end,
-    required this.isOvernight,
-  });
-
-  int? day;
-  String? start;
-  String? end;
-  bool? isOvernight;
-}
+// class HourEntity {
+//   HourEntity({
+//     required this.hourType,
+//     required this.openHours,
+//     required this.isOpenNow,
+//   });
+//
+//   String? hourType;
+//   List<OpenHourEntity> openHours;
+//   bool? isOpenNow;
+// }
+//
+// class OpenHourEntity {
+//   OpenHourEntity({
+//     required this.day,
+//     required this.start,
+//     required this.end,
+//     required this.isOvernight,
+//   });
+//
+//   int? day;
+//   String? start;
+//   String? end;
+//   bool? isOvernight;
+// }

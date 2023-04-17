@@ -40,6 +40,10 @@ class FetchRestaurantsNearMeFailure extends Failure {
   const FetchRestaurantsNearMeFailure({String? message}) : super(message: message);
 }
 
+class FetchRestaurantDetailsFailure extends Failure {
+  const FetchRestaurantDetailsFailure({String? message}) : super(message: message);
+}
+
 class LocationFailure extends Failure {
   const LocationFailure({String? message}) : super(message: message);
 }

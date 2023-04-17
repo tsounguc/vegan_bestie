@@ -52,6 +52,11 @@ class FetchRestaurantsNearMeException implements Exception {
   const FetchRestaurantsNearMeException({this.message});
 }
 
+class FetchRestaurantDetailsException implements Exception {
+  final String? message;
+  const FetchRestaurantDetailsException({this.message});
+}
+
 class LocationException implements Exception {
   final String? message;
 

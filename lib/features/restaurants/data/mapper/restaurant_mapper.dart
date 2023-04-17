@@ -16,7 +16,7 @@ class RestaurantMapper {
         );
       }
     }
-    List<HourEntity> hoursEntity = [];
+    // List<HourEntity> hoursEntity = [];
     // List<Hour>? hours = restaurantModel.hours;
     // if (hours != null) {
     //   for (int index = 0; index < hours.length; index++) {
@@ -43,6 +43,7 @@ class RestaurantMapper {
     // }
 
     return RestaurantEntity(
+      id: restaurantModel.id,
       name: restaurantModel.name,
       categories: categoryEntities,
       url: restaurantModel.url,
@@ -61,7 +62,7 @@ class RestaurantMapper {
       rating: restaurantModel.rating,
       reviewCount: restaurantModel.reviewCount,
       // isOpenNow: restaurantModel.isOpenNow,
-      hours: hoursEntity,
+      // hours: hoursEntity,
       displayPhone: restaurantModel.displayPhone,
       phone: restaurantModel.phone,
     );
