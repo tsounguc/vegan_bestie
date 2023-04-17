@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../core/constants/strings.dart';
@@ -19,7 +20,8 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
   late WebViewController _webViewController;
   var loadingPercentage = 0;
 
@@ -49,7 +51,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 },
               ),
         centerTitle: true,
-        title: CustomAppbarTitleWidget(imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
+        title: CustomAppbarTitleWidget(
+            imageOneName: 'assets/bread.png',
+            imageTwoName: 'assets/tomato.png'),
         // actions: [NavigationControls(controller: _controller)],
       ),
       body: Stack(
@@ -62,18 +66,27 @@ class _WebViewScreenState extends State<WebViewScreen> {
               // initialUrl: widget.url! + "&native=true",
               javascriptMode: JavascriptMode.unrestricted,
               onPageStarted: (url) {
-                // _webViewController
-                //     .runJavascript("document.getElementsByTagName('header')[0].style.display='none'");
-                // _webViewController
-                //     .runJavascript("document.getElementsByTagName('footer')[0].style.display='none'");
-                setState(() {
-                  loadingPercentage = 0;
-                });
+                if (url.contains("tel")) {
+                  launchUrl(Uri(
+                    scheme: "tel",
+                    path: url.substring(3),
+                  ));
+                } else if (url.contains('https')) {
+                  // _webViewController
+                  //     .runJavascript("document.getElementsByTagName('header')[0].style.display='none'");
+                  // _webViewController
+                  //     .runJavascript("document.getElementsByTagName('footer')[0].style.display='none'");
+                  setState(() {
+                    loadingPercentage = 0;
+                  });
+                }
               },
               onProgress: (int progress) {
-                setState(() {
-                  loadingPercentage = progress;
-                });
+                if (widget.url!.contains('https')) {
+                  setState(() {
+                    loadingPercentage = progress;
+                  });
+                }
               },
               onPageFinished: (url) {
                 print("onPageFinished " + url);

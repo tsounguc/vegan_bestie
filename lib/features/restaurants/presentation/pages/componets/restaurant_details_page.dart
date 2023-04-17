@@ -21,7 +21,7 @@ class RestaurantDetailsPage extends StatelessWidget {
   }) : super(key: key);
 
   final dateFormat = DateFormat('h:mm a');
-  int openDay = DateTime.now().weekday;
+  String openDay = "";
   int openDayObjectIndex = 0;
 
   var weekDays = {
@@ -51,19 +51,28 @@ class RestaurantDetailsPage extends StatelessWidget {
               state.restaurantDetailsEntity?.hours?[0].open != null &&
               state.restaurantDetailsEntity!.hours![0].open!.isNotEmpty &&
               state.restaurantDetailsEntity?.hours?[0].isOpenNow == false) {
-            for (int index = 0; index < state.restaurantDetailsEntity!.hours![0].open!.length; index++) {
-              openDays[index] = weekDays[state.restaurantDetailsEntity!.hours![0].open![index].day];
+            for (int index = 0;
+                index < state.restaurantDetailsEntity!.hours![0].open!.length;
+                index++) {
+              openDays[index] = weekDays[
+                  state.restaurantDetailsEntity!.hours![0].open![index].day];
             }
             debugPrint("$openDays");
-
             for (int index = 0; index < openDays.length; index++) {
-              // // if open Monday (today)
-              if ( openDays[index]== weekDays[DateTime.now().weekday]) {
-                break;
-              } else if () {
-                openDay = state.restaurantDetailsEntity!.hours![0].open![index].day!;
-                openDayObjectIndex = index;
-                break;
+              for (int index2 = 0; index2 < weekDays.length; index2++) {
+                if (openDays[index] == weekDays[DateTime.now().weekday]) {
+                  debugPrint("${DateTime.now().weekday}" +
+                      "${weekDays[DateTime.now().weekday]!}");
+                  openDay = openDays[index];
+                  openDayObjectIndex = index;
+
+                  break;
+                }
+                if (openDays[index] == weekDays[index2]) {
+                  openDay = openDays[index];
+                  openDayObjectIndex = index;
+                  break;
+                }
               }
             }
           }
@@ -71,26 +80,41 @@ class RestaurantDetailsPage extends StatelessWidget {
           TimeOfDay startTime = state.restaurantDetailsEntity!.hours!.isEmpty
               ? TimeOfDay(hour: 0, minute: 0)
               : TimeOfDay(
-                  hour: int.parse(
-                      state.restaurantDetailsEntity!.hours![0].open![openDayObjectIndex].start!.substring(0, 2)),
-                  minute: int.parse(
-                      state.restaurantDetailsEntity!.hours![0].open![openDayObjectIndex].start!.substring(2)));
+                  hour: int.parse(state.restaurantDetailsEntity!.hours![0]
+                      .open![openDayObjectIndex].start!
+                      .substring(0, 2)),
+                  minute: int.parse(state.restaurantDetailsEntity!.hours![0]
+                      .open![openDayObjectIndex].start!
+                      .substring(2)));
           TimeOfDay endTime = state.restaurantDetailsEntity!.hours!.isEmpty
               ? TimeOfDay(hour: 0, minute: 0)
               : TimeOfDay(
-                  hour: int.parse(
-                      state.restaurantDetailsEntity!.hours![0].open![openDayObjectIndex].end!.substring(0, 2)),
-                  minute: int.parse(
-                      state.restaurantDetailsEntity!.hours![0].open![openDayObjectIndex].end!.substring(2)));
+                  hour: int.parse(state.restaurantDetailsEntity!.hours![0]
+                      .open![openDayObjectIndex].end!
+                      .substring(0, 2)),
+                  minute: int.parse(state.restaurantDetailsEntity!.hours![0]
+                      .open![openDayObjectIndex].end!
+                      .substring(2)));
 
           String displayAddress = "";
           if (state.restaurantDetailsEntity?.location?.displayAddress != null &&
-              state.restaurantDetailsEntity!.location!.displayAddress!.isNotEmpty) {
-            for (int index = 0; index < state.restaurantDetailsEntity!.location!.displayAddress!.length; index++) {
-              if (index == state.restaurantDetailsEntity!.location!.displayAddress!.length - 1) {
-                displayAddress += state.restaurantDetailsEntity!.location!.displayAddress![index];
+              state.restaurantDetailsEntity!.location!.displayAddress!
+                  .isNotEmpty) {
+            for (int index = 0;
+                index <
+                    state.restaurantDetailsEntity!.location!.displayAddress!
+                        .length;
+                index++) {
+              if (index ==
+                  state.restaurantDetailsEntity!.location!.displayAddress!
+                          .length -
+                      1) {
+                displayAddress += state
+                    .restaurantDetailsEntity!.location!.displayAddress![index];
               } else {
-                displayAddress += state.restaurantDetailsEntity!.location!.displayAddress![index] + ", ";
+                displayAddress += state.restaurantDetailsEntity!.location!
+                        .displayAddress![index] +
+                    ", ";
               }
             }
           }
@@ -114,11 +138,14 @@ class RestaurantDetailsPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.73,
+                              width: MediaQuery.of(context).size.width * 0.75,
                               // height: 35,
                               child: Text(
                                 "${state.restaurantDetailsEntity?.name}",
-                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -150,19 +177,23 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       size: 14,
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.01,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.01,
                                     ),
-                                    FittedBox(
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.75,
                                       child: Text(
                                         "$displayAddress",
                                         style: TextStyle(
                                             color: Colors.grey.shade700,
-                                            fontSize: 14,
+                                            fontSize: 12,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.01,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.01,
                                     ),
                                   ],
                                 ),
@@ -212,15 +243,22 @@ class RestaurantDetailsPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Visibility(
-                                visible: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                    state.restaurantDetailsEntity?.hours?[0].isOpenNow != null,
+                                visible: state.restaurantDetailsEntity!.hours!
+                                        .isNotEmpty &&
+                                    state.restaurantDetailsEntity?.hours?[0]
+                                            .isOpenNow !=
+                                        null,
                                 maintainSize: false,
                                 child: Icon(
                                   Icons.access_time,
                                   size: 20,
-                                  color: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                          state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
-                                          state.restaurantDetailsEntity!.hours![0].isOpenNow!
+                                  color: state.restaurantDetailsEntity!.hours!
+                                              .isNotEmpty &&
+                                          state.restaurantDetailsEntity
+                                                  ?.hours?[0].isOpenNow !=
+                                              null &&
+                                          state.restaurantDetailsEntity!
+                                              .hours![0].isOpenNow!
                                       ? Colors.green
                                       : Colors.red,
                                 ),
@@ -229,35 +267,52 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 width: MediaQuery.of(context).size.width * 0.01,
                               ),
                               Visibility(
-                                visible: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                    state.restaurantDetailsEntity?.hours?[0].isOpenNow != null,
+                                visible: state.restaurantDetailsEntity!.hours!
+                                        .isNotEmpty &&
+                                    state.restaurantDetailsEntity?.hours?[0]
+                                            .isOpenNow !=
+                                        null,
                                 maintainSize: false,
                                 child: Text(
-                                  state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                          state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
-                                          state.restaurantDetailsEntity!.hours![0].isOpenNow!
+                                  state.restaurantDetailsEntity!.hours!
+                                              .isNotEmpty &&
+                                          state.restaurantDetailsEntity
+                                                  ?.hours?[0].isOpenNow !=
+                                              null &&
+                                          state.restaurantDetailsEntity!
+                                              .hours![0].isOpenNow!
                                       ? "Open Now"
                                       : "Closed",
                                   style: TextStyle(
-                                      color: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                              state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
-                                              state.restaurantDetailsEntity!.hours![0].isOpenNow!
+                                      color: state.restaurantDetailsEntity!
+                                                  .hours!.isNotEmpty &&
+                                              state.restaurantDetailsEntity
+                                                      ?.hours?[0].isOpenNow !=
+                                                  null &&
+                                              state.restaurantDetailsEntity!
+                                                  .hours![0].isOpenNow!
                                           ? Colors.green
                                           : Colors.red,
                                       fontSize: 14),
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.015,
+                                width:
+                                    MediaQuery.of(context).size.width * 0.015,
                               ),
                               Visibility(
-                                visible: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                    state.restaurantDetailsEntity?.hours?[0].isOpenNow == true,
+                                visible: state.restaurantDetailsEntity!.hours!
+                                        .isNotEmpty &&
+                                    state.restaurantDetailsEntity?.hours?[0]
+                                            .isOpenNow ==
+                                        true,
                                 child: Text(
-                                  "• ${weekDays[openDay]} ${dateFormat.format(
-                                    DateTime(0, 0, 0, startTime.hour, startTime.minute),
+                                  "• $openDay ${dateFormat.format(
+                                    DateTime(0, 0, 0, startTime.hour,
+                                        startTime.minute),
                                   )} - ${dateFormat.format(
-                                    DateTime(0, 0, 0, endTime.hour, endTime.minute),
+                                    DateTime(
+                                        0, 0, 0, endTime.hour, endTime.minute),
                                   )}",
                                   style: TextStyle(
                                     fontSize: 14,
@@ -266,14 +321,21 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 ),
                               ),
                               Visibility(
-                                visible: state.restaurantDetailsEntity?.isClosed == false &&
-                                    state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                    state.restaurantDetailsEntity?.hours?[0].isOpenNow == false,
+                                visible:
+                                    state.restaurantDetailsEntity?.isClosed ==
+                                            false &&
+                                        state.restaurantDetailsEntity!.hours!
+                                            .isNotEmpty &&
+                                        state.restaurantDetailsEntity?.hours?[0]
+                                                .isOpenNow ==
+                                            false,
                                 child: Text(
-                                  "${weekDays[openDay]} ${dateFormat.format(
-                                    DateTime(0, 0, 0, startTime.hour, startTime.minute),
+                                  "$openDay ${dateFormat.format(
+                                    DateTime(0, 0, 0, startTime.hour,
+                                        startTime.minute),
                                   )} - ${dateFormat.format(
-                                    DateTime(0, 0, 0, endTime.hour, endTime.minute),
+                                    DateTime(
+                                        0, 0, 0, endTime.hour, endTime.minute),
                                   )}",
                                   style: TextStyle(
                                     fontSize: 14,
@@ -298,13 +360,16 @@ class RestaurantDetailsPage extends StatelessWidget {
                               Flexible(
                                 child: Text(
                                   dietRestrictions!,
-                                  style: TextStyle(color: Colors.grey.shade700, fontSize: 14),
+                                  style: TextStyle(
+                                      color: Colors.grey.shade700,
+                                      fontSize: 14),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.04),
                         Padding(
                           padding: const EdgeInsets.only(left: 5.0),
                           child: Row(
@@ -314,13 +379,16 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey.shade700),
-                                        borderRadius: BorderRadius.circular(25)),
+                                        border: Border.all(
+                                            color: Colors.grey.shade700),
+                                        borderRadius:
+                                            BorderRadius.circular(25)),
                                     child: IconButton(
                                       onPressed: () {
                                         launchUrl(Uri(
                                           scheme: "tel",
-                                          path: state.restaurantDetailsEntity!.phone!,
+                                          path: state
+                                              .restaurantDetailsEntity!.phone!,
                                         ));
                                       },
                                       icon: Icon(
@@ -331,9 +399,12 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.007,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.007,
                                   ),
-                                  Text("Call", style: TextStyle(color: Colors.grey.shade700))
+                                  Text("Call",
+                                      style: TextStyle(
+                                          color: Colors.grey.shade700))
                                 ],
                               ),
                               SizedBox(
@@ -343,8 +414,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey.shade700),
-                                        borderRadius: BorderRadius.circular(25)),
+                                        border: Border.all(
+                                            color: Colors.grey.shade700),
+                                        borderRadius:
+                                            BorderRadius.circular(25)),
                                     child: IconButton(
                                       onPressed: () {
                                         launchUrl(Uri.parse(
@@ -359,9 +432,12 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.007,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.007,
                                   ),
-                                  Text("Website", style: TextStyle(color: Colors.grey.shade700))
+                                  Text("Website",
+                                      style: TextStyle(
+                                          color: Colors.grey.shade700))
                                 ],
                               ),
                               SizedBox(
@@ -371,8 +447,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey.shade700),
-                                        borderRadius: BorderRadius.circular(25)),
+                                        border: Border.all(
+                                            color: Colors.grey.shade700),
+                                        borderRadius:
+                                            BorderRadius.circular(25)),
                                     child: IconButton(
                                       onPressed: () {
                                         launchUrl(Uri.parse(
@@ -387,9 +465,12 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.007,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.007,
                                   ),
-                                  Text("Share", style: TextStyle(color: Colors.grey.shade700))
+                                  Text("Share",
+                                      style: TextStyle(
+                                          color: Colors.grey.shade700))
                                 ],
                               ),
                             ],
