@@ -20,8 +20,7 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+  final Completer<WebViewController> _controller = Completer<WebViewController>();
   late WebViewController _webViewController;
   var loadingPercentage = 0;
 
@@ -51,10 +50,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 },
               ),
         centerTitle: true,
-        title: CustomAppbarTitleWidget(
-            imageOneName: 'assets/bread.png',
-            imageTwoName: 'assets/tomato.png'),
-        // actions: [NavigationControls(controller: _controller)],
+        title: CustomAppbarTitleWidget(imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
+        actions: [NavigationControls(controller: _controller)],
       ),
       body: Stack(
         children: [
@@ -63,30 +60,41 @@ class _WebViewScreenState extends State<WebViewScreen> {
               gestureNavigationEnabled: true,
               zoomEnabled: true,
               initialUrl: widget.url!,
-              // initialUrl: widget.url! + "&native=true",
+              navigationDelegate: (NavigationRequest navigationRequest) {
+                if (navigationRequest.url.contains("tel")) {
+                  launchUrl(
+                    Uri.parse(navigationRequest.url),
+                    mode: LaunchMode.externalNonBrowserApplication,
+                  );
+                  print('blocking navigation to $navigationRequest}');
+                  return NavigationDecision.prevent;
+                }
+                if (navigationRequest.url.contains("maps.google.com")) {
+                  launchUrl(
+                    Uri.parse(navigationRequest.url),
+                    mode: LaunchMode.externalNonBrowserApplication,
+                  );
+                  print('blocking navigation to $navigationRequest}');
+                  return NavigationDecision.prevent;
+                }
+                print('allowing navigation to $navigationRequest');
+                return NavigationDecision.navigate;
+              },
               javascriptMode: JavascriptMode.unrestricted,
               onPageStarted: (url) {
-                if (url.contains("tel")) {
-                  launchUrl(Uri(
-                    scheme: "tel",
-                    path: url.substring(3),
-                  ));
-                } else if (url.contains('https')) {
-                  // _webViewController
-                  //     .runJavascript("document.getElementsByTagName('header')[0].style.display='none'");
-                  // _webViewController
-                  //     .runJavascript("document.getElementsByTagName('footer')[0].style.display='none'");
-                  setState(() {
-                    loadingPercentage = 0;
-                  });
-                }
+                // _webViewController
+                //     .runJavascript("document.getElementsByTagName('header')[0].style.display='none'");
+                // _webViewController
+                //     .runJavascript("document.getElementsByTagName('footer')[0].style.display='none'");
+                setState(() {
+                  loadingPercentage = 0;
+                });
+                // }
               },
               onProgress: (int progress) {
-                if (widget.url!.contains('https')) {
-                  setState(() {
-                    loadingPercentage = progress;
-                  });
-                }
+                setState(() {
+                  loadingPercentage = progress;
+                });
               },
               onPageFinished: (url) {
                 print("onPageFinished " + url);
