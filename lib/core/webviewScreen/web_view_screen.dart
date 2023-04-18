@@ -20,7 +20,8 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
   late WebViewController _webViewController;
   var loadingPercentage = 0;
 
@@ -50,7 +51,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 },
               ),
         centerTitle: true,
-        title: CustomAppbarTitleWidget(imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
+        title: CustomAppbarTitleWidget(
+            imageOneName: 'assets/bread.png',
+            imageTwoName: 'assets/tomato.png'),
         actions: [NavigationControls(controller: _controller)],
       ),
       body: Stack(
@@ -63,17 +66,28 @@ class _WebViewScreenState extends State<WebViewScreen> {
               navigationDelegate: (NavigationRequest navigationRequest) {
                 if (navigationRequest.url.contains("tel")) {
                   launchUrl(
-                    Uri.parse(navigationRequest.url),
-                    mode: LaunchMode.externalNonBrowserApplication,
+                    Uri(
+                      scheme: 'tel',
+                      path: navigationRequest.url.substring(3),
+                    ),
                   );
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
                 }
-                if (navigationRequest.url.contains("maps.google.com")) {
-                  launchUrl(
-                    Uri.parse(navigationRequest.url),
-                    mode: LaunchMode.externalNonBrowserApplication,
-                  );
+                if (navigationRequest.url.contains("maps")) {
+                  if (Platform.isIOS) {
+                    launchUrl(
+                      Uri(
+                        scheme: 'maps',
+                        path: navigationRequest.url.substring(5),
+                      ),
+                    );
+                  } else {
+                    launchUrl(
+                      Uri.parse(navigationRequest.url),
+                      mode: LaunchMode.externalNonBrowserApplication,
+                    );
+                  }
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
                 }
