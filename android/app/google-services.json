@@ -7,14 +7,22 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:85897164152:android:ed99e5db6e16fd0821c48d",
+        "mobilesdk_app_id": "1:85897164152:android:d9857b52860c131d21c48d",
         "android_client_info": {
-          "package_name": "com.example.veganbestie"
+          "package_name": "com.christiantsoungui.veganbestie"
         }
       },
       "oauth_client": [
         {
-          "client_id": "85897164152-fkos64r221nu2v6475b3lhuhr3ek2g49.apps.googleusercontent.com",
+          "client_id": "85897164152-arod1uurv828tpfvhqiis4sd5t5bfiu7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.christiantsoungui.veganbestie",
+            "certificate_hash": "b8b0a82923aead4e3c2f14885944d177387f25a6"
+          }
+        },
+        {
+          "client_id": "85897164152-6a95tsm2h6vp3l6rc3diocc05jm56212.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +35,59 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "85897164152-fkos64r221nu2v6475b3lhuhr3ek2g49.apps.googleusercontent.com",
+              "client_id": "85897164152-6a95tsm2h6vp3l6rc3diocc05jm56212.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "85897164152-kp29u8itltmnao3rtc4pdt5evpepauls.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.veganbestie"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85897164152:android:ed99e5db6e16fd0821c48d",
+        "android_client_info": {
+          "package_name": "com.example.veganbestie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85897164152-s87335kpm7mn7d3led26nmnk0kh3nf77.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.veganbestie",
+            "certificate_hash": "b8b0a82923aead4e3c2f14885944d177387f25a6"
+          }
+        },
+        {
+          "client_id": "85897164152-6a95tsm2h6vp3l6rc3diocc05jm56212.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQoIqGnifpadzZDJwBiWdV-AIoEqgtnJo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85897164152-6a95tsm2h6vp3l6rc3diocc05jm56212.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "85897164152-kp29u8itltmnao3rtc4pdt5evpepauls.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.veganbestie"
+              }
             }
           ]
         }
