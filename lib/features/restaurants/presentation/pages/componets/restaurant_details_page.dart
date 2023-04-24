@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -51,18 +54,14 @@ class RestaurantDetailsPage extends StatelessWidget {
               state.restaurantDetailsEntity?.hours?[0].open != null &&
               state.restaurantDetailsEntity!.hours![0].open!.isNotEmpty &&
               state.restaurantDetailsEntity?.hours?[0].isOpenNow == false) {
-            for (int index = 0;
-                index < state.restaurantDetailsEntity!.hours![0].open!.length;
-                index++) {
-              openDays[index] = weekDays[
-                  state.restaurantDetailsEntity!.hours![0].open![index].day];
+            for (int index = 0; index < state.restaurantDetailsEntity!.hours![0].open!.length; index++) {
+              openDays[index] = weekDays[state.restaurantDetailsEntity!.hours![0].open![index].day];
             }
             debugPrint("$openDays");
             for (int index = 0; index < openDays.length; index++) {
               for (int index2 = 0; index2 < weekDays.length; index2++) {
                 if (openDays[index] == weekDays[DateTime.now().weekday]) {
-                  debugPrint("${DateTime.now().weekday}" +
-                      "${weekDays[DateTime.now().weekday]!}");
+                  debugPrint("${DateTime.now().weekday}" + "${weekDays[DateTime.now().weekday]!}");
                   openDay = openDays[index];
                   openDayObjectIndex = index;
 
@@ -80,41 +79,26 @@ class RestaurantDetailsPage extends StatelessWidget {
           TimeOfDay startTime = state.restaurantDetailsEntity!.hours!.isEmpty
               ? TimeOfDay(hour: 0, minute: 0)
               : TimeOfDay(
-                  hour: int.parse(state.restaurantDetailsEntity!.hours![0]
-                      .open![openDayObjectIndex].start!
-                      .substring(0, 2)),
-                  minute: int.parse(state.restaurantDetailsEntity!.hours![0]
-                      .open![openDayObjectIndex].start!
-                      .substring(2)));
+                  hour: int.parse(
+                      state.restaurantDetailsEntity!.hours![0].open![openDayObjectIndex].start!.substring(0, 2)),
+                  minute: int.parse(
+                      state.restaurantDetailsEntity!.hours![0].open![openDayObjectIndex].start!.substring(2)));
           TimeOfDay endTime = state.restaurantDetailsEntity!.hours!.isEmpty
               ? TimeOfDay(hour: 0, minute: 0)
               : TimeOfDay(
-                  hour: int.parse(state.restaurantDetailsEntity!.hours![0]
-                      .open![openDayObjectIndex].end!
-                      .substring(0, 2)),
-                  minute: int.parse(state.restaurantDetailsEntity!.hours![0]
-                      .open![openDayObjectIndex].end!
-                      .substring(2)));
+                  hour: int.parse(
+                      state.restaurantDetailsEntity!.hours![0].open![openDayObjectIndex].end!.substring(0, 2)),
+                  minute: int.parse(
+                      state.restaurantDetailsEntity!.hours![0].open![openDayObjectIndex].end!.substring(2)));
 
           String displayAddress = "";
           if (state.restaurantDetailsEntity?.location?.displayAddress != null &&
-              state.restaurantDetailsEntity!.location!.displayAddress!
-                  .isNotEmpty) {
-            for (int index = 0;
-                index <
-                    state.restaurantDetailsEntity!.location!.displayAddress!
-                        .length;
-                index++) {
-              if (index ==
-                  state.restaurantDetailsEntity!.location!.displayAddress!
-                          .length -
-                      1) {
-                displayAddress += state
-                    .restaurantDetailsEntity!.location!.displayAddress![index];
+              state.restaurantDetailsEntity!.location!.displayAddress!.isNotEmpty) {
+            for (int index = 0; index < state.restaurantDetailsEntity!.location!.displayAddress!.length; index++) {
+              if (index == state.restaurantDetailsEntity!.location!.displayAddress!.length - 1) {
+                displayAddress += state.restaurantDetailsEntity!.location!.displayAddress![index];
               } else {
-                displayAddress += state.restaurantDetailsEntity!.location!
-                        .displayAddress![index] +
-                    ", ";
+                displayAddress += state.restaurantDetailsEntity!.location!.displayAddress![index] + ", ";
               }
             }
           }
@@ -145,10 +129,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyLarge
-                                    ?.copyWith(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 26),
                                 // style: TextStyle(
                                 //   color: Colors.black,
                                 //   fontSize: 26,
@@ -159,7 +140,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ],
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.005,
+                          height: MediaQuery.of(context).size.height * 0.010,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 3.0),
@@ -177,23 +158,20 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       size: 14,
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.01,
+                                      width: MediaQuery.of(context).size.width * 0.01,
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.75,
+                                      width: MediaQuery.of(context).size.width * 0.75,
                                       child: Text(
                                         "$displayAddress",
                                         style: TextStyle(
                                             color: Colors.grey.shade700,
-                                            fontSize: 12,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.w600),
                                       ),
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.01,
+                                      width: MediaQuery.of(context).size.width * 0.01,
                                     ),
                                   ],
                                 ),
@@ -233,9 +211,6 @@ class RestaurantDetailsPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01,
-                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 5.0),
                           child: Row(
@@ -243,114 +218,66 @@ class RestaurantDetailsPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Visibility(
-                                visible: state.restaurantDetailsEntity!.hours!
-                                        .isNotEmpty &&
-                                    state.restaurantDetailsEntity?.hours?[0]
-                                            .isOpenNow !=
-                                        null,
+                                visible: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
+                                    state.restaurantDetailsEntity?.hours?[0].isOpenNow != null,
                                 maintainSize: false,
                                 child: Icon(
                                   Icons.access_time,
                                   size: 20,
-                                  color: state.restaurantDetailsEntity!.hours!
-                                              .isNotEmpty &&
-                                          state.restaurantDetailsEntity
-                                                  ?.hours?[0].isOpenNow !=
-                                              null &&
-                                          state.restaurantDetailsEntity!
-                                              .hours![0].isOpenNow!
+                                  color: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
+                                          state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
+                                          state.restaurantDetailsEntity!.hours![0].isOpenNow!
                                       ? Colors.green
                                       : Colors.red,
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.01,
+                                width: MediaQuery.of(context).size.width * 0.005,
                               ),
                               Visibility(
-                                visible: state.restaurantDetailsEntity!.hours!
-                                        .isNotEmpty &&
-                                    state.restaurantDetailsEntity?.hours?[0]
-                                            .isOpenNow !=
-                                        null,
+                                visible: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
+                                    state.restaurantDetailsEntity?.hours?[0].isOpenNow != null,
                                 maintainSize: false,
                                 child: Text(
-                                  state.restaurantDetailsEntity!.hours!
-                                              .isNotEmpty &&
-                                          state.restaurantDetailsEntity
-                                                  ?.hours?[0].isOpenNow !=
-                                              null &&
-                                          state.restaurantDetailsEntity!
-                                              .hours![0].isOpenNow!
+                                  state.restaurantDetailsEntity!.hours!.isNotEmpty &&
+                                          state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
+                                          state.restaurantDetailsEntity!.hours![0].isOpenNow!
                                       ? "Open Now"
                                       : "Closed",
                                   style: TextStyle(
-                                      color: state.restaurantDetailsEntity!
-                                                  .hours!.isNotEmpty &&
-                                              state.restaurantDetailsEntity
-                                                      ?.hours?[0].isOpenNow !=
-                                                  null &&
-                                              state.restaurantDetailsEntity!
-                                                  .hours![0].isOpenNow!
-                                          ? Colors.green
-                                          : Colors.red,
-                                      fontSize: 14),
-                                ),
-                              ),
-                              SizedBox(
-                                width:
-                                    MediaQuery.of(context).size.width * 0.015,
-                              ),
-                              Visibility(
-                                visible: state.restaurantDetailsEntity!.hours!
-                                        .isNotEmpty &&
-                                    state.restaurantDetailsEntity?.hours?[0]
-                                            .isOpenNow ==
-                                        true,
-                                child: Text(
-                                  "• $openDay ${dateFormat.format(
-                                    DateTime(0, 0, 0, startTime.hour,
-                                        startTime.minute),
-                                  )} - ${dateFormat.format(
-                                    DateTime(
-                                        0, 0, 0, endTime.hour, endTime.minute),
-                                  )}",
-                                  style: TextStyle(
+                                    color: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
+                                            state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
+                                            state.restaurantDetailsEntity!.hours![0].isOpenNow!
+                                        ? Colors.green
+                                        : Colors.red,
                                     fontSize: 14,
-                                    color: Colors.grey.shade700,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
-                              Visibility(
-                                visible:
-                                    state.restaurantDetailsEntity?.isClosed ==
-                                            false &&
-                                        state.restaurantDetailsEntity!.hours!
-                                            .isNotEmpty &&
-                                        state.restaurantDetailsEntity?.hours?[0]
-                                                .isOpenNow ==
-                                            false,
-                                child: Text(
-                                  "$openDay ${dateFormat.format(
-                                    DateTime(0, 0, 0, startTime.hour,
-                                        startTime.minute),
-                                  )} - ${dateFormat.format(
-                                    DateTime(
-                                        0, 0, 0, endTime.hour, endTime.minute),
-                                  )}",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey.shade700,
+                              TextButton(
+                                style: ButtonStyle(
+                                  padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                                  textStyle: MaterialStatePropertyAll(
+                                    TextStyle(
+                                      color: Colors.grey.shade700,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.01,
+                                onPressed: () {},
+                                child: Text(
+                                  "Hours",
+                                  style: TextStyle(
+                                    color: Colors.grey.shade700,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 6.0),
@@ -361,64 +288,98 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 child: Text(
                                   dietRestrictions!,
                                   style: TextStyle(
-                                      color: Colors.grey.shade700,
-                                      fontSize: 14),
+                                    color: Colors.grey.shade700,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.04),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                         Padding(
-                          padding: const EdgeInsets.only(left: 5.0),
+                          padding: const EdgeInsets.only(left: 5.0, right: 5.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.grey.shade700),
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
+                                        border: Border.all(color: Colors.grey.shade700),
+                                        borderRadius: BorderRadius.circular(25)),
                                     child: IconButton(
+                                      iconSize: 50,
                                       onPressed: () {
                                         launchUrl(Uri(
                                           scheme: "tel",
-                                          path: state
-                                              .restaurantDetailsEntity!.phone!,
+                                          path: state.restaurantDetailsEntity!.phone!,
                                         ));
                                       },
                                       icon: Icon(
                                         Icons.call,
                                         color: Colors.grey.shade700,
-                                        size: 25,
+                                        size: 30,
                                       ),
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.007,
+                                    height: MediaQuery.of(context).size.height * 0.007,
                                   ),
-                                  Text("Call",
-                                      style: TextStyle(
-                                          color: Colors.grey.shade700))
+                                  Text("Call", style: TextStyle(color: Colors.grey.shade700, fontSize: 14))
                                 ],
                               ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.15,
-                              ),
+                              SizedBox(width: MediaQuery.of(context).size.width * 0.12),
                               Column(
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.grey.shade700),
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
+                                        border: Border.all(color: Colors.grey.shade700),
+                                        borderRadius: BorderRadius.circular(25)),
                                     child: IconButton(
+                                      iconSize: 50,
+                                      onPressed: () {
+                                        String appleUrl =
+                                            'https://maps.apple.com/?q=${state.restaurantDetailsEntity?.name} $displayAddress';
+                                        String googleUrl =
+                                            "https://www.google.com/maps/search/?api=1&query=${state.restaurantDetailsEntity?.name} $displayAddress";
+                                        if (Platform.isIOS) {
+                                          launchUrl(
+                                            Uri(
+                                              scheme: 'maps',
+                                              path: appleUrl,
+                                            ),
+                                          );
+                                        } else {
+                                          launchUrl(
+                                            Uri.parse(googleUrl),
+                                            mode: LaunchMode.externalNonBrowserApplication,
+                                          );
+                                        }
+                                      },
+                                      icon: Icon(
+                                        Icons.directions,
+                                        color: Colors.grey.shade700,
+                                        size: 30,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height * 0.007,
+                                  ),
+                                  Text("Direction", style: TextStyle(color: Colors.grey.shade700, fontSize: 14))
+                                ],
+                              ),
+                              SizedBox(width: MediaQuery.of(context).size.width * 0.12),
+                              Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.grey.shade700),
+                                        borderRadius: BorderRadius.circular(25)),
+                                    child: IconButton(
+                                      iconSize: 50,
                                       onPressed: () {
                                         launchUrl(Uri.parse(
                                           state.restaurantDetailsEntity!.url!,
@@ -427,55 +388,107 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       icon: Icon(
                                         Icons.launch,
                                         color: Colors.grey.shade700,
-                                        size: 25,
+                                        size: 30,
                                       ),
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.007,
+                                    height: MediaQuery.of(context).size.height * 0.007,
                                   ),
-                                  Text("Website",
-                                      style: TextStyle(
-                                          color: Colors.grey.shade700))
+                                  Text("Website", style: TextStyle(color: Colors.grey.shade700, fontSize: 14))
                                 ],
                               ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.15,
-                              ),
-                              Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.grey.shade700),
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
-                                    child: IconButton(
-                                      onPressed: () {
-                                        launchUrl(Uri.parse(
-                                          state.restaurantDetailsEntity!.url!,
-                                        ));
-                                      },
-                                      icon: Icon(
-                                        Icons.share,
-                                        color: Colors.grey.shade700,
-                                        size: 25,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.007,
-                                  ),
-                                  Text("Share",
-                                      style: TextStyle(
-                                          color: Colors.grey.shade700))
-                                ],
-                              ),
+                              // SizedBox(
+                              //   width: MediaQuery.of(context).size.width * 0.12,
+                              // ),
+
+                              // Share button
+                              // Column(
+                              //   children: [
+                              //     Container(
+                              //       decoration: BoxDecoration(
+                              //           border: Border.all(color: Colors.grey.shade700),
+                              //           borderRadius: BorderRadius.circular(25)),
+                              //       child: IconButton(
+                              //         onPressed: () {
+                              //           launchUrl(Uri.parse(
+                              //             state.restaurantDetailsEntity!.url!,
+                              //           ));
+                              //         },
+                              //         icon: Icon(
+                              //           Icons.share,
+                              //           color: Colors.grey.shade700,
+                              //           size: 25,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     SizedBox(
+                              //       height: MediaQuery.of(context).size.height * 0.007,
+                              //     ),
+                              //     Text("Share", style: TextStyle(color: Colors.grey.shade700, fontSize: 14))
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                        if (state.restaurantDetailsEntity?.photos != null)
+                          SizedBox(
+                            height: MediaQuery.of(context).size.width * 0.35,
+                            width: MediaQuery.of(context).size.width,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              itemCount: state.restaurantDetailsEntity?.photos?.length,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                  children: [
+                                    Container(
+                                      height: MediaQuery.of(context).size.width * 0.30,
+                                      width: MediaQuery.of(context).size.width * 0.30,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).colorScheme.background,
+                                        // gradient:
+                                        //     RadialGradient(colors: [Color(0XFF2E7D32), Colors.green.shade500]),
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10),
+                                          bottomLeft: Radius.circular(10),
+                                          bottomRight: Radius.circular(10),
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black45,
+                                            spreadRadius: 1,
+                                            blurRadius: 2.5,
+                                            offset: Offset(3, 3),
+                                          ),
+                                        ],
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10),
+                                          bottomLeft: Radius.circular(10),
+                                          bottomRight: Radius.circular(10),
+                                        ),
+                                        child: CachedNetworkImage(
+                                          progressIndicatorBuilder: (context, text, downloadProgress) =>
+                                              LoadingPage(),
+                                          fit: BoxFit.cover,
+                                          imageUrl: state.restaurantDetailsEntity?.photos?[index] ?? "",
+                                          errorWidget: (context, error, value) => Container(),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.03,
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
                       ],
                     ),
                   ),

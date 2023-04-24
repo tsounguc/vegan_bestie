@@ -11,9 +11,7 @@ import '../../../data/models/yelp_restaurants_model.dart';
 import '../../restaurant_cubit/restaurant_details_cubit.dart';
 
 class RestaurantCard extends StatelessWidget {
-  const RestaurantCard(
-      {Key? key, required this.dietRestrictions, required this.business})
-      : super(key: key);
+  const RestaurantCard({Key? key, required this.dietRestrictions, required this.business}) : super(key: key);
 
   final String? dietRestrictions;
   final RestaurantEntity? business;
@@ -23,14 +21,13 @@ class RestaurantCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         debugPrint(business?.id);
-        BlocProvider.of<RestaurantDetailsCubit>(context)
-            .searchRestaurantDetails(business?.id);
+        BlocProvider.of<RestaurantDetailsCubit>(context).searchRestaurantDetails(business?.id);
         Navigator.of(context).push(
           MaterialPageRoute(
-            // builder: (_) => RestaurantDetailsPage(dietRestrictions: dietRestrictions),
-            builder: (_) => WebViewScreen(
-              url: business?.url,
-            ),
+            builder: (_) => RestaurantDetailsPage(dietRestrictions: dietRestrictions),
+            // builder: (_) => WebViewScreen(
+            //   url: business?.url,
+            // ),
           ),
         );
 
@@ -45,8 +42,7 @@ class RestaurantCard extends StatelessWidget {
           color: Colors.white,
           clipBehavior: Clip.antiAlias,
           elevation: 5,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
           child: Row(
             children: [
               business!.imageUrl!.isNotEmpty && business!.imageUrl != null
@@ -60,8 +56,7 @@ class RestaurantCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image:
-                                CachedNetworkImageProvider(business!.imageUrl!),
+                            image: CachedNetworkImageProvider(business!.imageUrl!),
                           ),
                         ),
                       ),
@@ -133,8 +128,7 @@ class RestaurantCard extends StatelessWidget {
                                 Flexible(
                                   child: Text(
                                     "${business!.location!.city}",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 10.sp),
+                                    style: TextStyle(color: Colors.black, fontSize: 10.sp),
                                   ),
                                 ),
                                 SizedBox(
@@ -152,8 +146,7 @@ class RestaurantCard extends StatelessWidget {
                           ),
                           Text(
                             business!.price ?? "",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 10.sp),
+                            style: TextStyle(color: Colors.black, fontSize: 10.sp),
                           )
                         ],
                       ),
@@ -179,8 +172,7 @@ class RestaurantCard extends StatelessWidget {
                           ),
                           Text(
                             "${business!.reviewCount} reviews",
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 10.sp),
+                            style: TextStyle(color: Colors.black, fontSize: 10.sp),
                           ),
                         ],
                       ),
@@ -192,8 +184,7 @@ class RestaurantCard extends StatelessWidget {
                           Flexible(
                             child: Text(
                               dietRestrictions!,
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 10.sp),
+                              style: TextStyle(color: Colors.black, fontSize: 10.sp),
                             ),
                           ),
                         ],
