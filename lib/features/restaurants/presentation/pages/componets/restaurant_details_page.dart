@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details_entity.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../core/custom_back_button.dart';
@@ -37,7 +38,7 @@ class RestaurantDetailsPage extends StatelessWidget {
     6: "Saturday",
   };
 
-  var openDays = {};
+  // var openDays = {};
 
   @override
   Widget build(BuildContext context) {
@@ -49,48 +50,6 @@ class RestaurantDetailsPage extends StatelessWidget {
           );
         }
         if (state is RestaurantDetailsFoundState) {
-          if (state.restaurantDetailsEntity?.hours != null &&
-              state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-              state.restaurantDetailsEntity?.hours?[0].open != null &&
-              state.restaurantDetailsEntity!.hours![0].open!.isNotEmpty &&
-              state.restaurantDetailsEntity?.hours?[0].isOpenNow == false) {
-            for (int index = 0; index < state.restaurantDetailsEntity!.hours![0].open!.length; index++) {
-              openDays[index] = weekDays[state.restaurantDetailsEntity!.hours![0].open![index].day];
-            }
-            debugPrint("$openDays");
-            for (int index = 0; index < openDays.length; index++) {
-              for (int index2 = 0; index2 < weekDays.length; index2++) {
-                if (openDays[index] == weekDays[DateTime.now().weekday]) {
-                  debugPrint("${DateTime.now().weekday}" + "${weekDays[DateTime.now().weekday]!}");
-                  openDay = openDays[index];
-                  openDayObjectIndex = index;
-
-                  break;
-                }
-                if (openDays[index] == weekDays[index2]) {
-                  openDay = openDays[index];
-                  openDayObjectIndex = index;
-                  break;
-                }
-              }
-            }
-          }
-
-          TimeOfDay startTime = state.restaurantDetailsEntity!.hours!.isEmpty
-              ? TimeOfDay(hour: 0, minute: 0)
-              : TimeOfDay(
-                  hour: int.parse(
-                      state.restaurantDetailsEntity!.hours![0].open![openDayObjectIndex].start!.substring(0, 2)),
-                  minute: int.parse(
-                      state.restaurantDetailsEntity!.hours![0].open![openDayObjectIndex].start!.substring(2)));
-          TimeOfDay endTime = state.restaurantDetailsEntity!.hours!.isEmpty
-              ? TimeOfDay(hour: 0, minute: 0)
-              : TimeOfDay(
-                  hour: int.parse(
-                      state.restaurantDetailsEntity!.hours![0].open![openDayObjectIndex].end!.substring(0, 2)),
-                  minute: int.parse(
-                      state.restaurantDetailsEntity!.hours![0].open![openDayObjectIndex].end!.substring(2)));
-
           String displayAddress = "";
           if (state.restaurantDetailsEntity?.location?.displayAddress != null &&
               state.restaurantDetailsEntity!.location!.displayAddress!.isNotEmpty) {
@@ -238,46 +197,55 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 visible: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
                                     state.restaurantDetailsEntity?.hours?[0].isOpenNow != null,
                                 maintainSize: false,
-                                child: Text(
-                                  state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                          state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
-                                          state.restaurantDetailsEntity!.hours![0].isOpenNow!
-                                      ? "Open Now"
-                                      : "Closed",
-                                  style: TextStyle(
-                                    color: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                            state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
-                                            state.restaurantDetailsEntity!.hours![0].isOpenNow!
-                                        ? Colors.green
-                                        : Colors.red,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                style: ButtonStyle(
-                                  padding: MaterialStatePropertyAll(EdgeInsets.zero),
-                                  textStyle: MaterialStatePropertyAll(
-                                    TextStyle(
-                                      color: Colors.grey.shade700,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      state.restaurantDetailsEntity!.hours!.isNotEmpty &&
+                                              state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
+                                              state.restaurantDetailsEntity!.hours![0].isOpenNow!
+                                          ? "Open Now"
+                                          : "Closed",
+                                      style: TextStyle(
+                                        color: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
+                                                state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
+                                                state.restaurantDetailsEntity!.hours![0].isOpenNow!
+                                            ? Colors.green
+                                            : Colors.red,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                onPressed: () {},
-                                child: Text(
-                                  "Hours",
-                                  style: TextStyle(
-                                    color: Colors.grey.shade700,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                    TextButton(
+                                      style: ButtonStyle(
+                                        padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                                        textStyle: MaterialStatePropertyAll(
+                                          TextStyle(
+                                            color: Colors.grey.shade700,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        _displayHoursDialog(context, state.restaurantDetailsEntity);
+                                      },
+                                      child: Text(
+                                        "-  Hours",
+                                        style: TextStyle(
+                                          color: Colors.grey.shade700,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.007,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 6.0),
@@ -513,6 +481,95 @@ class RestaurantDetailsPage extends StatelessWidget {
         } else {
           return LoadingPage();
         }
+      },
+    );
+  }
+
+  // Displays hours
+  void _displayHoursDialog(BuildContext context, RestaurantDetailsEntity? restaurantDetailsEntity) async {
+    var openDays = {};
+    List<String> hoursOfOperation = [];
+    if (restaurantDetailsEntity?.hours != null &&
+        restaurantDetailsEntity!.hours!.isNotEmpty &&
+        restaurantDetailsEntity.hours?[0].open != null &&
+        restaurantDetailsEntity.hours![0].open!.isNotEmpty) {
+      for (int index = 0; index < restaurantDetailsEntity.hours![0].open!.length; index++) {
+        openDays[index] = weekDays[restaurantDetailsEntity.hours![0].open![index].day];
+        TimeOfDay startTime = TimeOfDay(
+            hour: int.parse(restaurantDetailsEntity.hours![0].open![index].start!.substring(0, 2)),
+            minute: int.parse(restaurantDetailsEntity.hours![0].open![index].start!.substring(2)));
+        TimeOfDay endTime = TimeOfDay(
+            hour: int.parse(restaurantDetailsEntity.hours![0].open![index].end!.substring(0, 2)),
+            minute: int.parse(restaurantDetailsEntity.hours![0].open![index].end!.substring(2)));
+        String dayAndOpenHoursText = "${openDays[index]} • $openDay ${dateFormat.format(
+          DateTime(0, 0, 0, startTime.hour, startTime.minute),
+        )} - ${dateFormat.format(
+          DateTime(0, 0, 0, endTime.hour, endTime.minute),
+        )}";
+        // String dayAndOpenHoursText = "${openDays[index]} ${dateFormat.format(startTime)} - ${dateFormat.format(endTime}}";
+
+        print(dayAndOpenHoursText);
+        hoursOfOperation.add(dayAndOpenHoursText);
+      }
+
+      debugPrint("$openDays");
+    }
+
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          // title: Text(
+          //   'Hours',
+          //   style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.grey.shade700),
+          // ),
+          content: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.25,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Text(
+                      'Hours',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Colors.grey.shade700, fontSize: 24),
+                    ),
+                  ),
+                  for (int index = 0; index < hoursOfOperation.length; index++)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          hoursOfOperation[index],
+                          style: TextStyle(color: Colors.grey.shade700, fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'OK',
+                style: TextStyle(color: Colors.grey.shade700, fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
       },
     );
   }
