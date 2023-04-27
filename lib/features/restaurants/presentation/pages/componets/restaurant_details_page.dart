@@ -8,6 +8,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details_entity.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../../core/constants/size_config.dart';
+import '../../../../../core/custom_appbar_title_widget.dart';
 import '../../../../../core/custom_back_button.dart';
 import '../../../../../core/custom_image_widget.dart';
 import '../../../../../core/error.dart';
@@ -17,6 +19,7 @@ import '../../restaurant_cubit/restaurant_details_cubit.dart';
 import 'package:intl/intl.dart';
 
 import 'is_open_now.dart';
+import 'page_view.dart';
 
 class RestaurantDetailsPage extends StatelessWidget {
   String restaurantType = "";
@@ -61,13 +64,27 @@ class RestaurantDetailsPage extends StatelessWidget {
             }
           }
           return Scaffold(
+            appBar: AppBar(
+              leadingWidth: 80,
+              toolbarHeight: toolbarHeight,
+              backgroundColor: Theme.of(context).colorScheme.background,
+              automaticallyImplyLeading: true,
+              leading: !Navigator.of(context).canPop()
+                  ? null
+                  : CustomBackButton(
+                      color: Colors.black,
+                    ),
+              centerTitle: true,
+              title: CustomAppbarTitleWidget(imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
+              // actions: [NavigationControls(controller: _controller)],
+            ),
             backgroundColor: Theme.of(context).colorScheme.background,
             body: Stack(
               children: [
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.55,
+                    height: MediaQuery.of(context).size.height * 0.425,
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
@@ -172,7 +189,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                           height: MediaQuery.of(context).size.height * 0.010,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 6.0),
+                          padding: const EdgeInsets.only(left: 3.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -181,11 +198,19 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 visible: state.restaurantDetailsEntity?.dineIn == true,
                                 maintainSize: false,
                                 child: SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.18,
+                                  width: MediaQuery.of(context).size.width * 0.25,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
+                                      SizedBox(
+                                        height: MediaQuery.of(context).size.width * 0.05,
+                                        child: VerticalDivider(
+                                          color: Colors.grey.shade800,
+                                          thickness: 2,
+                                          // width: 20,
+                                        ),
+                                      ),
                                       Icon(
                                         Icons.restaurant,
                                         color: Colors.grey.shade800,
@@ -210,7 +235,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 visible: state.restaurantDetailsEntity?.takeout == true,
                                 maintainSize: false,
                                 child: SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.23,
+                                  width: MediaQuery.of(context).size.width * 0.25,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -329,7 +354,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.005,
+                          height: MediaQuery.of(context).size.height * 0.01,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 5.0, right: 5.0),
@@ -492,82 +517,26 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                        if (state.restaurantDetailsEntity?.photos != null)
-                          SizedBox(
-                            height: MediaQuery.of(context).size.width * 0.35,
-                            width: MediaQuery.of(context).size.width,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemCount: state.restaurantDetailsEntity?.photos?.length,
-                              itemBuilder: (context, index) {
-                                return Row(
-                                  children: [
-                                    Container(
-                                      height: MediaQuery.of(context).size.width * 0.30,
-                                      width: MediaQuery.of(context).size.width * 0.30,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.background,
-                                        // gradient:
-                                        //     RadialGradient(colors: [Color(0XFF2E7D32), Colors.green.shade500]),
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(10),
-                                          topRight: Radius.circular(10),
-                                          bottomLeft: Radius.circular(10),
-                                          bottomRight: Radius.circular(10),
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black45,
-                                            spreadRadius: 1,
-                                            blurRadius: 2.5,
-                                            offset: Offset(3, 3),
-                                          ),
-                                        ],
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(10),
-                                          topRight: Radius.circular(10),
-                                          bottomLeft: Radius.circular(10),
-                                          bottomRight: Radius.circular(10),
-                                        ),
-                                        child: CachedNetworkImage(
-                                          progressIndicatorBuilder: (context, text, downloadProgress) =>
-                                              LoadingPage(),
-                                          fit: BoxFit.cover,
-                                          imageUrl: state.restaurantDetailsEntity?.photos?[index].photoReference ==
-                                                  null
-                                              ? state.restaurantDetailsEntity!.icon!
-                                              : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${state.restaurantDetailsEntity!.photos![index].photoReference}&key=${dotenv.env['GOOGLE_PLACES_API_KEY']}",
-                                          errorWidget: (context, error, value) => Container(),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.03,
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
                       ],
                     ),
                   ),
                 ),
                 Positioned(
-                  width: MediaQuery.of(context).size.width * 1,
-                  top: MediaQuery.of(context).size.height * 0.0,
-                  left: MediaQuery.of(context).size.width * 0.0,
-                  child: CustomImageWidget(
-                    imageUrl: state.restaurantDetailsEntity?.imageUrl,
-                  ),
-                ),
-                Positioned(
-                    top: MediaQuery.of(context).size.height * 0.05,
-                    left: MediaQuery.of(context).size.width * 0.01,
-                    child: CustomBackButton()),
+                    width: MediaQuery.of(context).size.width * 1,
+                    top: MediaQuery.of(context).size.height * 0.0,
+                    left: MediaQuery.of(context).size.width * 0.0,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.43,
+                      child: CustomPageView(),
+                    )
+                    // child: CustomImageWidget(
+                    //   imageUrl: state.restaurantDetailsEntity?.imageUrl,
+                    // ),
+                    ),
+                // Positioned(
+                //     top: MediaQuery.of(context).size.height * 0.05,
+                //     left: MediaQuery.of(context).size.width * 0.01,
+                //     child: CustomBackButton()),
               ],
             ),
           );

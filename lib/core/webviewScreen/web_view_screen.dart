@@ -8,6 +8,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../core/constants/strings.dart';
 import '../constants/size_config.dart';
 import '../custom_appbar_title_widget.dart';
+import '../custom_back_button.dart';
 import 'navigation_controls.dart';
 
 class WebViewScreen extends StatefulWidget {
@@ -40,14 +41,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
         automaticallyImplyLeading: true,
         leading: !Navigator.of(context).canPop()
             ? null
-            : IconButton(
+            : CustomBackButton(
                 color: Colors.black,
-                icon: Icon(
-                  Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
               ),
         centerTitle: true,
         title: CustomAppbarTitleWidget(imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
@@ -196,7 +191,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       ),
       bottomNavigationBar: NavigationControls(
         controller: _controller,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       ),
     );
   }

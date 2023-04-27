@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -18,9 +19,9 @@ class NavigationControls extends StatelessWidget {
         if (snapshot.connectionState != ConnectionState.done || controller == null) {
           return Row(
             mainAxisAlignment: mainAxisAlignment!,
-            children: const <Widget>[
-              Icon(Icons.arrow_back_ios, color: Colors.white),
-              Icon(Icons.arrow_forward_ios, color: Colors.white),
+            children: <Widget>[
+              Icon(Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back, color: Colors.white),
+              Icon(Platform.isAndroid ? Icons.arrow_forward_ios : Icons.arrow_forward, color: Colors.white),
               Icon(Icons.replay, color: Colors.white),
             ],
           );
@@ -30,7 +31,7 @@ class NavigationControls extends StatelessWidget {
           mainAxisAlignment: mainAxisAlignment!,
           children: <Widget>[
             IconButton(
-              icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+              icon: Icon(Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back, color: Colors.black),
               onPressed: () async {
                 if (await controller.canGoBack()) {
                   await controller.goBack();
@@ -43,7 +44,7 @@ class NavigationControls extends StatelessWidget {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.arrow_forward_ios, color: Colors.black),
+              icon: Icon(Platform.isAndroid ? Icons.arrow_forward_ios : Icons.arrow_back, color: Colors.black),
               onPressed: () async {
                 if (await controller.canGoForward()) {
                   await controller.goForward();
