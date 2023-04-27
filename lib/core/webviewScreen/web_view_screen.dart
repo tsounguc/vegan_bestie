@@ -70,8 +70,40 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   );
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
-                }
-                if (navigationRequest.url.contains("maps")) {
+                } else if (navigationRequest.url.contains("https://play.google.com/")) {
+                  if (Platform.isAndroid) {
+                    launchUrl(
+                      Uri.parse(navigationRequest.url),
+                      mode: LaunchMode.externalNonBrowserApplication,
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Device does not support Google Play Store')),
+                    );
+                  }
+                  print('blocking navigation to $navigationRequest}');
+                  return NavigationDecision.prevent;
+                } else if (navigationRequest.url.contains("https://apps.apple.com/")) {
+                  if (Platform.isIOS) {
+                    launchUrl(
+                      Uri.parse(navigationRequest.url),
+                      mode: LaunchMode.externalNonBrowserApplication,
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Device does not support App Store')),
+                    );
+                  }
+                  print('blocking navigation to $navigationRequest}');
+                  return NavigationDecision.prevent;
+                } else if (navigationRequest.url.contains("mailto")) {
+                  launchUrl(
+                    Uri.parse(navigationRequest.url),
+                    mode: LaunchMode.externalNonBrowserApplication,
+                  );
+                  print('blocking navigation to $navigationRequest}');
+                  return NavigationDecision.prevent;
+                } else if (navigationRequest.url.contains("maps")) {
                   if (Platform.isIOS) {
                     launchUrl(
                       Uri(
@@ -87,9 +119,10 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   }
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
+                } else {
+                  print('allowing navigation to $navigationRequest');
+                  return NavigationDecision.navigate;
                 }
-                print('allowing navigation to $navigationRequest');
-                return NavigationDecision.navigate;
               },
               javascriptMode: JavascriptMode.unrestricted,
               onPageStarted: (url) {

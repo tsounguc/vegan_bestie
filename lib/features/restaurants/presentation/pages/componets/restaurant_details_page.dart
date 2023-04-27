@@ -51,11 +51,15 @@ class RestaurantDetailsPage extends StatelessWidget {
           );
         }
         if (state is RestaurantDetailsFoundState) {
-          // for (int index = 0; index < state.restaurantDetailsEntity!.types!.length; index++) {
-          //   if (index < state.restaurantDetailsEntity!.types!.length - 1) {
-          //     restaurantType = restaurantType + state.restaurantDetailsEntity!.types![index]. ?? "";
-          //   }
-          // }
+          if (state.restaurantDetailsEntity?.types != null && state.restaurantDetailsEntity!.types!.isNotEmpty) {
+            for (int index = 0; index < state.restaurantDetailsEntity!.types!.length; index++) {
+              if (index < state.restaurantDetailsEntity!.types!.length - 1) {
+                restaurantType = restaurantType + state.restaurantDetailsEntity!.types![index] + " | ";
+              } else {
+                restaurantType = restaurantType + state.restaurantDetailsEntity!.types![index];
+              }
+            }
+          }
           return Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
             body: Stack(
@@ -118,7 +122,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       child: Text(
                                         state.restaurantDetailsEntity?.formattedAddress ?? "",
                                         style: TextStyle(
-                                            color: Colors.grey.shade700,
+                                            color: Colors.grey.shade800,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600),
                                       ),
@@ -133,7 +137,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.005,
+                          height: MediaQuery.of(context).size.height * 0.010,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 3.0),
@@ -157,25 +161,122 @@ class RestaurantDetailsPage extends StatelessWidget {
                               Text(
                                 "${state.restaurantDetailsEntity?.userRatingsTotal ?? 0} reviews",
                                 style: TextStyle(
-                                  color: Colors.grey.shade700,
+                                  color: Colors.grey.shade800,
                                   fontSize: 14,
                                 ),
                               ),
                             ],
                           ),
                         ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.010,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 6.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Flexible(
-                                child: Text(
-                                  restaurantType,
-                                  style: TextStyle(
-                                    color: Colors.grey.shade700,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
+                              Visibility(
+                                visible: state.restaurantDetailsEntity?.dineIn == true,
+                                maintainSize: false,
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.18,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.restaurant,
+                                        color: Colors.grey.shade800,
+                                        size: 18,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          "Dine-in",
+                                          style: TextStyle(
+                                            color: Colors.grey.shade800,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: state.restaurantDetailsEntity?.takeout == true,
+                                maintainSize: false,
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.23,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: MediaQuery.of(context).size.width * 0.05,
+                                        child: VerticalDivider(
+                                          color: Colors.grey.shade800,
+                                          thickness: 2,
+                                          width: 20,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.takeout_dining_outlined,
+                                        color: Colors.grey.shade800,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          "Takeout",
+                                          style: TextStyle(
+                                            color: Colors.grey.shade800,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: state.restaurantDetailsEntity?.delivery == true,
+                                maintainSize: false,
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.35,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: MediaQuery.of(context).size.width * 0.05,
+                                        child: VerticalDivider(
+                                          color: Colors.grey.shade800,
+                                          thickness: 2,
+                                          width: 20,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.delivery_dining_outlined,
+                                        color: Colors.grey.shade800,
+                                        size: 25,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          "Delivery",
+                                          style: TextStyle(
+                                            color: Colors.grey.shade800,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -198,14 +299,14 @@ class RestaurantDetailsPage extends StatelessWidget {
                               SizedBox(width: MediaQuery.of(context).size.width * 0.01),
                               Visibility(
                                 visible: state.restaurantDetailsEntity?.openingHours?.weekdayText != null &&
-                                    state.restaurantDetailsEntity!.openingHours!.openNow!,
+                                    state.restaurantDetailsEntity!.openingHours!.weekdayText!.isNotEmpty,
                                 maintainSize: false,
                                 child: TextButton(
                                   style: ButtonStyle(
                                     padding: MaterialStatePropertyAll(EdgeInsets.zero),
                                     textStyle: MaterialStatePropertyAll(
                                       TextStyle(
-                                        color: Colors.grey.shade700,
+                                        color: Colors.grey.shade800,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -217,7 +318,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   child: Text(
                                     "-  Hours",
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.grey.shade800,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -265,7 +366,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height * 0.01,
                                   ),
-                                  Text("Call", style: TextStyle(color: Colors.black, fontSize: 14))
+                                  Text("Call", style: TextStyle(color: Colors.grey.shade800, fontSize: 14))
                                 ],
                               ),
                               SizedBox(width: MediaQuery.of(context).size.width * 0.12),
@@ -311,7 +412,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height * 0.01,
                                   ),
-                                  Text("Direction", style: TextStyle(color: Colors.black, fontSize: 14))
+                                  Text("Direction", style: TextStyle(color: Colors.grey.shade800, fontSize: 14))
                                 ],
                               ),
                               SizedBox(width: MediaQuery.of(context).size.width * 0.12),
@@ -354,7 +455,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height * 0.01,
                                   ),
-                                  Text("Website", style: TextStyle(color: Colors.black, fontSize: 14))
+                                  Text("Website", style: TextStyle(color: Colors.grey.shade800, fontSize: 14))
                                 ],
                               ),
                               // SizedBox(
@@ -497,13 +598,13 @@ class RestaurantDetailsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
+                    padding: const EdgeInsets.only(bottom: 15),
                     child: Text(
                       'Hours',
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium
-                          ?.copyWith(color: Colors.grey.shade700, fontSize: 24),
+                          ?.copyWith(color: Colors.grey.shade800, fontSize: 24),
                     ),
                   ),
                   for (int index = 0; index < restaurantDetailsEntity!.openingHours!.weekdayText!.length; index++)
@@ -513,7 +614,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                       children: [
                         Text(
                           restaurantDetailsEntity.openingHours!.weekdayText![index],
-                          style: TextStyle(color: Colors.grey.shade700, fontSize: 16, fontWeight: FontWeight.w600),
+                          style: TextStyle(color: Colors.grey.shade800, fontSize: 16, fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -526,13 +627,14 @@ class RestaurantDetailsPage extends StatelessWidget {
             TextButton(
               child: Text(
                 'OK',
-                style: TextStyle(color: Colors.grey.shade700, fontSize: 14, fontWeight: FontWeight.w600),
+                style: TextStyle(color: Colors.grey.shade800, fontSize: 16, fontWeight: FontWeight.bold),
               ),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
           ],
+          actionsPadding: EdgeInsets.symmetric(vertical: 5),
         );
       },
     );
