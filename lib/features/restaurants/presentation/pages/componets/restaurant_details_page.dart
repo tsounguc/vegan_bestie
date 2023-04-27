@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details_entity.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,17 +12,17 @@ import '../../../../../core/custom_back_button.dart';
 import '../../../../../core/custom_image_widget.dart';
 import '../../../../../core/error.dart';
 import '../../../../../core/loading.dart';
+import '../../../../../core/webviewScreen/web_view_screen.dart';
 import '../../restaurant_cubit/restaurant_details_cubit.dart';
 import 'package:intl/intl.dart';
 
+import 'is_open_now.dart';
+
 class RestaurantDetailsPage extends StatelessWidget {
-  // final RestaurantEntity? restaurant;
-  final String? dietRestrictions;
+  String restaurantType = "";
 
   RestaurantDetailsPage({
     Key? key,
-    this.dietRestrictions,
-    // required this.restaurant,
   }) : super(key: key);
 
   final dateFormat = DateFormat('h:mm a');
@@ -50,18 +51,11 @@ class RestaurantDetailsPage extends StatelessWidget {
           );
         }
         if (state is RestaurantDetailsFoundState) {
-          String displayAddress = "";
-          if (state.restaurantDetailsEntity?.location?.displayAddress != null &&
-              state.restaurantDetailsEntity!.location!.displayAddress!.isNotEmpty) {
-            for (int index = 0; index < state.restaurantDetailsEntity!.location!.displayAddress!.length; index++) {
-              if (index == state.restaurantDetailsEntity!.location!.displayAddress!.length - 1) {
-                displayAddress += state.restaurantDetailsEntity!.location!.displayAddress![index];
-              } else {
-                displayAddress += state.restaurantDetailsEntity!.location!.displayAddress![index] + ", ";
-              }
-            }
-          }
-
+          // for (int index = 0; index < state.restaurantDetailsEntity!.types!.length; index++) {
+          //   if (index < state.restaurantDetailsEntity!.types!.length - 1) {
+          //     restaurantType = restaurantType + state.restaurantDetailsEntity!.types![index]. ?? "";
+          //   }
+          // }
           return Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
             body: Stack(
@@ -122,7 +116,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width * 0.75,
                                       child: Text(
-                                        "$displayAddress",
+                                        state.restaurantDetailsEntity?.formattedAddress ?? "",
                                         style: TextStyle(
                                             color: Colors.grey.shade700,
                                             fontSize: 14,
@@ -147,7 +141,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               RatingBarIndicator(
-                                rating: state.restaurantDetailsEntity!.rating!,
+                                rating: state.restaurantDetailsEntity?.rating ?? 0,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Icon(
                                     Icons.star,
@@ -161,10 +155,28 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 width: 7,
                               ),
                               Text(
-                                "${state.restaurantDetailsEntity!.reviewCount} reviews",
+                                "${state.restaurantDetailsEntity?.userRatingsTotal ?? 0} reviews",
                                 style: TextStyle(
                                   color: Colors.grey.shade700,
                                   fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  restaurantType,
+                                  style: TextStyle(
+                                    color: Colors.grey.shade700,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ],
@@ -176,194 +188,173 @@ class RestaurantDetailsPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Visibility(
-                                visible: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                    state.restaurantDetailsEntity?.hours?[0].isOpenNow != null,
-                                maintainSize: false,
-                                child: Icon(
-                                  Icons.access_time,
-                                  size: 20,
-                                  color: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                          state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
-                                          state.restaurantDetailsEntity!.hours![0].isOpenNow!
-                                      ? Colors.green
-                                      : Colors.red,
-                                ),
+                              IsOpenNowWidget(
+                                visible: state.restaurantDetailsEntity?.openingHours?.openNow != null,
+                                isOpenNow: state.restaurantDetailsEntity?.openingHours?.openNow != null &&
+                                    state.restaurantDetailsEntity!.openingHours!.openNow!,
+                                iconSize: 20,
+                                fontSize: 14,
                               ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.005,
-                              ),
+                              SizedBox(width: MediaQuery.of(context).size.width * 0.01),
                               Visibility(
-                                visible: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                    state.restaurantDetailsEntity?.hours?[0].isOpenNow != null,
+                                visible: state.restaurantDetailsEntity?.openingHours?.weekdayText != null &&
+                                    state.restaurantDetailsEntity!.openingHours!.openNow!,
                                 maintainSize: false,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                              state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
-                                              state.restaurantDetailsEntity!.hours![0].isOpenNow!
-                                          ? "Open Now"
-                                          : "Closed",
-                                      style: TextStyle(
-                                        color: state.restaurantDetailsEntity!.hours!.isNotEmpty &&
-                                                state.restaurantDetailsEntity?.hours?[0].isOpenNow != null &&
-                                                state.restaurantDetailsEntity!.hours![0].isOpenNow!
-                                            ? Colors.green
-                                            : Colors.red,
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    padding: MaterialStatePropertyAll(EdgeInsets.zero),
+                                    textStyle: MaterialStatePropertyAll(
+                                      TextStyle(
+                                        color: Colors.grey.shade700,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                    TextButton(
-                                      style: ButtonStyle(
-                                        padding: MaterialStatePropertyAll(EdgeInsets.zero),
-                                        textStyle: MaterialStatePropertyAll(
-                                          TextStyle(
-                                            color: Colors.grey.shade700,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        _displayHoursDialog(context, state.restaurantDetailsEntity);
-                                      },
-                                      child: Text(
-                                        "-  Hours",
-                                        style: TextStyle(
-                                          color: Colors.grey.shade700,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
+                                  ),
+                                  onPressed: () {
+                                    _displayHoursDialog(context, state.restaurantDetailsEntity);
+                                  },
+                                  child: Text(
+                                    "-  Hours",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.007,
+                          height: MediaQuery.of(context).size.height * 0.005,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 6.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  dietRestrictions!,
-                                  style: TextStyle(
-                                    color: Colors.grey.shade700,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                         Padding(
                           padding: const EdgeInsets.only(left: 5.0, right: 5.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Column(
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey.shade700),
-                                        borderRadius: BorderRadius.circular(25)),
-                                    child: IconButton(
-                                      iconSize: 50,
-                                      onPressed: () {
-                                        launchUrl(Uri(
-                                          scheme: "tel",
-                                          path: state.restaurantDetailsEntity!.phone!,
-                                        ));
-                                      },
-                                      icon: Icon(
-                                        Icons.call,
-                                        color: Colors.grey.shade700,
-                                        size: 30,
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(Colors.white),
+                                      shape: MaterialStatePropertyAll(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
                                       ),
+                                      padding: MaterialStatePropertyAll(
+                                        EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                                      ),
+                                      elevation: MaterialStatePropertyAll(4),
+                                    ),
+                                    onPressed: () {
+                                      launchUrl(Uri(
+                                        scheme: "tel",
+                                        path: state.restaurantDetailsEntity!.formattedPhoneNumber!,
+                                      ));
+                                    },
+                                    child: Icon(
+                                      Icons.call,
+                                      color: Colors.black,
+                                      // size: 30,
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.007,
+                                    height: MediaQuery.of(context).size.height * 0.01,
                                   ),
-                                  Text("Call", style: TextStyle(color: Colors.grey.shade700, fontSize: 14))
+                                  Text("Call", style: TextStyle(color: Colors.black, fontSize: 14))
                                 ],
                               ),
                               SizedBox(width: MediaQuery.of(context).size.width * 0.12),
                               Column(
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey.shade700),
-                                        borderRadius: BorderRadius.circular(25)),
-                                    child: IconButton(
-                                      iconSize: 50,
-                                      onPressed: () {
-                                        String appleUrl =
-                                            'https://maps.apple.com/?q=${state.restaurantDetailsEntity?.name} $displayAddress';
-                                        String googleUrl =
-                                            "https://www.google.com/maps/search/?api=1&query=${state.restaurantDetailsEntity?.name} $displayAddress";
-                                        if (Platform.isIOS) {
-                                          launchUrl(
-                                            Uri(
-                                              scheme: 'maps',
-                                              path: appleUrl,
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(Colors.white),
+                                      shape: MaterialStatePropertyAll(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                      ),
+                                      padding: MaterialStatePropertyAll(
+                                        EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                                      ),
+                                      elevation: MaterialStatePropertyAll(4),
+                                    ),
+                                    onPressed: () {
+                                      String appleUrl =
+                                          'https://maps.apple.com/?q=${state.restaurantDetailsEntity?.name ?? ""} ${state.restaurantDetailsEntity?.formattedAddress ?? ""}';
+                                      String googleUrl =
+                                          "https://www.google.com/maps/search/?api=1&query=${state.restaurantDetailsEntity?.name ?? ""} ${state.restaurantDetailsEntity?.formattedAddress ?? ""}";
+                                      if (Platform.isIOS) {
+                                        launchUrl(
+                                          Uri(
+                                            scheme: 'maps',
+                                            path: appleUrl,
+                                          ),
+                                        );
+                                      } else {
+                                        launchUrl(
+                                          Uri.parse(googleUrl),
+                                          mode: LaunchMode.externalNonBrowserApplication,
+                                        );
+                                      }
+                                    },
+                                    child: Icon(
+                                      Icons.directions,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height * 0.01,
+                                  ),
+                                  Text("Direction", style: TextStyle(color: Colors.black, fontSize: 14))
+                                ],
+                              ),
+                              SizedBox(width: MediaQuery.of(context).size.width * 0.12),
+                              Column(
+                                children: [
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(Colors.white),
+                                      shape: MaterialStatePropertyAll(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                      ),
+                                      padding: MaterialStatePropertyAll(
+                                        EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                                      ),
+                                      elevation: MaterialStatePropertyAll(4),
+                                    ),
+                                    onPressed: () {
+                                      if (state.restaurantDetailsEntity?.website != null) {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (_) => WebViewScreen(
+                                              url: state.restaurantDetailsEntity?.website,
                                             ),
-                                          );
-                                        } else {
-                                          launchUrl(
-                                            Uri.parse(googleUrl),
-                                            mode: LaunchMode.externalNonBrowserApplication,
-                                          );
-                                        }
-                                      },
-                                      icon: Icon(
-                                        Icons.directions,
-                                        color: Colors.grey.shade700,
-                                        size: 30,
-                                      ),
+                                          ),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text('No Website Found')),
+                                        );
+                                      }
+                                    },
+                                    child: Icon(
+                                      Icons.launch,
+                                      color: Colors.black,
+                                      // size: 30,
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.007,
+                                    height: MediaQuery.of(context).size.height * 0.01,
                                   ),
-                                  Text("Direction", style: TextStyle(color: Colors.grey.shade700, fontSize: 14))
-                                ],
-                              ),
-                              SizedBox(width: MediaQuery.of(context).size.width * 0.12),
-                              Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey.shade700),
-                                        borderRadius: BorderRadius.circular(25)),
-                                    child: IconButton(
-                                      iconSize: 50,
-                                      onPressed: () {
-                                        launchUrl(Uri.parse(
-                                          state.restaurantDetailsEntity!.url!,
-                                        ));
-                                      },
-                                      icon: Icon(
-                                        Icons.launch,
-                                        color: Colors.grey.shade700,
-                                        size: 30,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.007,
-                                  ),
-                                  Text("Website", style: TextStyle(color: Colors.grey.shade700, fontSize: 14))
+                                  Text("Website", style: TextStyle(color: Colors.black, fontSize: 14))
                                 ],
                               ),
                               // SizedBox(
@@ -444,7 +435,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                                           progressIndicatorBuilder: (context, text, downloadProgress) =>
                                               LoadingPage(),
                                           fit: BoxFit.cover,
-                                          imageUrl: state.restaurantDetailsEntity?.photos?[index] ?? "",
+                                          imageUrl: state.restaurantDetailsEntity?.photos?[index].photoReference ==
+                                                  null
+                                              ? state.restaurantDetailsEntity!.icon!
+                                              : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${state.restaurantDetailsEntity!.photos![index].photoReference}&key=${dotenv.env['GOOGLE_PLACES_API_KEY']}",
                                           errorWidget: (context, error, value) => Container(),
                                         ),
                                       ),
@@ -467,8 +461,6 @@ class RestaurantDetailsPage extends StatelessWidget {
                   left: MediaQuery.of(context).size.width * 0.0,
                   child: CustomImageWidget(
                     imageUrl: state.restaurantDetailsEntity?.imageUrl,
-                    // height: MediaQuery.of(context).size.height * 0.33,
-                    // width: MediaQuery.of(context).size.width * 0.80,
                   ),
                 ),
                 Positioned(
@@ -487,34 +479,6 @@ class RestaurantDetailsPage extends StatelessWidget {
 
   // Displays hours
   void _displayHoursDialog(BuildContext context, RestaurantDetailsEntity? restaurantDetailsEntity) async {
-    var openDays = {};
-    List<String> hoursOfOperation = [];
-    if (restaurantDetailsEntity?.hours != null &&
-        restaurantDetailsEntity!.hours!.isNotEmpty &&
-        restaurantDetailsEntity.hours?[0].open != null &&
-        restaurantDetailsEntity.hours![0].open!.isNotEmpty) {
-      for (int index = 0; index < restaurantDetailsEntity.hours![0].open!.length; index++) {
-        openDays[index] = weekDays[restaurantDetailsEntity.hours![0].open![index].day];
-        TimeOfDay startTime = TimeOfDay(
-            hour: int.parse(restaurantDetailsEntity.hours![0].open![index].start!.substring(0, 2)),
-            minute: int.parse(restaurantDetailsEntity.hours![0].open![index].start!.substring(2)));
-        TimeOfDay endTime = TimeOfDay(
-            hour: int.parse(restaurantDetailsEntity.hours![0].open![index].end!.substring(0, 2)),
-            minute: int.parse(restaurantDetailsEntity.hours![0].open![index].end!.substring(2)));
-        String dayAndOpenHoursText = "${openDays[index]} • $openDay ${dateFormat.format(
-          DateTime(0, 0, 0, startTime.hour, startTime.minute),
-        )} - ${dateFormat.format(
-          DateTime(0, 0, 0, endTime.hour, endTime.minute),
-        )}";
-        // String dayAndOpenHoursText = "${openDays[index]} ${dateFormat.format(startTime)} - ${dateFormat.format(endTime}}";
-
-        print(dayAndOpenHoursText);
-        hoursOfOperation.add(dayAndOpenHoursText);
-      }
-
-      debugPrint("$openDays");
-    }
-
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -542,13 +506,13 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ?.copyWith(color: Colors.grey.shade700, fontSize: 24),
                     ),
                   ),
-                  for (int index = 0; index < hoursOfOperation.length; index++)
+                  for (int index = 0; index < restaurantDetailsEntity!.openingHours!.weekdayText!.length; index++)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          hoursOfOperation[index],
+                          restaurantDetailsEntity.openingHours!.weekdayText![index],
                           style: TextStyle(color: Colors.grey.shade700, fontSize: 16, fontWeight: FontWeight.w600),
                         ),
                       ],

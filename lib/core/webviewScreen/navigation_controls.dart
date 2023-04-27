@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NavigationControls extends StatelessWidget {
-  const NavigationControls({required this.controller});
+  NavigationControls({required this.controller, this.mainAxisAlignment = MainAxisAlignment.end});
 
+  MainAxisAlignment? mainAxisAlignment;
   final Completer<WebViewController> controller;
 
   @override
@@ -16,6 +17,7 @@ class NavigationControls extends StatelessWidget {
         final WebViewController? controller = snapshot.data;
         if (snapshot.connectionState != ConnectionState.done || controller == null) {
           return Row(
+            mainAxisAlignment: mainAxisAlignment!,
             children: const <Widget>[
               Icon(Icons.arrow_back_ios, color: Colors.white),
               Icon(Icons.arrow_forward_ios, color: Colors.white),
@@ -25,6 +27,7 @@ class NavigationControls extends StatelessWidget {
         }
 
         return Row(
+          mainAxisAlignment: mainAxisAlignment!,
           children: <Widget>[
             IconButton(
               icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
@@ -52,12 +55,12 @@ class NavigationControls extends StatelessWidget {
                 }
               },
             ),
-            // IconButton(
-            //   icon: const Icon(Icons.replay, color: Colors.white),
-            //   onPressed: () {
-            //     controller.reload();
-            //   },
-            // ),
+            IconButton(
+              icon: const Icon(Icons.replay, color: Colors.black),
+              onPressed: () {
+                controller.reload();
+              },
+            ),
           ],
         );
       },

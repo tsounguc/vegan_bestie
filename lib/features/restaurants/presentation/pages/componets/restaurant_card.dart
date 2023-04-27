@@ -9,192 +9,167 @@ import 'package:sheveegan/features/restaurants/presentation/pages/componets/rest
 import '../../../../../core/webviewScreen/web_view_screen.dart';
 import '../../../data/models/yelp_restaurants_model.dart';
 import '../../restaurant_cubit/restaurant_details_cubit.dart';
+import 'is_open_now.dart';
 
 class RestaurantCard extends StatelessWidget {
-  const RestaurantCard({Key? key, required this.dietRestrictions, required this.business}) : super(key: key);
+  const RestaurantCard({Key? key, required this.dietRestrictions, required this.restaurant}) : super(key: key);
 
   final String? dietRestrictions;
-  final RestaurantEntity? business;
+  final RestaurantEntity? restaurant;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        debugPrint(business?.id);
-        BlocProvider.of<RestaurantDetailsCubit>(context).searchRestaurantDetails(business?.id);
+        debugPrint(restaurant?.id);
+        BlocProvider.of<RestaurantDetailsCubit>(context).searchRestaurantDetails(restaurant?.id);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => RestaurantDetailsPage(dietRestrictions: dietRestrictions),
+            builder: (_) => RestaurantDetailsPage(),
             // builder: (_) => WebViewScreen(
             //   url: business?.url,
             // ),
           ),
         );
 
-        debugPrint("${business?.name}:  ${business?.url}");
+        // debugPrint("${business?.name}:  ${business?.url}");
       },
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 8,
-          vertical: 4,
-        ),
-        child: Card(
-          color: Colors.white,
-          clipBehavior: Clip.antiAlias,
-          elevation: 5,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
-          child: Row(
-            children: [
-              business!.imageUrl!.isNotEmpty && business!.imageUrl != null
-                  ? Padding(
-                      padding: EdgeInsets.only(left: 4.0.w),
-                      child: Ink(
-                        height: 100.r,
-                        width: 100.r,
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade50,
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: CachedNetworkImageProvider(business!.imageUrl!),
-                          ),
-                        ),
-                      ),
-                    )
-                  : Padding(
-                      padding: EdgeInsets.only(
-                        left: 8.0.w,
-                      ),
-                      child: Container(
-                        height: 100.r,
-                        width: 100.r,
-                        color: Colors.blueGrey,
-                        child: Icon(
-                          Icons.restaurant,
-                          size: 30.r,
-                          color: Colors.grey,
-                        ),
-                      ),
+      child: Card(
+        color: Colors.white,
+        clipBehavior: Clip.antiAlias,
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.025,
+                  top: MediaQuery.of(context).size.width * 0.030,
+                  bottom: MediaQuery.of(context).size.width * 0.030),
+              child: Center(
+                child: Ink(
+                  height: MediaQuery.of(context).size.width * 0.30,
+                  width: MediaQuery.of(context).size.width * 0.30,
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade50,
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(restaurant!.imageUrl!),
                     ),
-              Flexible(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0.r),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: SizedBox(
-                              width: 140.w,
-                              child: Text(
-                                business!.name!,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Text(
-                            "${(business!.distance! / 1609.344).round()} mi",
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 10.sp,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 7.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.location_on,
-                                  color: Colors.redAccent,
-                                  size: 12.r,
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                Flexible(
-                                  child: Text(
-                                    "${business!.location!.city}",
-                                    style: TextStyle(color: Colors.black, fontSize: 10.sp),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                // Text(
-                                //   !business!.isClosed! ? "Open" : "Closed",
-                                //   style: TextStyle(
-                                //       color: business!.isClosed! ? Colors.red : Colors.green,
-                                //       fontSize: 10.sp,
-                                //       fontWeight: FontWeight.bold),
-                                // ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            business!.price ?? "",
-                            style: TextStyle(color: Colors.black, fontSize: 10.sp),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5.r,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          RatingBarIndicator(
-                            rating: business!.rating!,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              );
-                            },
-                            unratedColor: Colors.grey.shade400,
-                            itemSize: 15,
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          Text(
-                            "${business!.reviewCount} reviews",
-                            style: TextStyle(color: Colors.black, fontSize: 10.sp),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              dietRestrictions!,
-                              style: TextStyle(color: Colors.black, fontSize: 10.sp),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.all(16.0.r),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: SizedBox(
+                            width: 140.w,
+                            child: Text(
+                              restaurant!.name!,
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "${(restaurant!.distance! / 1609.344).round()} mi",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.007,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.redAccent,
+                                size: 12.r,
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Flexible(
+                                child: Text(
+                                  "${restaurant!.vicinity!}",
+                                  style: TextStyle(color: Colors.black, fontSize: 10.sp),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          restaurant!.price ?? "",
+                          style: TextStyle(color: Colors.black, fontSize: 10.sp),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.007,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        RatingBarIndicator(
+                          rating: restaurant!.rating!,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            );
+                          },
+                          unratedColor: Colors.grey.shade400,
+                          itemSize: 15,
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.025,
+                        ),
+                        Text(
+                          "${restaurant!.reviewCount} reviews",
+                          style: TextStyle(color: Colors.black, fontSize: 12),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.007,
+                    ),
+                    IsOpenNowWidget(
+                      visible: restaurant?.isOpenNow != null,
+                      isOpenNow: restaurant?.isOpenNow != null && restaurant!.isOpenNow!,
+                      iconSize: 16,
+                      fontSize: 12,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.007,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

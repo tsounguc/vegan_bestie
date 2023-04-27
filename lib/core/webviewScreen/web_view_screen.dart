@@ -20,8 +20,7 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+  final Completer<WebViewController> _controller = Completer<WebViewController>();
   late WebViewController _webViewController;
   var loadingPercentage = 0;
 
@@ -51,10 +50,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 },
               ),
         centerTitle: true,
-        title: CustomAppbarTitleWidget(
-            imageOneName: 'assets/bread.png',
-            imageTwoName: 'assets/tomato.png'),
-        actions: [NavigationControls(controller: _controller)],
+        title: CustomAppbarTitleWidget(imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
+        // actions: [NavigationControls(controller: _controller)],
       ),
       body: Stack(
         children: [
@@ -163,6 +160,10 @@ class _WebViewScreenState extends State<WebViewScreen> {
               ),
             ),
         ],
+      ),
+      bottomNavigationBar: NavigationControls(
+        controller: _controller,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
       ),
     );
   }

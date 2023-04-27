@@ -16,13 +16,12 @@ class GoogleMapPluginImpl implements MapServiceContract {
     for (int index = 0; index < restaurants.length; index++) {
       // debugPrint(
       //     "${restaurants[index].location?.address1}, ${restaurants[index].location?.city}, ${restaurants[index].location?.zipCode}");
-      List<Location> locations = await locationFromAddress(
-          "${restaurants[index].location?.address1}, ${restaurants[index].location?.city}, ${restaurants[index].location?.zipCode}");
+      List<Location> locations = await locationFromAddress("${restaurants[index].vicinity}");
       Location restaurantCoordinates = locations.first;
       restaurantsMarkers.add(
         Marker(
           markerId: MarkerId(restaurants[index].name!),
-          infoWindow: InfoWindow(title: restaurants[index].name, snippet: restaurants[index].location!.address1),
+          infoWindow: InfoWindow(title: restaurants[index].name, snippet: restaurants[index].vicinity),
           icon: BitmapDescriptor.defaultMarker,
           position: LatLng(restaurantCoordinates.latitude, restaurantCoordinates.longitude),
         ),

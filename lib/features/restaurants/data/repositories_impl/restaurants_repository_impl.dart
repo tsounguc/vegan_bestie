@@ -13,6 +13,7 @@ import '../models/yelp_restaurants_model.dart';
 class RestaurantsRepositoryYelpImpl implements RestaurantsRepositoryContract {
   RestaurantsFromRemoteDataSourceContract restaurantsFromRemoteDataSourceContract =
       serviceLocator<RestaurantsFromRemoteDataSourceContract>();
+
   @override
   Future<Either<FetchRestaurantsNearMeFailure, List<RestaurantEntity>>> getRestaurantsNearMe(
       Position position) async {
@@ -36,6 +37,7 @@ class RestaurantsRepositoryYelpImpl implements RestaurantsRepositoryContract {
 class RestaurantsRepositoryGoogleImpl implements RestaurantsRepositoryContract {
   RestaurantsFromRemoteDataSourceContract restaurantsRemoteDataSourceContract =
       serviceLocator<RestaurantsFromRemoteDataSourceContract>();
+
   @override
   Future<Either<FetchRestaurantsNearMeFailure, List<RestaurantEntity>>> getRestaurantsNearMe(
       Position position) async {
@@ -46,7 +48,7 @@ class RestaurantsRepositoryGoogleImpl implements RestaurantsRepositoryContract {
       RestaurantMapper mapper = RestaurantMapper();
       List<RestaurantEntity> restaurantEntitiesList = [];
       for (int index = 0; index < restaurantModelsList.length; index++) {
-        RestaurantEntity restaurantEntity = mapper.mapYelpModelToEntity(restaurantModelsList[index]);
+        RestaurantEntity restaurantEntity = mapper.mapGoogleModelToEntity(restaurantModelsList[index], position);
         restaurantEntitiesList.add(restaurantEntity);
       }
       return Right(restaurantEntitiesList);
