@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sheveegan/core/loading.dart';
+import 'package:sheveegan/core/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
 
 import 'core/constants/clipping_class.dart';
@@ -111,8 +112,14 @@ class _HomePageState extends State<HomePage> {
                   centerTitle: true,
                   title: _currentIndex == 0
                       ? null
-                      : CustomAppbarTitleWidget(
-                          imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
+                      : SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: VeganBestieLogoWidget(size: 25, fontSize: 35),
+                        ),
+                  // title: _currentIndex == 0
+                  //     ? null
+                  //     : CustomAppbarTitleWidget(
+                  //         imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
                   actions: [
                     Visibility(
                         visible: false,

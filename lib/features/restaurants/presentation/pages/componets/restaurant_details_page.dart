@@ -16,6 +16,7 @@ import '../../../../../core/custom_back_button.dart';
 import '../../../../../core/custom_image_widget.dart';
 import '../../../../../core/error.dart';
 import '../../../../../core/loading.dart';
+import '../../../../../core/vegan_bestie_logo_widget.dart';
 import '../../../../../core/webviewScreen/web_view_screen.dart';
 import '../../restaurant_cubit/restaurant_details_cubit.dart';
 import 'package:intl/intl.dart';
@@ -56,18 +57,12 @@ class RestaurantDetailsPage extends StatelessWidget {
           );
         }
         if (state is RestaurantDetailsFoundState) {
-          if (state.restaurantDetailsEntity?.types != null &&
-              state.restaurantDetailsEntity!.types!.isNotEmpty) {
-            for (int index = 0;
-                index < state.restaurantDetailsEntity!.types!.length;
-                index++) {
+          if (state.restaurantDetailsEntity?.types != null && state.restaurantDetailsEntity!.types!.isNotEmpty) {
+            for (int index = 0; index < state.restaurantDetailsEntity!.types!.length; index++) {
               if (index < state.restaurantDetailsEntity!.types!.length - 1) {
-                restaurantType = restaurantType +
-                    state.restaurantDetailsEntity!.types![index] +
-                    " | ";
+                restaurantType = restaurantType + state.restaurantDetailsEntity!.types![index] + " | ";
               } else {
-                restaurantType = restaurantType +
-                    state.restaurantDetailsEntity!.types![index];
+                restaurantType = restaurantType + state.restaurantDetailsEntity!.types![index];
               }
             }
           }
@@ -83,9 +78,13 @@ class RestaurantDetailsPage extends StatelessWidget {
                       color: Colors.black,
                     ),
               centerTitle: true,
-              title: CustomAppbarTitleWidget(
-                  imageOneName: 'assets/bread.png',
-                  imageTwoName: 'assets/tomato.png'),
+              title: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: VeganBestieLogoWidget(size: 25, fontSize: 35),
+              ),
+              // title: CustomAppbarTitleWidget(
+              //     imageOneName: 'assets/bread.png',
+              //     imageTwoName: 'assets/tomato.png'),
               // actions: [NavigationControls(controller: _controller)],
             ),
             backgroundColor: Theme.of(context).colorScheme.background,
@@ -110,10 +109,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                               // height: 35,
                               child: Text(
                                 "${state.restaurantDetailsEntity?.name}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 24,
@@ -137,15 +133,12 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 size: 14,
                               ),
                               SizedBox(
-                                width:
-                                    MediaQuery.of(context).size.width * 0.005,
+                                width: MediaQuery.of(context).size.width * 0.005,
                               ),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.75,
                                 child: Text(
-                                  state.restaurantDetailsEntity
-                                          ?.formattedAddress ??
-                                      "",
+                                  state.restaurantDetailsEntity?.formattedAddress ?? "",
                                   style: TextStyle(
                                       color: Colors.grey.shade800,
                                       fontSize: 13,
@@ -166,9 +159,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 3.0),
                           child: RatingAndReviewsCountWidget(
                             rating: state.restaurantDetailsEntity?.rating ?? 0,
-                            reviewCount: state.restaurantDetailsEntity
-                                    ?.userRatingsTotal ??
-                                0,
+                            reviewCount: state.restaurantDetailsEntity?.userRatingsTotal ?? 0,
                           ),
                         ),
                         SizedBox(
@@ -189,17 +180,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               IsOpenNowWidget(
-                                visible: state.restaurantDetailsEntity
-                                        ?.openingHours?.openNow !=
-                                    null,
-                                weekdayText: state.restaurantDetailsEntity
-                                        ?.openingHours?.weekdayText ??
-                                    [],
-                                isOpenNow: state.restaurantDetailsEntity
-                                            ?.openingHours?.openNow !=
-                                        null &&
-                                    state.restaurantDetailsEntity!.openingHours!
-                                        .openNow!,
+                                visible: state.restaurantDetailsEntity?.openingHours?.openNow != null,
+                                weekdayText: state.restaurantDetailsEntity?.openingHours?.weekdayText ?? [],
+                                isOpenNow: state.restaurantDetailsEntity?.openingHours?.openNow != null &&
+                                    state.restaurantDetailsEntity!.openingHours!.openNow!,
                                 iconSize: 20,
                                 fontSize: 14,
                               ),
@@ -218,25 +202,21 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 children: [
                                   ElevatedButton(
                                     style: ButtonStyle(
-                                      backgroundColor: MaterialStatePropertyAll(
-                                          Colors.white),
+                                      backgroundColor: MaterialStatePropertyAll(Colors.white),
                                       shape: MaterialStatePropertyAll(
                                         RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
+                                          borderRadius: BorderRadius.circular(20),
                                         ),
                                       ),
                                       padding: MaterialStatePropertyAll(
-                                        EdgeInsets.symmetric(
-                                            vertical: 20, horizontal: 20),
+                                        EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                                       ),
                                       elevation: MaterialStatePropertyAll(4),
                                     ),
                                     onPressed: () {
                                       launchUrl(Uri(
                                         scheme: "tel",
-                                        path: state.restaurantDetailsEntity!
-                                            .formattedPhoneNumber!,
+                                        path: state.restaurantDetailsEntity!.formattedPhoneNumber!,
                                       ));
                                     },
                                     child: Icon(
@@ -246,33 +226,24 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.01,
+                                    height: MediaQuery.of(context).size.height * 0.01,
                                   ),
-                                  Text("Call",
-                                      style: TextStyle(
-                                          color: Colors.grey.shade800,
-                                          fontSize: 14))
+                                  Text("Call", style: TextStyle(color: Colors.grey.shade800, fontSize: 14))
                                 ],
                               ),
-                              SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.12),
+                              SizedBox(width: MediaQuery.of(context).size.width * 0.12),
                               Column(
                                 children: [
                                   ElevatedButton(
                                     style: ButtonStyle(
-                                      backgroundColor: MaterialStatePropertyAll(
-                                          Colors.white),
+                                      backgroundColor: MaterialStatePropertyAll(Colors.white),
                                       shape: MaterialStatePropertyAll(
                                         RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
+                                          borderRadius: BorderRadius.circular(20),
                                         ),
                                       ),
                                       padding: MaterialStatePropertyAll(
-                                        EdgeInsets.symmetric(
-                                            vertical: 20, horizontal: 20),
+                                        EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                                       ),
                                       elevation: MaterialStatePropertyAll(4),
                                     ),
@@ -284,14 +255,12 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       if (Platform.isIOS) {
                                         launchUrl(
                                           Uri.parse(appleUrl),
-                                          mode: LaunchMode
-                                              .externalNonBrowserApplication,
+                                          mode: LaunchMode.externalNonBrowserApplication,
                                         );
                                       } else {
                                         launchUrl(
                                           Uri.parse(googleUrl),
-                                          mode: LaunchMode
-                                              .externalNonBrowserApplication,
+                                          mode: LaunchMode.externalNonBrowserApplication,
                                         );
                                       }
                                     },
@@ -301,54 +270,39 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.01,
+                                    height: MediaQuery.of(context).size.height * 0.01,
                                   ),
-                                  Text("Direction",
-                                      style: TextStyle(
-                                          color: Colors.grey.shade800,
-                                          fontSize: 14))
+                                  Text("Direction", style: TextStyle(color: Colors.grey.shade800, fontSize: 14))
                                 ],
                               ),
-                              SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.12),
+                              SizedBox(width: MediaQuery.of(context).size.width * 0.12),
                               Column(
                                 children: [
                                   ElevatedButton(
                                     style: ButtonStyle(
-                                      backgroundColor: MaterialStatePropertyAll(
-                                          Colors.white),
+                                      backgroundColor: MaterialStatePropertyAll(Colors.white),
                                       shape: MaterialStatePropertyAll(
                                         RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
+                                          borderRadius: BorderRadius.circular(20),
                                         ),
                                       ),
                                       padding: MaterialStatePropertyAll(
-                                        EdgeInsets.symmetric(
-                                            vertical: 20, horizontal: 20),
+                                        EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                                       ),
                                       elevation: MaterialStatePropertyAll(4),
                                     ),
                                     onPressed: () {
-                                      if (state.restaurantDetailsEntity
-                                              ?.website !=
-                                          null) {
+                                      if (state.restaurantDetailsEntity?.website != null) {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (_) => WebViewScreen(
-                                              url: state.restaurantDetailsEntity
-                                                  ?.website,
+                                              url: state.restaurantDetailsEntity?.website,
                                             ),
                                           ),
                                         );
                                       } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content:
-                                                  Text('No Website Found')),
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text('No Website Found')),
                                         );
                                       }
                                     },
@@ -359,13 +313,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.01,
+                                    height: MediaQuery.of(context).size.height * 0.01,
                                   ),
-                                  Text("Website",
-                                      style: TextStyle(
-                                          color: Colors.grey.shade800,
-                                          fontSize: 14))
+                                  Text("Website", style: TextStyle(color: Colors.grey.shade800, fontSize: 14))
                                 ],
                               ),
                               // SizedBox(
@@ -401,8 +351,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.03),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                       ],
                     ),
                   ),

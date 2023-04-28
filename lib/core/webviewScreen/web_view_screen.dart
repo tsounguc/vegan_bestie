@@ -9,6 +9,7 @@ import '../../core/constants/strings.dart';
 import '../constants/size_config.dart';
 import '../custom_appbar_title_widget.dart';
 import '../custom_back_button.dart';
+import '../vegan_bestie_logo_widget.dart';
 import 'navigation_controls.dart';
 
 class WebViewScreen extends StatefulWidget {
@@ -21,8 +22,7 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+  final Completer<WebViewController> _controller = Completer<WebViewController>();
   late WebViewController _webViewController;
   var loadingPercentage = 0;
 
@@ -46,9 +46,13 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 color: Colors.black,
               ),
         centerTitle: true,
-        title: CustomAppbarTitleWidget(
-            imageOneName: 'assets/bread.png',
-            imageTwoName: 'assets/tomato.png'),
+        title: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.5,
+          child: VeganBestieLogoWidget(size: 25, fontSize: 35),
+        ),
+        // title: CustomAppbarTitleWidget(
+        //     imageOneName: 'assets/bread.png',
+        //     imageTwoName: 'assets/tomato.png'),
         // actions: [NavigationControls(controller: _controller)],
       ),
       body: Stack(
@@ -68,8 +72,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   );
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
-                } else if (navigationRequest.url
-                    .contains("https://play.google.com/")) {
+                } else if (navigationRequest.url.contains("https://play.google.com/")) {
                   if (Platform.isAndroid) {
                     launchUrl(
                       Uri.parse(navigationRequest.url),
@@ -77,15 +80,12 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text(
-                              'Device does not support Google Play Store')),
+                      const SnackBar(content: Text('Device does not support Google Play Store')),
                     );
                   }
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
-                } else if (navigationRequest.url
-                    .contains("https://apps.apple.com/")) {
+                } else if (navigationRequest.url.contains("https://apps.apple.com/")) {
                   if (Platform.isIOS) {
                     launchUrl(
                       Uri.parse(navigationRequest.url),
@@ -93,8 +93,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Device does not support App Store')),
+                      const SnackBar(content: Text('Device does not support App Store')),
                     );
                   }
                   print('blocking navigation to $navigationRequest}');

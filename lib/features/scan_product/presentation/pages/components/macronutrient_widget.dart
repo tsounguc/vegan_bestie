@@ -8,13 +8,12 @@ class MacroNutrientWidget extends StatelessWidget {
   final Color color;
   final double? per100G;
 
-  const MacroNutrientWidget(
-      {Key? key,
-      required this.title,
-      required this.icon,
-      required this.percentage,
-      required this.color,
-      required this.per100G})
+  const MacroNutrientWidget({Key? key,
+    required this.title,
+    required this.icon,
+    required this.percentage,
+    required this.color,
+    required this.per100G})
       : super(key: key);
 
   @override
@@ -40,8 +39,8 @@ class MacroNutrientWidget extends StatelessWidget {
               ],
             ),
             child: icon
-            // child: Icon(icon, color: color),
-            ),
+          // child: Icon(icon, color: color),
+        ),
         SizedBox(width: 20),
         Expanded(
           child: Column(
