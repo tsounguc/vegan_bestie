@@ -5,14 +5,17 @@ import 'constants/strings.dart';
 
 class VeganBestieLogoWidget extends StatelessWidget {
   double? size;
+  double? fontSize;
 
-  VeganBestieLogoWidget({Key? key, this.size = 35}) : super(key: key);
+  VeganBestieLogoWidget({Key? key, this.size = 35, this.fontSize = 52})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +48,7 @@ class VeganBestieLogoWidget extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .displayMedium
-                    ?.copyWith(fontSize: 52),
+                    ?.copyWith(fontSize: fontSize),
               ),
             ],
           ),

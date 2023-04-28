@@ -1,4 +1,8 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:geolocator/geolocator.dart';
+
 import '../../domain/entities/restaurant_entity.dart';
+import '../models/google_restaurant_model.dart';
 import '../models/yelp_restaurants_model.dart';
 
 class RestaurantMapper {
@@ -45,26 +49,55 @@ class RestaurantMapper {
     return RestaurantEntity(
       id: restaurantModel.id,
       name: restaurantModel.name,
-      categories: categoryEntities,
-      url: restaurantModel.url,
+      // categories: categoryEntities,
+      // url: restaurantModel.url,
       imageUrl: restaurantModel.imageUrl,
       distance: restaurantModel.distance,
-      location: LocationEntity(
-          address1: restaurantModel.location?.address1,
-          address2: restaurantModel.location?.address2,
-          address3: restaurantModel.location?.address3,
-          city: restaurantModel.location?.city,
-          zipCode: restaurantModel.location?.zipCode,
-          country: restaurantModel.location?.country,
-          state: restaurantModel.location?.state,
-          displayAddress: restaurantModel.location?.displayAddress),
+      // location: LocationEntity(
+      //     address1: restaurantModel.location?.address1,
+      //     address2: restaurantModel.location?.address2,
+      //     address3: restaurantModel.location?.address3,
+      //     city: restaurantModel.location?.city,
+      //     zipCode: restaurantModel.location?.zipCode,
+      //     country: restaurantModel.location?.country,
+      //     state: restaurantModel.location?.state,
+      //     displayAddress: restaurantModel.location?.displayAddress),
       price: restaurantModel.price,
       rating: restaurantModel.rating,
       reviewCount: restaurantModel.reviewCount,
+      isOpenNow: false,
+      vicinity: '',
       // isOpenNow: restaurantModel.isOpenNow,
       // hours: hoursEntity,
-      displayPhone: restaurantModel.displayPhone,
-      phone: restaurantModel.phone,
+      // displayPhone: restaurantModel.displayPhone,
+      // phone: restaurantModel.phone,
+    );
+  }
+
+  RestaurantEntity mapGoogleModelToEntity(GoogleRestaurantModel restaurantModel, Position position) {
+    //TODO: complete RestaurantEntity class
+
+    return RestaurantEntity(
+      id: restaurantModel.placeId,
+      name: restaurantModel.name,
+      imageUrl: restaurantModel.photos!.isEmpty
+          ? restaurantModel.icon
+          : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${restaurantModel.photos![0].photoReference}&key=${dotenv.env['GOOGLE_PLACES_API_KEY']}",
+      distance: Geolocator.distanceBetween(position.latitude, position.longitude,
+          restaurantModel.geometry!.location!.lat!, restaurantModel.geometry!.location!.lng!),
+      vicinity: restaurantModel.vicinity,
+      price: restaurantModel.priceLevel == 0
+          ? ""
+          : restaurantModel.priceLevel == 1
+              ? "\$"
+              : restaurantModel.priceLevel == 2
+                  ? "\$\$"
+                  : restaurantModel.priceLevel == 3
+                      ? "\$\$\$"
+                      : "\$\$\$\$",
+      rating: restaurantModel.rating,
+      reviewCount: restaurantModel.userRatingsTotal,
+      isOpenNow: restaurantModel.openingHours?.openNow,
     );
   }
 }

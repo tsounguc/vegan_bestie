@@ -2,35 +2,39 @@ class RestaurantEntity {
   //TODO: complete RestaurantEntity class
   String? id;
   String? name;
-  List<CategoryEntity>? categories;
-  String? url;
+
+  // List<CategoryEntity>? categories;
+  // String? url;
   String? imageUrl;
 
-  // bool? isOpenNow;
+  bool? isOpenNow;
+
   // List<HourEntity> hours;
   double? distance;
-  LocationEntity? location;
+  // LocationEntity? location;
   String? price;
   double? rating;
   int? reviewCount;
-  String? phone;
-  String? displayPhone;
+  String? vicinity;
+  // String? phone;
+  // String? displayPhone;
 
   RestaurantEntity({
     required this.id,
     required this.name,
-    required this.categories,
-    required this.url,
+    // required this.categories,
+    // required this.url,
     required this.imageUrl,
     required this.distance,
-    required this.location,
+    // required this.location,
     required this.price,
     required this.rating,
     required this.reviewCount,
-    // required this.isOpenNow,
+    required this.isOpenNow,
+    required this.vicinity,
     // required this.hours,
-    required this.displayPhone,
-    required this.phone,
+    // required this.displayPhone,
+    // required this.phone,
   });
 }
 
