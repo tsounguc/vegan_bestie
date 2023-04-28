@@ -12,7 +12,9 @@ import '../../restaurant_cubit/restaurant_details_cubit.dart';
 import 'is_open_now.dart';
 
 class RestaurantCard extends StatelessWidget {
-  const RestaurantCard({Key? key, required this.dietRestrictions, required this.restaurant}) : super(key: key);
+  const RestaurantCard(
+      {Key? key, required this.dietRestrictions, required this.restaurant})
+      : super(key: key);
 
   final String? dietRestrictions;
   final RestaurantEntity? restaurant;
@@ -22,7 +24,8 @@ class RestaurantCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         debugPrint(restaurant?.id);
-        BlocProvider.of<RestaurantDetailsCubit>(context).searchRestaurantDetails(restaurant?.id);
+        BlocProvider.of<RestaurantDetailsCubit>(context)
+            .searchRestaurantDetails(restaurant?.id);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => RestaurantDetailsPage(),
@@ -73,13 +76,14 @@ class RestaurantCard extends StatelessWidget {
                       children: [
                         Flexible(
                           child: SizedBox(
-                            width: 140.w,
+                            width: MediaQuery.of(context).size.width * 0.30,
                             child: Text(
                               restaurant!.name!,
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
@@ -115,7 +119,8 @@ class RestaurantCard extends StatelessWidget {
                               Flexible(
                                 child: Text(
                                   "${restaurant!.vicinity!}",
-                                  style: TextStyle(color: Colors.black, fontSize: 10.sp),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 10.sp),
                                 ),
                               ),
                             ],
@@ -123,7 +128,8 @@ class RestaurantCard extends StatelessWidget {
                         ),
                         Text(
                           restaurant!.price ?? "",
-                          style: TextStyle(color: Colors.black, fontSize: 10.sp),
+                          style:
+                              TextStyle(color: Colors.black, fontSize: 10.sp),
                         )
                       ],
                     ),
@@ -153,14 +159,13 @@ class RestaurantCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.007,
-                    ),
                     IsOpenNowWidget(
                       visible: restaurant?.isOpenNow != null,
-                      isOpenNow: restaurant?.isOpenNow != null && restaurant!.isOpenNow!,
+                      isOpenNow: restaurant?.isOpenNow != null &&
+                          restaurant!.isOpenNow!,
                       iconSize: 16,
                       fontSize: 12,
+                      weekdayText: [],
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.007,

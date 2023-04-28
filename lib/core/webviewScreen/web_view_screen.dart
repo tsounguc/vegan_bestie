@@ -21,7 +21,8 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
   late WebViewController _webViewController;
   var loadingPercentage = 0;
 
@@ -45,7 +46,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 color: Colors.black,
               ),
         centerTitle: true,
-        title: CustomAppbarTitleWidget(imageOneName: 'assets/bread.png', imageTwoName: 'assets/tomato.png'),
+        title: CustomAppbarTitleWidget(
+            imageOneName: 'assets/bread.png',
+            imageTwoName: 'assets/tomato.png'),
         // actions: [NavigationControls(controller: _controller)],
       ),
       body: Stack(
@@ -65,7 +68,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   );
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
-                } else if (navigationRequest.url.contains("https://play.google.com/")) {
+                } else if (navigationRequest.url
+                    .contains("https://play.google.com/")) {
                   if (Platform.isAndroid) {
                     launchUrl(
                       Uri.parse(navigationRequest.url),
@@ -73,12 +77,15 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Device does not support Google Play Store')),
+                      const SnackBar(
+                          content: Text(
+                              'Device does not support Google Play Store')),
                     );
                   }
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
-                } else if (navigationRequest.url.contains("https://apps.apple.com/")) {
+                } else if (navigationRequest.url
+                    .contains("https://apps.apple.com/")) {
                   if (Platform.isIOS) {
                     launchUrl(
                       Uri.parse(navigationRequest.url),
@@ -86,7 +93,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Device does not support App Store')),
+                      const SnackBar(
+                          content: Text('Device does not support App Store')),
                     );
                   }
                   print('blocking navigation to $navigationRequest}');
@@ -98,23 +106,25 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   );
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
-                } else if (navigationRequest.url.contains("maps")) {
-                  if (Platform.isIOS) {
-                    launchUrl(
-                      Uri(
-                        scheme: 'maps',
-                        path: navigationRequest.url.substring(5),
-                      ),
-                    );
-                  } else {
-                    launchUrl(
-                      Uri.parse(navigationRequest.url),
-                      mode: LaunchMode.externalNonBrowserApplication,
-                    );
-                  }
-                  print('blocking navigation to $navigationRequest}');
-                  return NavigationDecision.prevent;
-                } else {
+                }
+                // else if (navigationRequest.url.contains("maps")) {
+                //   if (Platform.isIOS) {
+                //     launchUrl(
+                //       Uri(
+                //         scheme: 'maps',
+                //         path: navigationRequest.url.substring(5),
+                //       ),
+                //     );
+                //   } else {
+                //     launchUrl(
+                //       Uri.parse(navigationRequest.url),
+                //       mode: LaunchMode.externalNonBrowserApplication,
+                //     );
+                //   }
+                //   print('blocking navigation to $navigationRequest}');
+                //   return NavigationDecision.prevent;
+                // }
+                else {
                   print('allowing navigation to $navigationRequest');
                   return NavigationDecision.navigate;
                 }
