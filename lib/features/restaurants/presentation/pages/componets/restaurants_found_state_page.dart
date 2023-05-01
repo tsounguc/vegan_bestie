@@ -16,7 +16,10 @@ class RestaurantsFoundStatePage extends StatelessWidget {
           return Stack(
             children: [
               LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-                return SizedBox(height: constraints.maxHeight, child: MapPage());
+                return SizedBox(
+                  height: constraints.maxHeight,
+                  child: MapPage(),
+                );
               }),
               DraggableScrollableSheet(
                   initialChildSize: 0.5,

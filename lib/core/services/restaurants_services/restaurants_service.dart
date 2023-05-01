@@ -20,7 +20,7 @@ class GooglePlacesRestaurantsApiServiceImpl implements RestaurantsApiServiceCont
   @override
   Future<Map<String, dynamic>> getRestaurantsNearMe(Position position) async {
     final response = await http.get(Uri.parse(
-        "$_baseUrl/maps/api/place/nearbysearch/json?key=${_apiKey}&keyword=vegan&type=restaurant&location=${position.latitude},${position.longitude}&radius=100000"));
+        "$_baseUrl/maps/api/place/nearbysearch/json?key=${_apiKey}&keyword=vegan&type=restaurant&location=${position.latitude},${position.longitude}&radius=10000"));
     if (response.statusCode == 200) {
       return json.decode(response.body) as Map<String, dynamic>;
     } else {

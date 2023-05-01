@@ -70,7 +70,7 @@ class RestaurantsFromRemoteDataSourceGoogleImpl implements RestaurantsFromRemote
         restaurantJsonObjectsList.add(restaurantJsonObject);
       }
 
-      debugPrint('${restaurantJsonObjectsList[3]}');
+      // debugPrint('${restaurantJsonObjectsList[3]}');
       // Initialize a list of restaurant models
       List<GoogleRestaurantModel> restaurantModelsList = [];
 
