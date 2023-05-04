@@ -14,6 +14,9 @@ part 'map_state.dart';
 
 class MapCubit extends Cubit<MapState> {
   final MapUseCase _mapUseCase = serviceLocator<MapUseCase>();
+  GoogleMapController? controller;
+
+  // Position? userCurrentLocation;
 
   MapCubit() : super(MapInitial());
 
