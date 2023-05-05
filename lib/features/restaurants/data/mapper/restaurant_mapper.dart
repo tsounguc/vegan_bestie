@@ -67,6 +67,8 @@ class RestaurantMapper {
       reviewCount: restaurantModel.reviewCount,
       isOpenNow: false,
       vicinity: '',
+      lat: null,
+      lng: null,
       // isOpenNow: restaurantModel.isOpenNow,
       // hours: hoursEntity,
       // displayPhone: restaurantModel.displayPhone,
@@ -86,6 +88,8 @@ class RestaurantMapper {
       distance: Geolocator.distanceBetween(position.latitude, position.longitude,
           restaurantModel.geometry!.location!.lat!, restaurantModel.geometry!.location!.lng!),
       vicinity: restaurantModel.vicinity,
+      lat: restaurantModel.geometry?.location?.lat,
+      lng: restaurantModel.geometry?.location?.lng,
       price: restaurantModel.priceLevel == 0
           ? ""
           : restaurantModel.priceLevel == 1

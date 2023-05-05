@@ -28,9 +28,9 @@ class MapPage extends StatelessWidget {
             mapType: MapType.normal,
             markers: state.markers,
             // trafficEnabled: true,
-            cameraTargetBounds: CameraTargetBounds(
-              MapUtils.boundsFromLatLngList(state.markers.map((location) => location.position).toList()),
-            ),
+            // cameraTargetBounds: CameraTargetBounds(
+            //   MapUtils.boundsFromLatLngList(state.markers.map((location) => location.position).toList()),
+            // ),
             initialCameraPosition: CameraPosition(
               // bearing: 190,
               target: LatLng(state.userLocation.latitude, state.userLocation.longitude),
@@ -47,20 +47,16 @@ class MapPage extends StatelessWidget {
   }
 
   void _onMapCreated(BuildContext context, GoogleMapController controller, MapLocationsFound state) async {
-    BlocProvider
-        .of<MapCubit>(context)
-        .controller = controller;
+    BlocProvider.of<MapCubit>(context).controller = controller;
     // userCurrentLocation = state.userLocation;
 
     Future.delayed(
       Duration(milliseconds: 200),
-          () =>
-          context
-              .read<MapCubit>()
-              .controller
-              ?.animateCamera(
+      () => context.read<MapCubit>().controller?.animateCamera(
             CameraUpdate.newLatLngBounds(
-              MapUtils.boundsFromLatLngList(state.markers.map((location) => location.position).toList(),),
+              MapUtils.boundsFromLatLngList(
+                state.markers.map((location) => location.position).toList(),
+              ),
               30,
             ),
           ),

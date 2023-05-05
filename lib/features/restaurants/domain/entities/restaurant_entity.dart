@@ -11,11 +11,15 @@ class RestaurantEntity {
 
   // List<HourEntity> hours;
   double? distance;
+
   // LocationEntity? location;
   String? price;
   double? rating;
   int? reviewCount;
   String? vicinity;
+  double? lat;
+  double? lng;
+
   // String? phone;
   // String? displayPhone;
 
@@ -32,6 +36,8 @@ class RestaurantEntity {
     required this.reviewCount,
     required this.isOpenNow,
     required this.vicinity,
+    required this.lat,
+    required this.lng,
     // required this.hours,
     // required this.displayPhone,
     // required this.phone,
