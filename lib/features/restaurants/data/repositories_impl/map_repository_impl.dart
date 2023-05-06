@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/failures_successes/exceptions.dart';
 import '../../../../core/failures_successes/failures.dart';
@@ -15,9 +16,10 @@ class MapRepositoryImpl implements MapRepositoryContract {
       serviceLocator<MapInfoFromRemoteDataSourceContract>();
 
   @override
-  Future<Either<MapFailure, MapEntity>> getRestaurantsMarkers(List<RestaurantEntity> restaurants) async {
+  Future<Either<MapFailure, MapEntity>> getRestaurantsMarkers(
+      List<RestaurantEntity> restaurants, GoogleMapController? controller) async {
     try {
-      MapModel mapModel = await mapInfoFromRemoteDataSourceContract.getRestaurantsModels(restaurants);
+      MapModel mapModel = await mapInfoFromRemoteDataSourceContract.getRestaurantsModels(restaurants, controller);
       MapMapper mapper = MapMapper();
       MapEntity mapEntity = mapper.mapToEntity(mapModel);
       return Right(mapEntity);

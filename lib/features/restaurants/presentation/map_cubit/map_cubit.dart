@@ -23,7 +23,7 @@ class MapCubit extends Cubit<MapState> {
   void displayRestaurants(List<RestaurantEntity> restaurants, Position userCurrentLocation) async {
     emit(MapLoadingState());
     final Either<MapFailure, MapEntity> mapRestaurantsResult =
-        await _mapUseCase.getRestaurantsMarkers(restaurants);
+        await _mapUseCase.getRestaurantsMarkers(restaurants, controller);
     mapRestaurantsResult.fold((mapFailure) => emit(MapErrorState(error: mapFailure.message)), (mapEntity) {
       emit(MapLocationsFound(
         userLocation: userCurrentLocation,

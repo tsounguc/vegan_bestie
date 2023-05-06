@@ -47,13 +47,15 @@ dependencies:
   cloud_firestore:
   google_sign_in:
   flutter_facebook_auth:
-  #  location: ^4.2.0
   flutter_rating_bar: ^4.0.1
   geolocator: ^9.0.1
   geocoding:
   google_maps_flutter:
   intl:
   url_launcher:
+  custom_info_window:
+  clippy_flutter: ^2.0.0-nullsafety.1
+
   #  flutter_launcher_icons: ^0.13.0
   #  lint:
   #  googleapis: ^9.1.0
