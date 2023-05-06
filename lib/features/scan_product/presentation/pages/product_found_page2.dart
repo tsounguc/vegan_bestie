@@ -33,7 +33,10 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
       final dynamic toolTip = _toolTipKey.currentState;
 
       ProductFetchState state = BlocProvider.of<ProductFetchCubit>(context).state;
-      if (state is ProductFoundState && state.isVegan != null) {
+      if (state is ProductFoundState &&
+          state.isVegan != null &&
+          state.product.ingredients != null &&
+          state.product.ingredients!.isNotEmpty) {
         await Future.delayed(Duration(milliseconds: 10));
         toolTip.ensureTooltipVisible();
         await Future.delayed(Duration(seconds: 3));
@@ -92,7 +95,9 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                     TextStyle(color: Colors.black, fontSize: 26, overflow: TextOverflow.ellipsis),
                               ),
                             ),
-                            if (state.isVegan != null)
+                            if (state.isVegan != null &&
+                                state.product.ingredients != null &&
+                                state.product.ingredients!.isNotEmpty)
                               Container(
                                 height: 40,
                                 width: 50,
