@@ -5,5 +5,5 @@ class Strings {
   static final productNotFound = 'Product Not Found';
   static final toolTipVeganMessage = 'It\'s Vegan! 😊';
 
-  static final toolTipNonVeganMessage = 'It\'s not Vegan 😞\nContains';
+  static final toolTipNonVeganMessage = 'It\'s Not Vegan 😞\nContains';
 }

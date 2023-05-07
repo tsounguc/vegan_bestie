@@ -138,7 +138,8 @@ class VeganChecker {
         }
       });
     }
-
+    int lastCommaIndex = nonVeganIngredientsInProduct.lastIndexOf(", ");
+    nonVeganIngredientsInProduct = nonVeganIngredientsInProduct.substring(0, lastCommaIndex);
     debugPrint("Non Vegan ingredients: " + nonVeganIngredientsInProduct);
     return isVegan;
   }
