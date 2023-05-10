@@ -11,6 +11,7 @@ import 'package:sheveegan/features/restaurants/presentation/pages/componets/rati
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../core/constants/size_config.dart';
+import '../../../../../core/constants/strings.dart';
 import '../../../../../core/custom_appbar_title_widget.dart';
 import '../../../../../core/custom_back_button.dart';
 import '../../../../../core/custom_image_widget.dart';
@@ -82,10 +83,6 @@ class RestaurantDetailsPage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: VeganBestieLogoWidget(size: 25, fontSize: 35),
               ),
-              // title: CustomAppbarTitleWidget(
-              //     imageOneName: 'assets/bread.png',
-              //     imageTwoName: 'assets/tomato.png'),
-              // actions: [NavigationControls(controller: _controller)],
             ),
             backgroundColor: Theme.of(context).colorScheme.background,
             body: Stack(
@@ -228,7 +225,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height * 0.01,
                                   ),
-                                  Text("Call", style: TextStyle(color: Colors.grey.shade800, fontSize: 14))
+                                  Text(Strings.callText,
+                                      style: TextStyle(color: Colors.grey.shade800, fontSize: 14))
                                 ],
                               ),
                               SizedBox(width: MediaQuery.of(context).size.width * 0.12),
@@ -272,7 +270,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height * 0.01,
                                   ),
-                                  Text("Direction", style: TextStyle(color: Colors.grey.shade800, fontSize: 14))
+                                  Text(Strings.directionsText,
+                                      style: TextStyle(color: Colors.grey.shade800, fontSize: 14))
                                 ],
                               ),
                               SizedBox(width: MediaQuery.of(context).size.width * 0.12),
@@ -315,7 +314,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height * 0.01,
                                   ),
-                                  Text("Website", style: TextStyle(color: Colors.grey.shade800, fontSize: 14))
+                                  Text(Strings.websiteText,
+                                      style: TextStyle(color: Colors.grey.shade800, fontSize: 14))
                                 ],
                               ),
                               // SizedBox(

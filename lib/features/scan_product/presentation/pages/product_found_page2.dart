@@ -54,22 +54,16 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
           double? proteinsPercentage = 0;
           double? carbohydratesPercentage = 0;
           double? fatPercentage = 0;
-          if (state.product.proteins100G != null &&
-              state.product.carbohydrates100G != null &&
-              state.product.fat100G != null) {
-            total = state.product.proteins100G! + state.product.carbohydrates100G! + state.product.fat100G!;
-            proteinsPercentage = state.product.proteins100G! / total;
-            carbohydratesPercentage = state.product.carbohydrates100G! / total;
-            fatPercentage = state.product.fat100G! / total;
+          if (state.product.proteinsValue != null &&
+              state.product.carbohydratesValue != null &&
+              state.product.fatValue != null) {
+            total = state.product.proteinsValue! + state.product.carbohydratesValue! + state.product.fatValue!;
+            proteinsPercentage = state.product.proteinsValue! / total;
+            carbohydratesPercentage = state.product.carbohydratesValue! / total;
+            fatPercentage = state.product.fatValue! / total;
           }
           return Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
-            // appBar: AppBar(
-            //   backgroundColor: Colors.white,
-            //   iconTheme: IconThemeData(color: Colors.black),
-            //   title: Text(Strings.appTitle),
-            //   centerTitle: true,
-            // ),
             body: Stack(
               children: [
                 Positioned(
@@ -169,7 +163,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Macros",
+                                  Strings.macrosText,
                                   style: TextStyle(color: Colors.black, fontSize: 18),
                                 ),
                               ]),
@@ -183,7 +177,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               MacroNutrientWidget(
-                                title: 'Protein',
+                                title: Strings.proteinText,
                                 percentage: proteinsPercentage.isNaN ||
                                         proteinsPercentage.isInfinite ||
                                         proteinsPercentage.isNegative
@@ -196,13 +190,13 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                   width: 10,
                                 ),
                                 color: Colors.green.shade800,
-                                per100G: state.product.proteins100G,
+                                value: state.product.proteinsValue,
                               ),
                               SizedBox(
                                 height: MediaQuery.of(context).size.height * 0.0075,
                               ),
                               MacroNutrientWidget(
-                                title: 'Carbs',
+                                title: Strings.carbsText,
                                 percentage: carbohydratesPercentage.isNaN ||
                                         carbohydratesPercentage.isInfinite ||
                                         carbohydratesPercentage.isNegative
@@ -215,13 +209,13 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                   width: 10,
                                 ),
                                 color: Colors.amberAccent.shade100,
-                                per100G: state.product.carbohydrates100G,
+                                value: state.product.carbohydratesValue,
                               ),
                               SizedBox(
                                 height: MediaQuery.of(context).size.height * 0.0075,
                               ),
                               MacroNutrientWidget(
-                                title: 'Fat',
+                                title: Strings.fatText,
                                 percentage:
                                     fatPercentage.isNaN || fatPercentage.isInfinite || fatPercentage.isNegative
                                         ? 0
@@ -233,7 +227,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                   width: 10,
                                 ),
                                 color: Colors.deepPurpleAccent.shade100,
-                                per100G: state.product.fat100G,
+                                value: state.product.fatValue,
                               ),
                             ],
                           ),
@@ -246,7 +240,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Ingredients",
+                                Strings.ingredientsText,
                                 style: TextStyle(color: Colors.black, fontSize: 18),
                               ),
                             ],
@@ -270,7 +264,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                     state.product.ingredientsText != null &&
                                             state.product.ingredientsText!.isNotEmpty
                                         ? state.product.ingredientsText!
-                                        : 'Ingredients not found'.toUpperCase(),
+                                        : Strings.ingredientsNotFoundText,
                                     style:
                                         TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.normal)
                                     // style: Theme.of(context).textTheme.bodySmall,

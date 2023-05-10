@@ -54,7 +54,8 @@ dependencies:
   google_maps_flutter:
   intl:
   url_launcher:
-  #  flutter_launcher_icons: ^0.13.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.2.19
   #  lint:
   #  googleapis: ^9.1.0
 
@@ -69,15 +70,15 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_native_splash: ^2.1.6
-  flutter_launcher_icons: ^0.13.0
+#  flutter_native_splash: ^2.2.19
+#  flutter_launcher_icons: ^0.13.0
 
 
-flutter_icons:
+flutter_launcher_icons:
   android: true
   ios: true
-  image_path_android: "assets/logo/Logo-3.png"
-  image_path_ios: "assets/logo/Logo-3.png"
+  image_path_android: "assets/logo/VeganBestieLogo.png"
+  image_path_ios: "assets/logo/VeganBestieLogo.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   remove_alpha_ios: true
 #  web:
@@ -100,7 +101,7 @@ flutter_native_splash:
   color: "#43A047"
   #  color: "#FFFFFF"
   #background_image: "assets/background.png"
-  image: assets/logo/VeganBestie_NoBackground_Fixed2.png
+  image: assets/logo/VeganBestieLogo.png
   #  image: assets/logo/VeganBestie_BlackLogp.png
   #  image: assets/logo/VeganBestie_nobackground_fixed.png
   #  image: assets/logo/Logo-3.png

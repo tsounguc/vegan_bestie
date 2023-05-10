@@ -6,15 +6,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_details_page.dart';
 
+import '../../../../../core/constants/strings.dart';
 import '../../../../../core/webviewScreen/web_view_screen.dart';
 import '../../../data/models/yelp_restaurants_model.dart';
 import '../../restaurant_cubit/restaurant_details_cubit.dart';
 import 'is_open_now.dart';
 
 class RestaurantCard extends StatelessWidget {
-  const RestaurantCard(
-      {Key? key, required this.dietRestrictions, required this.restaurant})
-      : super(key: key);
+  const RestaurantCard({Key? key, required this.dietRestrictions, required this.restaurant}) : super(key: key);
 
   final String? dietRestrictions;
   final RestaurantEntity? restaurant;
@@ -24,18 +23,12 @@ class RestaurantCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         debugPrint(restaurant?.id);
-        BlocProvider.of<RestaurantDetailsCubit>(context)
-            .searchRestaurantDetails(restaurant?.id);
+        BlocProvider.of<RestaurantDetailsCubit>(context).searchRestaurantDetails(restaurant?.id);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => RestaurantDetailsPage(),
-            // builder: (_) => WebViewScreen(
-            //   url: business?.url,
-            // ),
           ),
         );
-
-        // debugPrint("${business?.name}:  ${business?.url}");
       },
       child: Card(
         color: Colors.white,
@@ -89,7 +82,7 @@ class RestaurantCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${(restaurant!.distance! / 1609.344).round()} mi",
+                          "${(restaurant!.distance! / 1609.344).round()} " + Strings.distanceUnitText,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 10.sp,
@@ -119,8 +112,7 @@ class RestaurantCard extends StatelessWidget {
                               Flexible(
                                 child: Text(
                                   "${restaurant!.vicinity!}",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 10.sp),
+                                  style: TextStyle(color: Colors.black, fontSize: 10.sp),
                                 ),
                               ),
                             ],
@@ -128,8 +120,7 @@ class RestaurantCard extends StatelessWidget {
                         ),
                         Text(
                           restaurant!.price ?? "",
-                          style:
-                              TextStyle(color: Colors.black, fontSize: 10.sp),
+                          style: TextStyle(color: Colors.black, fontSize: 10.sp),
                         )
                       ],
                     ),
@@ -154,15 +145,14 @@ class RestaurantCard extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.025,
                         ),
                         Text(
-                          "${restaurant!.reviewCount} reviews",
+                          "${restaurant!.reviewCount} " + Strings.reviewsText,
                           style: TextStyle(color: Colors.black, fontSize: 12),
                         ),
                       ],
                     ),
                     IsOpenNowWidget(
                       visible: restaurant?.isOpenNow != null,
-                      isOpenNow: restaurant?.isOpenNow != null &&
-                          restaurant!.isOpenNow!,
+                      isOpenNow: restaurant?.isOpenNow != null && restaurant!.isOpenNow!,
                       iconSize: 16,
                       fontSize: 12,
                       weekdayText: [],
