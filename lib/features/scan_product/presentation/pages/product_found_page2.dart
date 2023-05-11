@@ -272,7 +272,19 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                               ),
                             ),
                           ),
-                        )
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                "Report Issue",
+                                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.normal),
+                              ),
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ),

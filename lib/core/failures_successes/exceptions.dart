@@ -10,6 +10,12 @@ class ScanBarcodeException implements Exception {
   const ScanBarcodeException({this.message});
 }
 
+class InvalidBarcodeException implements Exception {
+  final String? message;
+
+  const InvalidBarcodeException({this.message});
+}
+
 class CreateWithEmailAndPasswordException implements Exception {
   final String? message;
 

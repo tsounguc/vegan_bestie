@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/constants/strings.dart';
+import 'package:sheveegan/core/product_not_found.dart';
 
 class ErrorPage extends StatelessWidget {
   final dynamic error;
@@ -10,6 +12,9 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (error.contains(Strings.productNotFound)) {
+      return ProductNotFoundPage();
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(

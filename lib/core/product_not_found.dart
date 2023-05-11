@@ -4,12 +4,13 @@ import 'package:sheveegan/core/constants/strings.dart';
 
 class ProductNotFoundPage extends StatelessWidget {
   final String? message;
+
   const ProductNotFoundPage({Key? key, this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green.shade50,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
         alignment: Alignment.center,
         child: Column(
@@ -19,15 +20,15 @@ class ProductNotFoundPage extends StatelessWidget {
             Spacer(),
             Spacer(),
             Text(
-              "Product Not Found",
-              style: Theme.of(context).textTheme.headline5!.copyWith(
+              Strings.productNotFound,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     color: Colors.grey,
                   ),
             ),
             Spacer(),
             ImageIcon(
-              AssetImage('assets/logo/VeganBestie_NoBackground_Fixed2.png'),
-              size: 170.r,
+              AssetImage('assets/logo/VeganBestieLogo.png'),
+              size: MediaQuery.of(context).size.width * 0.55,
               color: Colors.grey,
             ),
             Spacer(),

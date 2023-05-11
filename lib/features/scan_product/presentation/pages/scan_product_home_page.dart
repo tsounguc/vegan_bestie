@@ -26,10 +26,17 @@ class ScanProductHomePage extends StatelessWidget {
             if (state is BarcodeFoundState) {
               BlocProvider.of<ProductFetchCubit>(buildContext).fetchProduct(state.barcode);
             } else if (state is ScanningCanceledState) {
-              debugPrint("font families fallback ${Theme.of(context).textTheme.displaySmall?.fontFamilyFallback}");
               ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
                 content: Text(
                   "${state.message}",
+                  style: TextStyle(color: Theme.of(buildContext).snackBarTheme.contentTextStyle?.color),
+                ),
+                duration: Duration(milliseconds: 2000),
+              ));
+            } else if (state is ScanningErrorState) {
+              ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
+                content: Text(
+                  "${state.error}",
                   style: TextStyle(color: Theme.of(buildContext).snackBarTheme.contentTextStyle?.color),
                 ),
                 duration: Duration(milliseconds: 2000),

@@ -12,11 +12,14 @@ abstract class ScanBarcodeFromPluginContract {
 class ScanBarcodeFromPluginImpl implements ScanBarcodeFromPluginContract {
   final BarcodeScannerServiceContract barcodeScannerServiceContract =
       serviceLocator<BarcodeScannerServiceContract>();
+
   @override
   Future<BarcodeModel> scanBarcode() async {
     try {
       String barcode = await barcodeScannerServiceContract.scanBarcode();
       return BarcodeModel(barcode: barcode);
+    } on InvalidBarcodeException catch (e) {
+      throw ScanBarcodeException(message: e.message);
     } catch (e) {
       throw const ScanBarcodeException(message: "Failed to scan barcode");
     }

@@ -99,56 +99,47 @@ class VeganChecker {
   bool veganCheck(productEntity) {
     bool isVegan = true;
     _nonVeganIngredientsInProduct = "";
-    if (productEntity?.ingredients == null ||
-        productEntity?.ingredients.isEmpty) {
+    if (productEntity?.ingredients == null || productEntity?.ingredients.isEmpty) {
       isVegan = false;
     }
-    debugPrint(productEntity?.ingredients.toString());
     if (productEntity?.labels == null || productEntity!.labels!.isEmpty) {
       productEntity!.ingredients?.forEach((ingredient) {
         if (ingredient.vegan == null || ingredient.vegan == "maybe") {
           nonVeganIngredients.forEach((nonVeganIngredient) {
-            if (ingredient.text!.toLowerCase() ==
-                nonVeganIngredient.toLowerCase()) {
-              _nonVeganIngredientsInProduct = _nonVeganIngredientsInProduct +
-                  "${ingredient.text!.toLowerCase()}, ";
+            if (ingredient.text!.toLowerCase() == nonVeganIngredient.toLowerCase()) {
+              _nonVeganIngredientsInProduct =
+                  _nonVeganIngredientsInProduct + "${ingredient.text!.toLowerCase()}, ";
               isVegan = false;
             }
           });
         }
         if (ingredient.vegan == "no") {
-          _nonVeganIngredientsInProduct = _nonVeganIngredientsInProduct +
-              "${ingredient.text!.toLowerCase()}, ";
+          _nonVeganIngredientsInProduct = _nonVeganIngredientsInProduct + "${ingredient.text!.toLowerCase()}, ";
           isVegan = false;
         }
       });
     } else if (!(productEntity.labels!.toLowerCase().contains('vegan') ||
-        productEntity.labels!
-            .toLowerCase()
-            .contains('contains no animal ingredients'))) {
+        productEntity.labels!.toLowerCase().contains('contains no animal ingredients'))) {
       productEntity.ingredients?.forEach((ingredient) {
         debugPrint("is ${ingredient.text} vegan: ${ingredient.vegan}");
         if (ingredient.vegan == null || ingredient.vegan == "maybe") {
           nonVeganIngredients.forEach((nonVeganIngredient) {
-            if (ingredient.text!.toLowerCase() ==
-                nonVeganIngredient.toLowerCase()) {
-              _nonVeganIngredientsInProduct = _nonVeganIngredientsInProduct +
-                  "${ingredient.text!.toLowerCase()}, ";
+            if (ingredient.text!.toLowerCase() == nonVeganIngredient.toLowerCase()) {
+              _nonVeganIngredientsInProduct =
+                  _nonVeganIngredientsInProduct + "${ingredient.text!.toLowerCase()}, ";
               isVegan = false;
             }
           });
         }
         if (ingredient.vegan == "no") {
-          nonVeganIngredientsInProduct = nonVeganIngredientsInProduct +
-              "${ingredient.text!.toLowerCase()}, ";
+          nonVeganIngredientsInProduct = nonVeganIngredientsInProduct + "${ingredient.text!.toLowerCase()}, ";
           isVegan = false;
         }
       });
     }
     if (nonVeganIngredientsInProduct.contains(", ")) {
       int lastCommaIndex = nonVeganIngredientsInProduct.lastIndexOf(", ");
-      nonVeganIngredientsInProduct =
-          nonVeganIngredientsInProduct.substring(0, lastCommaIndex);
+      nonVeganIngredientsInProduct = nonVeganIngredientsInProduct.substring(0, lastCommaIndex);
     }
     debugPrint("Non Vegan ingredients: " + nonVeganIngredientsInProduct);
     return isVegan;
