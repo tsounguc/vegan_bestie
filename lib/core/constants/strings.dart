@@ -6,7 +6,7 @@ class Strings {
   static final toolTipVeganMessage = 'It\'s Vegan! 😊';
 
   static final toolTipNonVeganMessage = 'It\'s Not Vegan 😞\nContains';
-  static final canceledMessage = 'Canceled';
+  static final scanCanceledMessage = 'Scan Canceled';
   static final macrosText = 'Macros';
   static final proteinText = 'Protein';
   static final carbsText = 'Carbs';

@@ -25,7 +25,7 @@ class BarcodeScannerCubit extends Cubit<BarcodeScannerState> {
       (scanningFailure) => emit(ScanningErrorState(error: scanningFailure.message)),
       (barcodeEntity) {
         if (barcodeEntity.barcode!.isEmpty || barcodeEntity.barcode == "-1") {
-          emit(ScanningCanceledState(barcode: barcodeEntity.barcode, message: Strings.canceledMessage));
+          emit(ScanningCanceledState(barcode: barcodeEntity.barcode, message: Strings.scanCanceledMessage));
         } else if (barcodeEntity.barcode!.isNotEmpty) {
           print("Barcode found: ${barcodeEntity.barcode}");
           emit(BarcodeFoundState(barcode: barcodeEntity.barcode!));
