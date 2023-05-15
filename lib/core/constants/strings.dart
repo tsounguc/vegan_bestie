@@ -21,4 +21,6 @@ class Strings {
   static final directionsText = 'Directions';
   static final callText = 'Call';
   static final websiteText = 'Website';
+
+  static final reportIssueText = 'Report Issue';
 }
