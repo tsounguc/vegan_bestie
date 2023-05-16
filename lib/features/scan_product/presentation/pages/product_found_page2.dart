@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sheveegan/core/constants/strings.dart';
 import 'package:sheveegan/core/custom_back_button.dart';
@@ -73,9 +74,9 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.60,
+                    height: MediaQuery.of(context).size.height * 0.53,
                     width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,13 +86,13 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.73,
-                              height: MediaQuery.of(context).size.width * 0.115,
+                              width: MediaQuery.of(context).size.width * 0.77,
+                              height: MediaQuery.of(context).size.width * 0.08,
                               child: Text(
                                 "${state.product.productName}",
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 26,
+                                    fontSize: 18.sp,
                                     overflow: TextOverflow.ellipsis),
                               ),
                             ),
@@ -100,9 +101,8 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                 state.product.ingredients!.isNotEmpty)
                               Container(
                                 height:
-                                    MediaQuery.of(context).size.width * 0.11,
-                                width:
-                                    MediaQuery.of(context).size.width * 0.135,
+                                    MediaQuery.of(context).size.width * 0.09,
+                                width: MediaQuery.of(context).size.width * 0.12,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   // border: Border.all(color: Colors.white),
@@ -119,7 +119,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                 child: Tooltip(
                                   key: _toolTipKey,
                                   padding: EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 20),
+                                      vertical: 14, horizontal: 16),
                                   margin: EdgeInsets.symmetric(horizontal: 50),
                                   // verticalOffset: 20,
                                   textAlign: TextAlign.start,
@@ -133,7 +133,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                           : null,
                                   textStyle: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 14,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w600),
                                   decoration: BoxDecoration(
                                     color: state.isVegan == true
@@ -157,12 +157,14 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                       ? Icon(
                                           VeganIcon.vegan_icon,
                                           color: Colors.green,
-                                          size: 30,
+                                          size: 22,
                                         )
-                                      : Icon(
-                                          Icons.info_outlined,
-                                          color: Colors.blueGrey.shade600,
-                                          size: 30,
+                                      : Center(
+                                          child: Icon(
+                                            Icons.info_outlined,
+                                            color: Colors.blueGrey.shade600,
+                                            // size: 22,
+                                          ),
                                         ),
                                   showDuration: Duration(milliseconds: 2750),
                                 ),
@@ -172,7 +174,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                         SizedBox(
                             height: MediaQuery.of(context).size.height * 0.005),
                         Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
+                          padding: const EdgeInsets.only(left: 8.0, top: 4.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +182,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                 Text(
                                   Strings.macrosText,
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 18),
+                                      color: Colors.black, fontSize: 14.sp),
                                 ),
                               ]),
                         ),
@@ -189,7 +191,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                 MediaQuery.of(context).size.height * 0.0025),
                         Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 16.0,
+                              horizontal: 12.0,
                               vertical:
                                   MediaQuery.of(context).size.height * 0.0025),
                           child: Column(
@@ -266,7 +268,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                               Text(
                                 Strings.ingredientsText,
                                 style: TextStyle(
-                                    color: Colors.black, fontSize: 18),
+                                    color: Colors.black, fontSize: 14.sp),
                               ),
                             ],
                           ),
@@ -280,12 +282,12 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                           radius: Radius.circular(10),
                           thickness: 10,
                           child: SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.15,
+                            height: MediaQuery.of(context).size.height * 0.125,
                             child: SingleChildScrollView(
                               controller: _scrollController,
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 15.0,
+                                    horizontal: 20.0,
                                     vertical:
                                         MediaQuery.of(context).size.height *
                                             0.0025),
@@ -297,7 +299,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                         : Strings.ingredientsNotFoundText,
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 14,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.normal)
                                     // style: Theme.of(context).textTheme.bodySmall,
                                     ),
@@ -314,9 +316,10 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                 Strings.reportIssueText,
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 16,
+                                    fontSize: 12.sp,
                                     fontWeight: FontWeight.normal,
-                                    decoration: TextDecoration.underline),
+                                    decoration: TextDecoration.underline,
+                                    decorationThickness: 2),
                               ),
                             )
                           ],
@@ -331,7 +334,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                   left: MediaQuery.of(context).size.width * 0.0,
                   child: CustomImageWidget(
                     imageUrl: state.product.imageFrontUrl,
-                    height: MediaQuery.of(context).size.height * 0.38,
+                    height: MediaQuery.of(context).size.height * 0.45,
                   ),
                 ),
                 Positioned(
