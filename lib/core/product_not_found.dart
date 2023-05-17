@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/constants/strings.dart';
 
+import '../features/scan_product/presentation/pages/report_issue_page.dart';
+import 'custom_back_button.dart';
+
 class ProductNotFoundPage extends StatelessWidget {
   final String? message;
 
@@ -11,13 +14,18 @@ class ProductNotFoundPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        leading: CustomBackButton(
+          color: Colors.black,
+        ),
+      ),
       body: Container(
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Spacer(),
+            // Spacer(),
             Spacer(),
             Text(
               Strings.productNotFound,
@@ -38,7 +46,7 @@ class ProductNotFoundPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "We were not able find",
+                    "We were not able to find",
                     style: TextStyle(color: Colors.grey, fontSize: 16.sp),
                   ),
                   SizedBox(
@@ -50,6 +58,32 @@ class ProductNotFoundPage extends StatelessWidget {
                   )
                 ],
               ),
+            ),
+            Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Please try again or ",
+                  style: TextStyle(color: Colors.grey, fontSize: 16.sp),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(ReportIssuePage.id);
+                  },
+                  style: ButtonStyle(
+                      padding: MaterialStateProperty.all(EdgeInsets.zero)),
+                  child: Text(
+                    Strings.reportIssueText,
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                        decorationThickness: 2),
+                  ),
+                )
+              ],
             ),
             Spacer(),
           ],

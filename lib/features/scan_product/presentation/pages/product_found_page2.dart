@@ -10,6 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sheveegan/core/constants/strings.dart';
 import 'package:sheveegan/core/custom_back_button.dart';
 import 'package:sheveegan/core/custom_image_widget.dart';
+import 'package:sheveegan/features/scan_product/presentation/pages/report_issue_page.dart';
 
 import '../../../../core/assets/vegan_icon.dart';
 import '../../../../core/loading.dart';
@@ -311,7 +312,10 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed(ReportIssuePage.id);
+                              },
                               child: Text(
                                 Strings.reportIssueText,
                                 style: TextStyle(
