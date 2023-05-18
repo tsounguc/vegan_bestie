@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/custom_appbar_title_widget.dart';
 import 'package:sheveegan/core/custom_back_button.dart';
+import 'package:sheveegan/features/scan_product/presentation/pages/select_incorrect_information.dart';
 
 import '../../../../core/constants/size_config.dart';
 import '../../../../core/vegan_bestie_logo_widget.dart';
@@ -31,6 +32,7 @@ class ReportIssuePage extends StatelessWidget {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -38,16 +40,25 @@ class ReportIssuePage extends StatelessWidget {
                   "What's the issue?",
                   style: TextStyle(
                       color: Colors.black,
-                      fontSize: 18.sp,
+                      fontSize: 20.sp,
                       overflow: TextOverflow.ellipsis),
                 ),
               ],
             ),
+            SizedBox(
+              height: 50,
+            ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(SelectIncorrectInformation.id);
+              },
               title: Text(
                 "Product information is incorrect",
-                style: TextStyle(color: Colors.black, fontSize: 14.sp),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
@@ -68,8 +79,12 @@ class ReportIssuePage extends StatelessWidget {
             ListTile(
               onTap: () {},
               title: Text(
-                "Wrong product",
-                style: TextStyle(color: Colors.black, fontSize: 14.sp),
+                "This is another product",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios,
