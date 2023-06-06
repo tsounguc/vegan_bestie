@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class VeganChecker {
   String _nonVeganIngredientsInProduct = "";
   List<String> nonVeganIngredients = [
-    "acidophilus Milk",
+    "acidophilus milk",
     "anchovies",
     "bee pollen",
     "bee venom",

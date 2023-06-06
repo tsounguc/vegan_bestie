@@ -53,7 +53,7 @@ class ReportIssuePage extends StatelessWidget {
                 Navigator.of(context).pushNamed(SelectIncorrectInformation.id);
               },
               title: Text(
-                "Product information is incorrect",
+                "Incorrect product information",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16.sp,
@@ -79,7 +79,7 @@ class ReportIssuePage extends StatelessWidget {
             ListTile(
               onTap: () {},
               title: Text(
-                "This is another product",
+                "Incorrect Product",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16.sp,
