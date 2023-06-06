@@ -59,32 +59,32 @@ class ProductNotFoundPage extends StatelessWidget {
                 ],
               ),
             ),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Please try again or ",
-                  style: TextStyle(color: Colors.grey, fontSize: 16.sp),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(ReportIssuePage.id);
-                  },
-                  style: ButtonStyle(
-                      padding: MaterialStateProperty.all(EdgeInsets.zero)),
-                  child: Text(
-                    Strings.reportIssueText,
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 2),
-                  ),
-                )
-              ],
-            ),
+            // Spacer(),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Text(
+            //       "Please try again or ",
+            //       style: TextStyle(color: Colors.grey, fontSize: 16.sp),
+            //     ),
+            //     TextButton(
+            //       onPressed: () {
+            //         Navigator.of(context).pushNamed(ReportIssuePage.id);
+            //       },
+            //       style: ButtonStyle(
+            //           padding: MaterialStateProperty.all(EdgeInsets.zero)),
+            //       child: Text(
+            //         Strings.reportIssueText,
+            //         style: TextStyle(
+            //             color: Colors.grey,
+            //             fontSize: 15.sp,
+            //             fontWeight: FontWeight.bold,
+            //             decoration: TextDecoration.underline,
+            //             decorationThickness: 2),
+            //       ),
+            //     )
+            //   ],
+            // ),
             Spacer(),
           ],
         ),
