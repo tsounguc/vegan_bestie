@@ -90,6 +90,7 @@ void setUpServices() {
 
   serviceLocator
       .registerSingleton<RestaurantsFromRemoteDataSourceContract>(RestaurantsFromRemoteDataSourceYelpImpl());
+
   serviceLocator.registerSingleton<RestaurantDetailsFromRemoteDataSourceContract>(
       RestaurantDetailsFromRemoteDataSourceYelpImpl());
 
