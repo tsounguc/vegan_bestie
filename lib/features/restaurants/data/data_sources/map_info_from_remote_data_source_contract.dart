@@ -1,7 +1,7 @@
 import 'package:sheveegan/core/services/restaurants_services/map_service.dart';
 
 import '../../../../core/failures_successes/exceptions.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/restaurant_entity.dart';
 import '../models/map_model.dart';
 

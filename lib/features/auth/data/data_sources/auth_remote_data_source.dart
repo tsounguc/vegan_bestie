@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
-import 'package:sheveegan/core/service_locator.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -24,6 +24,7 @@ abstract class AuthRemoteDataSourceContract {
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSourceContract {
   final AuthServiceContract authServiceContract = serviceLocator<AuthServiceContract>();
+
   @override
   Future<UserModel> createUserAccount(String userName, String email, String password) async {
     try {

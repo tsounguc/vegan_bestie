@@ -1,5 +1,5 @@
 import '../../../../core/failures_successes/exceptions.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../../../core/services/food_facts_services/food_facts_api_service.dart';
 import '../models/search_product_model.dart';
 
@@ -9,6 +9,7 @@ abstract class SearchProductsFromRemoteDataSourceContract {
 
 class SearchProductsFromRemoteDataSourceImpl implements SearchProductsFromRemoteDataSourceContract {
   final FoodFactsApiServiceContract foodFactsApiServiceContract = serviceLocator<FoodFactsApiServiceContract>();
+
   @override
   Future<List<SearchProductModel>> searchProduct(String query) async {
     try {

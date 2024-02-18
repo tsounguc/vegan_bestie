@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/failures_successes/exceptions.dart';
 import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/search_product_entity.dart';
 import '../../domain/respositories_contracts/search_product_repository_contract.dart';
 import '../data_sources/search_products_from_remote_data_source.dart';
@@ -12,6 +12,7 @@ import '../models/search_product_model.dart';
 class SearchProductRepositoryImpl implements SearchProductRepositoryContract {
   final SearchProductsFromRemoteDataSourceContract searchRemoteDataSourceContract =
       serviceLocator<SearchProductsFromRemoteDataSourceContract>();
+
   @override
   Future<Either<SearchProductFailure, List<SearchProductEntity>>> searchProduct(String query) async {
     try {

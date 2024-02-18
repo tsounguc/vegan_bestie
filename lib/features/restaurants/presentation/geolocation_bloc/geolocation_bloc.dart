@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
-import 'package:sheveegan/core/service_locator.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/location_entity.dart';
 
 import '../../domain/usecases/get_current_location_usecase.dart';

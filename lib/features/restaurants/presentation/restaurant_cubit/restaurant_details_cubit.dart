@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/restaurant_details_entity.dart';
 import '../../domain/usecases/get_restaurant_details_usecase.dart';
 
@@ -12,6 +12,7 @@ part 'restaurant_details_state.dart';
 
 class RestaurantDetailsCubit extends Cubit<RestaurantDetailsState> {
   final GetRestaurantDetailsUseCase _restaurantDetailsUseCase = serviceLocator<GetRestaurantDetailsUseCase>();
+
   RestaurantDetailsCubit() : super(RestaurantDetailsInitial());
 
   void searchRestaurantDetails(String? id) async {

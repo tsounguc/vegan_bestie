@@ -5,15 +5,17 @@ import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/restaurant_entity.dart';
 import '../../domain/usecases/get_restaurants_near_me_usecase.dart';
 
 part 'restaurants_event.dart';
+
 part 'restaurants_state.dart';
 
 class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
   final GetRestaurantsNearMeUseCase _getRestaurantsNearMeUseCase = serviceLocator<GetRestaurantsNearMeUseCase>();
+
   RestaurantsBloc() : super(RestaurantsInitialState()) {
     on<GetRestaurantsEvent>((event, emit) async {
       emit(RestaurantsLoadingState());

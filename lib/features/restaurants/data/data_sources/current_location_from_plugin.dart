@@ -1,7 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 
 import '../../../../core/failures_successes/exceptions.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../../../core/services/restaurants_services/current_location_plugin.dart';
 import '../models/location_model.dart';
 

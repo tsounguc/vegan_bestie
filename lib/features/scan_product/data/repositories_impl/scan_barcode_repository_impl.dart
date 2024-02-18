@@ -3,7 +3,7 @@ import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
 
 import '../../../../core/failures_successes/exceptions.dart';
 import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/barcode_entity.dart';
 import '../../domain/repositories_contracts/scan_barcode_repository_contract.dart';
 import '../data_sources/scan_barcode_from_plugin.dart';
@@ -11,6 +11,7 @@ import '../mapper/scan_barcode_mapper.dart';
 
 class ScanBarcodeRepositoryImpl implements ScanBarcodeRepositoryContract {
   ScanBarcodeFromPluginContract scanBarcodeFromPluginContract = serviceLocator<ScanBarcodeFromPluginContract>();
+
   @override
   Future<Either<ScanningFailure, BarcodeEntity>> scanBarcode() async {
     try {

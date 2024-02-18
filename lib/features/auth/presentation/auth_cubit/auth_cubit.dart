@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sheveegan/features/auth/domain/usecases/sign_in_with_email_and_password_usecase.dart';
 
 import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/create_with_email_and_password_usecases.dart';
 import '../../domain/usecases/current_user_usecase.dart';

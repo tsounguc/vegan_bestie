@@ -3,7 +3,7 @@ import 'package:geolocator_platform_interface/src/models/position.dart';
 
 import '../../../../core/failures_successes/exceptions.dart';
 import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/restaurant_entity.dart';
 import '../../domain/repositories_contracts/restaurants_repository_contract.dart';
 import '../data_sources/restaurants_from_remote_data_source.dart';
@@ -13,6 +13,7 @@ import '../models/yelp_restaurants_model.dart';
 class RestaurantsRepositoryYelpImpl implements RestaurantsRepositoryContract {
   RestaurantsFromRemoteDataSourceContract restaurantsFromRemoteDataSourceContract =
       serviceLocator<RestaurantsFromRemoteDataSourceContract>();
+
   @override
   Future<Either<FetchRestaurantsNearMeFailure, List<RestaurantEntity>>> getRestaurantsNearMe(
       Position position) async {
@@ -36,6 +37,7 @@ class RestaurantsRepositoryYelpImpl implements RestaurantsRepositoryContract {
 class RestaurantsRepositoryGoogleImpl implements RestaurantsRepositoryContract {
   RestaurantsFromRemoteDataSourceContract restaurantsRemoteDataSourceContract =
       serviceLocator<RestaurantsFromRemoteDataSourceContract>();
+
   @override
   Future<Either<FetchRestaurantsNearMeFailure, List<RestaurantEntity>>> getRestaurantsNearMe(
       Position position) async {

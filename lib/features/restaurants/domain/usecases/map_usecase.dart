@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../entities/map_entity.dart';
 import '../entities/restaurant_entity.dart';
 import '../repositories_contracts/map_repository_contract.dart';

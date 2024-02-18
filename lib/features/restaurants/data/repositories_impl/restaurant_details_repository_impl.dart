@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/failures_successes/exceptions.dart';
 import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/restaurant_details_entity.dart';
 import '../../domain/repositories_contracts/restaurant_details_repository_contract.dart';
 import '../data_sources/restaurant_details_from_remote_data_source.dart';

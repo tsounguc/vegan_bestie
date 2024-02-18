@@ -3,7 +3,7 @@ import 'package:sheveegan/features/restaurants/data/mapper/location_mapper.dart'
 
 import '../../../../core/failures_successes/exceptions.dart';
 import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/location_entity.dart';
 import '../../domain/repositories_contracts/current_location_repository_contract.dart';
 import '../data_sources/current_location_from_plugin.dart';
@@ -12,6 +12,7 @@ import '../models/location_model.dart';
 class CurrentLocationRepositoryImpl implements CurrentLocationRepositoryContract {
   CurrentLocationFromPluginContract currentLocationFromPluginContract =
       serviceLocator<CurrentLocationFromPluginContract>();
+
   @override
   Future<Either<LocationFailure, LocationEntity>> getCurrentLocation() async {
     try {

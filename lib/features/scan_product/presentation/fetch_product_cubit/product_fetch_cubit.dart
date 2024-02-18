@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../../../core/vegan_checker.dart';
 import '../../domain/entities/scan_product_entity.dart';
 import '../../domain/usecases/fetch_product_usecase.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../../core/failures_successes/exceptions.dart';
 import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/service_locator.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories_contracts/auth_repository_contract.dart';
 import '../data_sources/auth_remote_data_source.dart';
