@@ -86,16 +86,24 @@ void setUpServices() {
   serviceLocator.registerSingleton<GetLastLocationUseCase>(GetLastLocationUseCase());
 
   //--- Restaurants Service
-  serviceLocator.registerSingleton<RestaurantsApiServiceContract>(YelpFusionRestaurantsApiServiceImpl());
+  // serviceLocator.registerSingleton<RestaurantsApiServiceContract>(YelpFusionRestaurantsApiServiceImpl());
+  serviceLocator.registerSingleton<RestaurantsApiServiceContract>(GooglePlacesRestaurantsApiServiceImpl());
 
+  // serviceLocator
+  //     .registerSingleton<RestaurantsFromRemoteDataSourceContract>(RestaurantsFromRemoteDataSourceYelpImpl());
   serviceLocator
-      .registerSingleton<RestaurantsFromRemoteDataSourceContract>(RestaurantsFromRemoteDataSourceYelpImpl());
+      .registerSingleton<RestaurantsFromRemoteDataSourceContract>(RestaurantsFromRemoteDataSourceGoogleImpl());
 
+  // serviceLocator.registerSingleton<RestaurantDetailsFromRemoteDataSourceContract>(
+  //     RestaurantDetailsFromRemoteDataSourceYelpImpl());
   serviceLocator.registerSingleton<RestaurantDetailsFromRemoteDataSourceContract>(
-      RestaurantDetailsFromRemoteDataSourceYelpImpl());
+      RestaurantDetailsFromRemoteDataSourceGoogleImpl());
 
-  serviceLocator.registerSingleton<RestaurantsRepositoryContract>(RestaurantsRepositoryYelpImpl());
-  serviceLocator.registerSingleton<RestaurantDetailsRepositoryContract>(RestaurantDetailsRepositoryYelpImpl());
+  // serviceLocator.registerSingleton<RestaurantsRepositoryContract>(RestaurantsRepositoryYelpImpl());
+  serviceLocator.registerSingleton<RestaurantsRepositoryContract>(RestaurantsRepositoryGoogleImpl());
+
+  // serviceLocator.registerSingleton<RestaurantDetailsRepositoryContract>(RestaurantDetailsRepositoryYelpImpl());
+  serviceLocator.registerSingleton<RestaurantDetailsRepositoryContract>(RestaurantDetailsRepositoryGoogleImpl());
 
   serviceLocator.registerSingleton<GetRestaurantsNearMeUseCase>(GetRestaurantsNearMeUseCase());
   serviceLocator.registerSingleton<GetRestaurantDetailsUseCase>(GetRestaurantDetailsUseCase());

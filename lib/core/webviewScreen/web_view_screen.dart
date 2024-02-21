@@ -8,6 +8,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../core/constants/strings.dart';
 import '../constants/size_config.dart';
 import '../custom_appbar_title_widget.dart';
+import '../custom_back_button.dart';
+import '../vegan_bestie_logo_widget.dart';
 import 'navigation_controls.dart';
 
 class WebViewScreen extends StatefulWidget {
@@ -20,8 +22,7 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+  final Completer<WebViewController> _controller = Completer<WebViewController>();
   late WebViewController _webViewController;
   var loadingPercentage = 0;
 
@@ -41,20 +42,18 @@ class _WebViewScreenState extends State<WebViewScreen> {
         automaticallyImplyLeading: true,
         leading: !Navigator.of(context).canPop()
             ? null
-            : IconButton(
+            : CustomBackButton(
                 color: Colors.black,
-                icon: Icon(
-                  Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
               ),
         centerTitle: true,
-        title: CustomAppbarTitleWidget(
-            imageOneName: 'assets/bread.png',
-            imageTwoName: 'assets/tomato.png'),
-        actions: [NavigationControls(controller: _controller)],
+        title: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.5,
+          child: VeganBestieLogoWidget(size: 25, fontSize: 35),
+        ),
+        // title: CustomAppbarTitleWidget(
+        //     imageOneName: 'assets/bread.png',
+        //     imageTwoName: 'assets/tomato.png'),
+        // actions: [NavigationControls(controller: _controller)],
       ),
       body: Stack(
         children: [
@@ -73,26 +72,61 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   );
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
-                }
-                if (navigationRequest.url.contains("maps")) {
-                  if (Platform.isIOS) {
-                    launchUrl(
-                      Uri(
-                        scheme: 'maps',
-                        path: navigationRequest.url.substring(5),
-                      ),
-                    );
-                  } else {
+                } else if (navigationRequest.url.contains("https://play.google.com/")) {
+                  if (Platform.isAndroid) {
                     launchUrl(
                       Uri.parse(navigationRequest.url),
                       mode: LaunchMode.externalNonBrowserApplication,
                     );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Device does not support Google Play Store')),
+                    );
                   }
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
+                } else if (navigationRequest.url.contains("https://apps.apple.com/")) {
+                  if (Platform.isIOS) {
+                    launchUrl(
+                      Uri.parse(navigationRequest.url),
+                      mode: LaunchMode.externalNonBrowserApplication,
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Device does not support App Store')),
+                    );
+                  }
+                  print('blocking navigation to $navigationRequest}');
+                  return NavigationDecision.prevent;
+                } else if (navigationRequest.url.contains("mailto")) {
+                  launchUrl(
+                    Uri.parse(navigationRequest.url),
+                    mode: LaunchMode.externalNonBrowserApplication,
+                  );
+                  print('blocking navigation to $navigationRequest}');
+                  return NavigationDecision.prevent;
                 }
-                print('allowing navigation to $navigationRequest');
-                return NavigationDecision.navigate;
+                // else if (navigationRequest.url.contains("maps")) {
+                //   if (Platform.isIOS) {
+                //     launchUrl(
+                //       Uri(
+                //         scheme: 'maps',
+                //         path: navigationRequest.url.substring(5),
+                //       ),
+                //     );
+                //   } else {
+                //     launchUrl(
+                //       Uri.parse(navigationRequest.url),
+                //       mode: LaunchMode.externalNonBrowserApplication,
+                //     );
+                //   }
+                //   print('blocking navigation to $navigationRequest}');
+                //   return NavigationDecision.prevent;
+                // }
+                else {
+                  print('allowing navigation to $navigationRequest');
+                  return NavigationDecision.navigate;
+                }
               },
               javascriptMode: JavascriptMode.unrestricted,
               onPageStarted: (url) {
@@ -163,6 +197,10 @@ class _WebViewScreenState extends State<WebViewScreen> {
               ),
             ),
         ],
+      ),
+      bottomNavigationBar: NavigationControls(
+        controller: _controller,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       ),
     );
   }

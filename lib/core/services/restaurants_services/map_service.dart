@@ -14,17 +14,12 @@ class GoogleMapPluginImpl implements MapServiceContract {
   Future<MapModel> getRestaurantsMarkers(List<RestaurantEntity> restaurants) async {
     Set<Marker> restaurantsMarkers = {};
     for (int index = 0; index < restaurants.length; index++) {
-      // debugPrint(
-      //     "${restaurants[index].location?.address1}, ${restaurants[index].location?.city}, ${restaurants[index].location?.zipCode}");
-      List<Location> locations = await locationFromAddress(
-          "${restaurants[index].location?.address1}, ${restaurants[index].location?.city}, ${restaurants[index].location?.zipCode}");
-      Location restaurantCoordinates = locations.first;
       restaurantsMarkers.add(
         Marker(
           markerId: MarkerId(restaurants[index].name!),
-          infoWindow: InfoWindow(title: restaurants[index].name, snippet: restaurants[index].location!.address1),
+          infoWindow: InfoWindow(title: restaurants[index].name, snippet: restaurants[index].vicinity),
           icon: BitmapDescriptor.defaultMarker,
-          position: LatLng(restaurantCoordinates.latitude, restaurantCoordinates.longitude),
+          position: LatLng(restaurants[index].lat!, restaurants[index].lng!),
         ),
       );
     }

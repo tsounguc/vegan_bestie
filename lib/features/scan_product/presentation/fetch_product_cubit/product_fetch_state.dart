@@ -25,14 +25,11 @@ class ProductFoundState extends ProductFetchState {
 }
 
 class ProductNotFoundState extends ProductFetchState {
-  final String message;
-
-  ProductNotFoundState({required this.message});
+  ProductNotFoundState();
 
   @override
   // TODO: implement props
   List<Object?> get props => [];
-
 }
 
 class ProductFetchErrorState extends ProductFetchState {
@@ -42,11 +39,4 @@ class ProductFetchErrorState extends ProductFetchState {
 
   @override
   List<Object?> get props => [];
-
 }
-
-
-
-
-
-

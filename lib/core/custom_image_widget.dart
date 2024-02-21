@@ -16,6 +16,7 @@ class CustomImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("image Url: $imageUrl");
     return Container(
       height: height ?? MediaQuery.of(context).size.height * 0.43,
       width: width ?? MediaQuery.of(context).size.width * 0.80,
@@ -41,13 +42,18 @@ class CustomImageWidget extends StatelessWidget {
           bottomLeft: Radius.circular(25),
           bottomRight: Radius.circular(25),
         ),
-        child: CachedNetworkImage(
-          progressIndicatorBuilder: (context, text, downloadProgress) =>
-              LoadingPage(),
-          fit: BoxFit.cover,
-          imageUrl: imageUrl ?? "",
-          errorWidget: (context, error, value) => Container(),
-        ),
+        child: imageUrl == null
+            ? Icon(
+                Icons.image_outlined,
+                size: MediaQuery.of(context).size.width * 0.65,
+                color: Colors.grey,
+              )
+            : CachedNetworkImage(
+                progressIndicatorBuilder: (context, text, downloadProgress) => LoadingPage(),
+                fit: BoxFit.cover,
+                imageUrl: imageUrl!,
+                errorWidget: (context, error, value) => Container(),
+              ),
       ),
     );
   }

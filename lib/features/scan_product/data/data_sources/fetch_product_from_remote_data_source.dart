@@ -3,6 +3,8 @@ import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/services/food_facts_services/food_facts_api_service.dart';
 import 'package:sheveegan/features/scan_product/data/models/product_info_model.dart';
 
+import '../../../../core/constants/strings.dart';
+
 abstract class FetchProductFromRemoteDataSourceContract {
   Future<ScanProductModel> fetchProduct(String barcode);
 }
@@ -17,7 +19,7 @@ class FetchProductFromRemoteDataSourceImpl implements FetchProductFromRemoteData
       ScanProductModel productInfo = ScanProductModel.fromJson(data['product']);
       return productInfo;
     } catch (e) {
-      throw const FetchProductException(message: "Product Not Found");
+      throw FetchProductException(message: Strings.productNotFound);
     }
   }
 }

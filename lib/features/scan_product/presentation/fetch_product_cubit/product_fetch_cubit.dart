@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/constants/strings.dart';
 import '../../../../core/failures_successes/failures.dart';
 import '../../../../core/services/service_locator.dart';
 import '../../../../core/vegan_checker.dart';
@@ -26,8 +27,8 @@ class ProductFetchCubit extends Cubit<ProductFetchState> {
     fetchProductResult.fold(
       (fetchFailure) => emit(ProductFetchErrorState(error: fetchFailure.message)),
       (productInfo) {
-        if (productInfo == null) {
-          emit(ProductNotFoundState(message: "${productInfo.productName} was not found"));
+        if (productInfo == null || productInfo.productName == null || productInfo.productName!.isEmpty) {
+          emit(ProductNotFoundState());
         } else {
           print("Product Name: ${productInfo.productName}");
           bool isVegan = veganChecker.veganCheck(productInfo);

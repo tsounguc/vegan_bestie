@@ -8,6 +8,7 @@ import 'package:meta/meta.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/barcode_entity.dart';
+import '../../../../core/constants/strings.dart';
 import '../../domain/usecases/scan_barcode_usecase.dart';
 
 part 'barcode_scanner_state.dart';
@@ -24,7 +25,7 @@ class BarcodeScannerCubit extends Cubit<BarcodeScannerState> {
       (scanningFailure) => emit(ScanningErrorState(error: scanningFailure.message)),
       (barcodeEntity) {
         if (barcodeEntity.barcode!.isEmpty || barcodeEntity.barcode == "-1") {
-          emit(ScanningCancelledState(barcode: barcodeEntity.barcode, message: "Cancelled"));
+          emit(ScanningCanceledState(barcode: barcodeEntity.barcode, message: Strings.scanCanceledMessage));
         } else if (barcodeEntity.barcode!.isNotEmpty) {
           print("Barcode found: ${barcodeEntity.barcode}");
           emit(BarcodeFoundState(barcode: barcodeEntity.barcode!));

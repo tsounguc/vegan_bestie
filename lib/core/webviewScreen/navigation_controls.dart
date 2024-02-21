@@ -1,11 +1,15 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NavigationControls extends StatelessWidget {
-  const NavigationControls({required this.controller});
+  NavigationControls(
+      {required this.controller,
+      this.mainAxisAlignment = MainAxisAlignment.end});
 
+  MainAxisAlignment? mainAxisAlignment;
   final Completer<WebViewController> controller;
 
   @override
@@ -14,20 +18,30 @@ class NavigationControls extends StatelessWidget {
       future: controller.future,
       builder: (context, snapshot) {
         final WebViewController? controller = snapshot.data;
-        if (snapshot.connectionState != ConnectionState.done || controller == null) {
+        if (snapshot.connectionState != ConnectionState.done ||
+            controller == null) {
           return Row(
-            children: const <Widget>[
-              Icon(Icons.arrow_back_ios, color: Colors.white),
-              Icon(Icons.arrow_forward_ios, color: Colors.white),
+            mainAxisAlignment: mainAxisAlignment!,
+            children: <Widget>[
+              Icon(Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
+                  color: Colors.white),
+              Icon(
+                  Platform.isAndroid
+                      ? Icons.arrow_forward_ios
+                      : Icons.arrow_forward,
+                  color: Colors.white),
               Icon(Icons.replay, color: Colors.white),
             ],
           );
         }
 
         return Row(
+          mainAxisAlignment: mainAxisAlignment!,
           children: <Widget>[
             IconButton(
-              icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+              icon: Icon(
+                  Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
+                  color: Colors.black),
               onPressed: () async {
                 if (await controller.canGoBack()) {
                   await controller.goBack();
@@ -40,7 +54,11 @@ class NavigationControls extends StatelessWidget {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.arrow_forward_ios, color: Colors.black),
+              icon: Icon(
+                  Platform.isAndroid
+                      ? Icons.arrow_forward_ios
+                      : Icons.arrow_forward,
+                  color: Colors.black),
               onPressed: () async {
                 if (await controller.canGoForward()) {
                   await controller.goForward();
@@ -52,12 +70,12 @@ class NavigationControls extends StatelessWidget {
                 }
               },
             ),
-            // IconButton(
-            //   icon: const Icon(Icons.replay, color: Colors.white),
-            //   onPressed: () {
-            //     controller.reload();
-            //   },
-            // ),
+            IconButton(
+              icon: const Icon(Icons.replay, color: Colors.black),
+              onPressed: () {
+                controller.reload();
+              },
+            ),
           ],
         );
       },

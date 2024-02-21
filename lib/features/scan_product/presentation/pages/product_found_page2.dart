@@ -1,13 +1,16 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sheveegan/core/constants/strings.dart';
 import 'package:sheveegan/core/custom_back_button.dart';
 import 'package:sheveegan/core/custom_image_widget.dart';
+import 'package:sheveegan/features/scan_product/presentation/pages/report_issue_page.dart';
 
 import '../../../../core/assets/vegan_icon.dart';
 import '../../../../core/loading.dart';
@@ -32,9 +35,11 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
       final dynamic toolTip = _toolTipKey.currentState;
 
-      ProductFetchState state =
-          BlocProvider.of<ProductFetchCubit>(context).state;
-      if (state is ProductFoundState && state.isVegan == true) {
+      ProductFetchState state = BlocProvider.of<ProductFetchCubit>(context).state;
+      if (state is ProductFoundState &&
+          state.isVegan != null &&
+          state.product.ingredients != null &&
+          state.product.ingredients!.isNotEmpty) {
         await Future.delayed(Duration(milliseconds: 10));
         toolTip.ensureTooltipVisible();
         await Future.delayed(Duration(seconds: 3));
@@ -52,55 +57,47 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
           double? proteinsPercentage = 0;
           double? carbohydratesPercentage = 0;
           double? fatPercentage = 0;
-          if (state.product.proteins100G != null &&
-              state.product.carbohydrates100G != null &&
-              state.product.fat100G != null) {
-            total = state.product.proteins100G! +
-                state.product.carbohydrates100G! +
-                state.product.fat100G!;
-            proteinsPercentage = state.product.proteins100G! / total;
-            carbohydratesPercentage = state.product.carbohydrates100G! / total;
-            fatPercentage = state.product.fat100G! / total;
+          if (state.product.proteinsValue != null &&
+              state.product.carbohydratesValue != null &&
+              state.product.fatValue != null) {
+            total = state.product.proteinsValue! + state.product.carbohydratesValue! + state.product.fatValue!;
+            proteinsPercentage = state.product.proteinsValue! / total;
+            carbohydratesPercentage = state.product.carbohydratesValue! / total;
+            fatPercentage = state.product.fatValue! / total;
           }
           return Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
-            // appBar: AppBar(
-            //   backgroundColor: Colors.white,
-            //   iconTheme: IconThemeData(color: Colors.black),
-            //   title: Text(Strings.appTitle),
-            //   centerTitle: true,
-            // ),
             body: Stack(
               children: [
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.55,
+                    height: MediaQuery.of(context).size.height * 0.53,
                     width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.73,
-                              // height: 35,
+                              width: MediaQuery.of(context).size.width * 0.77,
+                              height: MediaQuery.of(context).size.width * 0.08,
                               child: Text(
                                 "${state.product.productName}",
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 26,
-                                    overflow: TextOverflow.ellipsis),
+                                    color: Colors.black, fontSize: 18.sp, overflow: TextOverflow.ellipsis),
                               ),
                             ),
-                            if (state.isVegan!)
+                            if (state.isVegan != null &&
+                                state.product.ingredients != null &&
+                                state.product.ingredients!.isNotEmpty)
                               Container(
-                                height: 40,
-                                width: 50,
+                                height: MediaQuery.of(context).size.width * 0.09,
+                                width: MediaQuery.of(context).size.width * 0.12,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   // border: Border.all(color: Colors.white),
@@ -116,16 +113,21 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                 ),
                                 child: Tooltip(
                                   key: _toolTipKey,
+                                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                                   margin: EdgeInsets.symmetric(horizontal: 50),
                                   // verticalOffset: 20,
                                   textAlign: TextAlign.start,
-                                  message: Strings.toolTipVeganMessage,
-                                  textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
+                                  message: state.isVegan == true
+                                      ? Strings.toolTipVeganMessage
+                                      : state.isVegan == false
+                                          ? Strings.toolTipNonVeganMessage +
+                                              " " +
+                                              state.nonVeganIngredientsInProduct!
+                                          : null,
+                                  textStyle:
+                                      TextStyle(color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w600),
                                   decoration: BoxDecoration(
-                                    color: Colors.green,
+                                    color: state.isVegan == true ? Colors.green : Colors.blue,
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10),
@@ -139,46 +141,53 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                           offset: Offset(1, 2)),
                                     ],
                                   ),
-                                  child: Icon(
-                                    VeganIcon.vegan_icon,
-                                    color: Colors.green,
-                                    size: 30,
-                                  ),
+                                  triggerMode: TooltipTriggerMode.tap,
+                                  child: state.isVegan == true
+                                      ? Icon(
+                                          VeganIcon.vegan_icon,
+                                          color: Colors.green,
+                                          size: 22,
+                                        )
+                                      : Center(
+                                          child: Icon(
+                                            Icons.info_outlined,
+                                            color: Colors.blueGrey.shade600,
+                                            // size: 22,
+                                          ),
+                                        ),
                                   showDuration: Duration(milliseconds: 2750),
                                 ),
                               ),
                           ],
                         ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.005),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.005),
                         Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
+                          padding: const EdgeInsets.only(left: 8.0, top: 4.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Macros",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 18),
+                                  Strings.macrosText,
+                                  style: TextStyle(color: Colors.black, fontSize: 14.sp),
                                 ),
                               ]),
                         ),
-                        SizedBox(
-                            height:
-                                MediaQuery.of(context).size.height * 0.0025),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                         Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                              vertical:
-                                  MediaQuery.of(context).size.height * 0.0025),
+                              horizontal: 12.0, vertical: MediaQuery.of(context).size.height * 0.0025),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               MacroNutrientWidget(
-                                title: 'Protein',
-                                percentage: proteinsPercentage,
+                                title: Strings.proteinText,
+                                percentage: proteinsPercentage.isNaN ||
+                                        proteinsPercentage.isInfinite ||
+                                        proteinsPercentage.isNegative
+                                    ? 0
+                                    : proteinsPercentage,
                                 icon: Image.asset(
                                   'assets/tofu.png',
                                   fit: BoxFit.contain,
@@ -186,15 +195,18 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                   width: 10,
                                 ),
                                 color: Colors.green.shade800,
-                                per100G: state.product.proteins100G,
+                                value: state.product.proteinsValue,
                               ),
                               SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.0075,
+                                height: MediaQuery.of(context).size.height * 0.0075,
                               ),
                               MacroNutrientWidget(
-                                title: 'Carbs',
-                                percentage: carbohydratesPercentage,
+                                title: Strings.carbsText,
+                                percentage: carbohydratesPercentage.isNaN ||
+                                        carbohydratesPercentage.isInfinite ||
+                                        carbohydratesPercentage.isNegative
+                                    ? 0
+                                    : carbohydratesPercentage,
                                 icon: Image.asset(
                                   'assets/bread.png',
                                   fit: BoxFit.contain,
@@ -202,28 +214,30 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                   width: 10,
                                 ),
                                 color: Colors.amberAccent.shade100,
-                                per100G: state.product.carbohydrates100G,
+                                value: state.product.carbohydratesValue,
                               ),
                               SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.0075,
+                                height: MediaQuery.of(context).size.height * 0.0075,
                               ),
                               MacroNutrientWidget(
-                                  title: 'Fat',
-                                  percentage: fatPercentage,
-                                  icon: Image.asset(
-                                    'assets/avocado.png',
-                                    fit: BoxFit.contain,
-                                    height: 10,
-                                    width: 10,
-                                  ),
-                                  color: Colors.deepPurpleAccent.shade100,
-                                  per100G: state.product.fat100G),
+                                title: Strings.fatText,
+                                percentage:
+                                    fatPercentage.isNaN || fatPercentage.isInfinite || fatPercentage.isNegative
+                                        ? 0
+                                        : fatPercentage,
+                                icon: Image.asset(
+                                  'assets/avocado.png',
+                                  fit: BoxFit.contain,
+                                  height: 10,
+                                  width: 10,
+                                ),
+                                color: Colors.deepPurpleAccent.shade100,
+                                value: state.product.fatValue,
+                              ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0),
                           child: Row(
@@ -231,15 +245,13 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Ingredients",
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 18),
+                                Strings.ingredientsText,
+                                style: TextStyle(color: Colors.black, fontSize: 14.sp),
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.005),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.005),
                         Scrollbar(
                           controller: _scrollController,
                           thumbVisibility: true,
@@ -247,31 +259,45 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                           radius: Radius.circular(10),
                           thickness: 10,
                           child: SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.15,
+                            height: MediaQuery.of(context).size.height * 0.125,
                             child: SingleChildScrollView(
                               controller: _scrollController,
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 15.0,
-                                    vertical:
-                                        MediaQuery.of(context).size.height *
-                                            0.0025),
+                                    horizontal: 20.0, vertical: MediaQuery.of(context).size.height * 0.0025),
                                 child: Text(
                                     state.product.ingredientsText != null &&
-                                            state.product.ingredientsText!
-                                                .isNotEmpty
+                                            state.product.ingredientsText!.isNotEmpty
                                         ? state.product.ingredientsText!
-                                        : 'Ingredients not found'.toUpperCase(),
+                                        : Strings.ingredientsNotFoundText,
                                     style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.normal)
+                                        color: Colors.black, fontSize: 12.sp, fontWeight: FontWeight.normal)
                                     // style: Theme.of(context).textTheme.bodySmall,
                                     ),
                               ),
                             ),
                           ),
-                        )
+                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.end,
+                        //   children: [
+                        //     TextButton(
+                        //       onPressed: () {
+                        //         Navigator.of(context)
+                        //             .pushNamed(ReportIssuePage.id);
+                        //       },
+                        //       child: Text(
+                        //         Strings.reportIssueText,
+                        //         style: TextStyle(
+                        //             color: Colors.black,
+                        //             fontSize: 12.sp,
+                        //             fontWeight: FontWeight.normal,
+                        //             decoration: TextDecoration.underline,
+                        //             decorationThickness: 2),
+                        //       ),
+                        //     )
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),
@@ -282,6 +308,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                   left: MediaQuery.of(context).size.width * 0.0,
                   child: CustomImageWidget(
                     imageUrl: state.product.imageFrontUrl,
+                    height: MediaQuery.of(context).size.height * 0.45,
                   ),
                 ),
                 Positioned(

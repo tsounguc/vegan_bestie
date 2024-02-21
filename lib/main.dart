@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'core/constants/strings.dart';
 import 'core/services/service_locator.dart';
 import 'features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'features/auth/presentation/pages/auth_page.dart';
@@ -78,7 +79,7 @@ class _MyAppState extends State<MyApp> {
           builder: DevicePreview.appBuilder,
           locale: DevicePreview.locale(context),
           debugShowCheckedModeBanner: false,
-          title: "Vegan Bestie",
+          title: Strings.appTitle,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.light,

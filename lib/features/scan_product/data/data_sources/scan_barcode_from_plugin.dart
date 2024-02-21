@@ -18,6 +18,8 @@ class ScanBarcodeFromPluginImpl implements ScanBarcodeFromPluginContract {
     try {
       String barcode = await barcodeScannerServiceContract.scanBarcode();
       return BarcodeModel(barcode: barcode);
+    } on InvalidBarcodeException catch (e) {
+      throw ScanBarcodeException(message: e.message);
     } catch (e) {
       throw const ScanBarcodeException(message: "Failed to scan barcode");
     }

@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({Key? key}) : super(key: key);
+  final Color color;
+
+  const CustomBackButton({Key? key, this.color = Colors.white}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class CustomBackButton extends StatelessWidget {
           },
           icon: Icon(
             Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
-            color: Colors.white,
+            color: color,
           ),
         ),
       ],

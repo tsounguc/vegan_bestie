@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MacroNutrientWidget extends StatelessWidget {
@@ -6,7 +7,7 @@ class MacroNutrientWidget extends StatelessWidget {
   final String title;
   final Widget icon;
   final Color color;
-  final double? per100G;
+  final double? value;
 
   const MacroNutrientWidget(
       {Key? key,
@@ -14,7 +15,7 @@ class MacroNutrientWidget extends StatelessWidget {
       required this.icon,
       required this.percentage,
       required this.color,
-      required this.per100G})
+      required this.value})
       : super(key: key);
 
   @override
@@ -23,8 +24,8 @@ class MacroNutrientWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-            height: 50,
-            width: 50,
+            height: 45,
+            width: 45,
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -53,11 +54,11 @@ class MacroNutrientWidget extends StatelessWidget {
                 children: [
                   Text(
                     title + " (${(percentage * 100).toStringAsFixed(1)}%)",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black, fontSize: 12.sp),
                   ),
                   Text(
-                    " ${per100G?.toStringAsFixed(1) ?? "0.0"} g",
-                    style: TextStyle(color: Colors.black),
+                    " ${value?.toStringAsFixed(1) ?? "0.0"} g",
+                    style: TextStyle(color: Colors.black, fontSize: 13.sp),
                   )
                 ],
               ),

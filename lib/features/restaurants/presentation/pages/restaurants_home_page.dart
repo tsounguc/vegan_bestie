@@ -34,9 +34,6 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
         BlocListener<GeolocationBloc, GeolocationState>(
           listener: (context, state) {
             userCurrentLocation = BlocProvider.of<GeolocationBloc>(context).currentLocation;
-            // if (userCurrentLocation == null) {
-            //   BlocProvider.of<GeolocationBloc>(context).add(LoadGeolocationEvent());
-            // }
             if (state is GeolocationLoadedState) {
               if (userCurrentLocation == null ||
                   userCurrentLocation?.latitude.toStringAsFixed(3) != state.position.latitude.toStringAsFixed(3) ||
@@ -44,8 +41,10 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
                       state.position.longitude.toStringAsFixed(3)) {
                 debugPrint("Getting Restaurants");
                 BlocProvider.of<GeolocationBloc>(context).currentLocation = state.position;
+                userCurrentLocation = state.position;
+                debugPrint(
+                    "userCurrentLocation: ${userCurrentLocation?.latitude} ${userCurrentLocation?.longitude}");
                 BlocProvider.of<RestaurantsBloc>(context).add(GetRestaurantsEvent(position: state.position));
-                BlocProvider.of<MapCubit>(context).setUserLocation(userLocation: state.position);
               }
             }
           },
@@ -54,7 +53,7 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
           listener: (context, state) {
             if (state is RestaurantsFoundState) {
               debugPrint("restaurants found");
-              BlocProvider.of<MapCubit>(context).displayRestaurants(state.restaurants);
+              BlocProvider.of<MapCubit>(context).displayRestaurants(state.restaurants, userCurrentLocation!);
             }
           },
         ),

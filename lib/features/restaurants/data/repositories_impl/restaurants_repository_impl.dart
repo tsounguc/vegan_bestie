@@ -48,7 +48,7 @@ class RestaurantsRepositoryGoogleImpl implements RestaurantsRepositoryContract {
       RestaurantMapper mapper = RestaurantMapper();
       List<RestaurantEntity> restaurantEntitiesList = [];
       for (int index = 0; index < restaurantModelsList.length; index++) {
-        RestaurantEntity restaurantEntity = mapper.mapYelpModelToEntity(restaurantModelsList[index]);
+        RestaurantEntity restaurantEntity = mapper.mapGoogleModelToEntity(restaurantModelsList[index], position);
         restaurantEntitiesList.add(restaurantEntity);
       }
       return Right(restaurantEntitiesList);

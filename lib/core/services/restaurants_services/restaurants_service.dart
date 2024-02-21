@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 abstract class RestaurantsApiServiceContract {
   Future getRestaurantsNearMe(Position position);
 
+  Future findPlaceFromText(String text);
+
   Future getRestaurantDetails(String? id);
 }
 
@@ -16,19 +18,38 @@ class GooglePlacesRestaurantsApiServiceImpl implements RestaurantsApiServiceCont
   final _baseUrl = "https://maps.googleapis.com";
 
   @override
-  Future<http.Response> getRestaurantsNearMe(Position position) async {
-    try {
-      return http.get(Uri.parse(
-          "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${_apiKey}&type=restaurant&location=${position.latitude},${position.longitude}&rankby=distance"));
-    } catch (e) {
-      throw Exception(e);
+  Future<Map<String, dynamic>> getRestaurantsNearMe(Position position) async {
+    final response = await http.get(Uri.parse(
+        "$_baseUrl/maps/api/place/nearbysearch/json?key=${_apiKey}&keyword=vegan&type=restaurant&location=${position.latitude},${position.longitude}&radius=12500"));
+    if (response.statusCode == 200) {
+      return json.decode(response.body) as Map<String, dynamic>;
+    } else {
+      print("Status code: ${response.statusCode} ${response.reasonPhrase}");
+      throw Exception("Status code: ${response.statusCode} ${response.reasonPhrase}");
     }
   }
 
   @override
-  Future getRestaurantDetails(String? id) {
+  Future<Map<String, dynamic>> findPlaceFromText(String text) async {
+    final response = await http.get(Uri.parse(
+        "$_baseUrl/maps/api/place/findplacefromttext/json?key=${_apiKey}&input=$text&inputtype=textquery&fields=all"));
+    if (response.statusCode == 200) {
+      return json.decode(response.body) as Map<String, dynamic>;
+    } else {
+      throw Exception("Status code: ${response.statusCode}");
+    }
+  }
+
+  @override
+  Future getRestaurantDetails(String? id) async {
     // TODO: implement getRestaurantDetails
-    throw UnimplementedError();
+    final response =
+        await http.get(Uri.parse("$_baseUrl/maps/api/place/details/json?key=$_apiKey&place_id=$id&fields=all"));
+    if (response.statusCode == 200) {
+      return json.decode(response.body) as Map<String, dynamic>;
+    } else {
+      throw Exception("Status code: ${response.statusCode}");
+    }
   }
 }
 
@@ -86,6 +107,12 @@ class YelpFusionRestaurantsApiServiceImpl implements RestaurantsApiServiceContra
       throw Exception("Status code: ${response.statusCode}");
     }
   }
+
+  @override
+  Future findPlaceFromText(String text) {
+    // TODO: implement findPlaceFromText
+    throw UnimplementedError();
+  }
 }
 
 class WorldWideRestaurantsApiServiceImp implements RestaurantsApiServiceContract {
@@ -116,6 +143,12 @@ class WorldWideRestaurantsApiServiceImp implements RestaurantsApiServiceContract
   @override
   Future getRestaurantDetails(String? id) {
     // TODO: implement getRestaurantDetails
+    throw UnimplementedError();
+  }
+
+  @override
+  Future findPlaceFromText(String text) {
+    // TODO: implement findPlaceFromText
     throw UnimplementedError();
   }
 }
