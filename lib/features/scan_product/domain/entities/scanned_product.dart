@@ -1,4 +1,4 @@
-class ScanProductEntity {
+class ScannedProduct {
   String? code;
   String? productName;
   List<IngredientEntity>? ingredients;
@@ -18,7 +18,7 @@ class ScanProductEntity {
   String? fatUnit;
   double? fatValue;
 
-  ScanProductEntity({
+  ScannedProduct({
     this.code,
     this.productName,
     this.ingredients,
