@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../features/auth/presentation/auth_cubit/auth_cubit.dart';
-import '../features/social_network/presentation/pages/profile_page.dart';
-import 'custom_circle_avatar.dart';
+import '../../../features/auth/presentation/auth_cubit/auth_cubit.dart';
+import '../../../features/social_network/presentation/pages/profile_page.dart';
+import '../../../core/common/widgets/custom_circle_avatar.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key}) : super(key: key);

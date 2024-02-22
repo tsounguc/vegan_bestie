@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/buttons.dart';
-import '../../../../core/loading.dart';
+import '../../../../core/common/widgets/buttons.dart';
+import '../../../../core/common/screens/loading/loading.dart';
 import '../../../auth/presentation/auth_cubit/auth_cubit.dart';
 import 'components/profile_widget.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/loading.dart';
+import '../../../../core/common/screens/loading/loading.dart';
 import '../../../auth/presentation/auth_cubit/auth_cubit.dart';
 import '../../../restaurants/presentation/pages/componets/number_button.dart';
 import 'components/profile_widget.dart';

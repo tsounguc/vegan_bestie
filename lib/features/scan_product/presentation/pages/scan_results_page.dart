@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sheveegan/features/scan_product/presentation/fetch_product_cubit/product_fetch_cubit.dart';
-import 'package:sheveegan/core/error.dart';
-import 'package:sheveegan/core/loading.dart';
-import 'package:sheveegan/core/product_not_found.dart';
+import 'package:sheveegan/core/common/screens/error/error.dart';
+import 'package:sheveegan/core/common/screens/loading/loading.dart';
 
-import 'product_found_page.dart';
+import '../../../../core/common/screens/product_screens/product_not_found.dart';
 import 'product_found_page2.dart';
 
 class ScanResultsPage extends StatelessWidget {

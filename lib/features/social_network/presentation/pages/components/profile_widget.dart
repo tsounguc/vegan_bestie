@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sheveegan/core/custom_circle_avatar.dart';
 
+import '../../../../../core/common/widgets/custom_circle_avatar.dart';
 import '../edit_profile_page.dart';
 
 class ProfileWidget extends StatelessWidget {
   final bool isOnEditProfilePage;
+
   const ProfileWidget({Key? key, required this.isOnEditProfilePage}) : super(key: key);
 
   @override

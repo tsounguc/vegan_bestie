@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../themes/app_theme.dart';
-import 'constants/strings.dart';
+import '../../../themes/app_theme.dart';
+import '../../constants/strings.dart';
 
 class VeganBestieLogoWidget extends StatelessWidget {
   double? size;
   double? fontSize;
 
-  VeganBestieLogoWidget({Key? key, this.size = 35, this.fontSize = 52})
-      : super(key: key);
+  VeganBestieLogoWidget({Key? key, this.size = 35, this.fontSize = 52}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +44,7 @@ class VeganBestieLogoWidget extends StatelessWidget {
             children: [
               Text(
                 Strings.appTitle,
-                style: Theme.of(context)
-                    .textTheme
-                    .displayMedium
-                    ?.copyWith(fontSize: fontSize),
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: fontSize),
               ),
             ],
           ),

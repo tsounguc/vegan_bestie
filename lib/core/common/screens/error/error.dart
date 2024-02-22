@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/constants/strings.dart';
-import 'package:sheveegan/core/product_not_found.dart';
+
+import '../product_screens/product_not_found.dart';
 
 class ErrorPage extends StatelessWidget {
   final dynamic error;
+
   const ErrorPage({
     Key? key,
     this.error,

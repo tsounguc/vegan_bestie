@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sheveegan/core/common/screens/product_screens/product_not_found.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/scan_product_home_page.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/select_incorrect_information.dart';
-
-import '../core/product_not_found.dart';
 import '../features/auth/presentation/pages/auth_page.dart';
 import '../features/auth/presentation/pages/forgot_password.dart';
 import '../features/auth/presentation/pages/registration_page.dart';
@@ -48,8 +47,7 @@ class AppRouter {
       case ReportIssuePage.id:
         return MaterialPageRoute(builder: (context) => ReportIssuePage());
       case SelectIncorrectInformation.id:
-        return MaterialPageRoute(
-            builder: (context) => SelectIncorrectInformation());
+        return MaterialPageRoute(builder: (context) => SelectIncorrectInformation());
       default:
         throw Exception('Route not found!');
     }

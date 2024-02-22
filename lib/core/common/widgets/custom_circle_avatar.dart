@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../features/auth/presentation/auth_cubit/auth_cubit.dart';
+import '../../../features/auth/presentation/auth_cubit/auth_cubit.dart';
 
 class CustomCircleAvatar extends StatefulWidget {
   double? size;

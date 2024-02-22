@@ -6,7 +6,7 @@ import 'package:simple_animations/simple_animations.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/size_config.dart';
 import '../../../../core/constants/strings.dart';
-import '../../../../core/vegan_bestie_logo_widget.dart';
+import '../../../../core/common/widgets/vegan_bestie_logo_widget.dart';
 import '../../../../themes/app_theme.dart';
 import '../../../search/presentation/search_bloc/search_bloc.dart';
 import '../barcode_scanner_cubit/barcode_scanner_cubit.dart';

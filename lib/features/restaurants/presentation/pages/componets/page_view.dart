@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../../../../../core/loading.dart';
+import '../../../../../core/common/screens/loading/loading.dart';
 import '../../restaurant_cubit/restaurant_details_cubit.dart';
 
 class CustomPageView extends StatefulWidget {
@@ -57,21 +57,18 @@ class _CustomPageViewState extends State<CustomPageView> {
               currentPosition = position;
               Matrix4 matrix = new Matrix4.identity();
               if (position == _currentPageValue.floor()) {
-                var currentScale =
-                    1 - (_currentPageValue - position) * (1 - _scaleFactor);
+                var currentScale = 1 - (_currentPageValue - position) * (1 - _scaleFactor);
                 var currentTransformation = height * (1 - currentScale) / 2;
                 matrix = Matrix4.diagonal3Values(1, currentScale, 1)
                   ..setTranslationRaw(0, currentTransformation, 0);
               } else if (position == _currentPageValue.floor() + 1) {
-                var currentScale = _scaleFactor +
-                    (_currentPageValue - position + 1) * (1 - _scaleFactor);
+                var currentScale = _scaleFactor + (_currentPageValue - position + 1) * (1 - _scaleFactor);
                 var currentTransformation = height * (1 - currentScale) / 2;
                 matrix = Matrix4.diagonal3Values(1, currentScale, 1);
                 matrix = Matrix4.diagonal3Values(1, currentScale, 1)
                   ..setTranslationRaw(0, currentTransformation, 0);
               } else if (position == _currentPageValue.floor() - 1) {
-                var currentScale =
-                    1 - (_currentPageValue - position) * (1 - _scaleFactor);
+                var currentScale = 1 - (_currentPageValue - position) * (1 - _scaleFactor);
                 var currentTransformation = height * (1 - currentScale) / 2;
                 matrix = Matrix4.diagonal3Values(1, currentScale, 1);
                 matrix = Matrix4.diagonal3Values(1, currentScale, 1)
@@ -107,9 +104,7 @@ class _CustomPageViewState extends State<CustomPageView> {
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       image: NetworkImage(
-                        state.restaurantDetailsEntity?.photos?[position]
-                                    .photoReference ==
-                                null
+                        state.restaurantDetailsEntity?.photos?[position].photoReference == null
                             ? state.restaurantDetailsEntity!.icon!
                             : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${state.restaurantDetailsEntity!.photos![position].photoReference}&key=${dotenv.env['GOOGLE_PLACES_API_KEY']}",
                       ),

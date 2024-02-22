@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sheveegan/core/error.dart';
+import 'package:sheveegan/core/common/screens/error/error.dart';
 
-import '../../../../core/loading.dart';
+import '../../../../core/common/screens/loading/loading.dart';
 import '../geolocation_bloc/geolocation_bloc.dart';
 import '../map_cubit/map_cubit.dart';
 

@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/constants/size_config.dart';
 
-import '../../../../core/assets/vegan_icon.dart';
 import '../../../../core/constants/strings.dart';
+import '../../../../core/resources/vegan_icon.dart';
 import '../search_bloc/search_bloc.dart';
 
 class SearchProductDetail extends StatelessWidget {

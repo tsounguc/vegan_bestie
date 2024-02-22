@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../../core/auth_error_message_widget.dart';
-import '../../../../core/buttons.dart';
+import '../../../../core/common/widgets/auth_error_message_widget.dart';
+import '../../../../core/common/widgets/buttons.dart';
 import '../../../../core/constants/colors.dart';
-import '../../../../core/loading.dart';
+import '../../../../core/common/screens/loading/loading.dart';
 import '../auth_cubit/auth_cubit.dart';
 import 'auth_page.dart';
 import 'components/other_auth_options.dart';

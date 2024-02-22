@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheveegan/core/assets/vegan_icon.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../../../../../../core/constants/colors.dart';
 import '../../../../../../core/constants/size_config.dart';
 import '../../../../../../core/constants/strings.dart';
+import '../../../../../../core/resources/vegan_icon.dart';
 import '../../../fetch_product_cubit/product_fetch_cubit.dart';
 import '../product_found_tabbar_view.dart';
 
@@ -39,8 +39,14 @@ class ProductFoundBodyInfo extends StatelessWidget {
           }
           return Container(
             padding: EdgeInsets.only(top: 35, left: 35, right: 35, bottom: 35),
-            height: MediaQuery.of(context).size.height * .60,
-            width: MediaQuery.of(context).size.width,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height * .60,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
             decoration: BoxDecoration(
               color: Colors.blueGrey.shade50,
               borderRadius: BorderRadius.only(
@@ -72,7 +78,10 @@ class ProductFoundBodyInfo extends StatelessWidget {
                           decoration: BoxDecoration(color: Colors.green),
                           child: Icon(
                             VeganIcon.vegan_icon,
-                            color: Theme.of(context).colorScheme.background,
+                            color: Theme
+                                .of(context)
+                                .colorScheme
+                                .background,
                             size: 30.r,
                           ),
                           showDuration: Duration(seconds: 5),
@@ -107,7 +116,10 @@ class ProductFoundBodyInfo extends StatelessWidget {
                   height: 10.h,
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.75,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.75,
                   child: Row(
                     children: [
                       Flexible(
@@ -116,7 +128,10 @@ class ProductFoundBodyInfo extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
-                            color: state.isVegan! ? Theme.of(context).colorScheme.background : Colors.red.shade900,
+                            color: state.isVegan! ? Theme
+                                .of(context)
+                                .colorScheme
+                                .background : Colors.red.shade900,
                           ),
                         ),
                       ),
@@ -133,7 +148,10 @@ class ProductFoundBodyInfo extends StatelessWidget {
                       'Barcode - ${state.product.code}',
                       style: TextStyle(
                         fontSize: 16,
-                        color: state.isVegan! ? Theme.of(context).colorScheme.background : Colors.red.shade900,
+                        color: state.isVegan! ? Theme
+                            .of(context)
+                            .colorScheme
+                            .background : Colors.red.shade900,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -191,7 +209,8 @@ class ProductFoundBodyInfo extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Proteins (${(proteinsPercentage * 100).toStringAsFixed(1)}%): ${state.product.proteins100G?.toStringAsFixed(1) ?? ""} ${state.product.proteinsUnit}',
+                            'Proteins (${(proteinsPercentage * 100).toStringAsFixed(1)}%): ${state.product
+                                .proteins100G?.toStringAsFixed(1) ?? ""} ${state.product.proteinsUnit}',
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: proteinsColor,
@@ -199,7 +218,8 @@ class ProductFoundBodyInfo extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Carbs (${(carbohydratesPercentage * 100).toStringAsFixed(1)}%): ${state.product.carbohydrates100G?.toStringAsFixed(1) ?? ""} ${state.product.carbohydratesUnit}',
+                            'Carbs (${(carbohydratesPercentage * 100).toStringAsFixed(1)}%): ${state.product
+                                .carbohydrates100G?.toStringAsFixed(1) ?? ""} ${state.product.carbohydratesUnit}',
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: carbsColor,
@@ -207,7 +227,8 @@ class ProductFoundBodyInfo extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Fat (${(fatPercentage * 100).toStringAsFixed(1)}%): ${state.product.fat100G?.toStringAsFixed(1) ?? ""} ${state.product.fatUnit}',
+                            'Fat (${(fatPercentage * 100).toStringAsFixed(1)}%): ${state.product.fat100G
+                                ?.toStringAsFixed(1) ?? ""} ${state.product.fatUnit}',
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: fatColor,
@@ -228,7 +249,10 @@ class ProductFoundBodyInfo extends StatelessWidget {
                     "Ingredients: ",
                     style: TextStyle(
                       fontSize: 16.sp,
-                      color: state.isVegan! ? Theme.of(context).colorScheme.background : Colors.red.shade900,
+                      color: state.isVegan! ? Theme
+                          .of(context)
+                          .colorScheme
+                          .background : Colors.red.shade900,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -246,7 +270,10 @@ class ProductFoundBodyInfo extends StatelessWidget {
                             : 'Ingredients not found'.toUpperCase(),
                         style: TextStyle(
                           fontSize: 12.sp,
-                          color: state.isVegan! ? Theme.of(context).colorScheme.background : Colors.red.shade900,
+                          color: state.isVegan! ? Theme
+                              .of(context)
+                              .colorScheme
+                              .background : Colors.red.shade900,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -263,7 +290,7 @@ class ProductFoundBodyInfo extends StatelessWidget {
                       child: Text(
                         '${state.product.labels ?? ""}',
                         style:
-                            TextStyle(fontSize: 12.sp, color: Colors.green.shade900, fontWeight: FontWeight.w600),
+                        TextStyle(fontSize: 12.sp, color: Colors.green.shade900, fontWeight: FontWeight.w600),
                       ),
                     ),
                   ],

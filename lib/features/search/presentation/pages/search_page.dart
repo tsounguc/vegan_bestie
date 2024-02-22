@@ -4,15 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/features/search/presentation/search_bloc/search_bloc.dart';
 
-import '../../../../core/error.dart';
-import '../../../../core/loading.dart';
-import '../../../../core/product_not_found.dart';
+import '../../../../core/common/screens/error/error.dart';
+import '../../../../core/common/screens/loading/loading.dart';
+import '../../../../core/common/screens/product_screens/product_not_found.dart';
 import 'components/search_bar.dart';
 import 'components/search_initial_state_widget.dart';
 import 'search_product_detail.dart';
 
 class SearchPage extends StatelessWidget {
   SearchPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

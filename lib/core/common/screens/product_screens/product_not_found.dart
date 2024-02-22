@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/constants/strings.dart';
 
-import '../features/scan_product/presentation/pages/report_issue_page.dart';
-import 'custom_back_button.dart';
+import '../../widgets/custom_back_button.dart';
 
 class ProductNotFoundPage extends StatelessWidget {
   final String? message;

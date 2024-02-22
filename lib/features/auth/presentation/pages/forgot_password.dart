@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sheveegan/core/buttons.dart';
+import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/constants/colors.dart';
 
-import '../../../../core/auth_error_message_widget.dart';
+import '../../../../core/common/widgets/auth_error_message_widget.dart';
 import '../auth_cubit/auth_cubit.dart';
 import 'login_page.dart';
 import 'registration_page.dart';

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'constants/strings.dart';
+import '../../constants/strings.dart';
 
 class CustomAppbarTitleWidget extends StatelessWidget {
   final String imageOneName;
   final String imageTwoName;
 
-  const CustomAppbarTitleWidget(
-      {Key? key, required this.imageOneName, required this.imageTwoName})
+  const CustomAppbarTitleWidget({Key? key, required this.imageOneName, required this.imageTwoName})
       : super(key: key);
 
   @override

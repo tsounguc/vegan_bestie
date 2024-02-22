@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:sheveegan/core/loading.dart';
-import 'package:sheveegan/core/vegan_bestie_logo_widget.dart';
+import 'package:sheveegan/core/common/screens/loading/loading.dart';
+import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
 
+import 'core/common/widgets/custom_circle_avatar.dart';
 import 'core/constants/clipping_class.dart';
 import 'core/constants/size_config.dart';
 import 'core/constants/strings.dart';
-import 'core/custom_appbar_title_widget.dart';
-import 'core/custom_circle_avatar.dart';
-import 'core/custom_drawer.dart';
+
+import 'core/common/widgets/custom_drawer.dart';
 import 'features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'features/restaurants/presentation/pages/restaurants_home_page.dart';
 import 'features/scan_product/presentation/pages/scan_product_home_page.dart';

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sheveegan/features/auth/presentation/pages/registration_page.dart';
 
-import '../../../../core/error.dart';
-import '../../../../core/loading.dart';
+import '../../../../core/common/screens/error/error.dart';
+import '../../../../core/common/screens/loading/loading.dart';
 import '../../../../home_page.dart';
 import '../auth_cubit/auth_cubit.dart';
 import 'forgot_password.dart';

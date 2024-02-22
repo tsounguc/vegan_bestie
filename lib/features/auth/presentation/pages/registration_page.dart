@@ -7,9 +7,9 @@ import 'package:sheveegan/features/auth/presentation/auth_cubit/auth_cubit.dart'
 import 'package:sheveegan/features/auth/presentation/pages/login_page.dart';
 import 'package:sheveegan/home_page.dart';
 
-import '../../../../core/auth_error_message_widget.dart';
-import '../../../../core/buttons.dart';
-import '../../../../core/loading.dart';
+import '../../../../core/common/widgets/auth_error_message_widget.dart';
+import '../../../../core/common/widgets/buttons.dart';
+import '../../../../core/common/screens/loading/loading.dart';
 import 'auth_page.dart';
 import 'components/other_auth_options.dart';
 

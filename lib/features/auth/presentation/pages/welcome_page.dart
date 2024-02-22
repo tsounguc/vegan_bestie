@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheveegan/core/buttons.dart';
+import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/constants/colors.dart';
 
 import '../../../../core/constants/strings.dart';

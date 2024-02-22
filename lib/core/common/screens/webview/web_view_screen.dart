@@ -5,11 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../core/constants/strings.dart';
-import '../constants/size_config.dart';
-import '../custom_appbar_title_widget.dart';
-import '../custom_back_button.dart';
-import '../vegan_bestie_logo_widget.dart';
+import '../../../constants/size_config.dart';
+
+import '../../widgets/vegan_bestie_logo_widget.dart';
+import '../../widgets/custom_back_button.dart';
 import 'navigation_controls.dart';
 
 class WebViewScreen extends StatefulWidget {
@@ -50,10 +49,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
           width: MediaQuery.of(context).size.width * 0.5,
           child: VeganBestieLogoWidget(size: 25, fontSize: 35),
         ),
-        // title: CustomAppbarTitleWidget(
-        //     imageOneName: 'assets/bread.png',
-        //     imageTwoName: 'assets/tomato.png'),
-        // actions: [NavigationControls(controller: _controller)],
       ),
       body: Stack(
         children: [

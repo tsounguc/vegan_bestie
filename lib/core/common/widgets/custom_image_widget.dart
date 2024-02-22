@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import 'loading.dart';
+import '../screens/loading/loading.dart';
 
 class CustomImageWidget extends StatelessWidget {
   CustomImageWidget({

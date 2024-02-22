@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../../../../core/error.dart';
-import '../../../../core/loading.dart';
+import '../../../../core/common/screens/error/error.dart';
+import '../../../../core/common/screens/loading/loading.dart';
 import '../geolocation_bloc/geolocation_bloc.dart';
 import '../map_cubit/map_cubit.dart';
 import '../restaurants_bloc/restaurants_bloc.dart';

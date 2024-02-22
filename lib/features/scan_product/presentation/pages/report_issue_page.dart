@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheveegan/core/custom_appbar_title_widget.dart';
-import 'package:sheveegan/core/custom_back_button.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/select_incorrect_information.dart';
 
+import '../../../../core/common/widgets/custom_back_button.dart';
 import '../../../../core/constants/size_config.dart';
-import '../../../../core/vegan_bestie_logo_widget.dart';
-import '../../../auth/presentation/auth_cubit/auth_cubit.dart';
+import '../../../../core/common/widgets/vegan_bestie_logo_widget.dart';
 
 class ReportIssuePage extends StatelessWidget {
   static const String id = "/reportIssuePage";
@@ -38,10 +36,7 @@ class ReportIssuePage extends StatelessWidget {
               children: [
                 Text(
                   "What's the issue?",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20.sp,
-                      overflow: TextOverflow.ellipsis),
+                  style: TextStyle(color: Colors.black, fontSize: 20.sp, overflow: TextOverflow.ellipsis),
                 ),
               ],
             ),

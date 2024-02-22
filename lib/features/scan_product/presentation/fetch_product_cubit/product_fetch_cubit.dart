@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/failures_successes/failures.dart';
 import '../../../../core/services/service_locator.dart';
-import '../../../../core/vegan_checker.dart';
+import '../../../../core/services/vegan_checker.dart';
 import '../../domain/entities/scan_product_entity.dart';
 import '../../domain/usecases/fetch_product_usecase.dart';
 
@@ -21,12 +21,12 @@ class ProductFetchCubit extends Cubit<ProductFetchState> {
   Future<void> fetchProduct(String barcode) async {
     emit(ProductLoadingState());
     final Either<FetchProductFailure, ScanProductEntity> fetchProductResult =
-        await _fetchProductUseCase.fetchProduct(barcode);
+    await _fetchProductUseCase.fetchProduct(barcode);
     VeganChecker veganChecker = VeganChecker();
 
     fetchProductResult.fold(
-      (fetchFailure) => emit(ProductFetchErrorState(error: fetchFailure.message)),
-      (productInfo) {
+          (fetchFailure) => emit(ProductFetchErrorState(error: fetchFailure.message)),
+          (productInfo) {
         if (productInfo == null || productInfo.productName == null || productInfo.productName!.isEmpty) {
           emit(ProductNotFoundState());
         } else {

@@ -7,7 +7,6 @@ import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_details_page.dart';
 
 import '../../../../../core/constants/strings.dart';
-import '../../../../../core/webviewScreen/web_view_screen.dart';
 import '../../../data/models/yelp_restaurants_model.dart';
 import '../../restaurant_cubit/restaurant_details_cubit.dart';
 import 'is_open_now.dart';

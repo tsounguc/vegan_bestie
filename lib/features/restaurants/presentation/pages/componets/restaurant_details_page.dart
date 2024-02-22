@@ -10,15 +10,13 @@ import 'package:sheveegan/features/restaurants/presentation/pages/componets/dine
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/rating_and_reviews_count.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../../core/common/screens/webview/web_view_screen.dart';
+import '../../../../../core/common/widgets/custom_back_button.dart';
 import '../../../../../core/constants/size_config.dart';
 import '../../../../../core/constants/strings.dart';
-import '../../../../../core/custom_appbar_title_widget.dart';
-import '../../../../../core/custom_back_button.dart';
-import '../../../../../core/custom_image_widget.dart';
-import '../../../../../core/error.dart';
-import '../../../../../core/loading.dart';
-import '../../../../../core/vegan_bestie_logo_widget.dart';
-import '../../../../../core/webviewScreen/web_view_screen.dart';
+import '../../../../../core/common/screens/error/error.dart';
+import '../../../../../core/common/screens/loading/loading.dart';
+import '../../../../../core/common/widgets/vegan_bestie_logo_widget.dart';
 import '../../restaurant_cubit/restaurant_details_cubit.dart';
 import 'package:intl/intl.dart';
 

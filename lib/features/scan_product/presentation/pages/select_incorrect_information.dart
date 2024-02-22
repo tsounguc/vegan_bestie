@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheveegan/core/buttons.dart';
-import 'package:sheveegan/core/custom_appbar_title_widget.dart';
-import 'package:sheveegan/core/custom_back_button.dart';
 
+import '../../../../core/common/widgets/buttons.dart';
+import '../../../../core/common/widgets/custom_back_button.dart';
 import '../../../../core/constants/size_config.dart';
-import '../../../../core/vegan_bestie_logo_widget.dart';
-import '../../../auth/presentation/auth_cubit/auth_cubit.dart';
+import '../../../../core/common/widgets/vegan_bestie_logo_widget.dart';
 
 class SelectIncorrectInformation extends StatefulWidget {
   static const String id = "/SelectIncorrectInformation";
@@ -14,12 +12,10 @@ class SelectIncorrectInformation extends StatefulWidget {
   const SelectIncorrectInformation({Key? key}) : super(key: key);
 
   @override
-  State<SelectIncorrectInformation> createState() =>
-      _SelectIncorrectInformationState();
+  State<SelectIncorrectInformation> createState() => _SelectIncorrectInformationState();
 }
 
-class _SelectIncorrectInformationState
-    extends State<SelectIncorrectInformation> {
+class _SelectIncorrectInformationState extends State<SelectIncorrectInformation> {
   List<IncorrectInformation> items = [
     IncorrectInformation(isSelected: false, information: "Image"),
     IncorrectInformation(isSelected: false, information: "Name"),
@@ -52,10 +48,7 @@ class _SelectIncorrectInformationState
               children: [
                 Text(
                   "Select incorrect information",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20.sp,
-                      overflow: TextOverflow.ellipsis),
+                  style: TextStyle(color: Colors.black, fontSize: 20.sp, overflow: TextOverflow.ellipsis),
                 ),
               ],
             ),

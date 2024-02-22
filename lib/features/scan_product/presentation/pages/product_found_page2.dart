@@ -1,19 +1,12 @@
-import 'dart:io';
-import 'dart:ui';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sheveegan/core/constants/strings.dart';
-import 'package:sheveegan/core/custom_back_button.dart';
-import 'package:sheveegan/core/custom_image_widget.dart';
-import 'package:sheveegan/features/scan_product/presentation/pages/report_issue_page.dart';
 
-import '../../../../core/assets/vegan_icon.dart';
-import '../../../../core/loading.dart';
+import '../../../../core/common/widgets/custom_back_button.dart';
+import '../../../../core/common/widgets/custom_image_widget.dart';
+import '../../../../core/resources/vegan_icon.dart';
 import '../fetch_product_cubit/product_fetch_cubit.dart';
 import 'components/macronutrient_widget.dart';
 
