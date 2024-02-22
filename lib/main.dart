@@ -8,6 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/constants/strings.dart';
+import 'core/services/router/app_router.dart';
 import 'core/services/service_locator.dart';
 import 'features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'features/auth/presentation/pages/auth_page.dart';
@@ -18,8 +19,8 @@ import 'features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart
 import 'features/scan_product/presentation/barcode_scanner_cubit/barcode_scanner_cubit.dart';
 import 'features/scan_product/presentation/fetch_product_cubit/product_fetch_cubit.dart';
 import 'features/search/presentation/search_bloc/search_bloc.dart';
+
 import 'home_page.dart';
-import 'router/app_router.dart';
 import 'themes/app_theme.dart';
 
 void main() async {
