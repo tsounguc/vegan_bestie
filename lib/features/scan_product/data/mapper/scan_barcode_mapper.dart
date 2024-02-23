@@ -1,8 +1,8 @@
-import '../../domain/entities/barcode_entity.dart';
+import '../../domain/entities/barcode.dart';
 import '../models/barcode_model.dart';
 
 class ScanBarcodeMapper {
-  BarcodeEntity mapToEntity(BarcodeModel barcodeModel) {
-    return BarcodeEntity(barcode: barcodeModel.barcode);
+  Barcode mapToEntity(BarcodeModel barcodeModel) {
+    return Barcode(barcode: barcodeModel.barcode);
   }
 }
