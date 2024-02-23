@@ -1,7 +1,7 @@
 import 'package:sheveegan/core/use_case/use_case.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/barcode.dart';
-import 'package:sheveegan/features/scan_product/domain/repositories_contracts/scanning_repository.dart';
+import 'package:sheveegan/features/scan_product/domain/repositories/scan_product_repository.dart';
 
 class ScanBarcode extends UseCase<Barcode> {
   const ScanBarcode(this._repository);

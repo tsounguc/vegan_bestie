@@ -5,5 +5,5 @@ import 'package:sheveegan/features/scan_product/domain/entities/food_product.dar
 abstract class ScanProductRepository {
   ResultFuture<Barcode> scanBarcode();
 
-  ResultFuture<FoodProduct> fetchProduct({String barcode});
+  ResultFuture<FoodProduct> fetchProduct({required String barcode});
 }
