@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/scan_product/data/data_sources/scan_product_remote_data_source.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/barcode.dart';
@@ -17,8 +18,8 @@ class ScanProductRepositoryImpl implements ScanProductRepository {
 
   @override
   ResultFuture<Barcode> scanBarcode() async {
-    // TODO: implement scanBarcode
-    throw UnimplementedError();
+    final result = await _remoteDataSource.scanBarcode();
+    return Right(result);
   }
 }
 // class ScanBarcodeRepositoryImpl implements ScanProductRepository {
