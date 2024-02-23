@@ -1,8 +1,8 @@
 import '../../domain/entities/scanned_product.dart';
-import '../models/product_info_model.dart';
+import '../models/food_product_model.dart';
 
 class ScanProductMapper {
-  ScannedProduct mapToEntity(ScanProductModel scanProductModel) {
+  ScannedProduct mapToEntity(FoodProductModel scanProductModel) {
     List<IngredientEntity> ingredients = [];
     for (int index = 0; index < scanProductModel.ingredients!.length; index++) {
       IngredientEntity ingredient = IngredientEntity(

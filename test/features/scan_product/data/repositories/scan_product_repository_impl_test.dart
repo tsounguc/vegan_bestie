@@ -21,7 +21,7 @@ void main() {
     'when instantiated '
     'then instance should be a subclass of [ScanProductRepository]',
     () {
-      expect(repositoryImpl, isA<ScanProductRepository>);
+      expect(repositoryImpl, isA<ScanProductRepository>());
     },
   );
   group('scanBarcode - ', () {
