@@ -9,11 +9,5 @@ class ScanBarcode extends UseCase<Barcode> {
   final ScanProductRepository _repository;
 
   @override
-  ResultFuture<Barcode> call() async {
-    // TODO: implement call
-    throw UnimplementedError();
-  }
-
-// @override
-// ResultFuture<BarcodeEntity> call() async => _repository.scanBarcode();
+  ResultFuture<Barcode> call() async => _repository.scanBarcode();
 }
