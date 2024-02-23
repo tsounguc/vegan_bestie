@@ -1,57 +1,107 @@
-abstract class Failure {
-  final String? message;
+import 'package:equatable/equatable.dart';
 
-  const Failure({this.message});
+abstract class Failure extends Equatable {
+  const Failure({
+    required this.statusCode,
+    required this.message,
+  });
+
+  final String message;
+  final dynamic statusCode;
+
+  String get errorMessage => '$statusCode Error: $message';
+
+  @override
+  List<Object?> get props => [message, statusCode];
 }
 
 class FetchProductFailure extends Failure {
-  const FetchProductFailure({String? message}) : super(message: message);
+  const FetchProductFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }
 
 class ScanningFailure extends Failure {
-  const ScanningFailure({String? message}) : super(message: message);
+  const ScanningFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }
 
 class CreateWithEmailAndPasswordFailure extends Failure {
-  const CreateWithEmailAndPasswordFailure({String? message}) : super(message: message);
+  const CreateWithEmailAndPasswordFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }
 
 class SignInWithEmailAndPasswordFailure extends Failure {
-  const SignInWithEmailAndPasswordFailure({String? message}) : super(message: message);
+  const SignInWithEmailAndPasswordFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }
 
 class SignInWithGoogleFailure extends Failure {
-  const SignInWithGoogleFailure({String? message}) : super(message: message);
+  const SignInWithGoogleFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }
 
 class SignInWithFacebookFailure extends Failure {
-  const SignInWithFacebookFailure({String? message}) : super(message: message);
+  const SignInWithFacebookFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }
 
 class SignOutFailure extends Failure {
-  SignOutFailure({String? message}) : super(message: message);
+  const SignOutFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }
 
 class CurrentUserFailure extends Failure {
-  const CurrentUserFailure({String? message}) : super(message: message);
+  const CurrentUserFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }
 
 class FetchRestaurantsNearMeFailure extends Failure {
-  const FetchRestaurantsNearMeFailure({String? message}) : super(message: message);
+  const FetchRestaurantsNearMeFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }
 
 class FetchRestaurantDetailsFailure extends Failure {
-  const FetchRestaurantDetailsFailure({String? message}) : super(message: message);
+  const FetchRestaurantDetailsFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }
 
 class LocationFailure extends Failure {
-  const LocationFailure({String? message}) : super(message: message);
+  const LocationFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }
 
 class SearchProductFailure extends Failure {
-  const SearchProductFailure({String? message}) : super(message: message);
+  const SearchProductFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }
 
 class MapFailure extends Failure {
-  const MapFailure({String? message}) : super(message: message);
+  const MapFailure({
+    required super.message,
+    required super.statusCode,
+  });
 }

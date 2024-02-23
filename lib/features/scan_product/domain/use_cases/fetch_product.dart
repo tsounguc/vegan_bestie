@@ -1,6 +1,5 @@
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:sheveegan/core/usecase/usecase.dart';
+import 'package:sheveegan/core/use_case/use_case.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/scanned_product.dart';
 import 'package:sheveegan/features/scan_product/domain/repositories_contracts/scanning_repository.dart';
