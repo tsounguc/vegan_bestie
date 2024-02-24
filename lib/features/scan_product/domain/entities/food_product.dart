@@ -89,6 +89,7 @@ class FoodProduct extends Equatable {
 class Ingredient extends Equatable {
   const Ingredient({
     required this.id,
+    required this.ingredients,
     required this.percentEstimate,
     required this.percentMax,
     required this.percentMin,
@@ -97,21 +98,23 @@ class Ingredient extends Equatable {
     required this.vegetarian,
   });
 
-  const Ingredient.empty()
+  Ingredient.empty()
       : this(
           id: '_empty.id',
-          percentEstimate: '_empty.percentEstimate',
-          percentMax: '_empty.percentMax',
-          percentMin: '_empty.percentMin',
+          ingredients: [],
+          percentEstimate: 0,
+          percentMax: 0,
+          percentMin: 0,
           text: '_empty.text',
           vegan: '_empty.vegan',
           vegetarian: '_empty.vegetarian',
         );
 
   final String id;
-  final dynamic percentEstimate;
-  final dynamic percentMax;
-  final dynamic percentMin;
+  final List<Ingredient> ingredients;
+  final double percentEstimate;
+  final double percentMax;
+  final double percentMin;
   final String text;
   final String vegan;
   final String vegetarian;
@@ -119,6 +122,7 @@ class Ingredient extends Equatable {
   @override
   List<Object?> get props => [
         id,
+        ingredients,
         percentEstimate,
         percentMax,
         percentMin,

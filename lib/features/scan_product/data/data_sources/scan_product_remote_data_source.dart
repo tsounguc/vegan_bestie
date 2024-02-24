@@ -26,22 +26,26 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
 
   @override
   Future<FoodProductModel> fetchProduct({required String barcode}) async {
-    final response = await _client.get(
-      Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$barcode'),
-    );
+    try {
+      final response = await _client.get(
+        Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$barcode'),
+      );
 
-    final data = jsonDecode(response.body) as DataMap;
-    debugPrint(data.toString());
-    final foodProduct = FoodProductModel.fromMap(data['product'] as DataMap);
-    return foodProduct;
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw FetchProductException(
+          message: response.body,
+          statusCode: response.statusCode,
+        );
+      }
 
-    // Response response = await _client.get(Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint/barcode'));
-    // if (response.statusCode == 200) {
-    //   return json.decode(response.body) as Map<String, dynamic>;
-    // } else {
-    //   debugPrint("Open Food Facts Status code : ${response.statusCode} \n${response.reasonPhrase}");
-    //   throw Exception("Status code : ${response.statusCode} \n${response.reasonPhrase}");
-    // }
+      final data = jsonDecode(response.body) as DataMap;
+      final foodProduct = FoodProductModel.fromMap(data['product'] as DataMap);
+      return foodProduct;
+    } on FetchProductException {
+      rethrow;
+    } catch (e) {
+      throw FetchProductException(message: e.toString(), statusCode: 500);
+    }
   }
 
   @override
@@ -56,17 +60,4 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
       throw ScanException(message: e.toString());
     }
   }
-
-// Future<Map<String, dynamic>> searchProduct({required String query}) async {
-//   String url =
-//       "$_baseUrl/cgi/search.pl?search_terms=${query.replaceAll(" ", "%20")}&sort_by=unique_scans_n&json=1";
-//   // debugPrint("Search URL: $url");
-//
-//   http.Response response = await http.get(Uri.parse(url));
-//   if (response.statusCode == 200) {
-//     return json.decode(response.body) as Map<String, dynamic>;
-//   } else {
-//     throw Exception("Status code: ${response.body}");
-//   }
-// }
 }
