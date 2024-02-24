@@ -91,11 +91,9 @@ void main() {
         // Arrange
         when(
           () => remoteDataSource.fetchProduct(barcode: any(named: 'barcode')),
-        ).thenAnswer(
-          (_) async => testFoodProduct,
-        );
+        ).thenAnswer((_) async => testFoodProduct);
         // Act
-        final result = repositoryImpl.fetchProduct(barcode: barcode);
+        final result = await repositoryImpl.fetchProduct(barcode: barcode);
         // Assert
         expect(result, equals(Right<Failure, FoodProduct>(testFoodProduct)));
         verify(() => remoteDataSource.fetchProduct(barcode: barcode)).called(1);
@@ -114,7 +112,7 @@ void main() {
           () => remoteDataSource.fetchProduct(barcode: any(named: 'barcode')),
         ).thenThrow(testFetchProductException);
         // Act
-        final result = repositoryImpl.fetchProduct(barcode: barcode);
+        final result = await repositoryImpl.fetchProduct(barcode: barcode);
         // Assert
         expect(
           result,
