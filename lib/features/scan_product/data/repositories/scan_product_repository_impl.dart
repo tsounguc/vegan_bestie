@@ -14,8 +14,12 @@ class ScanProductRepositoryImpl implements ScanProductRepository {
 
   @override
   ResultFuture<FoodProduct> fetchProduct({required String barcode}) async {
-    final result = await _remoteDataSource.fetchProduct(barcode: barcode);
-    return Right(result);
+    try {
+      final result = await _remoteDataSource.fetchProduct(barcode: barcode);
+      return Right(result);
+    } on FetchProductException catch (e) {
+      return Left(FetchProductFailure.fromException(e));
+    }
   }
 
   @override
