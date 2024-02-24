@@ -2,6 +2,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/services/barcode_scanner_plugin.dart';
 import 'package:sheveegan/features/scan_product/data/data_sources/scan_product_remote_data_source.dart';
 import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
@@ -42,11 +43,25 @@ void main() {
       },
     );
 
-    // test('given ScanProductRemoteDataSourceImpl '
-    //     'when [ScanProductRemoteDataSourceImpl.scanProduct] is called '
-    //     'and call to plugin unsuccessful '
-    //     'then throw [ScanException] ',() async{
-    //
-    // });
+    test(
+        'given ScanProductRemoteDataSourceImpl '
+        'when [ScanProductRemoteDataSourceImpl.scanProduct] is called '
+        'and call to plugin unsuccessful '
+        'then throw [ScanException] ', () async {
+      // Arrange
+      when(
+        () => scanner.scanBarcode(),
+      ).thenThrow(const ScanException(message: 'Invalid barcode'));
+      // Act
+      final result = await remoteDataSource.scanBarcode();
+
+      // Assert
+      expect(
+        result,
+        throwsA(const ScanException(message: 'Invalid barcode')),
+      );
+      verify(() => scanner.scanBarcode()).called(1);
+      verifyNoMoreInteractions(scanner);
+    });
   });
 }
