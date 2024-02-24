@@ -53,11 +53,11 @@ void main() {
         () => scanner.scanBarcode(),
       ).thenThrow(const ScanException(message: 'Invalid barcode'));
       // Act
-      final result = await remoteDataSource.scanBarcode();
+      final methodCall = remoteDataSource.scanBarcode;
 
       // Assert
       expect(
-        result,
+        () async => methodCall(),
         throwsA(const ScanException(message: 'Invalid barcode')),
       );
       verify(() => scanner.scanBarcode()).called(1);

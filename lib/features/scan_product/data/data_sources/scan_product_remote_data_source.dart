@@ -1,5 +1,6 @@
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart';
+import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/services/barcode_scanner_plugin.dart';
 import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
 import 'package:sheveegan/features/scan_product/data/models/food_product_model.dart';
@@ -24,8 +25,14 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
 
   @override
   Future<BarcodeModel> scanBarcode() async {
-    final result = await _scanner.scanBarcode();
-    final barcode = BarcodeModel(barcode: result);
-    return barcode;
+    try {
+      final result = await _scanner.scanBarcode();
+      final barcode = BarcodeModel(barcode: result);
+      return barcode;
+    } on ScanException {
+      rethrow;
+    } catch (e) {
+      throw ScanException(message: e.toString());
+    }
   }
 }
