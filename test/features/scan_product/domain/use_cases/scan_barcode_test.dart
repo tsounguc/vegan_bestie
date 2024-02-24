@@ -11,11 +11,17 @@ import 'scan_product_repository.mock.dart';
 void main() {
   late ScanProductRepository repository;
   late ScanBarcode useCase;
+  late Failure testFailure;
+  late Barcode testResponse;
   setUp(() {
     repository = MockScanProductRepository();
     useCase = ScanBarcode(repository);
+    testFailure = const ScanFailure(
+      message: 'Invalid Barcode',
+      statusCode: null,
+    );
+    testResponse = const Barcode.empty();
   });
-  const testResponse = Barcode.empty();
   test(
     'given ScanBarcode use case '
     'when instantiated '
@@ -24,12 +30,30 @@ void main() {
     () async {
       // Arrange
       when(() => repository.scanBarcode()).thenAnswer(
-        (_) async => const Right<Failure, Barcode>(testResponse),
+        (_) async => Right(testResponse),
       );
       // Act
       final result = await useCase();
       // Assert
-      expect(result, const Right<Failure, Barcode>(testResponse));
+      expect(result, equals(Right<Failure, Barcode>(testResponse)));
+      verify(() => repository.scanBarcode()).called(1);
+      verifyNoMoreInteractions(repository);
+    },
+  );
+  test(
+    'given ScanBarcode use case '
+    'when instantiated '
+    'and [ScanProductRepository.scanBarcode] call unsuccessful '
+    'then return [ScanFailure]',
+    () async {
+      // Arrange
+      when(() => repository.scanBarcode()).thenAnswer(
+        (_) async => Left(testFailure),
+      );
+      // Act
+      final result = await useCase();
+      // Assert
+      expect(result, equals(Left<Failure, Barcode>(testFailure)));
       verify(() => repository.scanBarcode()).called(1);
       verifyNoMoreInteractions(repository);
     },

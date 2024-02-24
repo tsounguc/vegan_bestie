@@ -16,6 +16,10 @@ void main() {
   });
   final testResponse = FoodProduct.empty();
   const params = FetchProductParams.empty();
+  const testFailure = FetchProductFailure(
+    message: 'message',
+    statusCode: 500,
+  );
   test(
     'given FetchProduct use case '
     'when instantiated '
@@ -29,7 +33,25 @@ void main() {
       // Act
       final result = await useCase(params);
       // Assert
-      expect(result, Right<Failure, FoodProduct>(testResponse));
+      expect(result, equals(Right<Failure, FoodProduct>(testResponse)));
+      verify(() => repository.fetchProduct(barcode: params.barcode)).called(1);
+      verifyNoMoreInteractions(repository);
+    },
+  );
+  test(
+    'given FetchProduct use case '
+    'when instantiated '
+    'and [ScanProductRepository.fetchProduct] call unsuccessful '
+    'then return [FetchProductFailure] ',
+    () async {
+      // Arrange
+      when(() => repository.fetchProduct(barcode: params.barcode)).thenAnswer(
+        (_) async => const Left(testFailure),
+      );
+      // Act
+      final result = await useCase(params);
+      // Assert
+      expect(result, equals(const Left<Failure, FoodProduct>(testFailure)));
       verify(() => repository.fetchProduct(barcode: params.barcode)).called(1);
       verifyNoMoreInteractions(repository);
     },
