@@ -32,35 +32,3 @@ class ScanProductRepositoryImpl implements ScanProductRepository {
     }
   }
 }
-// class ScanBarcodeRepositoryImpl implements ScanProductRepository {
-//   ScanBarcodeFromPluginContract scanBarcodeFromPluginContract = serviceLocator<ScanBarcodeFromPluginContract>();
-//
-//   @override
-//   Future<Either<ScanningFailure, Barcode>> scanBarcode() async {
-//     try {
-//       BarcodeModel barcodeModel = await scanBarcodeFromPluginContract.scanBarcode();
-//       ScanBarcodeMapper mapper = ScanBarcodeMapper();
-//       Barcode barcodeEntity = mapper.mapToEntity(barcodeModel);
-//       return Right(barcodeEntity);
-//     } on ScanBarcodeException catch (e) {
-//       return Left(ScanningFailure(message: e.message));
-//     }
-//   }
-// }
-
-// class FetchProductRepositoryImpl implements FetchProductRepositoryContract {
-//   FetchProductFromRemoteDataSourceContract fetchProductFromRemoteDataSourceContract =
-//   serviceLocator<FetchProductFromRemoteDataSourceContract>();
-//
-//   @override
-//   Future<Either<FetchProductFailure, ScannedProduct>> fetchProduct(String barcode) async {
-//     try {
-//       ScanProductModel productInfoModel = await fetchProductFromRemoteDataSourceContract.fetchProduct(barcode);
-//       ScanProductMapper mapper = ScanProductMapper();
-//       ScannedProduct productInfoEntity = mapper.mapToEntity(productInfoModel);
-//       return Right(productInfoEntity);
-//     } on FetchProductException catch (e) {
-//       return Left(FetchProductFailure(message: e.message));
-//     }
-//   }
-// }

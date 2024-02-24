@@ -1,3 +1,5 @@
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:http/http.dart';
 import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
 import 'package:sheveegan/features/scan_product/data/models/food_product_model.dart';
 
@@ -7,33 +9,21 @@ abstract class ScanProductRemoteDataSource {
   Future<FoodProductModel> fetchProduct({required String barcode});
 }
 
-// class ScanBarcodeFromPluginImpl implements ScanProductRemoteDataSource {
-//   final BarcodeScannerServiceContract barcodeScannerServiceContract =
-//       serviceLocator<BarcodeScannerServiceContract>();
-//
-//   final FoodFactsApiServiceContract foodFactsApiServiceContract =
-//   serviceLocator<FoodFactsApiServiceContract>();
-//
-//   @override
-//   Future<ScanProductModel> fetchProduct(String barcode) async {
-//     try {
-//       Map<String, dynamic> data = await foodFactsApiServiceContract.getProductData(barcode: barcode);
-//       ScanProductModel productInfo = ScanProductModel.fromJson(data['product']);
-//       return productInfo;
-//     } catch (e) {
-//       throw FetchProductException(message: Strings.productNotFound);
-//     }
-//   }
-//
-//   @override
-//   Future<BarcodeModel> scanBarcode() async {
-//     try {
-//       String barcode = await barcodeScannerServiceContract.scanBarcode();
-//       return BarcodeModel(barcode: barcode);
-//     } on InvalidBarcodeException catch (e) {
-//       throw ScanBarcodeException(message: e.message);
-//     } catch (e) {
-//       throw const ScanBarcodeException(message: "Failed to scan barcode");
-//     }
-//   }
-// }
+class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
+  const ScanProductRemoteDataSourceImpl(this._scanner, this._client);
+
+  final FlutterBarcodeScanner _scanner;
+  final Client _client;
+
+  @override
+  Future<FoodProductModel> fetchProduct({required String barcode}) {
+    // TODO: implement fetchProduct
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<BarcodeModel> scanBarcode() {
+    // TODO: implement scanBarcode
+    throw UnimplementedError();
+  }
+}
