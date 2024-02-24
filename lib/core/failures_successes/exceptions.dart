@@ -1,82 +1,123 @@
-class FetchProductException implements Exception {
-  final String? message;
+import 'package:equatable/equatable.dart';
 
-  const FetchProductException({this.message});
+class FetchProductException extends Equatable implements Exception {
+  const FetchProductException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final int statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
 }
 
-class ScanBarcodeException implements Exception {
-  final String? message;
+class ScanException extends Equatable implements Exception {
+  const ScanException({required this.message});
 
-  const ScanBarcodeException({this.message});
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
 }
 
-class InvalidBarcodeException implements Exception {
-  final String? message;
-
-  const InvalidBarcodeException({this.message});
-}
-
-class CreateWithEmailAndPasswordException implements Exception {
-  final String? message;
-
+class CreateWithEmailAndPasswordException extends Equatable implements Exception {
   const CreateWithEmailAndPasswordException({this.message});
-}
 
-class SignInWithEmailAndPasswordException implements Exception {
   final String? message;
 
+  @override
+  List<Object?> get props => [message];
+}
+
+class SignInWithEmailAndPasswordException extends Equatable implements Exception {
   const SignInWithEmailAndPasswordException({this.message});
-}
 
-class SignInWithGoogleException implements Exception {
   final String? message;
 
+  @override
+  List<Object?> get props => [message];
+}
+
+class SignInWithGoogleException extends Equatable implements Exception {
   const SignInWithGoogleException({this.message});
-}
 
-class SignInWithFacebookException implements Exception {
   final String? message;
 
+  @override
+  List<Object?> get props => [message];
+}
+
+class SignInWithFacebookException extends Equatable implements Exception {
   const SignInWithFacebookException({this.message});
-}
 
-class SignOutException implements Exception {
   final String? message;
 
+  @override
+  List<Object?> get props => [message];
+}
+
+class SignOutException extends Equatable implements Exception {
   const SignOutException({this.message});
-}
 
-class CurrentUserException implements Exception {
   final String? message;
 
+  @override
+  List<Object?> get props => [message];
+}
+
+class CurrentUserException extends Equatable implements Exception {
   const CurrentUserException({this.message});
-}
 
-class FetchRestaurantsNearMeException implements Exception {
   final String? message;
 
+  @override
+  List<Object?> get props => [message];
+}
+
+class FetchRestaurantsNearMeException extends Equatable implements Exception {
   const FetchRestaurantsNearMeException({this.message});
+
+  final String? message;
+
+  @override
+  List<Object?> get props => [message];
 }
 
-class FetchRestaurantDetailsException implements Exception {
-  final String? message;
+class FetchRestaurantDetailsException extends Equatable implements Exception {
   const FetchRestaurantDetailsException({this.message});
-}
 
-class LocationException implements Exception {
   final String? message;
 
+  @override
+  List<Object?> get props => [message];
+}
+
+class LocationException extends Equatable implements Exception {
   const LocationException({this.message});
-}
 
-class SearchProductException implements Exception {
   final String? message;
 
+  @override
+  List<Object?> get props => [message];
+}
+
+class SearchProductException extends Equatable implements Exception {
   const SearchProductException({this.message});
-}
 
-class MapException implements Exception {
   final String? message;
 
+  @override
+  List<Object?> get props => [message];
+}
+
+class MapException extends Equatable implements Exception {
   const MapException({this.message});
+
+  final String? message;
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [message];
 }

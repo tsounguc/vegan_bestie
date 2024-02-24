@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:sheveegan/core/failures_successes/exceptions.dart';
 
 abstract class Failure extends Equatable {
   const Failure({
@@ -20,13 +21,25 @@ class FetchProductFailure extends Failure {
     required super.message,
     required super.statusCode,
   });
+
+  FetchProductFailure.fromException(FetchProductException exception)
+      : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
 }
 
-class ScanningFailure extends Failure {
-  const ScanningFailure({
+class ScanFailure extends Failure {
+  const ScanFailure({
     required super.message,
     required super.statusCode,
   });
+
+  ScanFailure.fromException(ScanException exception)
+      : this(
+          message: exception.message,
+          statusCode: null,
+        );
 }
 
 class CreateWithEmailAndPasswordFailure extends Failure {
