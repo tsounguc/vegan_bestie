@@ -73,30 +73,68 @@ void main() {
   group('fetchProduct - ', () {
     const testBarcode = '123456789012';
     test(
-        'given ScanProductRemoteDataSourceImpl, '
-        'when [ScanProductRemoteDataSourceImpl.fetchProduct] is called '
-        'and status is 200', () async {
-      // Arrange
-      when(
-        () => client.get(
-          Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$testBarcode'),
-        ),
-      ).thenAnswer((_) async => Response(jsonResponse, 200));
+      'given ScanProductRemoteDataSourceImpl, '
+      'when [ScanProductRemoteDataSourceImpl.fetchProduct] is called '
+      'and status is 200 '
+      'then return [FoodProductModel] ',
+      () async {
+        // Arrange
+        when(
+          () => client.get(
+            Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$testBarcode'),
+          ),
+        ).thenAnswer((_) async => Response(jsonResponse, 200));
 
-      // Act
-      final foodProduct = await remoteDataSource.fetchProduct(
-        barcode: testBarcode,
-      );
+        // Act
+        final foodProduct = await remoteDataSource.fetchProduct(
+          barcode: testBarcode,
+        );
 
-      // Assert
-      expect(foodProduct, isA<FoodProductModel>());
-      verify(
-        () => client.get(
-          Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$testBarcode'),
-        ),
-      ).called(1);
+        // Assert
+        expect(foodProduct, isA<FoodProductModel>());
+        verify(
+          () => client.get(
+            Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$testBarcode'),
+          ),
+        ).called(1);
 
-      verifyNoMoreInteractions(client);
-    });
+        verifyNoMoreInteractions(client);
+      },
+    );
+
+    test(
+      'given ScanProductRemoteDataSourceImpl, '
+      'when [ScanProductRemoteDataSourceImpl.fetchProduct] is called '
+      'and status is not 200 '
+      'then throw a [FetchProductException] ',
+      () async {
+        // Arrange
+        when(
+          () => client.get(
+            Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$testBarcode'),
+          ),
+        ).thenAnswer((_) async => Response('Server Down', 500));
+
+        // Act
+        final methodCall = remoteDataSource.fetchProduct;
+
+        // Assert
+        expect(
+          () async => methodCall(barcode: testBarcode),
+          throwsA(
+            const FetchProductException(
+              message: 'Server Down',
+              statusCode: 500,
+            ),
+          ),
+        );
+        verify(
+          () => client.get(
+            Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$testBarcode'),
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(client);
+      },
+    );
   });
 }
