@@ -1,5 +1,6 @@
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart';
+import 'package:sheveegan/core/services/barcode_scanner_plugin.dart';
 import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
 import 'package:sheveegan/features/scan_product/data/models/food_product_model.dart';
 
@@ -12,7 +13,7 @@ abstract class ScanProductRemoteDataSource {
 class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
   const ScanProductRemoteDataSourceImpl(this._scanner, this._client);
 
-  final FlutterBarcodeScanner _scanner;
+  final BarcodeScannerService _scanner;
   final Client _client;
 
   @override
