@@ -1,16 +1,10 @@
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:sheveegan/core/failures_successes/exceptions.dart';
-import 'package:sheveegan/core/services/food_facts_services/food_facts_api_service.dart';
-import 'package:sheveegan/core/services/service_locator.dart';
-import 'package:sheveegan/core/services/barcode_scanner_plugin.dart';
-
-import '../models/barcode_model.dart';
-import '../models/food_product_model.dart';
+import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
+import 'package:sheveegan/features/scan_product/data/models/food_product_model.dart';
 
 abstract class ScanProductRemoteDataSource {
   Future<BarcodeModel> scanBarcode();
 
-  Future<FoodProductModel> fetchProduct(String barcode);
+  Future<FoodProductModel> fetchProduct({required String barcode});
 }
 
 // class ScanBarcodeFromPluginImpl implements ScanProductRemoteDataSource {
