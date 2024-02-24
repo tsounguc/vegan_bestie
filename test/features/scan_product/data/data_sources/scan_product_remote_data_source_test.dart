@@ -9,6 +9,8 @@ import 'package:sheveegan/features/scan_product/data/data_sources/scan_product_r
 import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
 import 'package:sheveegan/features/scan_product/data/models/food_product_model.dart';
 
+import 'json_response.mock.dart';
+
 class MockScanner extends Mock implements BarcodeScannerService {}
 
 class MockClient extends Mock implements Client {}
@@ -79,7 +81,7 @@ void main() {
         () => client.get(
           Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$testBarcode'),
         ),
-      ).thenAnswer((_) async => Response('{}', 200));
+      ).thenAnswer((_) async => Response(jsonResponse, 200));
 
       // Act
       final foodProduct = await remoteDataSource.fetchProduct(

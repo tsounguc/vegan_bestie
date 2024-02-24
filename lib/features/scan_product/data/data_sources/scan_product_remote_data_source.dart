@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/services/barcode_scanner_plugin.dart';
 import 'package:sheveegan/core/utils/constants.dart';
+import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
 import 'package:sheveegan/features/scan_product/data/models/food_product_model.dart';
 
@@ -22,7 +26,22 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
 
   @override
   Future<FoodProductModel> fetchProduct({required String barcode}) async {
-    throw UnimplementedError();
+    final response = await _client.get(
+      Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$barcode'),
+    );
+
+    final data = jsonDecode(response.body) as DataMap;
+    debugPrint(data.toString());
+    final foodProduct = FoodProductModel.fromMap(data['product'] as DataMap);
+    return foodProduct;
+
+    // Response response = await _client.get(Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint/barcode'));
+    // if (response.statusCode == 200) {
+    //   return json.decode(response.body) as Map<String, dynamic>;
+    // } else {
+    //   debugPrint("Open Food Facts Status code : ${response.statusCode} \n${response.reasonPhrase}");
+    //   throw Exception("Status code : ${response.statusCode} \n${response.reasonPhrase}");
+    // }
   }
 
   @override
