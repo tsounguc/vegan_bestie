@@ -14,9 +14,10 @@ class FetchProductException extends Equatable implements Exception {
 }
 
 class ScanException extends Equatable implements Exception {
-  const ScanException({required this.message});
+  const ScanException({required this.message, this.statusCode = 500});
 
   final String message;
+  final int statusCode;
 
   @override
   List<Object?> get props => [message];
