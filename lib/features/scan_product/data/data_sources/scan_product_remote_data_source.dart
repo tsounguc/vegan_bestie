@@ -17,14 +17,15 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
   final Client _client;
 
   @override
-  Future<FoodProductModel> fetchProduct({required String barcode}) {
+  Future<FoodProductModel> fetchProduct({required String barcode}) async {
     // TODO: implement fetchProduct
     throw UnimplementedError();
   }
 
   @override
-  Future<BarcodeModel> scanBarcode() {
-    // TODO: implement scanBarcode
-    throw UnimplementedError();
+  Future<BarcodeModel> scanBarcode() async {
+    final result = await _scanner.scanBarcode();
+    final barcode = BarcodeModel(barcode: result);
+    return barcode;
   }
 }
