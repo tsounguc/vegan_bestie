@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:sheveegan/core/failures_successes/exceptions.dart';
+import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/scan_product/data/data_sources/scan_product_remote_data_source.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/barcode.dart';
@@ -18,8 +20,12 @@ class ScanProductRepositoryImpl implements ScanProductRepository {
 
   @override
   ResultFuture<Barcode> scanBarcode() async {
-    final result = await _remoteDataSource.scanBarcode();
-    return Right(result);
+    try {
+      final result = await _remoteDataSource.scanBarcode();
+      return Right(result);
+    } on ScanException catch (e) {
+      return Left(ScanFailure.fromException(e));
+    }
   }
 }
 // class ScanBarcodeRepositoryImpl implements ScanProductRepository {
