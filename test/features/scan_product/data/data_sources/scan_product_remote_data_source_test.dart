@@ -1,4 +1,3 @@
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
@@ -9,7 +8,7 @@ import 'package:sheveegan/features/scan_product/data/data_sources/scan_product_r
 import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
 import 'package:sheveegan/features/scan_product/data/models/food_product_model.dart';
 
-import 'json_response.mock.dart';
+import '../../../../fixtures/fixture_reader.dart';
 
 class MockScanner extends Mock implements BarcodeScannerService {}
 
@@ -72,6 +71,7 @@ void main() {
 
   group('fetchProduct - ', () {
     const testBarcode = '123456789012';
+
     test(
       'given ScanProductRemoteDataSourceImpl, '
       'when [ScanProductRemoteDataSourceImpl.fetchProduct] is called '
@@ -79,11 +79,12 @@ void main() {
       'then return [FoodProductModel] ',
       () async {
         // Arrange
+        final testJson = fixture('food_product.json');
         when(
           () => client.get(
             Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$testBarcode'),
           ),
-        ).thenAnswer((_) async => Response(jsonResponse, 200));
+        ).thenAnswer((_) async => Response(testJson, 200));
 
         // Act
         final foodProduct = await remoteDataSource.fetchProduct(

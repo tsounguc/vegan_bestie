@@ -87,11 +87,13 @@ class FoodProductModel extends FoodProduct {
       : this(
           code: dataMap['code'] == null ? '' : dataMap['code'] as String,
           productName: dataMap['product_name'] == null ? '' : dataMap['product_name'] as String,
-          ingredients: List<IngredientModel>.from(
-            (dataMap['ingredients'] as List).map(
-              (ingredient) => IngredientModel.fromMap(ingredient as DataMap),
-            ),
-          ),
+          ingredients: dataMap['ingredients'] == null
+              ? []
+              : List<IngredientModel>.from(
+                  (dataMap['ingredients'] as List).map(
+                    (ingredient) => IngredientModel.fromMap(ingredient as DataMap),
+                  ),
+                ),
           ingredientsText: dataMap['ingredients_text'] == null ? '' : dataMap['ingredients_text'] as String,
           labels: dataMap['labels'] == null ? '' : dataMap['labels'] as String,
           imageFrontUrl: dataMap['image_front_url'] == null ? '' : dataMap['image_front_url'] as String,
@@ -200,8 +202,63 @@ class FoodProductModel extends FoodProduct {
       fat100G: fat100G ?? this.fat100G,
       fatUnit: fatUnit ?? this.fatUnit,
       fatValue: fatValue ?? this.fatValue,
+      id: id ?? this.id,
+      keywords: keywords ?? this.keywords,
+      imageFrontSmallUrl: imageFrontSmallUrl ?? this.imageFrontSmallUrl,
+      imageFrontThumbUrl: imageFrontThumbUrl ?? this.imageFrontThumbUrl,
+      imageIngredientsSmallUrl: imageIngredientsSmallUrl ?? this.imageIngredientsSmallUrl,
+      imageIngredientsThumbUrl: imageIngredientsThumbUrl ?? this.imageIngredientsThumbUrl,
+      imageIngredientsUrl: imageIngredientsUrl ?? this.imageIngredientsUrl,
+      imageNutritionSmallUrl: imageNutritionSmallUrl ?? this.imageNutritionSmallUrl,
+      imageNutritionThumbUrl: imageNutritionThumbUrl ?? this.imageNutritionThumbUrl,
+      imageNutritionUrl: imageNutritionUrl ?? this.imageNutritionUrl,
+      imageSmallUrl: imageSmallUrl ?? this.imageSmallUrl,
+      imageThumbUrl: imageThumbUrl ?? this.imageThumbUrl,
+      imageUrl: imageUrl ?? this.imageUrl,
+      quantity: quantity ?? this.quantity,
+      servingQuantity: this.servingQuantity,
+      servingSize: servingSize ?? this.servingSize,
     );
   }
+
+  String toJson() => jsonEncode(toMap());
+
+  DataMap toMap() => {
+        'code': code,
+        'productName': productName,
+        'ingredients': ingredients,
+        'ingredients_text': ingredientsText,
+        'labels': labels,
+        'image_front_url': imageFrontUrl,
+        'proteins': proteins,
+        'proteins_100g': proteins100G,
+        'proteins_unit': proteinsUnit,
+        'proteins_value': proteinsValue,
+        'carbohydrates': carbohydrates,
+        'carbohydrates_100g': carbohydrates100G,
+        'carbohydrates_unit': carbohydratesUnit,
+        'carbohydrates_value': carbohydratesValue,
+        'fat': fat,
+        'fat_100g': fat100G,
+        'fat_unit': fatUnit,
+        'fat_value': fatValue,
+        'id': id,
+        'keywords': keywords,
+        'imageFrontSmallUrl': imageFrontSmallUrl,
+        'imageFrontThumbUrl': imageFrontThumbUrl,
+        'imageIngredientsSmallUrl': imageIngredientsSmallUrl,
+        'imageIngredientsThumbUrl': imageIngredientsThumbUrl,
+        'imageIngredientsUrl': imageIngredientsUrl,
+        'imageNutritionSmallUrl': imageNutritionSmallUrl,
+        'imageNutritionThumbUrl': imageNutritionThumbUrl,
+        'imageNutritionUrl': imageNutritionUrl,
+        'imageSmallUrl': imageSmallUrl,
+        'imageThumbUrl': imageThumbUrl,
+        'imageUrl': imageUrl,
+        'quantity': quantity,
+        'servingQuantity': servingQuantity,
+        'servingSize': servingSize,
+      };
 
   final String? id;
   final List<String>? keywords;
@@ -256,4 +313,17 @@ class IngredientModel extends Ingredient {
           vegan: dataMap['vegan'] == null ? '' : dataMap['vegan'] as String,
           vegetarian: dataMap['vegetarian'] == null ? '' : dataMap['vegetarian'] as String,
         );
+
+  String toJson() => jsonEncode(toMap());
+
+  DataMap toMap() => {
+        'id': id,
+        'ingredients': ingredients,
+        'percent_estimate': percentEstimate,
+        'percent_max': percentMax,
+        'percent_min': percentMin,
+        'text': text,
+        'vegan': vegan,
+        'vegetarian': vegetarian,
+      };
 }
