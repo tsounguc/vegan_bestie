@@ -109,3 +109,44 @@
 //   serviceLocator.registerSingleton<MapRepositoryContract>(MapRepositoryImpl());
 //   serviceLocator.registerSingleton<MapUseCase>(MapUseCase());
 // }
+
+import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
+import 'package:sheveegan/features/scan_product/data/data_sources/barcode_scanner_plugin.dart';
+import 'package:sheveegan/features/scan_product/data/data_sources/scan_product_remote_data_source.dart';
+import 'package:sheveegan/features/scan_product/data/repositories/scan_product_repository_impl.dart';
+import 'package:sheveegan/features/scan_product/domain/repositories/scan_product_repository.dart';
+import 'package:sheveegan/features/scan_product/domain/use_cases/fetch_product.dart';
+import 'package:sheveegan/features/scan_product/domain/use_cases/scan_barcode.dart';
+import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
+
+final serviceLocator = GetIt.instance;
+
+Future<void> setUpServices() async {
+  // Scan_Product Feature
+  serviceLocator
+    // App Logic
+    ..registerFactory(
+      () => ScanProductCubit(
+        scanBarcode: serviceLocator(),
+        fetchProduct: serviceLocator(),
+      ),
+    )
+    // Use cases
+    ..registerLazySingleton(() => ScanBarcode(serviceLocator()))
+    ..registerLazySingleton(() => FetchProduct(serviceLocator()))
+    // Repositories
+    ..registerLazySingleton<ScanProductRepository>(
+      () => ScanProductRepositoryImpl(serviceLocator()),
+    )
+    // Data Sources
+    ..registerLazySingleton<ScanProductRemoteDataSource>(
+      () => ScanProductRemoteDataSourceImpl(
+        serviceLocator(),
+        serviceLocator(),
+      ),
+    )
+    // External dependencies
+    ..registerLazySingleton(BarcodeScannerService.new)
+    ..registerLazySingleton(Client.new);
+}
