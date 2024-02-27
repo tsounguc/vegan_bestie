@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
-import 'package:sheveegan/core/services/barcode_scanner_plugin.dart';
+import 'package:sheveegan/features/scan_product/data/data_sources/barcode_scanner_plugin.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
@@ -38,14 +38,16 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
         );
       }
 
-      final data = jsonDecode(response.body) as DataMap;
-      final foodProduct = FoodProductModel.fromMap(data['product'] as DataMap);
+      final data = response.body.toString();
+
+      final foodProduct = FoodProductModel.fromJson(data);
       return foodProduct;
     } on FetchProductException {
       rethrow;
-    } catch (e) {
-      throw FetchProductException(message: e.toString(), statusCode: 500);
     }
+    // catch (e) {
+    //   throw FetchProductException(message: e.toString(), statusCode: 500);
+    // }
   }
 
   @override

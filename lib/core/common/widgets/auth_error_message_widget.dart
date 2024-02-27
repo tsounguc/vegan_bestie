@@ -32,8 +32,8 @@ class AuthErrorMessageWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0, bottom: 3.0),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 8.0, bottom: 3.0),
                         child: Text(
                           "ERROR",
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),

@@ -9,7 +9,7 @@ import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
 
 import 'core/common/widgets/custom_circle_avatar.dart';
-import 'core/constants/clipping_class.dart';
+import 'core/utils/clipping_class.dart';
 import 'core/constants/size_config.dart';
 import 'core/constants/strings.dart';
 

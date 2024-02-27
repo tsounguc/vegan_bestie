@@ -105,7 +105,7 @@ class FoodProductModel extends FoodProduct {
           proteinsUnit: dataMap['protein_unit'] == null ? '' : dataMap['protein_unit'] as String,
           proteinsValue: double.tryParse(dataMap['proteins_value'].toString()) ?? 0.0,
           carbohydrates: double.tryParse(
-                dataMap['proteins_100g'].toString(),
+                dataMap['carbohydrates'].toString(),
               ) ??
               0.0,
           carbohydrates100G: double.tryParse(
@@ -121,8 +121,8 @@ class FoodProductModel extends FoodProduct {
           fat100G: double.tryParse(dataMap['fat_100g'].toString()) ?? 0.0,
           fatUnit: dataMap['fat_unit'] == null ? '' : dataMap['fat_unit'] as String,
           fatValue: double.tryParse(dataMap['fat_value'].toString()) ?? 0.0,
-          id: dataMap['id'] == null ? '' : dataMap['id'] as String,
-          keywords: dataMap['keywords'] == null ? [] : List<String>.from(dataMap['keywords'] as List),
+          id: dataMap['_id'] == null ? '' : dataMap['id'] as String,
+          keywords: dataMap['_keywords'] == null ? [] : List<String>.from(dataMap['keywords'] as List),
           imageFrontSmallUrl:
               dataMap['image_front_small_url'] == null ? '' : dataMap['image_front_small_url'] as String,
           imageFrontThumbUrl:
@@ -225,7 +225,7 @@ class FoodProductModel extends FoodProduct {
 
   DataMap toMap() => {
         'code': code,
-        'productName': productName,
+        'product_name': productName,
         'ingredients': ingredients,
         'ingredients_text': ingredientsText,
         'labels': labels,
@@ -242,22 +242,22 @@ class FoodProductModel extends FoodProduct {
         'fat_100g': fat100G,
         'fat_unit': fatUnit,
         'fat_value': fatValue,
-        'id': id,
-        'keywords': keywords,
-        'imageFrontSmallUrl': imageFrontSmallUrl,
-        'imageFrontThumbUrl': imageFrontThumbUrl,
-        'imageIngredientsSmallUrl': imageIngredientsSmallUrl,
-        'imageIngredientsThumbUrl': imageIngredientsThumbUrl,
-        'imageIngredientsUrl': imageIngredientsUrl,
-        'imageNutritionSmallUrl': imageNutritionSmallUrl,
-        'imageNutritionThumbUrl': imageNutritionThumbUrl,
-        'imageNutritionUrl': imageNutritionUrl,
-        'imageSmallUrl': imageSmallUrl,
-        'imageThumbUrl': imageThumbUrl,
-        'imageUrl': imageUrl,
+        '_id': id,
+        '_keywords': keywords,
+        'image_front_small_url': imageFrontSmallUrl,
+        'image_front_thumb_url': imageFrontThumbUrl,
+        'image_ingredients_small_url': imageIngredientsSmallUrl,
+        'image_ingredients_thumb_url': imageIngredientsThumbUrl,
+        'image_ingredients_url': imageIngredientsUrl,
+        'image_nutrition_small_url': imageNutritionSmallUrl,
+        'image_nutrition_thumb_url': imageNutritionThumbUrl,
+        'image_nutrition_url': imageNutritionUrl,
+        'image_small_url': imageSmallUrl,
+        'image_thumb_url': imageThumbUrl,
+        'image_url': imageUrl,
         'quantity': quantity,
-        'servingQuantity': servingQuantity,
-        'servingSize': servingSize,
+        'serving_quantity': servingQuantity,
+        'serving_size': servingSize,
       };
 
   final String? id;

@@ -16,7 +16,7 @@ import 'features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart
 import 'features/restaurants/presentation/map_cubit/map_cubit.dart';
 import 'features/restaurants/presentation/restaurant_cubit/restaurant_details_cubit.dart';
 import 'features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
-import 'features/scan_product/presentation/barcode_scanner_cubit/barcode_scanner_cubit.dart';
+import 'features/scan_product/presentation/barcode_scanner_cubit/scan_product_cubit.dart';
 import 'features/scan_product/presentation/fetch_product_cubit/product_fetch_cubit.dart';
 import 'features/search/presentation/search_bloc/search_bloc.dart';
 

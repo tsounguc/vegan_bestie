@@ -15,27 +15,24 @@ class AuthLoadingState extends AuthState {
 }
 
 class AuthErrorState extends AuthState {
-  final error;
-
-  AuthErrorState({required this.error});
+  const AuthErrorState({required this.error});
+  final String error;
 
   @override
   List<Object?> get props => [];
 }
 
 class CreateUserErrorState extends AuthState {
-  final error;
-
-  CreateUserErrorState({required this.error});
+  const CreateUserErrorState({required this.error});
+  final String error;
 
   @override
   List<Object?> get props => [];
 }
 
 class LoggedInState extends AuthState {
+  const LoggedInState({required this.currentUser});
   final UserEntity? currentUser;
-
-  LoggedInState({required this.currentUser});
 
   @override
   List<Object?> get props => [];

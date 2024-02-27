@@ -5,12 +5,11 @@ import 'package:sheveegan/core/constants/strings.dart';
 import '../product_screens/product_not_found.dart';
 
 class ErrorPage extends StatelessWidget {
-  final dynamic error;
-
   const ErrorPage({
+    required this.error,
     Key? key,
-    this.error,
   }) : super(key: key);
+  final String error;
 
   @override
   Widget build(BuildContext context) {
