@@ -121,8 +121,8 @@ class FoodProductModel extends FoodProduct {
           fat100G: double.tryParse(dataMap['fat_100g'].toString()) ?? 0.0,
           fatUnit: dataMap['fat_unit'] == null ? '' : dataMap['fat_unit'] as String,
           fatValue: double.tryParse(dataMap['fat_value'].toString()) ?? 0.0,
-          id: dataMap['_id'] == null ? '' : dataMap['id'] as String,
-          keywords: dataMap['_keywords'] == null ? [] : List<String>.from(dataMap['keywords'] as List),
+          id: dataMap['_id'] == null ? '' : dataMap['_id'] as String,
+          keywords: dataMap['_keywords'] == null ? [] : List<String>.from(dataMap['_keywords'] as List),
           imageFrontSmallUrl:
               dataMap['image_front_small_url'] == null ? '' : dataMap['image_front_small_url'] as String,
           imageFrontThumbUrl:
