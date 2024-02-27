@@ -34,6 +34,7 @@ class ProductFound extends ScanProductState {
     required this.isVegan,
     required this.nonVeganIngredients,
   });
+
   final FoodProduct product;
   final bool isVegan;
   final String nonVeganIngredients;
@@ -42,8 +43,8 @@ class ProductFound extends ScanProductState {
   List<Object> get props => [product, isVegan, nonVeganIngredients];
 }
 
-class ProductNotFoundState extends ScanProductState {
-  const ProductNotFoundState();
+class ProductNotFound extends ScanProductState {
+  const ProductNotFound();
 }
 
 class ScanProductError extends ScanProductState {

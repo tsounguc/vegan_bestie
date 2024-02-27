@@ -1,32 +1,28 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-
-import '../../../../core/constants/strings.dart';
-import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/services/service_locator.dart';
-import '../../../../core/services/vegan_checker.dart';
-import '../../domain/entities/scan_product_entity.dart';
-import '../../domain/usecases/fetch_product_usecase.dart';
+import 'package:sheveegan/core/failures_successes/failures.dart';
+import 'package:sheveegan/core/services/vegan_checker.dart';
+import 'package:sheveegan/features/scan_product/domain/entities/scanned_product.dart';
+import 'package:sheveegan/features/scan_product/domain/use_cases/fetch_product.dart';
 
 part 'product_fetch_state.dart';
 
 class ProductFetchCubit extends Cubit<ProductFetchState> {
-  final FetchProductUseCase _fetchProductUseCase = serviceLocator<FetchProductUseCase>();
+  final FetchProduct _fetchProductUseCase = serviceLocator<FetchProduct>();
 
   ProductFetchCubit() : super(ProductFetchInitial());
 
   Future<void> fetchProduct(String barcode) async {
     emit(ProductLoadingState());
-    final Either<FetchProductFailure, ScanProductEntity> fetchProductResult =
-    await _fetchProductUseCase.fetchProduct(barcode);
+    final Either<FetchProductFailure, ScannedProduct> fetchProductResult =
+        await _fetchProductUseCase.fetchProduct(barcode);
     VeganChecker veganChecker = VeganChecker();
 
     fetchProductResult.fold(
-          (fetchFailure) => emit(ProductFetchErrorState(error: fetchFailure.message)),
-          (productInfo) {
+      (fetchFailure) => emit(ProductFetchErrorState(error: fetchFailure.message)),
+      (productInfo) {
         if (productInfo == null || productInfo.productName == null || productInfo.productName!.isEmpty) {
           emit(ProductNotFoundState());
         } else {

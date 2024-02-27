@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../domain/entities/scan_product_entity.dart';
+import '../../../domain/entities/scanned_product.dart';
 
 class ProductFoundTabBarView extends StatefulWidget {
-  final ScanProductEntity product;
+  final ScannedProduct product;
+
   const ProductFoundTabBarView({Key? key, required this.product}) : super(key: key);
 
   @override

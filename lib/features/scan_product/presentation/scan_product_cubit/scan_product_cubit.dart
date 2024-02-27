@@ -29,10 +29,10 @@ class ScanProductCubit extends Cubit<ScanProductState> {
     final result = await _fetchProduct(FetchProductParams(barcode: barcode));
     final veganChecker = VeganChecker();
     result.fold(
-      (failure) => emit(ScanProductError(message: failure.message)),
+      (failure) => emit(ScanProductError(message: failure.errorMessage)),
       (product) {
         if (product.productName.isEmpty) {
-          emit(const ProductNotFoundState());
+          emit(const ProductNotFound());
         } else {
           final isVegan = veganChecker.veganCheck(product);
           emit(

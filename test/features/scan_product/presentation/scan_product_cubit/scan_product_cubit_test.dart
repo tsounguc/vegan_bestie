@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/barcode.dart';
+import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/scan_product/domain/use_cases/fetch_product.dart';
 import 'package:sheveegan/features/scan_product/domain/use_cases/scan_barcode.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
@@ -16,6 +17,7 @@ void main() {
   late ScanBarcode scanBarcode;
   late FetchProduct fetchProduct;
   late ScanProductCubit cubit;
+  late FetchProductParams testFetchProductParams;
   setUp(() {
     scanBarcode = MockScanProduct();
     fetchProduct = MockFetchProduct();
@@ -23,6 +25,8 @@ void main() {
       scanBarcode: scanBarcode,
       fetchProduct: fetchProduct,
     );
+    testFetchProductParams = const FetchProductParams.empty();
+    registerFallbackValue(testFetchProductParams);
   });
 
   tearDown(() => cubit.close());
@@ -38,7 +42,7 @@ void main() {
   });
 
   group('scanBarcode - ', () {
-    const testBarcode = Barcode(barcode: '123456789012');
+    const testBarcode = Barcode.empty();
     const testScanFailure = ScanFailure(message: 'message', statusCode: 400);
     blocTest<ScanProductCubit, ScanProductState>(
       'given ScanProductCubit '
@@ -78,6 +82,60 @@ void main() {
       verify: (cubit) {
         verify(() => scanBarcode()).called(1);
         verifyNoMoreInteractions(scanBarcode);
+      },
+    );
+  });
+
+  group('fetchProduct - ', () {
+    final testFoodProduct = FoodProduct.empty();
+    const testScanFailure = ScanFailure(message: 'message', statusCode: 400);
+
+    blocTest<ScanProductCubit, ScanProductState>(
+      'given ScanProductCubit '
+      'when [ScanProductCubit.scanBarcode] call completed successfully '
+      'then emit [FetchingProduct, ProductFound] ',
+      build: () {
+        when(() => fetchProduct(any())).thenAnswer(
+          (_) async => Right(testFoodProduct),
+        );
+        return cubit;
+      },
+      act: (cubit) => cubit.fetchProduct(
+        barcode: testFetchProductParams.barcode,
+      ),
+      expect: () => [
+        const FetchingProduct(),
+        ProductFound(
+          product: testFoodProduct,
+          isVegan: false,
+          nonVeganIngredients: '',
+        ),
+      ],
+      verify: (cubit) {
+        verify(() => fetchProduct(testFetchProductParams)).called(1);
+        verifyNoMoreInteractions(fetchProduct);
+      },
+    );
+    blocTest<ScanProductCubit, ScanProductState>(
+      'given ScanProductCubit '
+      'when [ScanProductCubit.fetchProduct] call unsuccessful '
+      'then emit [FetchingProduct, ScanProductError] ',
+      build: () {
+        when(() => fetchProduct(any())).thenAnswer(
+          (_) async => const Left(testScanFailure),
+        );
+        return cubit;
+      },
+      act: (cubit) => cubit.fetchProduct(
+        barcode: testFetchProductParams.barcode,
+      ),
+      expect: () => [
+        const FetchingProduct(),
+        ScanProductError(message: testScanFailure.errorMessage),
+      ],
+      verify: (cubit) async {
+        verify(() => fetchProduct(testFetchProductParams)).called(1);
+        verifyNoMoreInteractions(fetchProduct);
       },
     );
   });

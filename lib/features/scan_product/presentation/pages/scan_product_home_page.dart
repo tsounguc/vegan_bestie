@@ -9,7 +9,7 @@ import '../../../../core/constants/strings.dart';
 import '../../../../core/common/widgets/vegan_bestie_logo_widget.dart';
 import '../../../../themes/app_theme.dart';
 import '../../../search/presentation/search_bloc/search_bloc.dart';
-import '../barcode_scanner_cubit/barcode_scanner_cubit.dart';
+import '../barcode_scanner_cubit/scan_product_cubit.dart';
 import '../fetch_product_cubit/product_fetch_cubit.dart';
 
 class ScanProductHomePage extends StatelessWidget {
@@ -21,7 +21,7 @@ class ScanProductHomePage extends StatelessWidget {
   Widget build(BuildContext buildContext) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<BarcodeScannerCubit, BarcodeScannerState>(
+        BlocListener<BarcodeScannerCubit, ScanProductState>(
           listener: (context, state) {
             if (state is BarcodeFoundState) {
               BlocProvider.of<ProductFetchCubit>(buildContext).fetchProduct(state.barcode);
@@ -33,7 +33,7 @@ class ScanProductHomePage extends StatelessWidget {
                 ),
                 duration: Duration(milliseconds: 2000),
               ));
-            } else if (state is ScanningErrorState) {
+            } else if (state is ScanProductError) {
               ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
                 content: Text(
                   "${state.error}",

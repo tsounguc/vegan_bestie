@@ -17,7 +17,7 @@ class FetchProduct extends UseCaseWithParams<FoodProduct, FetchProductParams> {
 class FetchProductParams extends Equatable {
   const FetchProductParams({required this.barcode});
 
-  const FetchProductParams.empty() : this(barcode: 'empty.barcode');
+  const FetchProductParams.empty() : this(barcode: '_empty.barcode');
 
   final String barcode;
 

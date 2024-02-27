@@ -15,9 +15,10 @@ class ProductLoadingState extends ProductFetchState {
 }
 
 class ProductFoundState extends ProductFetchState {
-  final ScanProductEntity product;
+  final ScannedProduct product;
   final bool? isVegan;
   final String? nonVeganIngredientsInProduct;
+
   ProductFoundState({required this.product, this.isVegan, this.nonVeganIngredientsInProduct});
 
   @override
