@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
-import 'package:sheveegan/core/constants/colors.dart';
-
-import '../../../../core/constants/strings.dart';
-import '../../../../themes/app_theme.dart';
-import '../auth_cubit/auth_cubit.dart';
+import 'package:sheveegan/core/utils/strings.dart';
+import 'package:sheveegan/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:sheveegan/themes/app_theme.dart';
 
 class WelcomePage extends StatelessWidget {
-  // const WelcomePage({Key? key}) : super(key: key);
-  static const String id = "/welcomePage";
+  const WelcomePage({super.key});
+
+  static const String id = '/welcomePage';
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      onPopInvoked: (didPop) {},
+      canPop: false,
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
@@ -27,25 +26,21 @@ class WelcomePage extends StatelessWidget {
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 150),
-            decoration: BoxDecoration(color: Theme.of(context).colorScheme.background),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 150),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       Strings.appTitle,
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(color: AppTheme.lightPrimaryColor),
-
-                      // style: TextStyle(
-                      //   color: titleTextColorOne,
-                      //   fontSize: 36.sp,
-                      //   fontWeight: FontWeight.w800,
-                      //   fontFamily: 'cursive',
-                      // ),
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            color: AppTheme.lightPrimaryColor,
+                          ),
                     ),
                   ],
                 ),
@@ -55,26 +50,26 @@ class WelcomePage extends StatelessWidget {
                       onPressed: () {
                         BlocProvider.of<AuthCubit>(context).goToLoginPage();
                       },
-                      text: "Login",
+                      text: 'Login',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     LongButton(
                       onPressed: () {
                         BlocProvider.of<AuthCubit>(context).goToRegister();
                       },
-                      text: "Register",
+                      text: 'Register',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     TextButton(
                       onPressed: () {
                         BlocProvider.of<AuthCubit>(context).continueAsGuest();
                       },
-                      child: Text(
-                        "Continue as a guest",
+                      child: const Text(
+                        'Continue as a guest',
                         style: TextStyle(
                           color: Colors.white,
                           // decoration: TextDecoration.underline,
@@ -85,7 +80,7 @@ class WelcomePage extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

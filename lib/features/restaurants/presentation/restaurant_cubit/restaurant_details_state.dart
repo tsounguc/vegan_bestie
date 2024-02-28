@@ -1,6 +1,5 @@
 part of 'restaurant_details_cubit.dart';
 
-@immutable
 abstract class RestaurantDetailsState extends Equatable {
   const RestaurantDetailsState();
 }
@@ -16,19 +15,18 @@ class LoadingRestaurantDetails extends RestaurantDetailsState {
 }
 
 class RestaurantDetailsFoundState extends RestaurantDetailsState {
+  const RestaurantDetailsFoundState({required this.restaurantDetailsEntity});
   final RestaurantDetailsEntity? restaurantDetailsEntity;
-
-  RestaurantDetailsFoundState({required this.restaurantDetailsEntity});
 
   @override
   List<Object?> get props => [];
 }
 
 class RestaurantDetailsErrorState extends RestaurantDetailsState {
-  final error;
+  const RestaurantDetailsErrorState({required this.message});
 
-  RestaurantDetailsErrorState({required this.error});
+  final String message;
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [message];
 }

@@ -46,11 +46,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     });
 
     on<SearchProductPressedEvent>((event, emit) {
-      bool isVegan = veganChecker.veganCheck(event.selectedProduct);
-      emit(SearchProductDetailState(
+      // bool isVegan = veganChecker.veganCheck(event.selectedProduct);
+      emit(
+        SearchProductDetailState(
           selectedProduct: event.selectedProduct,
           nonVeganIngredientsInProduct: veganChecker.nonVeganIngredientsInProduct,
-          isVegan: isVegan));
+          isVegan: false,
+        ),
+      );
     });
 
     on<SearchDetailBackButtonPressedEvent>((event, emit) {

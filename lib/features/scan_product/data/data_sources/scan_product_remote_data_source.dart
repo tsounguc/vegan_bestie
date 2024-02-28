@@ -38,9 +38,9 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
         );
       }
 
-      final data = response.body.toString();
+      final data = jsonDecode(response.body);
 
-      final foodProduct = FoodProductModel.fromJson(data);
+      final foodProduct = FoodProductModel.fromMap(data['product'] as DataMap);
       return foodProduct;
     } on FetchProductException {
       rethrow;

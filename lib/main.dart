@@ -18,6 +18,7 @@ import 'package:sheveegan/features/scan_product/presentation/pages/scan_product_
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 import 'package:sheveegan/features/search/presentation/search_bloc/search_bloc.dart';
 
+import 'package:sheveegan/home_page.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 
 void main() async {

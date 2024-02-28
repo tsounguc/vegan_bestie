@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-
-import '../../../../core/common/screens/error/error.dart';
-import '../../../../core/common/screens/loading/loading.dart';
-import '../geolocation_bloc/geolocation_bloc.dart';
-import '../map_cubit/map_cubit.dart';
-import '../restaurants_bloc/restaurants_bloc.dart';
-import 'componets/restaurant_card.dart';
-import 'componets/restaurants_found_state_page.dart';
-import 'map_page.dart';
+import 'package:sheveegan/core/common/screens/error/error.dart';
+import 'package:sheveegan/core/common/screens/loading/loading.dart';
+import 'package:sheveegan/features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
+import 'package:sheveegan/features/restaurants/presentation/map_cubit/map_cubit.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurants_found_state_page.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class RestaurantsHomePage extends StatefulWidget {
-  static const String id = "/restaurantsHomepage";
+  const RestaurantsHomePage({super.key});
 
-  RestaurantsHomePage({Key? key}) : super(key: key);
+  static const String id = '/restaurantsHomepage';
 
   @override
   State<RestaurantsHomePage> createState() => _RestaurantsHomePageState();
@@ -33,18 +30,26 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
       listeners: [
         BlocListener<GeolocationBloc, GeolocationState>(
           listener: (context, state) {
-            userCurrentLocation = BlocProvider.of<GeolocationBloc>(context).currentLocation;
+            userCurrentLocation = BlocProvider.of<GeolocationBloc>(
+              context,
+            ).currentLocation;
             if (state is GeolocationLoadedState) {
               if (userCurrentLocation == null ||
                   userCurrentLocation?.latitude.toStringAsFixed(3) != state.position.latitude.toStringAsFixed(3) ||
                   userCurrentLocation?.longitude.toStringAsFixed(3) !=
                       state.position.longitude.toStringAsFixed(3)) {
-                debugPrint("Getting Restaurants");
-                BlocProvider.of<GeolocationBloc>(context).currentLocation = state.position;
+                debugPrint('Getting Restaurants');
+                BlocProvider.of<GeolocationBloc>(
+                  context,
+                ).currentLocation = state.position;
                 userCurrentLocation = state.position;
                 debugPrint(
-                    "userCurrentLocation: ${userCurrentLocation?.latitude} ${userCurrentLocation?.longitude}");
-                BlocProvider.of<RestaurantsBloc>(context).add(GetRestaurantsEvent(position: state.position));
+                  'userCurrentLocation: ${userCurrentLocation?.latitude}'
+                  ' ${userCurrentLocation?.longitude}',
+                );
+                BlocProvider.of<RestaurantsBloc>(context).add(GetRestaurantsEvent(
+                  position: state.position,
+                ));
               }
             }
           },
@@ -52,32 +57,35 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
         BlocListener<RestaurantsBloc, RestaurantsState>(
           listener: (context, state) {
             if (state is RestaurantsFoundState) {
-              debugPrint("restaurants found");
-              BlocProvider.of<MapCubit>(context).displayRestaurants(state.restaurants, userCurrentLocation!);
+              debugPrint('restaurants found');
+              BlocProvider.of<MapCubit>(context).displayRestaurants(
+                state.restaurants,
+                userCurrentLocation!,
+              );
             }
           },
         ),
       ],
       child: GestureDetector(
         onTap: () {
-          FocusScope.of(buildContext).requestFocus(new FocusNode());
+          FocusScope.of(buildContext).requestFocus(FocusNode());
         },
         child: BlocBuilder<RestaurantsBloc, RestaurantsState>(
           builder: (context, state) {
             if (state is RestaurantsLoadingState) {
-              currentPage = LoadingPage();
-              return LoadingPage();
+              currentPage = const LoadingPage();
+              return const LoadingPage();
             } else if (state is RestaurantsFoundState) {
-              currentPage = RestaurantsFoundStatePage();
-              return RestaurantsFoundStatePage();
+              currentPage = const RestaurantsFoundStatePage();
+              return const RestaurantsFoundStatePage();
             } else if (state is RestaurantsErrorState) {
-              currentPage = ErrorPage(error: state.error);
+              currentPage = ErrorPage(error: state.error as String);
               return ErrorPage(
-                error: state.error,
+                error: state.error as String,
               );
             } else {
               if (userCurrentLocation == null) {
-                currentPage = LoadingPage();
+                currentPage = const LoadingPage();
               }
               return currentPage;
             }

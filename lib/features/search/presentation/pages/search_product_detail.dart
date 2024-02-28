@@ -4,16 +4,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheveegan/core/constants/size_config.dart';
 
-import '../../../../core/constants/strings.dart';
-import '../../../../core/resources/vegan_icon.dart';
-import '../search_bloc/search_bloc.dart';
+import 'package:sheveegan/core/resources/vegan_icon.dart';
+import 'package:sheveegan/core/utils/size_config.dart';
+import 'package:sheveegan/core/utils/strings.dart';
+import 'package:sheveegan/features/search/presentation/search_bloc/search_bloc.dart';
 
 class SearchProductDetail extends StatelessWidget {
   const SearchProductDetail({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,37 +21,54 @@ class SearchProductDetail extends StatelessWidget {
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
         if (state is SearchProductDetailState) {
-          return new WillPopScope(
-            onWillPop: () async {
-              BlocProvider.of<SearchBloc>(context).add(SearchDetailBackButtonPressedEvent());
+          return PopScope(
+            onPopInvoked: (didPop) {
+              BlocProvider.of<SearchBloc>(context).add(
+                SearchDetailBackButtonPressedEvent(),
+              );
               // Navigator.of(context).pop();
-              return true;
             },
             child: Container(
-              decoration: state.selectedProduct!.imageFrontUrl != null &&
-                      state.selectedProduct!.imageFrontUrl!.isNotEmpty
-                  ? BoxDecoration(
-                      color: state.isVegan! ? Theme.of(context).backgroundColor : Colors.red,
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.saturation),
-                          image: CachedNetworkImageProvider(state.selectedProduct!.imageFrontUrl!)),
-                    )
-                  : BoxDecoration(
-                      color: state.isVegan! ? Theme.of(context).backgroundColor : Colors.red,
-                    ),
+              decoration:
+                  state.selectedProduct!.imageFrontUrl != null && state.selectedProduct!.imageFrontUrl!.isNotEmpty
+                      ? BoxDecoration(
+                          color: state.isVegan!
+                              ? Theme.of(
+                                  context,
+                                ).colorScheme.background
+                              : Colors.red,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.2),
+                              BlendMode.saturation,
+                            ),
+                            image: CachedNetworkImageProvider(
+                              state.selectedProduct!.imageFrontUrl!,
+                            ),
+                          ),
+                        )
+                      : BoxDecoration(
+                          color: state.isVegan!
+                              ? Theme.of(
+                                  context,
+                                ).colorScheme.background
+                              : Colors.red,
+                        ),
               child: BackdropFilter(
-                filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Scaffold(
                   appBar: AppBar(
-                    iconTheme: IconThemeData(color: Colors.white),
+                    iconTheme: const IconThemeData(color: Colors.white),
                     backgroundColor: Colors.transparent,
                     elevation: 0,
                     centerTitle: true,
                     leading: IconButton(
-                      icon: Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back),
                       onPressed: () {
-                        BlocProvider.of<SearchBloc>(context).add(SearchDetailBackButtonPressedEvent());
+                        BlocProvider.of<SearchBloc>(context).add(
+                          SearchDetailBackButtonPressedEvent(),
+                        );
                         Navigator.of(context).pop();
                       },
                     ),
@@ -202,9 +219,11 @@ class SearchProductDetail extends StatelessWidget {
                                                 height: 20.h,
                                               ),
                                               Padding(
-                                                padding: EdgeInsets.only(bottom: 8.0.h),
+                                                padding: EdgeInsets.only(
+                                                  bottom: 8.0.h,
+                                                ),
                                                 child: Text(
-                                                  "Ingredients: ",
+                                                  'Ingredients: ',
                                                   style: TextStyle(
                                                     fontSize: 16.sp,
                                                     color: Colors.black,

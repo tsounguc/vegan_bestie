@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sheveegan/core/common/screens/error/error.dart';
 
-import '../../../../core/common/screens/loading/loading.dart';
-import '../geolocation_bloc/geolocation_bloc.dart';
-import '../map_cubit/map_cubit.dart';
+import 'package:sheveegan/core/common/screens/loading/loading.dart';
+import 'package:sheveegan/features/restaurants/presentation/map_cubit/map_cubit.dart';
 
 class MapPage extends StatelessWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -18,40 +16,44 @@ class MapPage extends StatelessWidget {
     return BlocBuilder<MapCubit, MapState>(
       builder: (context, state) {
         if (state is MapErrorState) {
-          ErrorPage(error: state.error);
+          ErrorPage(error: state.error as String);
         }
         if (state is MapLocationsFound) {
           debugPrint(state.markers.first.mapsId.value);
           return GoogleMap(
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
-            mapType: MapType.normal,
             markers: state.markers,
-            // trafficEnabled: true,
-            // cameraTargetBounds: CameraTargetBounds(
-            //   MapUtils.boundsFromLatLngList(state.markers.map((location) => location.position).toList()),
-            // ),
             initialCameraPosition: CameraPosition(
-              // bearing: 190,
-              target: LatLng(state.userLocation.latitude, state.userLocation.longitude),
-              // zoom: 12
+              target: LatLng(
+                state.userLocation.latitude,
+                state.userLocation.longitude,
+              ),
               zoom: 11.4746,
             ),
-            onMapCreated: (GoogleMapController controller) => _onMapCreated(context, controller, state),
+            onMapCreated: (GoogleMapController controller) => _onMapCreated(
+              context,
+              controller,
+              state,
+            ),
           );
         } else {
-          return LoadingPage();
+          return const LoadingPage();
         }
       },
     );
   }
 
-  void _onMapCreated(BuildContext context, GoogleMapController controller, MapLocationsFound state) async {
+  Future<void> _onMapCreated(
+    BuildContext context,
+    GoogleMapController controller,
+    MapLocationsFound state,
+  ) async {
     BlocProvider.of<MapCubit>(context).controller = controller;
     // userCurrentLocation = state.userLocation;
 
     Future.delayed(
-      Duration(milliseconds: 200),
+      const Duration(milliseconds: 200),
       () => context.read<MapCubit>().controller?.animateCamera(
             CameraUpdate.newLatLngBounds(
               MapUtils.boundsFromLatLngList(
@@ -136,8 +138,11 @@ class MapPage extends StatelessWidget {
 //https://www.appsloveworld.com/flutter/100/47/keep-all-markers-in-view-with-flutter-google-maps-plugin
 class MapUtils {
   static LatLngBounds boundsFromLatLngList(List<LatLng> list) {
-    double? x0, x1, y0, y1;
-    for (LatLng latLng in list) {
+    double? x0;
+    double? x1;
+    double? y0;
+    double? y1;
+    for (final latLng in list) {
       if (x0 == null) {
         x0 = x1 = latLng.latitude;
         y0 = y1 = latLng.longitude;
@@ -148,6 +153,9 @@ class MapUtils {
         if (latLng.longitude < y0!) y0 = latLng.longitude;
       }
     }
-    return LatLngBounds(northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
+    return LatLngBounds(
+      northeast: LatLng(x1!, y1!),
+      southwest: LatLng(x0!, y0!),
+    );
   }
 }

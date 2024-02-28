@@ -1,30 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import '../../../../core/common/widgets/auth_error_message_widget.dart';
-import '../../../../core/common/widgets/buttons.dart';
-import '../../../../core/constants/colors.dart';
-import '../../../../core/common/screens/loading/loading.dart';
-import '../auth_cubit/auth_cubit.dart';
-import 'auth_page.dart';
-import 'components/other_auth_options.dart';
-import 'forgot_password.dart';
-import 'registration_page.dart';
+import 'package:sheveegan/core/common/screens/loading/loading.dart';
+import 'package:sheveegan/core/common/widgets/auth_error_message_widget.dart';
+import 'package:sheveegan/core/common/widgets/buttons.dart';
+import 'package:sheveegan/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:sheveegan/features/auth/presentation/pages/components/other_auth_options.dart';
+import 'package:sheveegan/features/auth/presentation/pages/registration_page.dart';
 
 class LoginPage extends StatefulWidget {
-  static const String id = "/loginPage";
+  const LoginPage({super.key});
+
+  static const String id = '/loginPage';
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String? _email, _password;
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  bool isPasswordObscured = true;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool isPasswordHidden = true;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -32,17 +28,18 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      onPopInvoked: (didPop) {},
+      canPop: false,
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state is AuthLoadingState) {
             _passwordController.clear();
-            return LoadingPage();
+            return const LoadingPage();
           }
           return GestureDetector(
             onTap: () {
-              FocusScope.of(context).requestFocus(new FocusNode());
+              FocusScope.of(context).requestFocus(FocusNode());
             },
             child: Scaffold(
               key: _scaffoldKey,
@@ -55,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                     ? null
                     : IconButton(
                         color: Colors.white,
-                        icon: Icon(Icons.arrow_back_ios),
+                        icon: const Icon(Icons.arrow_back_ios),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -63,19 +60,18 @@ class _LoginPageState extends State<LoginPage> {
               ),
               body: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Form(
                     key: _formKey,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
-                        Center(
+                        const Center(
                           child: Text(
-                            "Login",
+                            'Login',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 30,
@@ -83,11 +79,11 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 60.0,
+                        const SizedBox(
+                          height: 60,
                         ),
-                        AuthErrorMessageWidget(),
-                        SizedBox(
+                        const AuthErrorMessageWidget(),
+                        const SizedBox(
                           height: 10,
                         ),
                         TextFormField(
@@ -98,8 +94,6 @@ class _LoginPageState extends State<LoginPage> {
                             }
                             return null;
                           },
-                          // onChanged: (input) => _email = input,
-                          autofocus: false,
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
                           onEditingComplete: () {
@@ -108,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white70,
-                            labelText: "Email",
+                            labelText: 'Email',
                             labelStyle: TextStyle(
                               color: Colors.green.shade900,
                               fontSize: 14.sp,
@@ -120,16 +114,18 @@ class _LoginPageState extends State<LoginPage> {
                               fontWeight: FontWeight.bold,
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: const BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                            ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 25,
                         ),
                         TextFormField(
@@ -140,29 +136,33 @@ class _LoginPageState extends State<LoginPage> {
                             }
                             return null;
                           },
-                          // onChanged: (input) => _password = input,
-                          autofocus: false,
-                          obscureText: isPasswordObscured,
+                          obscureText: isPasswordHidden,
                           textInputAction: TextInputAction.send,
                           onEditingComplete: () {
                             FocusScope.of(context).unfocus();
                             if (_formKey.currentState!.validate()) {
-                              BlocProvider.of<AuthCubit>(context).signInWithEmailAndPassword(
-                                  _emailController.text.trim(), _passwordController.text.trim());
+                              BlocProvider.of<AuthCubit>(
+                                context,
+                              ).signInWithEmailAndPassword(
+                                _emailController.text.trim(),
+                                _passwordController.text.trim(),
+                              );
                             }
                           },
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white70,
                             focusColor: Colors.white,
-                            labelText: "Password",
+                            labelText: 'Password',
                             suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
-                                  isPasswordObscured = !isPasswordObscured;
+                                  isPasswordHidden = !isPasswordHidden;
                                 });
                               },
-                              icon: Icon(!isPasswordObscured ? Icons.visibility_off : Icons.visibility),
+                              icon: Icon(
+                                !isPasswordHidden ? Icons.visibility_off : Icons.visibility,
+                              ),
                             ),
                             suffixIconColor: Colors.green.shade900,
                             // floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -182,31 +182,36 @@ class _LoginPageState extends State<LoginPage> {
                               fontWeight: FontWeight.bold,
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: const BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.green.shade900),
+                              borderSide: BorderSide(
+                                color: Colors.green.shade900,
+                              ),
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                            ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 40,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
+                              padding: const EdgeInsets.only(bottom: 8),
                               child: TextButton(
                                 onPressed: () {
-                                  BlocProvider.of<AuthCubit>(context).gotToForgotPasswordPage();
-                                  // Navigator.of(context).pushNamed(ForgotPasswordPage.id);
+                                  BlocProvider.of<AuthCubit>(
+                                    context,
+                                  ).gotToForgotPasswordPage();
                                 },
-                                child: Text(
-                                  "Forgot Password?",
+                                child: const Text(
+                                  'Forgot Password?',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -220,13 +225,17 @@ class _LoginPageState extends State<LoginPage> {
                         LongButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              BlocProvider.of<AuthCubit>(context).signInWithEmailAndPassword(
-                                  _emailController.text.trim(), _passwordController.text.trim());
+                              BlocProvider.of<AuthCubit>(
+                                context,
+                              ).signInWithEmailAndPassword(
+                                _emailController.text.trim(),
+                                _passwordController.text.trim(),
+                              );
                             }
                           },
-                          text: "Log In",
+                          text: 'Log In',
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 40,
                         ),
                         Row(
@@ -237,30 +246,30 @@ class _LoginPageState extends State<LoginPage> {
                               width: MediaQuery.of(context).size.width * 0.25,
                               color: Colors.grey,
                             ),
-                            Text(
-                              "Or Continue With",
+                            const Text(
+                              'Or Continue With',
                               style: TextStyle(color: Colors.white),
                             ),
                             Container(
                               height: 1,
                               width: MediaQuery.of(context).size.width * 0.25,
                               color: Colors.grey,
-                            )
+                            ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 40,
                         ),
-                        OtherAuthOptions(
+                        const OtherAuthOptions(
                           pageId: LoginPage.id,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 40,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
+                            const Text(
                               "Don't have an account?",
                               style: TextStyle(
                                 color: Colors.white,
@@ -270,16 +279,21 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 if (!Navigator.canPop(context)) {
                                   debugPrint("Register now can't pop");
-                                  BlocProvider.of<AuthCubit>(context).goToRegister();
-                                  // Navigator.of(context).pushReplacementNamed(SignUpPage.id);
+                                  BlocProvider.of<AuthCubit>(
+                                    context,
+                                  ).goToRegister();
                                 } else {
-                                  debugPrint("Register now can pop");
-                                  BlocProvider.of<AuthCubit>(context).goToRegister();
-                                  Navigator.of(context).pushNamed(RegistrationPage.id);
+                                  debugPrint('Register now can pop');
+                                  BlocProvider.of<AuthCubit>(
+                                    context,
+                                  ).goToRegister();
+                                  Navigator.of(
+                                    context,
+                                  ).pushNamed(RegistrationPage.id);
                                 }
                               },
-                              child: Text(
-                                "Register now",
+                              child: const Text(
+                                'Register now',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -289,7 +303,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
@@ -297,22 +311,21 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                BlocProvider.of<AuthCubit>(context).continueAsGuest();
+                                BlocProvider.of<AuthCubit>(
+                                  context,
+                                ).continueAsGuest();
                               },
-                              child: Text(
-                                "Continue as a guest",
+                              child: const Text(
+                                'Continue as a guest',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  // decoration: TextDecoration.underline,
-                                  // decorationThickness: 5,
-                                  // fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 40,
                         ),
                       ],

@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/utils/strings.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_details_page.dart';
-
-import '../../../../../core/constants/strings.dart';
-import '../../../data/models/yelp_restaurants_model.dart';
-import '../../restaurant_cubit/restaurant_details_cubit.dart';
-import 'is_open_now.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurant_cubit/restaurant_details_cubit.dart';
 
 class RestaurantCard extends StatelessWidget {
-  const RestaurantCard({Key? key, required this.dietRestrictions, required this.restaurant}) : super(key: key);
+  const RestaurantCard({
+    required this.dietRestrictions,
+    required this.restaurant,
+    super.key,
+  });
 
   final String? dietRestrictions;
   final RestaurantEntity? restaurant;
@@ -22,7 +24,9 @@ class RestaurantCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         debugPrint(restaurant?.id);
-        BlocProvider.of<RestaurantDetailsCubit>(context).searchRestaurantDetails(restaurant?.id);
+        BlocProvider.of<RestaurantDetailsCubit>(
+          context,
+        ).searchRestaurantDetails(restaurant?.id);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => RestaurantDetailsPage(),
@@ -35,17 +39,32 @@ class RestaurantCard extends StatelessWidget {
         elevation: 5,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
               padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * 0.025,
-                  top: MediaQuery.of(context).size.width * 0.030,
-                  bottom: MediaQuery.of(context).size.width * 0.030),
+                left: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.025,
+                top: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.030,
+                bottom: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.030,
+              ),
               child: Center(
                 child: Ink(
-                  height: MediaQuery.of(context).size.width * 0.30,
-                  width: MediaQuery.of(context).size.width * 0.30,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.30,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.30,
                   decoration: BoxDecoration(
                     color: Colors.green.shade50,
                     borderRadius: BorderRadius.circular(10),
@@ -68,7 +87,10 @@ class RestaurantCard extends StatelessWidget {
                       children: [
                         Flexible(
                           child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.30,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width * 0.30,
                             child: Text(
                               restaurant!.name!,
                               style: TextStyle(
@@ -81,7 +103,8 @@ class RestaurantCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${(restaurant!.distance! / 1609.344).round()} " + Strings.distanceUnitText,
+                          '${(restaurant!.distance! / 1609.344).round()} '
+                              '${Strings.distanceUnitText}',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 10.sp,
@@ -91,14 +114,16 @@ class RestaurantCard extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.007,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.007,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Icon(
                                 Icons.location_on,
@@ -110,29 +135,37 @@ class RestaurantCard extends StatelessWidget {
                               ),
                               Flexible(
                                 child: Text(
-                                  "${restaurant!.vicinity!}",
-                                  style: TextStyle(color: Colors.black, fontSize: 10.sp),
+                                  restaurant!.vicinity!,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10.sp,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
                         Text(
-                          restaurant!.price ?? "",
-                          style: TextStyle(color: Colors.black, fontSize: 10.sp),
-                        )
+                          restaurant!.price ?? '',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 10.sp,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.007,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.007,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         RatingBarIndicator(
                           rating: restaurant!.rating!,
                           itemBuilder: (BuildContext context, int index) {
-                            return Icon(
+                            return const Icon(
                               Icons.star,
                               color: Colors.amber,
                             );
@@ -141,23 +174,30 @@ class RestaurantCard extends StatelessWidget {
                           itemSize: 15,
                         ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.025,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.025,
                         ),
                         Text(
-                          "${restaurant!.reviewCount} " + Strings.reviewsText,
-                          style: TextStyle(color: Colors.black, fontSize: 12),
+                          '${restaurant!.reviewCount} ${Strings.reviewsText}',
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),
                     IsOpenNowWidget(
                       visible: restaurant?.isOpenNow != null,
                       isOpenNow: restaurant?.isOpenNow != null && restaurant!.isOpenNow!,
-                      iconSize: 16,
-                      fontSize: 12,
-                      weekdayText: [],
+                      weekdayText: const [],
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.007,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.007,
                     ),
                   ],
                 ),

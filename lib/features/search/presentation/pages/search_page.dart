@@ -25,7 +25,7 @@ class SearchPage extends StatelessWidget {
           iconTheme: Theme.of(context).iconTheme,
           toolbarHeight: 65.h,
           automaticallyImplyLeading: false,
-          title: SearchBar(),
+          // title: SearchBar(),
           elevation: 0,
           backgroundColor: Theme.of(context).backgroundColor,
         ),
@@ -39,7 +39,7 @@ class SearchPage extends StatelessWidget {
               return ProductNotFoundPage(message: state.message);
             } else if (state is SearchErrorState) {
               return ErrorPage(
-                error: state.error,
+                error: state.error as String,
               );
             } else if (state is SearchInitialState) {
               return SearchInitialStateWidget();
