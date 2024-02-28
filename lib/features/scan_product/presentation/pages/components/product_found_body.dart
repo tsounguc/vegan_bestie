@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
-import 'product_found_body_components/product_found_body_info.dart';
-import 'product_found_body_components/product_found_image.dart';
+import 'package:sheveegan/features/scan_product/presentation/pages/components/product_widget_body_components/product_image_component.dart';
+import 'package:sheveegan/features/scan_product/presentation/pages/components/product_widget_body_components/product_info_component.dart';
 
 class ProductFoundBody extends StatelessWidget {
   const ProductFoundBody({
-    Key? key,
-    // this.size,
-  }) : super(key: key);
+    super.key,
+  });
+
   // final Size? size;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Positioned(
+        const Positioned(
           bottom: 0,
-          child: ProductFoundBodyInfo(
-              // size: size,
-              ),
+          child: ProductInfoComponent(),
         ),
         Positioned(
           top: MediaQuery.of(context).size.height * 0.08,
           // bottom: MediaQuery.of(context).size.height * 0.92,
           left: 30,
-          child: ProductFoundImage(),
-        )
+          child: const ProductImageComponent(),
+        ),
       ],
     );
   }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sheveegan/core/constants/colors.dart';
 
 class AppTheme {
   const AppTheme._();
@@ -33,12 +31,11 @@ class AppTheme {
       800: Colors.green.shade800,
       900: Colors.green.shade900,
     }),
-    appBarTheme:
-        AppBarTheme(elevation: 0, backgroundColor: lightBackgroundColor),
+    appBarTheme: AppBarTheme(elevation: 0, backgroundColor: lightBackgroundColor),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: lightBackgroundColor,
       selectedItemColor: lightPrimaryColor,
-      selectedLabelStyle: TextStyle(fontWeight: FontWeight.w700),
+      selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
       unselectedItemColor: Colors.grey.shade500,
     ),
     brightness: Brightness.light,
@@ -65,13 +62,21 @@ class AppTheme {
         fontSize: 30,
         fontWeight: FontWeight.bold,
       ),
-      titleMedium:
-          TextStyle(color: lightPrimaryColor, fontWeight: FontWeight.w600),
+      titleMedium: TextStyle(
+        color: lightPrimaryColor,
+        fontWeight: FontWeight.w600,
+      ),
       bodyLarge: TextStyle(
-          color: lightPrimaryColor, fontSize: 24, fontWeight: FontWeight.w600),
+        color: lightPrimaryColor,
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+      ),
       bodyMedium: TextStyle(
-          color: lightPrimaryColor, fontSize: 16, fontWeight: FontWeight.w600),
-      bodySmall: TextStyle(color: Colors.black),
+        color: lightPrimaryColor,
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
+      bodySmall: const TextStyle(color: Colors.black),
     ),
   );
 
@@ -95,7 +100,7 @@ class AppTheme {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.green.shade50,
       selectedItemColor: darkBackgroundColor,
-      selectedLabelStyle: TextStyle(fontWeight: FontWeight.w700),
+      selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
       unselectedItemColor: Colors.grey.shade500,
     ),
     brightness: Brightness.dark,
@@ -108,36 +113,44 @@ class AppTheme {
       background: darkBackgroundColor,
     ),
     textTheme: GoogleFonts.openSansTextTheme().copyWith(
-      headlineLarge: TextStyle(color: Colors.white),
-      displaySmall: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'cursive'),
-      titleLarge: TextStyle(
+      headlineLarge: const TextStyle(color: Colors.white),
+      displaySmall: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'cursive',
+      ),
+      titleLarge: const TextStyle(
         color: Colors.white,
         fontSize: 30,
         fontWeight: FontWeight.bold,
         fontFamily: 'cursive',
       ),
-      titleMedium: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-      bodyLarge: TextStyle(
-          color: Colors.black, fontSize: 24, fontWeight: FontWeight.w600),
-      bodyMedium: TextStyle(
-          color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
-      bodySmall: TextStyle(color: Colors.black),
+      titleMedium: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+      ),
+      bodyLarge: const TextStyle(
+        color: Colors.black,
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+      ),
+      bodyMedium: const TextStyle(
+        color: Colors.white,
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
+      bodySmall: const TextStyle(color: Colors.black),
     ),
   );
 
-  static setStatusBarAndNavigationBarColors(ThemeMode themeMode) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness:
-            themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
-        systemNavigationBarIconBrightness:
-            themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
-        systemNavigationBarColor: themeMode == ThemeMode.light
-            ? lightBackgroundColor
-            : darkBackgroundColor,
-        systemNavigationBarDividerColor: Colors.transparent));
+  static void setStatusBarAndNavigationBarColors(ThemeMode themeMode) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
+          systemNavigationBarIconBrightness: themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
+          systemNavigationBarColor: themeMode == ThemeMode.light ? lightBackgroundColor : darkBackgroundColor,
+          systemNavigationBarDividerColor: Colors.transparent),
+    );
   }
 }

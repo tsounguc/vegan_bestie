@@ -3,31 +3,29 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../core/constants/strings.dart';
-import '../fetch_product_cubit/product_fetch_cubit.dart';
-import 'components/product_found_body.dart';
+import 'package:sheveegan/core/utils/strings.dart';
+import 'package:sheveegan/features/scan_product/presentation/pages/components/product_found_body.dart';
+import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 
 class ProductFoundPage extends StatelessWidget {
-  static const String id = "/productFoundPage";
+  const ProductFoundPage({super.key});
+
+  static const String id = '/productFoundPage';
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProductFetchCubit, ProductFetchState>(
+    return BlocBuilder<ScanProductCubit, ScanProductState>(
       builder: (context, state) {
-        if (state is ProductLoadingState) {
-          return CircularProgressIndicator();
-        } else if (state is ProductFoundState) {
-          debugPrint("Product Found");
-          // debugPrint(state.product.product!.productName);
+        if (state is FetchingProduct) {
+          return const CircularProgressIndicator();
+        } else if (state is ProductFound) {
           return Container(
-            decoration: state.product.imageFrontUrl != null && state.product.imageFrontUrl!.isNotEmpty
+            decoration: state.product.imageFrontUrl != null && state.product.imageFrontUrl.isNotEmpty
                 ? BoxDecoration(
                     color: state.isVegan! ? Theme.of(context).colorScheme.background : Colors.red,
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.saturation),
+                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.saturation),
                       image: CachedNetworkImageProvider(state.product.imageFrontUrl!),
                     ),
                   )
@@ -35,14 +33,17 @@ class ProductFoundPage extends StatelessWidget {
                     color: state.isVegan! ? Theme.of(context).colorScheme.background : Colors.red,
                   ),
             child: BackdropFilter(
-              filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: Scaffold(
                 appBar: AppBar(
-                  iconTheme: IconThemeData(color: Colors.white),
+                  iconTheme: const IconThemeData(color: Colors.white),
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   centerTitle: true,
-                  title: Text(Strings.appTitle, style: Theme.of(context).textTheme.titleLarge),
+                  title: Text(
+                    Strings.appTitle,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                   // actions: [
                   //   PopupMenuButton(
                   //     icon: Icon(
@@ -75,7 +76,7 @@ class ProductFoundPage extends StatelessWidget {
                   // ],
                 ),
                 backgroundColor: Colors.transparent,
-                body: ProductFoundBody(),
+                body: const ProductFoundBody(),
               ),
             ),
           );

@@ -1,52 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
+import 'package:sheveegan/core/utils/strings.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/scan_results_page.dart';
+import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
+import 'package:sheveegan/themes/app_theme.dart';
 import 'package:simple_animations/simple_animations.dart';
-import '../../../../core/constants/colors.dart';
-import '../../../../core/constants/size_config.dart';
-import '../../../../core/constants/strings.dart';
-import '../../../../core/common/widgets/vegan_bestie_logo_widget.dart';
-import '../../../../themes/app_theme.dart';
-import '../../../search/presentation/search_bloc/search_bloc.dart';
-import '../barcode_scanner_cubit/scan_product_cubit.dart';
-import '../fetch_product_cubit/product_fetch_cubit.dart';
 
 class ScanProductHomePage extends StatelessWidget {
-  static const String id = "/scanProductHomePage";
+  const ScanProductHomePage({super.key});
 
-  const ScanProductHomePage({Key? key}) : super(key: key);
+  static const String id = '/scanProductHomePage';
 
   @override
-  Widget build(BuildContext buildContext) {
+  Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<BarcodeScannerCubit, ScanProductState>(
-          listener: (context, state) {
-            if (state is BarcodeFoundState) {
-              BlocProvider.of<ProductFetchCubit>(buildContext).fetchProduct(state.barcode);
-            } else if (state is ScanningCanceledState) {
-              ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
-                content: Text(
-                  "${state.message}",
-                  style: TextStyle(color: Theme.of(buildContext).snackBarTheme.contentTextStyle?.color),
-                ),
-                duration: Duration(milliseconds: 2000),
-              ));
+        BlocListener<ScanProductCubit, ScanProductState>(
+          listener: (blocContext, state) {
+            if (state is BarcodeFound) {
+              BlocProvider.of<ScanProductCubit>(
+                context,
+              ).fetchProduct(barcode: state.barcode);
             } else if (state is ScanProductError) {
-              ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
-                content: Text(
-                  "${state.error}",
-                  style: TextStyle(color: Theme.of(buildContext).snackBarTheme.contentTextStyle?.color),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    state.message,
+                    style: TextStyle(
+                      color: Theme.of(
+                        context,
+                      ).snackBarTheme.contentTextStyle?.color,
+                    ),
+                  ),
+                  duration: const Duration(milliseconds: 2000),
                 ),
-                duration: Duration(milliseconds: 2000),
-              ));
+              );
             }
           },
         ),
-        BlocListener<ProductFetchCubit, ProductFetchState>(
+        BlocListener<ScanProductCubit, ScanProductState>(
           listener: (context, state) {
-            if (state is ProductLoadingState) {
+            if (state is FetchingProduct) {
               Navigator.of(context).pushNamed(ScanResultsPage.id);
             }
           },
@@ -54,62 +50,47 @@ class ScanProductHomePage extends StatelessWidget {
       ],
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(top: 56.h, right: 16.w, bottom: 8.h, left: 16.w),
+          padding: EdgeInsets.only(
+            top: 56.h,
+            right: 16.w,
+            bottom: 8.h,
+            left: 16.w,
+          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Todo: Implement search button/bar
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.end,
-              //   children: [
-              //     // SizedBox(height: 40.r,)
-              //     IconButton(
-              //       icon: Icon(
-              //         Icons.search,
-              //         size: 30.r,
-              //         color: Colors.white,
-              //       ),
-              //       onPressed: () {
-              //         BlocProvider.of<SearchBloc>(buildContext).searchTextController.clear();
-              //         BlocProvider.of<SearchBloc>(buildContext).add(SearchButtonPressedEvent());
-              //         Navigator.of(buildContext).push(MaterialPageRoute(builder: (_) => SearchPage()));
-              //       },
-              //     ),
-              //   ],
-              // ),
               SizedBox(
                 // height: 100 - toolbarHeight,
-                height: MediaQuery.of(buildContext).size.height * 0.06,
+                height: MediaQuery.of(context).size.height * 0.06,
               ),
               VeganBestieLogoWidget(size: 45),
               SizedBox(
                 // height: 100,
-                height: MediaQuery.of(buildContext).size.height * 0.15,
+                height: MediaQuery.of(context).size.height * 0.15,
               ),
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     Strings.tapToScan,
-                    style:
-                        Theme.of(buildContext).textTheme.titleMedium?.copyWith(color: AppTheme.lightPrimaryColor),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleMedium?.copyWith(
+                          color: AppTheme.lightPrimaryColor,
+                        ),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(buildContext).size.height * 0.02,
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   CustomAnimationBuilder<double>(
                     control: Control.mirror,
                     tween: Tween(
-                      begin: MediaQuery.of(buildContext).size.width * 0.55,
-                      end: MediaQuery.of(buildContext).size.width * 0.53,
+                      begin: MediaQuery.of(context).size.width * 0.55,
+                      end: MediaQuery.of(context).size.width * 0.53,
                       // begin: 200.r,
                       // end: 185.r,
                     ),
-                    duration: Duration(milliseconds: 1000),
+                    duration: const Duration(milliseconds: 1000),
                     delay: const Duration(milliseconds: 500),
                     curve: Curves.easeInOut,
-                    startPosition: 0.0,
                     // animationStatusListener: (status) {
                     //   print('Status update: $status');
                     // },
@@ -123,20 +104,26 @@ class ScanProductHomePage extends StatelessWidget {
                     },
                     child: ElevatedButton(
                       onPressed: () async {
-                        BlocProvider.of<BarcodeScannerCubit>(buildContext).scanBarcode();
+                        await BlocProvider.of<ScanProductCubit>(
+                          context,
+                        ).scanBarcode();
                       },
                       style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(6.0),
+                        elevation: MaterialStateProperty.all(6),
                         shadowColor: MaterialStateProperty.all(Colors.black),
-                        fixedSize: MaterialStateProperty.all(Size.fromRadius(105.r)),
-                        backgroundColor: MaterialStateProperty.all(Colors.white),
-                        shape: MaterialStateProperty.all(CircleBorder()),
+                        fixedSize: MaterialStateProperty.all(
+                          Size.fromRadius(105.r),
+                        ),
+                        backgroundColor: MaterialStateProperty.all(
+                          Colors.white,
+                        ),
+                        shape: MaterialStateProperty.all(const CircleBorder()),
                       ),
                       child: Center(
                         child: Padding(
                           padding: EdgeInsets.only(right: 10.0.r),
                           child: ImageIcon(
-                            AssetImage('assets/logo/VeganBestie_NoBackground_Fixed2.png'),
+                            const AssetImage('assets/logo/VeganBestie_NoBackground_Fixed2.png'),
                             size: 170.0.r,
                             color: Colors.blueGrey.shade900,
                           ),

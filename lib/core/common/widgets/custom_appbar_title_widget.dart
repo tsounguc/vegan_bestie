@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-
-import '../../constants/strings.dart';
+import 'package:sheveegan/core/utils/strings.dart';
 
 class CustomAppbarTitleWidget extends StatelessWidget {
+  const CustomAppbarTitleWidget({
+    required this.imageOneName,
+    required this.imageTwoName,
+    super.key,
+  });
   final String imageOneName;
   final String imageTwoName;
-
-  const CustomAppbarTitleWidget({Key? key, required this.imageOneName, required this.imageTwoName})
-      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,6 @@ class CustomAppbarTitleWidget extends StatelessWidget {
       child: FittedBox(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
               imageOneName,

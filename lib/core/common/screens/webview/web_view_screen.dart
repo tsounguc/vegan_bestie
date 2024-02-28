@@ -1,20 +1,19 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/screens/webview/navigation_controls.dart';
+import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
+import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
+import 'package:sheveegan/core/utils/size_config.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../constants/size_config.dart';
-
-import '../../widgets/vegan_bestie_logo_widget.dart';
-import '../../widgets/custom_back_button.dart';
-import 'navigation_controls.dart';
-
 class WebViewScreen extends StatefulWidget {
-  final String? url;
+  const WebViewScreen({super.key, this.url});
 
-  const WebViewScreen({Key? key, this.url}) : super(key: key);
+  final String? url;
 
   @override
   State<WebViewScreen> createState() => _WebViewScreenState();
@@ -23,7 +22,7 @@ class WebViewScreen extends StatefulWidget {
 class _WebViewScreenState extends State<WebViewScreen> {
   final Completer<WebViewController> _controller = Completer<WebViewController>();
   late WebViewController _webViewController;
-  var loadingPercentage = 0;
+  int loadingPercentage = 0;
 
   @override
   void initState() {
@@ -38,10 +37,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
         leadingWidth: 80,
         toolbarHeight: toolbarHeight,
         backgroundColor: Theme.of(context).colorScheme.background,
-        automaticallyImplyLeading: true,
         leading: !Navigator.of(context).canPop()
             ? null
-            : CustomBackButton(
+            : const CustomBackButton(
                 color: Colors.black,
               ),
         centerTitle: true,
@@ -55,10 +53,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
           SafeArea(
             child: WebView(
               gestureNavigationEnabled: true,
-              zoomEnabled: true,
-              initialUrl: widget.url!,
+              initialUrl: widget.url,
               navigationDelegate: (NavigationRequest navigationRequest) {
-                if (navigationRequest.url.contains("tel")) {
+                if (navigationRequest.url.contains('tel')) {
                   launchUrl(
                     Uri(
                       scheme: 'tel',
@@ -67,7 +64,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   );
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
-                } else if (navigationRequest.url.contains("https://play.google.com/")) {
+                } else if (navigationRequest.url.contains('https://play.google.com/')) {
                   if (Platform.isAndroid) {
                     launchUrl(
                       Uri.parse(navigationRequest.url),
@@ -80,7 +77,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   }
                   print('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
-                } else if (navigationRequest.url.contains("https://apps.apple.com/")) {
+                } else if (navigationRequest.url.contains('https://apps.apple.com/')) {
                   if (Platform.isIOS) {
                     launchUrl(
                       Uri.parse(navigationRequest.url),
@@ -88,17 +85,19 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Device does not support App Store')),
+                      const SnackBar(
+                        content: Text('Device does not support App Store'),
+                      ),
                     );
                   }
-                  print('blocking navigation to $navigationRequest}');
+                  debugPrint('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
-                } else if (navigationRequest.url.contains("mailto")) {
+                } else if (navigationRequest.url.contains('mailto')) {
                   launchUrl(
                     Uri.parse(navigationRequest.url),
                     mode: LaunchMode.externalNonBrowserApplication,
                   );
-                  print('blocking navigation to $navigationRequest}');
+                  debugPrint('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
                 }
                 // else if (navigationRequest.url.contains("maps")) {
@@ -119,7 +118,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 //   return NavigationDecision.prevent;
                 // }
                 else {
-                  print('allowing navigation to $navigationRequest');
+                  debugPrint('allowing navigation to $navigationRequest');
                   return NavigationDecision.navigate;
                 }
               },
@@ -140,7 +139,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 });
               },
               onPageFinished: (url) {
-                print("onPageFinished " + url);
+                debugPrint('onPageFinished $url');
                 // _webViewController.runJavascript(
                 //     "document.getElementById('consumer-header-container__09f24__ieW2P border--bottom__09f24___mg5X border-color--default__09f24__NPAKY background-color--white__09f24__ulvSM').style.display='none'");
                 // _webViewController
@@ -186,7 +185,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                           color: Colors.black,
                           fontSize: 18.sp,
                         ),
-                        child: Text("Loading $loadingPercentage")),
+                        child: Text('Loading $loadingPercentage')),
                   ],
                 ),
               ),

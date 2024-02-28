@@ -1,48 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../domain/entities/scanned_product.dart';
+import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 
 class ProductFoundTabBarView extends StatefulWidget {
-  final ScannedProduct product;
-
-  const ProductFoundTabBarView({Key? key, required this.product}) : super(key: key);
+  const ProductFoundTabBarView({required this.product, super.key});
+  final FoodProduct product;
 
   @override
   State<ProductFoundTabBarView> createState() => _ProductFoundTabBarViewState();
 }
 
 class _ProductFoundTabBarViewState extends State<ProductFoundTabBarView> with SingleTickerProviderStateMixin {
-  List<Widget>? _children;
   TabController? _tabController;
-  String ingredients = "";
+  String ingredients = '';
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    widget.product.ingredients!.forEach((ingredient) {
-      if (ingredient.text != widget.product.ingredients![widget.product.ingredients!.length - 1].text) {
-        ingredients = ingredients + ingredient.text! + " • ";
+    for (final ingredient in widget.product.ingredients) {
+      final index = widget.product.ingredients.length - 1;
+      if (ingredient.text != widget.product.ingredients[index].text) {
+        ingredients += '${ingredient.text} • ';
       } else {
-        ingredients = ingredients + ingredient.text!;
+        ingredients += ingredient.text;
       }
-    });
+    }
     super.initState();
   }
 
   @override
   void dispose() {
+    _tabController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
+      padding: const EdgeInsets.only(top: 16),
       child: Column(
         children: [
           TabBar(
-            indicatorColor: Theme.of(context).backgroundColor,
+            indicatorColor: Theme.of(context).colorScheme.background,
             indicatorWeight: 3,
             labelColor: Colors.black,
             labelStyle: TextStyle(
@@ -50,12 +49,12 @@ class _ProductFoundTabBarViewState extends State<ProductFoundTabBarView> with Si
               fontWeight: FontWeight.bold,
             ),
             controller: _tabController,
-            tabs: [
+            tabs: const [
               Tab(
-                text: "Product",
+                text: 'Product',
               ),
               Tab(
-                text: "More Info",
+                text: 'More Info',
               ),
             ],
           ),
@@ -64,13 +63,11 @@ class _ProductFoundTabBarViewState extends State<ProductFoundTabBarView> with Si
               controller: _tabController,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
+                  padding: const EdgeInsets.only(top: 16),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
                             'Barcode: ${widget.product.code}',
@@ -87,7 +84,7 @@ class _ProductFoundTabBarViewState extends State<ProductFoundTabBarView> with Si
                       Padding(
                         padding: EdgeInsets.only(bottom: 8.0.h),
                         child: Text(
-                          "Ingredients: ",
+                          'Ingredients: ',
                           style: TextStyle(
                             fontSize: 18.sp,
                             color: Colors.black,
@@ -102,9 +99,7 @@ class _ProductFoundTabBarViewState extends State<ProductFoundTabBarView> with Si
                               right: 48.0.w,
                             ),
                             child: Text(
-                              widget.product.ingredientsText != null && widget.product.ingredientsText!.isNotEmpty
-                                  ? ingredients
-                                  : 'INGREDIENTS NOT FOUND',
+                              widget.product.ingredientsText.isNotEmpty ? ingredients : 'INGREDIENTS NOT FOUND',
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 color: Colors.black,
@@ -116,17 +111,6 @@ class _ProductFoundTabBarViewState extends State<ProductFoundTabBarView> with Si
                       SizedBox(
                         height: 50.h,
                       ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.end,
-                      //   children: [
-                      //     Flexible(
-                      //       child: Text(
-                      //         'Allergens: ${widget.product.allergens?.replaceAll("en:", "") ?? ""}',
-                      //         style: TextStyle(fontSize: 14.sp, color: Colors.black),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
                     ],
                   ),
                 ),

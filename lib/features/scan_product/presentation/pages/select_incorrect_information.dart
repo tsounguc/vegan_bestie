@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/widgets/buttons.dart';
+import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 
-import '../../../../core/common/widgets/buttons.dart';
-import '../../../../core/common/widgets/custom_back_button.dart';
-import '../../../../core/constants/size_config.dart';
-import '../../../../core/common/widgets/vegan_bestie_logo_widget.dart';
+import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
+import 'package:sheveegan/core/utils/size_config.dart';
 
 class SelectIncorrectInformation extends StatefulWidget {
-  static const String id = "/SelectIncorrectInformation";
-
-  const SelectIncorrectInformation({Key? key}) : super(key: key);
+  const SelectIncorrectInformation({super.key});
+  static const String id = '/SelectIncorrectInformation';
 
   @override
   State<SelectIncorrectInformation> createState() => _SelectIncorrectInformationState();
@@ -17,10 +16,10 @@ class SelectIncorrectInformation extends StatefulWidget {
 
 class _SelectIncorrectInformationState extends State<SelectIncorrectInformation> {
   List<IncorrectInformation> items = [
-    IncorrectInformation(isSelected: false, information: "Image"),
-    IncorrectInformation(isSelected: false, information: "Name"),
-    IncorrectInformation(isSelected: false, information: "Nutrition Facts"),
-    IncorrectInformation(isSelected: false, information: "Ingredients"),
+    IncorrectInformation(isSelected: false, information: 'Image'),
+    IncorrectInformation(isSelected: false, information: 'Name'),
+    IncorrectInformation(isSelected: false, information: 'Nutrition Facts'),
+    IncorrectInformation(isSelected: false, information: 'Ingredients'),
   ];
 
   @override
@@ -31,7 +30,7 @@ class _SelectIncorrectInformationState extends State<SelectIncorrectInformation>
         toolbarHeight: toolbarHeight,
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        leading: CustomBackButton(
+        leading: const CustomBackButton(
           color: Colors.black,
         ),
         title: SizedBox(
@@ -40,19 +39,22 @@ class _SelectIncorrectInformationState extends State<SelectIncorrectInformation>
         ),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
               children: [
                 Text(
-                  "Select incorrect information",
-                  style: TextStyle(color: Colors.black, fontSize: 20.sp, overflow: TextOverflow.ellipsis),
+                  'Select incorrect information',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.sp,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 75,
             ),
             ListView.builder(
@@ -77,8 +79,8 @@ class _SelectIncorrectInformationState extends State<SelectIncorrectInformation>
                 );
               },
             ),
-            Spacer(),
-            LongButton(onPressed: () {}, text: "Next"),
+            const Spacer(),
+            LongButton(onPressed: () {}, text: 'Next'),
           ],
         ),
       ),
@@ -87,8 +89,7 @@ class _SelectIncorrectInformationState extends State<SelectIncorrectInformation>
 }
 
 class IncorrectInformation {
+  IncorrectInformation({required this.isSelected, required this.information});
   bool isSelected;
   String information;
-
-  IncorrectInformation({required this.isSelected, required this.information});
 }

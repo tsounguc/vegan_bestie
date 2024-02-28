@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NavigationControls extends StatelessWidget {
-  NavigationControls(
-      {required this.controller,
-      this.mainAxisAlignment = MainAxisAlignment.end});
+  const NavigationControls({
+    required this.controller,
+    this.mainAxisAlignment = MainAxisAlignment.end,
+    super.key,
+  });
 
-  MainAxisAlignment? mainAxisAlignment;
+  final MainAxisAlignment? mainAxisAlignment;
   final Completer<WebViewController> controller;
 
   @override
@@ -17,20 +19,20 @@ class NavigationControls extends StatelessWidget {
     return FutureBuilder<WebViewController>(
       future: controller.future,
       builder: (context, snapshot) {
-        final WebViewController? controller = snapshot.data;
-        if (snapshot.connectionState != ConnectionState.done ||
-            controller == null) {
+        final controller = snapshot.data;
+        if (snapshot.connectionState != ConnectionState.done || controller == null) {
           return Row(
             mainAxisAlignment: mainAxisAlignment!,
             children: <Widget>[
-              Icon(Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
-                  color: Colors.white),
               Icon(
-                  Platform.isAndroid
-                      ? Icons.arrow_forward_ios
-                      : Icons.arrow_forward,
-                  color: Colors.white),
-              Icon(Icons.replay, color: Colors.white),
+                Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
+                color: Colors.white,
+              ),
+              Icon(
+                Platform.isAndroid ? Icons.arrow_forward_ios : Icons.arrow_forward,
+                color: Colors.white,
+              ),
+              const Icon(Icons.replay, color: Colors.white),
             ],
           );
         }
@@ -40,8 +42,9 @@ class NavigationControls extends StatelessWidget {
           children: <Widget>[
             IconButton(
               icon: Icon(
-                  Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
-                  color: Colors.black),
+                Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
+                color: Colors.black,
+              ),
               onPressed: () async {
                 if (await controller.canGoBack()) {
                   await controller.goBack();
@@ -55,10 +58,9 @@ class NavigationControls extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(
-                  Platform.isAndroid
-                      ? Icons.arrow_forward_ios
-                      : Icons.arrow_forward,
-                  color: Colors.black),
+                Platform.isAndroid ? Icons.arrow_forward_ios : Icons.arrow_forward,
+                color: Colors.black,
+              ),
               onPressed: () async {
                 if (await controller.canGoForward()) {
                   await controller.goForward();
@@ -72,9 +74,7 @@ class NavigationControls extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.replay, color: Colors.black),
-              onPressed: () {
-                controller.reload();
-              },
+              onPressed: controller.reload,
             ),
           ],
         );

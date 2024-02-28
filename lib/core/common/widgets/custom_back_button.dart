@@ -3,14 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class CustomBackButton extends StatelessWidget {
+  const CustomBackButton({super.key, this.color = Colors.white});
   final Color color;
-
-  const CustomBackButton({Key? key, this.color = Colors.white}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         IconButton(
           onPressed: () {
