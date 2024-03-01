@@ -129,8 +129,9 @@ class FoodProductModel extends FoodProduct {
               dataMap['image_front_thumb_url'] == null ? '' : dataMap['image_front_thumb_url'] as String,
           imageIngredientsSmallUrl:
               dataMap['image_ingredients_url'] == null ? '' : dataMap['image_ingredients_small_url'] as String,
-          imageIngredientsThumbUrl:
-              dataMap['image_nutrition_thumb_url'] == null ? '' : dataMap['image_ingredients_thumb_url'] as String,
+          imageIngredientsThumbUrl: dataMap['image_ingredients_thumb_url'] == null
+              ? ''
+              : dataMap['image_ingredients_thumb_url'] as String,
           imageIngredientsUrl:
               dataMap['image_ingredients_url'] == null ? '' : dataMap['image_ingredients_url'] as String,
           imageNutritionSmallUrl:

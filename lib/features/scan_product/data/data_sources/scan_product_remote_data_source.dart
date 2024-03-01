@@ -39,15 +39,16 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
       }
 
       final data = jsonDecode(response.body);
+      debugPrint(response.body);
 
       final foodProduct = FoodProductModel.fromMap(data['product'] as DataMap);
+      print(foodProduct.productName);
       return foodProduct;
     } on FetchProductException {
       rethrow;
+    } catch (e) {
+      throw FetchProductException(message: e.toString(), statusCode: 500);
     }
-    // catch (e) {
-    //   throw FetchProductException(message: e.toString(), statusCode: 500);
-    // }
   }
 
   @override
