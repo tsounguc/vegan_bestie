@@ -7,15 +7,18 @@ import 'package:sheveegan/features/restaurants/domain/repositories_contracts/res
 
 class GetRestaurantDetails extends UseCaseWithParams<RestaurantDetails, GetRestaurantDetailsParams> {
   const GetRestaurantDetails(this._repository);
+
   final RestaurantsRepository _repository;
 
   @override
   ResultFuture<RestaurantDetails> call(GetRestaurantDetailsParams params) async =>
-      _repository.getRestaurantDetails(params.id);
+      _repository.getRestaurantDetails(id: params.id);
 }
 
 class GetRestaurantDetailsParams extends Equatable {
   const GetRestaurantDetailsParams({required this.id});
+
+  const GetRestaurantDetailsParams.empty() : this(id: '_empty.id');
   final String id;
 
   @override

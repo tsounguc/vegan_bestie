@@ -38,4 +38,30 @@ void main() {
       verifyNoMoreInteractions(repository);
     },
   );
+
+  test(
+    'given the GetRestaurantsNearMe use case '
+    'when instantiated '
+    'and call [RestaurantsRepository.getRestaurantsNearMe] is unsuccessful '
+    'then return [RestaurantsFailure]',
+    () async {
+      // Arrange
+      when(
+        () => repository.getRestaurantsNearMe(position: params.position),
+      ).thenAnswer((_) async => const Left(testFailure));
+      // Act
+      final result = await useCase(params);
+      // Assert
+      expect(
+        result,
+        const Left<Failure, List<Restaurant>>(testFailure),
+      );
+      verify(
+        () => repository.getRestaurantsNearMe(
+          position: params.position,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(repository);
+    },
+  );
 }
