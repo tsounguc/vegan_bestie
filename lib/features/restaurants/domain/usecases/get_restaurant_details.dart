@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:sheveegan/core/use_case/use_case.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
-import 'package:sheveegan/features/restaurants/domain/repositories_contracts/restaurants_repository.dart';
+import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
 
 class GetRestaurantDetails extends UseCaseWithParams<RestaurantDetails, GetRestaurantDetailsParams> {
   const GetRestaurantDetails(this._repository);
