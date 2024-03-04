@@ -22,7 +22,7 @@ class RestaurantDetailsFromRemoteDataSourceYelpImpl implements RestaurantDetails
       return restaurantDetailsModel;
     } catch (e) {
       debugPrint("RestaurantDetails: $e");
-      throw const FetchRestaurantDetailsException(message: "Failed to get restaurant information");
+      throw const GetRestaurantDetailsException(message: "Failed to get restaurant information");
     }
   }
 }
@@ -39,7 +39,7 @@ class RestaurantDetailsFromRemoteDataSourceGoogleImpl implements RestaurantDetai
       return restaurantDetailsModel;
     } catch (e) {
       debugPrint("RestaurantDetails: $e");
-      throw const FetchRestaurantDetailsException(message: "Failed to get restaurant information");
+      throw const GetRestaurantDetailsException(message: "Failed to get restaurant information");
     }
   }
 }

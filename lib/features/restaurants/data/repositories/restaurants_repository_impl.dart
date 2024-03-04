@@ -1,18 +1,14 @@
 import 'package:dartz/dartz.dart';
-import 'package:geolocator_platform_interface/src/models/position.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
+import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
-
-import '../../../../core/failures_successes/exceptions.dart';
-import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/services/service_locator.dart';
-import '../../domain/entities/restaurant.dart';
-import '../../domain/repositories_contracts/restaurants_repository.dart';
-import '../data_sources/restaurants_from_remote_data_source.dart';
-import '../mapper/restaurant_mapper.dart';
-import '../models/yelp_restaurants_model.dart';
+import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
 
 class RestaurantsRepositoryImpl implements RestaurantsRepository {
+  const RestaurantsRepositoryImpl(this._remoteDataSource);
+  final RestaurantsRemoteDataSource _remoteDataSource;
   @override
   ResultFuture<RestaurantDetails> getRestaurantDetails({required String id}) {
     // TODO: implement getRestaurantDetails

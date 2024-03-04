@@ -1,17 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/services/restaurants_services/restaurants_service.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
+import 'package:sheveegan/features/restaurants/data/models/google_restaurant_model.dart';
+import 'package:sheveegan/features/restaurants/data/models/yelp_restaurants_model.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 
-import '../../../../core/failures_successes/exceptions.dart';
-import '../models/google_restaurant_model.dart';
-import '../models/yelp_restaurants_model.dart';
+abstract class RestaurantsRemoteDataSource {
+  Future<List<Restaurant>> getRestaurantsNearMe({required Position position});
 
-abstract class RestaurantsFromRemoteDataSourceContract {
-  Future getRestaurantsNearMe(Position position);
+  Future<RestaurantDetails> getRestaurantDetail({required String id});
 }
 
-class RestaurantsFromRemoteDataSourceYelpImpl implements RestaurantsFromRemoteDataSourceContract {
+class RestaurantsFromRemoteDataSourceYelpImpl implements RestaurantsRemoteDataSource {
   final RestaurantsApiServiceContract restaurantsApiServiceContract =
       serviceLocator<RestaurantsApiServiceContract>();
 
@@ -44,12 +46,12 @@ class RestaurantsFromRemoteDataSourceYelpImpl implements RestaurantsFromRemoteDa
 
       return restaurantModelsList;
     } catch (e) {
-      throw const FetchRestaurantsNearMeException(message: "Failed to get list of restaurants");
+      throw const GetRestaurantsException(message: "Failed to get list of restaurants");
     }
   }
 }
 
-class RestaurantsFromRemoteDataSourceGoogleImpl implements RestaurantsFromRemoteDataSourceContract {
+class RestaurantsFromRemoteDataSourceGoogleImpl implements RestaurantsRemoteDataSource {
   final RestaurantsApiServiceContract restaurantsApiServiceContract =
       serviceLocator<RestaurantsApiServiceContract>();
 
@@ -83,7 +85,7 @@ class RestaurantsFromRemoteDataSourceGoogleImpl implements RestaurantsFromRemote
       return restaurantModelsList;
     } catch (e) {
       print(e.toString());
-      throw const FetchRestaurantsNearMeException(message: "Failed to get list of restaurants");
+      throw const GetRestaurantsException(message: "Failed to get list of restaurants");
     }
   }
 }
