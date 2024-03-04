@@ -46,7 +46,7 @@ void main() {
     'given the GetRestaurantDetails use case '
     'when instantiated '
     'and call [RestaurantsRepository.getRestaurantDetails] is unsuccessful '
-    'then return [RestaurantDetails]',
+    'then return [RestaurantDetailsFailure]',
     () async {
       // Arrange
       when(
