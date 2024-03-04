@@ -42,6 +42,33 @@ class ScanFailure extends Failure {
         );
 }
 
+class RestaurantsFailure extends Failure {
+  const RestaurantsFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  RestaurantsFailure.fromException(RestaurantsException exception)
+      : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
+class RestaurantDetailsFailure extends Failure {
+  const RestaurantDetailsFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  RestaurantDetailsFailure.fromException(
+    RestaurantDetailsException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
 class CreateWithEmailAndPasswordFailure extends Failure {
   const CreateWithEmailAndPasswordFailure({
     required super.message,
@@ -79,20 +106,6 @@ class SignOutFailure extends Failure {
 
 class CurrentUserFailure extends Failure {
   const CurrentUserFailure({
-    required super.message,
-    required super.statusCode,
-  });
-}
-
-class FetchRestaurantsNearMeFailure extends Failure {
-  const FetchRestaurantsNearMeFailure({
-    required super.message,
-    required super.statusCode,
-  });
-}
-
-class FetchRestaurantDetailsFailure extends Failure {
-  const FetchRestaurantDetailsFailure({
     required super.message,
     required super.statusCode,
   });

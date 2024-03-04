@@ -14,13 +14,42 @@ class FetchProductException extends Equatable implements Exception {
 }
 
 class ScanException extends Equatable implements Exception {
-  const ScanException({required this.message, this.statusCode = 500});
+  const ScanException({
+    required this.message,
+    this.statusCode = 500,
+  });
 
   final String message;
   final int statusCode;
 
   @override
   List<Object?> get props => [message];
+}
+
+class RestaurantsException extends Equatable implements Exception {
+  const RestaurantsException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final int statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
+}
+
+class RestaurantDetailsException extends Equatable implements Exception {
+  const RestaurantDetailsException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final int statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
 }
 
 class CreateWithEmailAndPasswordException extends Equatable implements Exception {
@@ -70,24 +99,6 @@ class SignOutException extends Equatable implements Exception {
 
 class CurrentUserException extends Equatable implements Exception {
   const CurrentUserException({required this.message});
-
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class FetchRestaurantsNearMeException extends Equatable implements Exception {
-  const FetchRestaurantsNearMeException({required this.message});
-
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class FetchRestaurantDetailsException extends Equatable implements Exception {
-  const FetchRestaurantDetailsException({required this.message});
 
   final String message;
 

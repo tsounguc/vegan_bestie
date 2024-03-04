@@ -3,8 +3,8 @@ import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 
-abstract class RestaurantsRepositoryContract {
+abstract class RestaurantsRepository {
   ResultFuture<List<Restaurant>> getRestaurantsNearMe(Position position);
 
-  ResultFuture<RestaurantDetails> getRestaurantDetail(String id);
+  ResultFuture<RestaurantDetails> getRestaurantDetails(String id);
 }
