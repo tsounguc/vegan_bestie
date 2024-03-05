@@ -11,6 +11,10 @@ abstract class RestaurantsRemoteDataSource {
   Future<RestaurantDetails> getRestaurantDetails({required String id});
 }
 
+// class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
+//
+// }
+
 // class RestaurantsFromRemoteDataSourceYelpImpl implements RestaurantsRemoteDataSource {
 //   final RestaurantsApiServiceContract restaurantsApiServiceContract =
 //       serviceLocator<RestaurantsApiServiceContract>();

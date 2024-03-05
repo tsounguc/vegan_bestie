@@ -17,7 +17,7 @@ void main() {
   });
   final params = GetRestaurantsNearMeParams.empty();
   const testFailure = RestaurantsFailure(message: 'message', statusCode: 500);
-  final testResponse = [const Restaurant.empty()];
+  final testResponse = [Restaurant.empty()];
   test(
     'given the GetRestaurantsNearMe use case '
     'when instantiated '

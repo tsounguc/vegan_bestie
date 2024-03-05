@@ -20,60 +20,63 @@ class RestaurantModel extends Restaurant {
 
   RestaurantModel.empty()
       : this(
-    id: '_empty.id',
-    name: '_empty.name',
-    distance: 0,
-    photos: [],
-    price: '_empty.price',
-    rating: 0,
-    reviewCount: 0,
-    isOpenNow: false,
-    vicinity: '_empty.vicinity',
-    geometry: const Geometry.empty(),
-  );
+          id: '_empty.id',
+          name: '_empty.name',
+          distance: 0,
+          photos: [],
+          price: '_empty.price',
+          rating: 0,
+          reviewCount: 0,
+          isOpenNow: false,
+          vicinity: '_empty.vicinity',
+          geometry: const Geometry.empty(),
+        );
 
-  factory RestaurantModel.fromJson(String source) =>
-      RestaurantModel.fromMap(
+  factory RestaurantModel.fromJson(String source) => RestaurantModel.fromMap(
         jsonDecode(source) as DataMap,
       );
 
   RestaurantModel.fromMap(DataMap dataMap)
       : this(
-    id: dataMap['place_id'] == null ? '' : ['place_id'] as String,
-    name: dataMap['name'] == null ? '' : dataMap['name'] as String,
-    photos: dataMap['photos'] == null
-        ? []
-        : List<PhotoModel>.from(
-      (dataMap['photos'] as List).map(
-            (photo) => PhotoModel.fromMap(photo as DataMap),
-      ),
-    ),
-    distance: double.tryParse(dataMap['distance'].toString()) ?? 0.0,
-    price: dataMap['price'] == null ? '' : dataMap['price'] as String,
-    rating: double.tryParse(dataMap['rating'].toString()) ?? 0.0,
-    reviewCount: int.tryParse(
-      dataMap['user_ratings_total'].toString(),
-    ) ??
-        0,
-    isOpenNow: false,
-    vicinity: dataMap['vicinity'] == null ? '' : dataMap['vicinity'] as String,
-    geometry: GeometryModel.fromMap(dataMap['geometry'] as DataMap),
-  );
+          id: dataMap['place_id'] == null ? '' : dataMap['place_id'] as String,
+          name: dataMap['name'] == null ? '' : dataMap['name'] as String,
+          distance: double.tryParse(dataMap['distance'].toString()) ?? 0.0,
+          photos: dataMap['photos'] == null
+              ? []
+              : List<PhotoModel>.from(
+                  (dataMap['photos'] as List).map(
+                    (photo) => PhotoModel.fromMap(
+                      photo as DataMap,
+                    ),
+                  ),
+                ),
+          price: dataMap['price'] == null ? '' : dataMap['price'] as String,
+          rating: double.tryParse(dataMap['rating'].toString()) ?? 0.0,
+          reviewCount: int.tryParse(
+                dataMap['user_ratings_total'].toString(),
+              ) ??
+              0,
+          isOpenNow: false,
+          vicinity: dataMap['vicinity'] == null ? '' : dataMap['vicinity'] as String,
+          geometry: dataMap['geometry'] == null
+              ? const Geometry.empty()
+              : GeometryModel.fromMap(dataMap['geometry'] as DataMap),
+        );
 
-  // String toJson() => jsonEncode(toMap());
-  //
-  // DataMap toMap() => {
-  //       'id': id,
-  //       'name': name,
-  //       'distance': distance,
-  //       'photos': photos,
-  //       'price': price,
-  //       'rating': rating,
-  //       'review_count': reviewCount,
-  //       'is_open_now': isOpenNow,
-  //       'vicinity': vicinity,
-  //       'geometry': geometry,
-  //     };
+  String toJson() => jsonEncode(toMap());
+
+  DataMap toMap() => {
+        'place_id': id,
+        'name': name,
+        'distance': distance,
+        'photos': List<dynamic>.from(photos.map((x) => (x as PhotoModel).toMap())),
+        'price': price,
+        'rating': rating,
+        'user_ratings_total': reviewCount,
+        'is_open_now': isOpenNow,
+        'vicinity': vicinity,
+        'geometry': (geometry as GeometryModel).toMap(),
+      };
 
   RestaurantModel copyWith({
     String? id,
@@ -105,16 +108,20 @@ class RestaurantModel extends Restaurant {
 class GeometryModel extends Geometry {
   const GeometryModel({required super.location, required super.viewport});
 
-  factory GeometryModel.fromJson(String source) =>
-      GeometryModel.fromMap(
+  factory GeometryModel.fromJson(String source) => GeometryModel.fromMap(
         jsonDecode(source) as DataMap,
       );
 
   GeometryModel.fromMap(DataMap dataMap)
       : this(
-    location: LocationModel.fromMap(dataMap['location'] as DataMap),
-    viewport: ViewportModel.fromMap(dataMap['viewport'] as DataMap),
-  );
+          location: LocationModel.fromMap(dataMap['location'] as DataMap),
+          viewport: ViewportModel.fromMap(dataMap['viewport'] as DataMap),
+        );
+
+  DataMap toMap() => {
+        'location': (location as LocationModel).toMap(),
+        'viewport': (viewport as ViewportModel).toMap(),
+      };
 }
 
 class LocationModel extends Location {
@@ -123,16 +130,20 @@ class LocationModel extends Location {
     required super.lng,
   });
 
-  factory LocationModel.fromJson(String source) =>
-      LocationModel.fromMap(
+  factory LocationModel.fromJson(String source) => LocationModel.fromMap(
         jsonDecode(source) as DataMap,
       );
 
   LocationModel.fromMap(DataMap dataMap)
       : this(
-    lat: double.tryParse(dataMap['lat'].toString()) ?? 0.0,
-    lng: double.tryParse(dataMap['lng'].toString()) ?? 0.0,
-  );
+          lat: double.tryParse(dataMap['lat'].toString()) ?? 0.0,
+          lng: double.tryParse(dataMap['lng'].toString()) ?? 0.0,
+        );
+
+  DataMap toMap() => {
+        'lat': lat,
+        'lng': lng,
+      };
 }
 
 class ViewportModel extends Viewport {
@@ -141,16 +152,20 @@ class ViewportModel extends Viewport {
     required super.southwest,
   });
 
-  factory ViewportModel.fromJson(String source) =>
-      ViewportModel.fromMap(
+  factory ViewportModel.fromJson(String source) => ViewportModel.fromMap(
         jsonDecode(source) as DataMap,
       );
 
   ViewportModel.fromMap(DataMap dataMap)
       : this(
-    northeast: LocationModel.fromMap(dataMap['northeast'] as DataMap),
-    southwest: LocationModel.fromMap(dataMap['southwest'] as DataMap),
-  );
+          northeast: LocationModel.fromMap(dataMap['northeast'] as DataMap),
+          southwest: LocationModel.fromMap(dataMap['southwest'] as DataMap),
+        );
+
+  DataMap toMap() => {
+        'northeast': (northeast as LocationModel).toMap(),
+        'southwest': (southwest as LocationModel).toMap(),
+      };
 }
 
 class PhotoModel extends Photo {
@@ -161,18 +176,30 @@ class PhotoModel extends Photo {
     required super.width,
   });
 
-  factory PhotoModel.fromJson(String source) =>
-      PhotoModel.fromMap(
+  factory PhotoModel.fromJson(String source) => PhotoModel.fromMap(
         jsonDecode(source) as DataMap,
       );
 
   PhotoModel.fromMap(DataMap dataMap)
       : this(
-    height: int.tryParse(dataMap['height'].toString()) ?? 0,
-    width: int.tryParse(dataMap['width'].toString()) ?? 0,
-    htmlAttributions: [],
-    photoReference: dataMap['photoReference'] as String,
-  );
+          height: int.tryParse(dataMap['height'].toString()) ?? 0,
+          width: int.tryParse(dataMap['width'].toString()) ?? 0,
+          htmlAttributions: List<String>.from(
+            (dataMap['html_attributions'] as List).map(
+              (attribution) => attribution.toString(),
+            ),
+          ),
+          photoReference: dataMap['photo_reference'] as String,
+        );
+
+  String toJson() => jsonEncode(toMap());
+
+  DataMap toMap() => {
+        'height': height,
+        'width': width,
+        'html_attributions': htmlAttributions,
+        'photo_reference': photoReference,
+      };
 }
 
 // class GoogleRestaurantModel {
