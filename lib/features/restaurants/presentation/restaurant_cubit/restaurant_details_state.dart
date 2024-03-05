@@ -16,7 +16,8 @@ class LoadingRestaurantDetails extends RestaurantDetailsState {
 
 class RestaurantDetailsFoundState extends RestaurantDetailsState {
   const RestaurantDetailsFoundState({required this.restaurantDetailsEntity});
-  final RestaurantDetailsEntity? restaurantDetailsEntity;
+
+  final RestaurantDetails? restaurantDetailsEntity;
 
   @override
   List<Object?> get props => [];

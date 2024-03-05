@@ -1,12 +1,12 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../../domain/entities/restaurant_entity.dart';
-import '../models/google_restaurant_model.dart';
+import '../../domain/entities/restaurant.dart';
+import '../models/restaurant_model.dart';
 import '../models/yelp_restaurants_model.dart';
 
 class RestaurantMapper {
-  RestaurantEntity mapYelpModelToEntity(YelpRestaurantModel restaurantModel) {
+  Restaurant mapYelpModelToEntity(YelpRestaurantModel restaurantModel) {
     //TODO: complete RestaurantEntity class
     List<CategoryEntity> categoryEntities = [];
     List<Category>? categories = restaurantModel.categories;
@@ -46,7 +46,7 @@ class RestaurantMapper {
     //   }
     // }
 
-    return RestaurantEntity(
+    return Restaurant(
       id: restaurantModel.id,
       name: restaurantModel.name,
       // categories: categoryEntities,
@@ -76,10 +76,10 @@ class RestaurantMapper {
     );
   }
 
-  RestaurantEntity mapGoogleModelToEntity(GoogleRestaurantModel restaurantModel, Position position) {
+  Restaurant mapGoogleModelToEntity(GoogleRestaurantModel restaurantModel, Position position) {
     //TODO: complete RestaurantEntity class
 
-    return RestaurantEntity(
+    return Restaurant(
       id: restaurantModel.placeId,
       name: restaurantModel.name,
       imageUrl: restaurantModel.photos!.isEmpty

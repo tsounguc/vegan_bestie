@@ -6,20 +6,20 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../../../core/failures_successes/failures.dart';
 import '../../../../core/services/service_locator.dart';
-import '../../domain/entities/restaurant_entity.dart';
-import '../../domain/usecases/get_restaurants_near_me_usecase.dart';
+import '../../domain/entities/restaurant.dart';
+import '../../domain/usecases/get_restaurants_near_me.dart';
 
 part 'restaurants_event.dart';
 
 part 'restaurants_state.dart';
 
 class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
-  final GetRestaurantsNearMeUseCase _getRestaurantsNearMeUseCase = serviceLocator<GetRestaurantsNearMeUseCase>();
+  final GetRestaurantsNearMe _getRestaurantsNearMeUseCase = serviceLocator<GetRestaurantsNearMe>();
 
   RestaurantsBloc() : super(RestaurantsInitialState()) {
     on<GetRestaurantsEvent>((event, emit) async {
       emit(RestaurantsLoadingState());
-      final Either<FetchRestaurantsNearMeFailure, List<RestaurantEntity>> restaurantsResults =
+      final Either<RestaurantsFailure, List<Restaurant>> restaurantsResults =
           await _getRestaurantsNearMeUseCase.getRestaurantsNearMe(event.position!);
       restaurantsResults.fold(
         (fetchRestaurantNearMeFailure) => emit(RestaurantsErrorState(error: fetchRestaurantNearMeFailure.message)),

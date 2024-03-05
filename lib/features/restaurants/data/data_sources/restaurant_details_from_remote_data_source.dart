@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/failures_successes/exceptions.dart';
 import '../../../../core/services/service_locator.dart';
 import '../../../../core/services/restaurants_services/restaurants_service.dart';
-import '../models/google_restaurant_details_model.dart';
+import '../models/restaurant_details_model.dart';
 import '../models/yelp_restaurant_details_model.dart';
 
 abstract class RestaurantDetailsFromRemoteDataSourceContract {

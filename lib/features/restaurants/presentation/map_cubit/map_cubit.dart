@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../core/failures_successes/failures.dart';
 import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/map_entity.dart';
-import '../../domain/entities/restaurant_entity.dart';
+import '../../domain/entities/restaurant.dart';
 import '../../domain/usecases/map_usecase.dart';
 
 part 'map_state.dart';
@@ -20,7 +20,7 @@ class MapCubit extends Cubit<MapState> {
 
   MapCubit() : super(MapInitial());
 
-  void displayRestaurants(List<RestaurantEntity> restaurants, Position userCurrentLocation) async {
+  void displayRestaurants(List<Restaurant> restaurants, Position userCurrentLocation) async {
     emit(MapLoadingState());
     final Either<MapFailure, MapEntity> mapRestaurantsResult =
         await _mapUseCase.getRestaurantsMarkers(restaurants);

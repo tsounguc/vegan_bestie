@@ -1,11 +1,11 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../../domain/entities/restaurant_details_entity.dart';
-import '../models/google_restaurant_details_model.dart';
+import '../../domain/entities/restaurant_details.dart';
+import '../models/restaurant_details_model.dart';
 import '../models/yelp_restaurant_details_model.dart';
 
 class RestaurantDetailsMapper {
-  RestaurantDetailsEntity? mapYelpModelToEntity(YelpRestaurantDetailsModel? restaurantModel) {
+  RestaurantDetails? mapYelpModelToEntity(YelpRestaurantDetailsModel? restaurantModel) {
     //   List<CategoryEntity> categoryEntities = [];
     //   List<Category>? categories = restaurantModel.categories;
     //   if (categories != null) {
@@ -39,8 +39,8 @@ class RestaurantDetailsMapper {
     //   );
   }
 
-  RestaurantDetailsEntity mapGoogleModelToEntity(GoogleRestaurantDetailsModel restaurantModel) {
-    return RestaurantDetailsEntity(
+  RestaurantDetails mapGoogleModelToEntity(GoogleRestaurantDetailsModel restaurantModel) {
+    return RestaurantDetails(
       addressComponents: restaurantModel.addressComponents,
       adrAddress: restaurantModel.adrAddress,
       businessStatus: restaurantModel.businessStatus,

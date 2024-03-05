@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/utils/strings.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_details_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurant_cubit/restaurant_details_cubit.dart';
@@ -17,7 +17,7 @@ class RestaurantCard extends StatelessWidget {
   });
 
   final String? dietRestrictions;
-  final RestaurantEntity? restaurant;
+  final Restaurant? restaurant;
 
   @override
   Widget build(BuildContext context) {

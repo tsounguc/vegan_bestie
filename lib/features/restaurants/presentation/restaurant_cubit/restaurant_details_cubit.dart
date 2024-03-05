@@ -4,14 +4,14 @@ import 'package:equatable/equatable.dart';
 
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details_entity.dart';
-import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_details_usecase.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_details.dart';
 
 part 'restaurant_details_state.dart';
 
 class RestaurantDetailsCubit extends Cubit<RestaurantDetailsState> {
   RestaurantDetailsCubit() : super(RestaurantDetailsInitial());
-  final GetRestaurantDetailsUseCase _restaurantDetailsUseCase = serviceLocator<GetRestaurantDetailsUseCase>();
+  final GetRestaurantDetails _restaurantDetailsUseCase = serviceLocator<GetRestaurantDetails>();
 
   Future<void> searchRestaurantDetails(String? id) async {
     emit(LoadingRestaurantDetails());

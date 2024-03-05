@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/entities/restaurant_details_entity.dart';
+import '../../../domain/entities/restaurant_details.dart';
 
 class IsOpenNowWidget extends StatelessWidget {
   const IsOpenNowWidget(
@@ -38,9 +38,7 @@ class IsOpenNowWidget extends StatelessWidget {
               : MaterialStatePropertyAll(
                   EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 ),
-          elevation: weekdayText.isEmpty
-              ? MaterialStatePropertyAll(0)
-              : MaterialStatePropertyAll(3),
+          elevation: weekdayText.isEmpty ? MaterialStatePropertyAll(0) : MaterialStatePropertyAll(3),
         ),
         onPressed: weekdayText.isEmpty
             ? null
@@ -91,10 +89,7 @@ class IsOpenNowWidget extends StatelessWidget {
           backgroundColor: Colors.white,
           title: Text(
             'Hours',
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: Colors.grey.shade800, fontSize: 20),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey.shade800, fontSize: 20),
           ),
           content: IntrinsicHeight(
             child: Column(
@@ -118,12 +113,8 @@ class IsOpenNowWidget extends StatelessWidget {
                     children: [
                       FittedBox(
                         child: Text(
-                          weekdayText[index]
-                              .replaceAll(', ', '\n                     '),
-                          style: TextStyle(
-                              color: Colors.grey.shade800,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
+                          weekdayText[index].replaceAll(', ', '\n                     '),
+                          style: TextStyle(color: Colors.grey.shade800, fontSize: 14, fontWeight: FontWeight.w600),
                         ),
                       ),
                     ],
@@ -135,10 +126,7 @@ class IsOpenNowWidget extends StatelessWidget {
             TextButton(
               child: Text(
                 'OK',
-                style: TextStyle(
-                    color: Colors.grey.shade800,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.grey.shade800, fontSize: 16, fontWeight: FontWeight.bold),
               ),
               onPressed: () {
                 Navigator.pop(context);

@@ -10,8 +10,10 @@ class RestaurantsInitialState extends RestaurantsState {
 }
 
 class RestaurantsFoundState extends RestaurantsState {
-  final List<RestaurantEntity> restaurants;
+  final List<Restaurant> restaurants;
+
   RestaurantsFoundState({required this.restaurants});
+
   @override
   List<Object> get props => [];
 }
@@ -23,14 +25,18 @@ class RestaurantsLoadingState extends RestaurantsState {
 
 class RestaurantsErrorState extends RestaurantsState {
   final error;
+
   RestaurantsErrorState({required this.error});
+
   @override
   List<Object?> get props => [];
 }
 
 class RestaurantsNotFoundState extends RestaurantsState {
   final String message;
+
   RestaurantsNotFoundState({required this.message});
+
   @override
   List<Object?> get props => [];
 }
