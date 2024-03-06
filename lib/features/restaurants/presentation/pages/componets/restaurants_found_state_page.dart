@@ -12,7 +12,7 @@ class RestaurantsFoundStatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RestaurantsBloc, RestaurantsState>(
       builder: (context, state) {
-        if (state is RestaurantsFoundState) {
+        if (state is RestaurantsLoaded) {
           return Stack(
             children: [
               LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {

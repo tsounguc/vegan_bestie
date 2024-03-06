@@ -2,12 +2,21 @@ part of 'restaurants_bloc.dart';
 
 abstract class RestaurantsEvent extends Equatable {
   const RestaurantsEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 class GetRestaurantsEvent extends RestaurantsEvent {
-  final Position? position;
-  GetRestaurantsEvent({this.position});
+  const GetRestaurantsEvent({required this.position});
+  final Position position;
+
   @override
-  // TODO: implement props
-  List<Object?> get props => [];
+  List<Object> get props => [position];
+}
+
+class GetRestaurantDetailsEvent extends RestaurantsEvent {
+  const GetRestaurantDetailsEvent({required this.id});
+
+  final String id;
 }

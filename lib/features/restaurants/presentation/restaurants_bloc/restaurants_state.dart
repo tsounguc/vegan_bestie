@@ -2,41 +2,42 @@ part of 'restaurants_bloc.dart';
 
 abstract class RestaurantsState extends Equatable {
   const RestaurantsState();
-}
-
-class RestaurantsInitialState extends RestaurantsState {
   @override
   List<Object> get props => [];
 }
 
-class RestaurantsFoundState extends RestaurantsState {
+class RestaurantsInitial extends RestaurantsState {
+  const RestaurantsInitial();
+}
+
+class LoadingRestaurants extends RestaurantsState {
+  const LoadingRestaurants();
+}
+
+class LoadingRestaurantDetails extends RestaurantsState {
+  const LoadingRestaurantDetails();
+}
+
+class RestaurantsLoaded extends RestaurantsState {
+  const RestaurantsLoaded({required this.restaurants});
   final List<Restaurant> restaurants;
 
-  RestaurantsFoundState({required this.restaurants});
-
   @override
-  List<Object> get props => [];
+  List<Object> get props => [restaurants];
 }
 
-class RestaurantsLoadingState extends RestaurantsState {
-  @override
-  List<Object?> get props => [];
-}
-
-class RestaurantsErrorState extends RestaurantsState {
-  final error;
-
-  RestaurantsErrorState({required this.error});
+class RestaurantDetailsLoaded extends RestaurantsState {
+  const RestaurantDetailsLoaded({required this.restaurantDetails});
+  final RestaurantDetails restaurantDetails;
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [restaurantDetails];
 }
 
-class RestaurantsNotFoundState extends RestaurantsState {
+class RestaurantsError extends RestaurantsState {
+  const RestaurantsError({required this.message});
   final String message;
 
-  RestaurantsNotFoundState({required this.message});
-
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [message];
 }

@@ -4,14 +4,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
-import 'package:sheveegan/core/services/restaurants_services/restaurants_service.dart';
-import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_details_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 
 abstract class RestaurantsRemoteDataSource {
   Future<List<RestaurantModel>> getRestaurantsNearMe({required Position position});

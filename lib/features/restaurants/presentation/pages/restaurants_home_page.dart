@@ -56,7 +56,7 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
         ),
         BlocListener<RestaurantsBloc, RestaurantsState>(
           listener: (context, state) {
-            if (state is RestaurantsFoundState) {
+            if (state is RestaurantsLoaded) {
               debugPrint('restaurants found');
               BlocProvider.of<MapCubit>(context).displayRestaurants(
                 state.restaurants,
@@ -72,16 +72,16 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
         },
         child: BlocBuilder<RestaurantsBloc, RestaurantsState>(
           builder: (context, state) {
-            if (state is RestaurantsLoadingState) {
+            if (state is LoadingRestaurants) {
               currentPage = const LoadingPage();
               return const LoadingPage();
-            } else if (state is RestaurantsFoundState) {
+            } else if (state is RestaurantsLoaded) {
               currentPage = const RestaurantsFoundStatePage();
               return const RestaurantsFoundStatePage();
-            } else if (state is RestaurantsErrorState) {
-              currentPage = ErrorPage(error: state.error as String);
+            } else if (state is RestaurantsError) {
+              currentPage = ErrorPage(error: state.message as String);
               return ErrorPage(
-                error: state.error as String,
+                error: state.message as String,
               );
             } else {
               if (userCurrentLocation == null) {
