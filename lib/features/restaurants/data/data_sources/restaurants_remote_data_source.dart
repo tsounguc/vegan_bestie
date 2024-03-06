@@ -11,9 +11,19 @@ abstract class RestaurantsRemoteDataSource {
   Future<RestaurantDetails> getRestaurantDetails({required String id});
 }
 
-// class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
-//
-// }
+class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
+  @override
+  Future<RestaurantDetails> getRestaurantDetails({required String id}) {
+    // TODO: implement getRestaurantDetails
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Restaurant>> getRestaurantsNearMe({required Position position}) {
+    // TODO: implement getRestaurantsNearMe
+    throw UnimplementedError();
+  }
+}
 
 // class RestaurantsFromRemoteDataSourceYelpImpl implements RestaurantsRemoteDataSource {
 //   final RestaurantsApiServiceContract restaurantsApiServiceContract =
