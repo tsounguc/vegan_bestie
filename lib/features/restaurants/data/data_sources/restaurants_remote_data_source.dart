@@ -1,27 +1,81 @@
+import 'dart:convert';
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart';
+import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/services/restaurants_services/restaurants_service.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
+import 'package:sheveegan/core/utils/constants.dart';
+import 'package:sheveegan/core/utils/typedefs.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_details_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 
 abstract class RestaurantsRemoteDataSource {
-  Future<List<Restaurant>> getRestaurantsNearMe({required Position position});
+  Future<List<RestaurantModel>> getRestaurantsNearMe({required Position position});
 
-  Future<RestaurantDetails> getRestaurantDetails({required String id});
+  Future<RestaurantDetailsModel> getRestaurantDetails({required String id});
 }
 
+const kGetRestaurantsEndPoint = 'nearbysearch/';
+const kGetRestaurantDetails = 'details/';
+
 class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
+  RestaurantsRemoteDataSourceImpl(this._client);
+
+  final Client _client;
+  final apiKey = dotenv.env['GOOGLE_PLACES_API_KEY'];
+
   @override
-  Future<RestaurantDetails> getRestaurantDetails({required String id}) {
-    // TODO: implement getRestaurantDetails
-    throw UnimplementedError();
+  Future<RestaurantDetailsModel> getRestaurantDetails({
+    required String id,
+  }) async {
+    final response = await _client.get(
+      Uri.parse(
+        '$kGooglePlaceBaseUrl$kGetRestaurantDetails'
+        'json?key=$apiKey&place_id=$id&fields=all',
+      ),
+    );
+    final data = jsonDecode(response.body) as DataMap;
+    final restaurantDetails = RestaurantDetailsModel.fromMap(
+      data['result'] as DataMap,
+    );
+    return restaurantDetails;
   }
 
   @override
-  Future<List<Restaurant>> getRestaurantsNearMe({required Position position}) {
-    // TODO: implement getRestaurantsNearMe
-    throw UnimplementedError();
+  Future<List<RestaurantModel>> getRestaurantsNearMe({required Position position}) async {
+    try {
+      final response = await _client.get(
+        Uri.parse(
+          '$kGooglePlaceBaseUrl$kGetRestaurantsEndPoint'
+          'json?key=$apiKey&keyword=vegan'
+          '&type=restaurant&location=${position.latitude},${position.longitude}'
+          '&radius=12500',
+        ),
+      );
+      if (response.statusCode != 200) {
+        throw RestaurantsException(
+          message: response.body,
+          statusCode: response.statusCode,
+        );
+      }
+
+      final data = jsonDecode(response.body) as DataMap;
+      final restaurants = List<RestaurantModel>.from(
+        (data['results'] as List).map(
+          (e) => RestaurantModel.fromMap(e as DataMap),
+        ),
+      );
+
+      return restaurants;
+    } on RestaurantsException {
+      rethrow;
+    } catch (e) {
+      throw RestaurantsException(message: e.toString(), statusCode: 500);
+    }
   }
 }
 

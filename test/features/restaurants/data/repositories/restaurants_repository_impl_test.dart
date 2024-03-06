@@ -5,10 +5,14 @@ import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_details_model.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
 import 'package:sheveegan/features/restaurants/data/repositories/restaurants_repository_impl.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
+
+import '../../../../fixtures/fixture_reader.dart';
 
 class MockRestaurantsRemoteDataSource extends Mock implements RestaurantsRemoteDataSource {}
 
@@ -54,7 +58,7 @@ void main() {
   );
 
   group('getRestaurantsNearMe - ', () {
-    final testRestaurants = <Restaurant>[];
+    final testRestaurants = <RestaurantModel>[];
     final testPosition = Position(
       longitude: 0,
       latitude: 0,
@@ -75,9 +79,7 @@ void main() {
       () async {
         // Arrange
         when(
-          () => remoteDataSource.getRestaurantsNearMe(
-            position: any(named: 'position'),
-          ),
+          () => remoteDataSource.getRestaurantsNearMe(position: any(named: 'position')),
         ).thenAnswer(
           (_) async => testRestaurants,
         );
@@ -134,7 +136,8 @@ void main() {
     );
   });
   group('getRestaurantDetails - ', () {
-    final testRestaurantDetails = RestaurantDetails.empty();
+    final jsonResponse = fixture('restaurant_details.json');
+    final testRestaurantDetails = RestaurantDetailsModel.fromJson(jsonResponse);
     const testId = 'whatever.Id';
     test(
       'given RestaurantsRepositoryImpl, '
@@ -145,9 +148,7 @@ void main() {
         // Arrange
         when(
           () => remoteDataSource.getRestaurantDetails(id: any(named: 'id')),
-        ).thenAnswer(
-          (_) async => testRestaurantDetails,
-        );
+        ).thenAnswer((_) async => testRestaurantDetails);
         // Act
         final result = await repositoryImpl.getRestaurantDetails(
           id: testId,

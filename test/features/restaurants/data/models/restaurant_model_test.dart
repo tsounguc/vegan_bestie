@@ -13,7 +13,7 @@ void main() {
   late DataMap testMap;
   late RestaurantModel testModel;
   setUpAll(() {
-    testJson = fixture('restaurants_near_me.json');
+    testJson = fixture('restaurant.json');
 
     testModel = RestaurantModel.fromJson(testJson);
     testMap = testModel.toMap();
