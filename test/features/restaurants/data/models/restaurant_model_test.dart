@@ -71,7 +71,7 @@ void main() {
 
   group('toJson - ', () {
     test(
-        'given [FoodProductModel], '
+        'given [RestaurantModel], '
         'when toJson is called, '
         'then return [JSON] with correct data ', () {
       // Arrange
@@ -89,9 +89,9 @@ void main() {
 
   group('copyWith - ', () {
     test(
-        'given [FoodProductModel], '
+        'given [RestaurantModel], '
         'when copyWith is called, '
-        'then return [FoodProductModel] with updated data ', () {
+        'then return [RestaurantModel] with updated data ', () {
       // Arrange
       // Act
       final result = testModel.copyWith(id: '12345678');

@@ -1,10 +1,9 @@
 import 'dart:convert';
 
+import 'package:sheveegan/core/common/entities/restaurant_entities.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
-
-import '../../../../core/common/entities/restaurant_entities.dart';
 
 class RestaurantDetailsModel extends RestaurantDetails {
   const RestaurantDetailsModel({
@@ -96,12 +95,14 @@ class RestaurantDetailsModel extends RestaurantDetails {
               ? []
               : List<AddressComponentModel>.from(
                   (dataMap['address_components'] as List).map(
-                    (x) => AddressComponentModel.fromMap(x as DataMap),
+                    (component) => AddressComponentModel.fromMap(component as DataMap),
                   ),
                 ),
           adrAddress: dataMap['adr_address'] == null ? '' : dataMap['adr_address'] as String,
-          businessStatus: dataMap['business_status'] == null ? '' : dataMap['business_staus'] as String,
-          currentOpeningHours: CurrentOpeningHoursModel.fromMap(dataMap["current_opening_hours"] as DataMap),
+          businessStatus: dataMap['business_status'] == null ? '' : dataMap['business_status'] as String,
+          currentOpeningHours: CurrentOpeningHoursModel.fromMap(
+            dataMap['current_opening_hours'] as DataMap,
+          ),
           delivery: dataMap['delivery'] == null ? false : dataMap['delivery'] as bool,
           dineIn: dataMap['dine_in'] == null ? false : dataMap['dine_in'] as bool,
           formattedAddress: dataMap['formatted_address'] == null ? '' : dataMap['formatted_address'] as String,
@@ -142,7 +143,7 @@ class RestaurantDetailsModel extends RestaurantDetails {
           types: dataMap['types'] == null
               ? []
               : List<String>.from(
-                  (dataMap['types'] as List).map((x) => x),
+                  (dataMap['types'] as List).map((type) => type),
                 ),
           url: dataMap['url'] == null ? '' : dataMap['url'] as String,
           userRatingsTotal: int.tryParse(dataMap['user_ratings_total'].toString()) ?? 0,
@@ -153,45 +154,60 @@ class RestaurantDetailsModel extends RestaurantDetails {
               ? false
               : dataMap['wheelchair_accessible_entrance'] as bool,
         );
-// String toJson() => jsonEncode(toMap());
-//
-// Map<String, dynamic> toMap() => {
-//       'address_components': addressComponents,
-//       'adr_address': adrAddress,
-//       'business_status': businessStatus,
-//       'current_opening_hours': currentOpeningHours,
-//       'delivery': delivery,
-//       'dine_in': dineIn,
-//       'formatted_address': formattedAddress,
-//       'formatted_phone_number': formattedPhoneNumber,
-//       'geometry': geometry,
-//       'icon': icon,
-//       'icon_background_color': iconBackgroundColor,
-//       'icon_mask_base_uri': iconMaskBaseUri,
-//       'international_phone_number': internationalPhoneNumber,
-//       'name': name,
-//       'opening_hours': openingHours,
-//       'photos': photos,
-//       'place_id': placeId,
-//       'plus_code': plusCode,
-//       'rating': rating,
-//       'reference': reference,
-//       'reservable': reservable,
-//       'reviews': reviews,
-//       'serves_beer': servesBeer,
-//       'serves_dinner': servesDinner,
-//       'serves_lunch': servesLunch,
-//       'serves_vegetarian_food': servesVegetarianFood,
-//       'serves_wine': servesWine,
-//       'takeout': takeout,
-//       'types': types,
-//       'url': url,
-//       'user_ratings_total': userRatingsTotal,
-//       'utc_offset': utcOffset,
-//       'vicinity': vicinity,
-//       'website': website,
-//       'wheelchair_accessible_entrance': wheelchairAccessibleEntrance,
-//     };
+
+  String toJson() => jsonEncode(toMap());
+
+  Map<String, dynamic> toMap() => {
+        'address_components': List<dynamic>.from(
+          addressComponents.map(
+            (component) => (component as AddressComponentModel).toMap(),
+          ),
+        ),
+        'adr_address': adrAddress,
+        'business_status': businessStatus,
+        'current_opening_hours': (currentOpeningHours as CurrentOpeningHoursModel).toMap(),
+        'delivery': delivery,
+        'dine_in': dineIn,
+        'formatted_address': formattedAddress,
+        'formatted_phone_number': formattedPhoneNumber,
+        'geometry': (geometry as GeometryModel).toMap(),
+        'icon': icon,
+        'icon_background_color': iconBackgroundColor,
+        'icon_mask_base_uri': iconMaskBaseUri,
+        'international_phone_number': internationalPhoneNumber,
+        'name': name,
+        'opening_hours': (openingHours as OpeningHoursModel).toMap(),
+        'photos': List<dynamic>.from(
+          photos.map(
+            (photo) => (photo as PhotoModel).toMap(),
+          ),
+        ),
+        'place_id': placeId,
+        'plus_code': (plusCode as PlusCodeModel).toMap(),
+        'rating': rating,
+        'reference': reference,
+        'reservable': reservable,
+        'reviews': List<dynamic>.from(
+          reviews.map(
+            (review) => (review as ReviewModel).toMap(),
+          ),
+        ),
+        'serves_beer': servesBeer,
+        'serves_dinner': servesDinner,
+        'serves_lunch': servesLunch,
+        'serves_vegetarian_food': servesVegetarianFood,
+        'serves_wine': servesWine,
+        'takeout': takeout,
+        'types': List<dynamic>.from(
+          types.map((type) => type),
+        ),
+        'url': url,
+        'user_ratings_total': userRatingsTotal,
+        'utc_offset': utcOffset,
+        'vicinity': vicinity,
+        'website': website,
+        'wheelchair_accessible_entrance': wheelchairAccessibleEntrance,
+      };
 }
 
 class AddressComponentModel extends AddressComponent {
@@ -207,10 +223,22 @@ class AddressComponentModel extends AddressComponent {
 
   AddressComponentModel.fromMap(DataMap dataMap)
       : this(
-          longName: dataMap['long_name'] == null ? '' : dataMap['longName'] as String,
+          longName: dataMap['long_name'] == null ? '' : dataMap['long_name'] as String,
           shortName: dataMap['short_name'] == null ? '' : dataMap['short_name'] as String,
-          types: [],
+          types: dataMap['types'] == null
+              ? []
+              : List<String>.from(
+                  (dataMap['types'] as List).map(
+                    (type) => type.toString(),
+                  ),
+                ),
         );
+
+  DataMap toMap() => {
+        'long_name': longName,
+        'short_name': shortName,
+        'types': types,
+      };
 }
 
 class CurrentOpeningHoursModel extends CurrentOpeningHours {
@@ -223,12 +251,27 @@ class CurrentOpeningHoursModel extends CurrentOpeningHours {
   CurrentOpeningHoursModel.fromMap(DataMap dataMap)
       : this(
           openNow: dataMap['open_now'] == null ? false : dataMap['open_now'] as bool,
-          periods: List<CurrentOpeningHoursPeriod>.from((dataMap['periods'] as List)
-              .map((period) => CurrentOpeningHoursPeriodModel.fromMap(period as DataMap))),
+          periods: List<CurrentOpeningHoursPeriod>.from(
+            (dataMap['periods'] as List).map(
+              (period) => CurrentOpeningHoursPeriodModel.fromMap(period as DataMap),
+            ),
+          ),
           weekdayText: List<String>.from(
-            (dataMap['weekday_text'] as List).map((weekdayText) => weekdayText.toString()),
+            (dataMap['weekday_text'] as List).map(
+              (weekdayText) => weekdayText.toString(),
+            ),
           ),
         );
+
+  DataMap toMap() => {
+        'open_now': openNow,
+        'periods': List<dynamic>.from(
+          periods.map(
+            (period) => (period as CurrentOpeningHoursPeriodModel).toMap(),
+          ),
+        ),
+        'weekday_text': weekdayText
+      };
 }
 
 class CurrentOpeningHoursPeriodModel extends CurrentOpeningHoursPeriod {
@@ -242,6 +285,11 @@ class CurrentOpeningHoursPeriodModel extends CurrentOpeningHoursPeriod {
       : this(
             close: PurpleCloseModel.fromMap(dataMap['close'] as DataMap),
             open: PurpleCloseModel.fromMap(dataMap['open'] as DataMap));
+
+  DataMap toMap() => {
+        'close': (close as PurpleCloseModel).toMap(),
+        'open': (close as PurpleCloseModel).toMap(),
+      };
 }
 
 class PurpleCloseModel extends PurpleClose {
@@ -257,6 +305,12 @@ class PurpleCloseModel extends PurpleClose {
           day: int.tryParse(dataMap['day'].toString()) ?? 0,
           time: dataMap['time'] as String,
         );
+
+  DataMap toMap() => {
+        'date': date.toString(),
+        'day': day,
+        'time': time,
+      };
 }
 
 class OpeningHoursModel extends OpeningHours {
@@ -274,11 +328,24 @@ class OpeningHoursModel extends OpeningHours {
       : this(
           openNow: dataMap['open_now'] == null ? false : dataMap['open_now'] as bool,
           periods: List<OpeningHoursPeriod>.from(
-              (dataMap['periods'] as List).map((period) => OpeningHoursPeriodModel.fromMap(period as DataMap))),
+            (dataMap['periods'] as List).map(
+              (period) => OpeningHoursPeriodModel.fromMap(period as DataMap),
+            ),
+          ),
           weekdayText: List<String>.from(
             (dataMap['weekday_text'] as List).map((weekdayText) => weekdayText.toString()),
           ),
         );
+
+  DataMap toMap() => {
+        'open_now': openNow,
+        'periods': List<dynamic>.from(
+          periods.map(
+            (period) => (period as OpeningHoursPeriodModel).toMap(),
+          ),
+        ),
+        'weekday_text': weekdayText,
+      };
 }
 
 class OpeningHoursPeriodModel extends OpeningHoursPeriod {
@@ -292,6 +359,11 @@ class OpeningHoursPeriodModel extends OpeningHoursPeriod {
       : this(
             close: FluffyCloseModel.fromMap(dataMap['close'] as DataMap),
             open: FluffyCloseModel.fromMap(dataMap['open'] as DataMap));
+
+  DataMap toMap() => {
+        'close': (close as FluffyCloseModel).toMap(),
+        'open': (close as FluffyCloseModel).toMap(),
+      };
 }
 
 class FluffyCloseModel extends FluffyClose {
@@ -306,6 +378,11 @@ class FluffyCloseModel extends FluffyClose {
           day: int.tryParse(dataMap['day'].toString()) ?? 0,
           time: dataMap['time'] == null ? '' : dataMap['time'] as String,
         );
+
+  DataMap toMap() => {
+        'day': day,
+        'time': time,
+      };
 }
 
 class ReviewModel extends Review {
@@ -339,10 +416,26 @@ class ReviewModel extends Review {
           time: int.tryParse(dataMap['time'].toString()) ?? 0,
           translated: dataMap['translated'] == null ? false : dataMap['translated'] as bool,
         );
+
+  DataMap toMap() => {
+        'author_name': authorName,
+        'author_url': authorUrl,
+        'language': language,
+        'original_language': originalLanguage,
+        'profile_photo_url': profilePhotoUrl,
+        'rating': rating,
+        'relative_time_description': relativeTimeDescription,
+        'text': text,
+        'time': time,
+        'translated': translated,
+      };
 }
 
 class PlusCodeModel extends PlusCode {
-  const PlusCodeModel({required super.compoundCode, required super.globalCode});
+  const PlusCodeModel({
+    required super.compoundCode,
+    required super.globalCode,
+  });
 
   factory PlusCodeModel.fromJson(String source) => PlusCodeModel.fromMap(
         jsonDecode(source) as DataMap,
@@ -353,4 +446,9 @@ class PlusCodeModel extends PlusCode {
           compoundCode: dataMap['compound_code'] == null ? '' : dataMap['compound_code'] as String,
           globalCode: dataMap['global_code'] == null ? '' : dataMap['global_code'] as String,
         );
+
+  DataMap toMap() => {
+        'compound_code': compoundCode,
+        'globalCode': globalCode,
+      };
 }

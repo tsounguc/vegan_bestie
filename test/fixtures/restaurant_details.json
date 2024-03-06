@@ -1,434 +1,430 @@
 {
-  "html_attributions": [],
-  "result": {
-    "address_components": [
-      {
-        "long_name": "20198",
-        "short_name": "20198",
-        "types": [
-          "street_number"
-        ]
-      },
-      {
-        "long_name": "Livernois",
-        "short_name": "Livernois",
-        "types": [
-          "route"
-        ]
-      },
-      {
-        "long_name": "Green Acres",
-        "short_name": "Green Acres",
-        "types": [
-          "neighborhood",
-          "political"
-        ]
-      },
-      {
-        "long_name": "Detroit",
-        "short_name": "Detroit",
-        "types": [
-          "locality",
-          "political"
-        ]
-      },
-      {
-        "long_name": "Wayne County",
-        "short_name": "Wayne County",
-        "types": [
-          "administrative_area_level_2",
-          "political"
-        ]
-      },
-      {
-        "long_name": "Michigan",
-        "short_name": "MI",
-        "types": [
-          "administrative_area_level_1",
-          "political"
-        ]
-      },
-      {
-        "long_name": "United States",
-        "short_name": "US",
-        "types": [
-          "country",
-          "political"
-        ]
-      },
-      {
-        "long_name": "48221",
-        "short_name": "48221",
-        "types": [
-          "postal_code"
-        ]
-      },
-      {
-        "long_name": "1346",
-        "short_name": "1346",
-        "types": [
-          "postal_code_suffix"
-        ]
-      }
-    ],
-    "adr_address": "<span class=\"street-address\">20198 Livernois</span>, <span class=\"locality\">Detroit</span>, <span class=\"region\">MI</span> <span class=\"postal-code\">48221-1346</span>, <span class=\"country-name\">USA</span>",
-    "business_status": "OPERATIONAL",
-    "current_opening_hours": {
-      "open_now": false,
-      "periods": [
-        {
-          "close": {
-            "date": "2024-03-11",
-            "day": 1,
-            "time": "2000"
-          },
-          "open": {
-            "date": "2024-03-11",
-            "day": 1,
-            "time": "1100"
-          }
-        },
-        {
-          "close": {
-            "date": "2024-03-05",
-            "day": 2,
-            "time": "2000"
-          },
-          "open": {
-            "date": "2024-03-05",
-            "day": 2,
-            "time": "1100"
-          }
-        },
-        {
-          "close": {
-            "date": "2024-03-06",
-            "day": 3,
-            "time": "2000"
-          },
-          "open": {
-            "date": "2024-03-06",
-            "day": 3,
-            "time": "1100"
-          }
-        },
-        {
-          "close": {
-            "date": "2024-03-07",
-            "day": 4,
-            "time": "2000"
-          },
-          "open": {
-            "date": "2024-03-07",
-            "day": 4,
-            "time": "1100"
-          }
-        },
-        {
-          "close": {
-            "date": "2024-03-08",
-            "day": 5,
-            "time": "2000"
-          },
-          "open": {
-            "date": "2024-03-08",
-            "day": 5,
-            "time": "1100"
-          }
-        },
-        {
-          "close": {
-            "date": "2024-03-09",
-            "day": 6,
-            "time": "2000"
-          },
-          "open": {
-            "date": "2024-03-09",
-            "day": 6,
-            "time": "1100"
-          }
-        }
-      ],
-      "weekday_text": [
-        "Monday: 11:00 AM – 8:00 PM",
-        "Tuesday: 11:00 AM – 8:00 PM",
-        "Wednesday: 11:00 AM – 8:00 PM",
-        "Thursday: 11:00 AM – 8:00 PM",
-        "Friday: 11:00 AM – 8:00 PM",
-        "Saturday: 11:00 AM – 8:00 PM",
-        "Sunday: Closed"
+  "address_components": [
+    {
+      "long_name": "20198",
+      "short_name": "20198",
+      "types": [
+        "street_number"
       ]
     },
-    "delivery": true,
-    "dine_in": true,
-    "formatted_address": "20198 Livernois, Detroit, MI 48221, USA",
-    "formatted_phone_number": "(313) 340-2988",
-    "geometry": {
-      "location": {
-        "lat": 42.4430638,
-        "lng": -83.14157229999999
-      },
-      "viewport": {
-        "northeast": {
-          "lat": 42.44434948029151,
-          "lng": -83.14026826970849
-        },
-        "southwest": {
-          "lat": 42.44165151970851,
-          "lng": -83.14296623029151
-        }
-      }
-    },
-    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
-    "icon_background_color": "#FF9E67",
-    "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
-    "international_phone_number": "+1 313-340-2988",
-    "name": "Trap Vegan",
-    "opening_hours": {
-      "open_now": false,
-      "periods": [
-        {
-          "close": {
-            "day": 1,
-            "time": "2000"
-          },
-          "open": {
-            "day": 1,
-            "time": "1100"
-          }
-        },
-        {
-          "close": {
-            "day": 2,
-            "time": "2000"
-          },
-          "open": {
-            "day": 2,
-            "time": "1100"
-          }
-        },
-        {
-          "close": {
-            "day": 3,
-            "time": "2000"
-          },
-          "open": {
-            "day": 3,
-            "time": "1100"
-          }
-        },
-        {
-          "close": {
-            "day": 4,
-            "time": "2000"
-          },
-          "open": {
-            "day": 4,
-            "time": "1100"
-          }
-        },
-        {
-          "close": {
-            "day": 5,
-            "time": "2000"
-          },
-          "open": {
-            "day": 5,
-            "time": "1100"
-          }
-        },
-        {
-          "close": {
-            "day": 6,
-            "time": "2000"
-          },
-          "open": {
-            "day": 6,
-            "time": "1100"
-          }
-        }
-      ],
-      "weekday_text": [
-        "Monday: 11:00 AM – 8:00 PM",
-        "Tuesday: 11:00 AM – 8:00 PM",
-        "Wednesday: 11:00 AM – 8:00 PM",
-        "Thursday: 11:00 AM – 8:00 PM",
-        "Friday: 11:00 AM – 8:00 PM",
-        "Saturday: 11:00 AM – 8:00 PM",
-        "Sunday: Closed"
+    {
+      "long_name": "Livernois",
+      "short_name": "Livernois",
+      "types": [
+        "route"
       ]
     },
-    "photos": [
-      {
-        "height": 3024,
-        "html_attributions": [
-          "<a href=\"https://maps.google.com/maps/contrib/117945658542647565401\">Trap Vegan</a>"
-        ],
-        "photo_reference": "ATplDJZ3S2dOCclwJO8zMnNnmffXYnGJkq71VX_6tf-EZPlbik5iaq2m1E67SVnpUovDT2niMT2fI9qhCPPi9xtex0mULlq9lxxf8n6HLRgyxOCjQrcFzSYpMPuXytMWBAdg9dQJ5R8srPWBRV_ptng263c6nlsvtSfkW9YbRZv47gYNcelS",
-        "width": 4032
-      },
-      {
-        "height": 3942,
-        "html_attributions": [
-          "<a href=\"https://maps.google.com/maps/contrib/117945658542647565401\">Trap Vegan</a>"
-        ],
-        "photo_reference": "ATplDJaXCD-5RU00bX4PXCbeeJYKdw_XWhldOPhPFBjmZcmL-0wRUznPe9Ikj7Ndupy6LxFtwWchOAEybu_v_m5XYa4H0xstn82x9HzIXvCUjJHoGDeKP2O2pHi7Gtk3Xn1vXrdc61zi7S9c2uMq_Nr_czsGwm49TGC1UKG98iEy47DGR0Ur",
-        "width": 4240
-      },
-      {
-        "height": 3024,
-        "html_attributions": [
-          "<a href=\"https://maps.google.com/maps/contrib/111278261459968854313\">brenda m</a>"
-        ],
-        "photo_reference": "ATplDJYj324WdFvOErt53GE7nqvez7k9zvnEtRKflbKXC_zNxaUZqOccYlKx2b2uI0yZco5aNcsmncn8lTixPkFWJJyETy9Sw_8U5id8cYp5s9-eNokqZArDizderojS-GbYMIp42_N33EfvcmkTQlrVdLd1eNRubZ8U7Y51-ZwLp_hSoIzG",
-        "width": 4032
-      },
-      {
-        "height": 3000,
-        "html_attributions": [
-          "<a href=\"https://maps.google.com/maps/contrib/106501539454096096300\">Marteal Lamb</a>"
-        ],
-        "photo_reference": "ATplDJZ99aFcjKWgRu3Xrx5pwIuJy973dyEzCyGsAbk2Ol5UIDiclc9QfKiWiri3yfN3J5m9HAdbst9M_9NAPV4-GHwPvUVSH3yUaGe2_t3UHjV0eJcyOm7X__ydFUEKlUwcu2qMsiDvcT-VHB6I4uLc2pabt-wouyDaLFDcdbxuBAAwG-EA",
-        "width": 4000
-      },
-      {
-        "height": 9248,
-        "html_attributions": [
-          "<a href=\"https://maps.google.com/maps/contrib/100463442473805872064\">Holly Parks</a>"
-        ],
-        "photo_reference": "ATplDJZZwbUskCLf5iHf5nMi3TzGYGe8v54iMldAVibJ661Vv7QbeNwvUcFJ-Ey-DEoxC1_bUOeL_6ZIhI2ipzHkD3d2hpoc6UoAubvum4U2e9KlVH581KtD5rVWTsCNZ6Q4lQmYTXah1z67V64uNFDjoJlu-Q0on9lw_SZViDyxIjCXrmmF",
-        "width": 6936
-      },
-      {
-        "height": 2000,
-        "html_attributions": [
-          "<a href=\"https://maps.google.com/maps/contrib/117945658542647565401\">Trap Vegan</a>"
-        ],
-        "photo_reference": "ATplDJbb06A06D0YnbpADIacYxYtJHu8i3-zvFXEbNIZ5KBhc_wUhk-yycZaONfHY8VlbGY47DG99Njumzgyj3lVB43uDc6kVM7ROoeaSK8vfdD6LgY4a0r_Ivc-fw9cz2S_yVafunOgSF836YvC3uzZ0KEjUF1-YSp0kg9zGVVaFgli0CaU",
-        "width": 1648
-      },
-      {
-        "height": 4032,
-        "html_attributions": [
-          "<a href=\"https://maps.google.com/maps/contrib/115238325952436403184\">Jessica Seisay</a>"
-        ],
-        "photo_reference": "ATplDJbRdGXOUoIUXWAXqOlJzbPt1mb-rtGliRceRXmO39l9M0hml2zr87lB3wy33Eq4qLymNVVAtjPqgsRcTqw8GNUWEk7Y8Aq8vcps-sGY4UCswzmEUZooZ_PpJKtRrfcvunVrQQrxLibFN-rUOnMR8ynC1PKRvoPQKpqhG801zNWjjlLT",
-        "width": 3024
-      },
-      {
-        "height": 3024,
-        "html_attributions": [
-          "<a href=\"https://maps.google.com/maps/contrib/106562104591099681691\">Lauren</a>"
-        ],
-        "photo_reference": "ATplDJYRm5ZBHYNVdTanDs12B9iFopXApV9GQHXSTTFcUxr9lHPIKYhuWI3jMUSdCuiHffkqKiV7ez-_dHQWN7J6kcjM_cFW60bqpolCyn3mlitYnY07wmcx9yq2BCpkZHI5GhSUqEeGxVmimn8P5kJnAhQO_-ZzEuq1ZFxtrTGigktXp40",
-        "width": 4032
-      },
-      {
-        "height": 1560,
-        "html_attributions": [
-          "<a href=\"https://maps.google.com/maps/contrib/117945658542647565401\">Trap Vegan</a>"
-        ],
-        "photo_reference": "ATplDJasFLbHDOasRD36sVg-D6PoE2cqXzuc7O7LrEQXONy1w1_NT5c8zWCtfyCa8hA5Pseai3UmnN7_oVLPS8jiJJTjQR839c8rASzYQy4Vnf8HBYNXK2XZXIQ-8j982mDndbDwjVsCWGSA9FgagxNgUEnYvQZD5Nxfj24qhkhVo2K8XslT",
-        "width": 2000
-      },
-      {
-        "height": 1527,
-        "html_attributions": [
-          "<a href=\"https://maps.google.com/maps/contrib/117945658542647565401\">Trap Vegan</a>"
-        ],
-        "photo_reference": "ATplDJZRynZZHhIEHhWCCc-jCY0oTbqK-OeDL8lYqY8vuH1mi8uOi6A5rwf-QsAt2SBEfFS1ZuV3K_WzxLaoAWluqo4yMFDrlZyhGN8y8AcFXXEJpzbLul8QQtA5dnIY__XdDIBobDE0OuybRXGgqqo6HBMXhpa-iPqUIGUuoRgFk4SUrAVO",
-        "width": 2000
-      }
-    ],
-    "place_id": "ChIJUZZbC_bPJIgR2V8fxCcleCo",
-    "plus_code": {
-      "compound_code": "CVV5+69 Detroit, MI, USA",
-      "global_code": "86JRCVV5+69"
+    {
+      "long_name": "Green Acres",
+      "short_name": "Green Acres",
+      "types": [
+        "neighborhood",
+        "political"
+      ]
     },
-    "price_level": 2,
-    "rating": 4.5,
-    "reference": "ChIJUZZbC_bPJIgR2V8fxCcleCo",
-    "reservable": false,
-    "reviews": [
+    {
+      "long_name": "Detroit",
+      "short_name": "Detroit",
+      "types": [
+        "locality",
+        "political"
+      ]
+    },
+    {
+      "long_name": "Wayne County",
+      "short_name": "Wayne County",
+      "types": [
+        "administrative_area_level_2",
+        "political"
+      ]
+    },
+    {
+      "long_name": "Michigan",
+      "short_name": "MI",
+      "types": [
+        "administrative_area_level_1",
+        "political"
+      ]
+    },
+    {
+      "long_name": "United States",
+      "short_name": "US",
+      "types": [
+        "country",
+        "political"
+      ]
+    },
+    {
+      "long_name": "48221",
+      "short_name": "48221",
+      "types": [
+        "postal_code"
+      ]
+    },
+    {
+      "long_name": "1346",
+      "short_name": "1346",
+      "types": [
+        "postal_code_suffix"
+      ]
+    }
+  ],
+  "adr_address": "<span class=\"street-address\">20198 Livernois</span>, <span class=\"locality\">Detroit</span>, <span class=\"region\">MI</span> <span class=\"postal-code\">48221-1346</span>, <span class=\"country-name\">USA</span>",
+  "business_status": "OPERATIONAL",
+  "current_opening_hours": {
+    "open_now": false,
+    "periods": [
       {
-        "author_name": "Dylan",
-        "author_url": "https://www.google.com/maps/contrib/100486261464797444546/reviews",
-        "language": "en",
-        "original_language": "en",
-        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjXXEGQF6-iNvXjfN3xdBl1scChKOw-hDq6eYP77rxguhw=s128-c0x00000000-cc-rp-mo-ba3",
-        "rating": 5,
-        "relative_time_description": "a week ago",
-        "text": "Staff was kind and welcoming upon arrival, even tho they were busy and it was all hands on deck. I got the sliders … arguably one of the best vegan patties I’ve ever had. All the toppings were on point … the ‘cheese’ melted to perfection… beautiful bun. Side of curly fries were also divine. Thanks for the lunch.",
-        "time": 1708715191,
-        "translated": false
+        "close": {
+          "date": "2024-03-11",
+          "day": 1,
+          "time": "2000"
+        },
+        "open": {
+          "date": "2024-03-11",
+          "day": 1,
+          "time": "1100"
+        }
       },
       {
-        "author_name": "brenda m",
-        "author_url": "https://www.google.com/maps/contrib/111278261459968854313/reviews",
-        "language": "en",
-        "original_language": "en",
-        "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocKGEDE_4mIjHe3UQ0o4q97fpb4u9bHEF5-xppYs3WE0lIM=s128-c0x00000000-cc-rp-mo-ba5",
-        "rating": 5,
-        "relative_time_description": "a week ago",
-        "text": "OMG the food here is amazing the Chik'in sliders are the best they taste indistinguishable from real chicken I had mine on a bed of lettuce, The Blue pill bowl was delicious and fresh  not pictured),  sweet potatoe fries ,&  the Soul Survivor burger was also good. I have a wheat-sensitive belly so the bread was allot for my tummy  hoping for a sourdough or lettuce wrap option in the future. The staff was kind and knowledgeable and the atmosphere was cute and trendy.  New to my vegan journey this spot won't make me miss meat or dairy at all !",
-        "time": 1708726134,
-        "translated": false
+        "close": {
+          "date": "2024-03-05",
+          "day": 2,
+          "time": "2000"
+        },
+        "open": {
+          "date": "2024-03-05",
+          "day": 2,
+          "time": "1100"
+        }
       },
       {
-        "author_name": "Brandon Beard",
-        "author_url": "https://www.google.com/maps/contrib/114397169673684478269/reviews",
-        "language": "en",
-        "original_language": "en",
-        "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocL_zUjLaTTqkW0cI37UgmptPRjqtOEKpxx3DmoHHstn=s128-c0x00000000-cc-rp-mo-ba3",
-        "rating": 5,
-        "relative_time_description": "4 months ago",
-        "text": "First time here. Staff is friendly. Good was very fresh and tasty. Fries where banging and the burger tasted better then a real one. Highly recommend!",
-        "time": 1697657267,
-        "translated": false
+        "close": {
+          "date": "2024-03-06",
+          "day": 3,
+          "time": "2000"
+        },
+        "open": {
+          "date": "2024-03-06",
+          "day": 3,
+          "time": "1100"
+        }
       },
       {
-        "author_name": "Krystal Monique",
-        "author_url": "https://www.google.com/maps/contrib/116858583278152566502/reviews",
-        "language": "en",
-        "original_language": "en",
-        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjXjPqkHIyeyHyJUCs-UQ1-waHtpFoFMjOMRnQKkbn5cW9TN=s128-c0x00000000-cc-rp-mo-ba3",
-        "rating": 5,
-        "relative_time_description": "in the last week",
-        "text": "My Husband and I visited there today.  This was our first time hearing of this place after googling it online.  The burgers were AMAZING.  I have eaten at many vegan restaurants and this by far was one of the best burgers that I’ve ever had.  We had the Soul Survivor and they were seasoned to perfection.  We will certainly be back when we’re back in Michigan.",
-        "time": 1709082969,
-        "translated": false
+        "close": {
+          "date": "2024-03-07",
+          "day": 4,
+          "time": "2000"
+        },
+        "open": {
+          "date": "2024-03-07",
+          "day": 4,
+          "time": "1100"
+        }
       },
       {
-        "author_name": "Noah Walker",
-        "author_url": "https://www.google.com/maps/contrib/114166286392095235297/reviews",
-        "language": "en",
-        "original_language": "en",
-        "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjVLtscLLRQQm53T6Kppx8PC9FbBt3uCWTryRpzcae7e3BA=s128-c0x00000000-cc-rp-mo",
-        "rating": 4,
-        "relative_time_description": "2 weeks ago",
-        "text": "I would say that while I wouldn't give it 5/5 stars, I will say the burger that I got was well-cooked, the onions were soft and cooked, the lettuce and tomato were there to provide freshness, and the cheese was good. The trap sauce is really more of a classic mustardy Shake Shack style flavor. Not bad if you're into that kind of sauce on a burger, but I just found it to be just decent.",
-        "time": 1708390978,
-        "translated": false
+        "close": {
+          "date": "2024-03-08",
+          "day": 5,
+          "time": "2000"
+        },
+        "open": {
+          "date": "2024-03-08",
+          "day": 5,
+          "time": "1100"
+        }
+      },
+      {
+        "close": {
+          "date": "2024-03-09",
+          "day": 6,
+          "time": "2000"
+        },
+        "open": {
+          "date": "2024-03-09",
+          "day": 6,
+          "time": "1100"
+        }
       }
     ],
-    "serves_beer": false,
-    "serves_dinner": true,
-    "serves_lunch": true,
-    "serves_vegetarian_food": true,
-    "serves_wine": false,
-    "takeout": true,
-    "types": [
-      "restaurant",
-      "food",
-      "point_of_interest",
-      "establishment"
-    ],
-    "url": "https://maps.google.com/?cid=3060236799522594777",
-    "user_ratings_total": 592,
-    "utc_offset": -300,
-    "vicinity": "20198 Livernois, Detroit",
-    "website": "https://www.trapvegan.com/",
-    "wheelchair_accessible_entrance": true
+    "weekday_text": [
+      "Monday: 11:00 AM – 8:00 PM",
+      "Tuesday: 11:00 AM – 8:00 PM",
+      "Wednesday: 11:00 AM – 8:00 PM",
+      "Thursday: 11:00 AM – 8:00 PM",
+      "Friday: 11:00 AM – 8:00 PM",
+      "Saturday: 11:00 AM – 8:00 PM",
+      "Sunday: Closed"
+    ]
   },
-  "status": "OK"
+  "delivery": true,
+  "dine_in": true,
+  "formatted_address": "20198 Livernois, Detroit, MI 48221, USA",
+  "formatted_phone_number": "(313) 340-2988",
+  "geometry": {
+    "location": {
+      "lat": 42.4430638,
+      "lng": -83.14157229999999
+    },
+    "viewport": {
+      "northeast": {
+        "lat": 42.44434948029151,
+        "lng": -83.14026826970849
+      },
+      "southwest": {
+        "lat": 42.44165151970851,
+        "lng": -83.14296623029151
+      }
+    }
+  },
+  "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+  "icon_background_color": "#FF9E67",
+  "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+  "international_phone_number": "+1 313-340-2988",
+  "name": "Trap Vegan",
+  "opening_hours": {
+    "open_now": false,
+    "periods": [
+      {
+        "close": {
+          "day": 1,
+          "time": "2000"
+        },
+        "open": {
+          "day": 1,
+          "time": "1100"
+        }
+      },
+      {
+        "close": {
+          "day": 2,
+          "time": "2000"
+        },
+        "open": {
+          "day": 2,
+          "time": "1100"
+        }
+      },
+      {
+        "close": {
+          "day": 3,
+          "time": "2000"
+        },
+        "open": {
+          "day": 3,
+          "time": "1100"
+        }
+      },
+      {
+        "close": {
+          "day": 4,
+          "time": "2000"
+        },
+        "open": {
+          "day": 4,
+          "time": "1100"
+        }
+      },
+      {
+        "close": {
+          "day": 5,
+          "time": "2000"
+        },
+        "open": {
+          "day": 5,
+          "time": "1100"
+        }
+      },
+      {
+        "close": {
+          "day": 6,
+          "time": "2000"
+        },
+        "open": {
+          "day": 6,
+          "time": "1100"
+        }
+      }
+    ],
+    "weekday_text": [
+      "Monday: 11:00 AM – 8:00 PM",
+      "Tuesday: 11:00 AM – 8:00 PM",
+      "Wednesday: 11:00 AM – 8:00 PM",
+      "Thursday: 11:00 AM – 8:00 PM",
+      "Friday: 11:00 AM – 8:00 PM",
+      "Saturday: 11:00 AM – 8:00 PM",
+      "Sunday: Closed"
+    ]
+  },
+  "photos": [
+    {
+      "height": 3024,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/117945658542647565401\">Trap Vegan</a>"
+      ],
+      "photo_reference": "ATplDJZ3S2dOCclwJO8zMnNnmffXYnGJkq71VX_6tf-EZPlbik5iaq2m1E67SVnpUovDT2niMT2fI9qhCPPi9xtex0mULlq9lxxf8n6HLRgyxOCjQrcFzSYpMPuXytMWBAdg9dQJ5R8srPWBRV_ptng263c6nlsvtSfkW9YbRZv47gYNcelS",
+      "width": 4032
+    },
+    {
+      "height": 3942,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/117945658542647565401\">Trap Vegan</a>"
+      ],
+      "photo_reference": "ATplDJaXCD-5RU00bX4PXCbeeJYKdw_XWhldOPhPFBjmZcmL-0wRUznPe9Ikj7Ndupy6LxFtwWchOAEybu_v_m5XYa4H0xstn82x9HzIXvCUjJHoGDeKP2O2pHi7Gtk3Xn1vXrdc61zi7S9c2uMq_Nr_czsGwm49TGC1UKG98iEy47DGR0Ur",
+      "width": 4240
+    },
+    {
+      "height": 3024,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/111278261459968854313\">brenda m</a>"
+      ],
+      "photo_reference": "ATplDJYj324WdFvOErt53GE7nqvez7k9zvnEtRKflbKXC_zNxaUZqOccYlKx2b2uI0yZco5aNcsmncn8lTixPkFWJJyETy9Sw_8U5id8cYp5s9-eNokqZArDizderojS-GbYMIp42_N33EfvcmkTQlrVdLd1eNRubZ8U7Y51-ZwLp_hSoIzG",
+      "width": 4032
+    },
+    {
+      "height": 3000,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/106501539454096096300\">Marteal Lamb</a>"
+      ],
+      "photo_reference": "ATplDJZ99aFcjKWgRu3Xrx5pwIuJy973dyEzCyGsAbk2Ol5UIDiclc9QfKiWiri3yfN3J5m9HAdbst9M_9NAPV4-GHwPvUVSH3yUaGe2_t3UHjV0eJcyOm7X__ydFUEKlUwcu2qMsiDvcT-VHB6I4uLc2pabt-wouyDaLFDcdbxuBAAwG-EA",
+      "width": 4000
+    },
+    {
+      "height": 9248,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/100463442473805872064\">Holly Parks</a>"
+      ],
+      "photo_reference": "ATplDJZZwbUskCLf5iHf5nMi3TzGYGe8v54iMldAVibJ661Vv7QbeNwvUcFJ-Ey-DEoxC1_bUOeL_6ZIhI2ipzHkD3d2hpoc6UoAubvum4U2e9KlVH581KtD5rVWTsCNZ6Q4lQmYTXah1z67V64uNFDjoJlu-Q0on9lw_SZViDyxIjCXrmmF",
+      "width": 6936
+    },
+    {
+      "height": 2000,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/117945658542647565401\">Trap Vegan</a>"
+      ],
+      "photo_reference": "ATplDJbb06A06D0YnbpADIacYxYtJHu8i3-zvFXEbNIZ5KBhc_wUhk-yycZaONfHY8VlbGY47DG99Njumzgyj3lVB43uDc6kVM7ROoeaSK8vfdD6LgY4a0r_Ivc-fw9cz2S_yVafunOgSF836YvC3uzZ0KEjUF1-YSp0kg9zGVVaFgli0CaU",
+      "width": 1648
+    },
+    {
+      "height": 4032,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/115238325952436403184\">Jessica Seisay</a>"
+      ],
+      "photo_reference": "ATplDJbRdGXOUoIUXWAXqOlJzbPt1mb-rtGliRceRXmO39l9M0hml2zr87lB3wy33Eq4qLymNVVAtjPqgsRcTqw8GNUWEk7Y8Aq8vcps-sGY4UCswzmEUZooZ_PpJKtRrfcvunVrQQrxLibFN-rUOnMR8ynC1PKRvoPQKpqhG801zNWjjlLT",
+      "width": 3024
+    },
+    {
+      "height": 3024,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/106562104591099681691\">Lauren</a>"
+      ],
+      "photo_reference": "ATplDJYRm5ZBHYNVdTanDs12B9iFopXApV9GQHXSTTFcUxr9lHPIKYhuWI3jMUSdCuiHffkqKiV7ez-_dHQWN7J6kcjM_cFW60bqpolCyn3mlitYnY07wmcx9yq2BCpkZHI5GhSUqEeGxVmimn8P5kJnAhQO_-ZzEuq1ZFxtrTGigktXp40",
+      "width": 4032
+    },
+    {
+      "height": 1560,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/117945658542647565401\">Trap Vegan</a>"
+      ],
+      "photo_reference": "ATplDJasFLbHDOasRD36sVg-D6PoE2cqXzuc7O7LrEQXONy1w1_NT5c8zWCtfyCa8hA5Pseai3UmnN7_oVLPS8jiJJTjQR839c8rASzYQy4Vnf8HBYNXK2XZXIQ-8j982mDndbDwjVsCWGSA9FgagxNgUEnYvQZD5Nxfj24qhkhVo2K8XslT",
+      "width": 2000
+    },
+    {
+      "height": 1527,
+      "html_attributions": [
+        "<a href=\"https://maps.google.com/maps/contrib/117945658542647565401\">Trap Vegan</a>"
+      ],
+      "photo_reference": "ATplDJZRynZZHhIEHhWCCc-jCY0oTbqK-OeDL8lYqY8vuH1mi8uOi6A5rwf-QsAt2SBEfFS1ZuV3K_WzxLaoAWluqo4yMFDrlZyhGN8y8AcFXXEJpzbLul8QQtA5dnIY__XdDIBobDE0OuybRXGgqqo6HBMXhpa-iPqUIGUuoRgFk4SUrAVO",
+      "width": 2000
+    }
+  ],
+  "place_id": "ChIJUZZbC_bPJIgR2V8fxCcleCo",
+  "plus_code": {
+    "compound_code": "CVV5+69 Detroit, MI, USA",
+    "global_code": "86JRCVV5+69"
+  },
+  "price_level": 2,
+  "rating": 4.5,
+  "reference": "ChIJUZZbC_bPJIgR2V8fxCcleCo",
+  "reservable": false,
+  "reviews": [
+    {
+      "author_name": "Dylan",
+      "author_url": "https://www.google.com/maps/contrib/100486261464797444546/reviews",
+      "language": "en",
+      "original_language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjXXEGQF6-iNvXjfN3xdBl1scChKOw-hDq6eYP77rxguhw=s128-c0x00000000-cc-rp-mo-ba3",
+      "rating": 5,
+      "relative_time_description": "a week ago",
+      "text": "Staff was kind and welcoming upon arrival, even tho they were busy and it was all hands on deck. I got the sliders … arguably one of the best vegan patties I’ve ever had. All the toppings were on point … the ‘cheese’ melted to perfection… beautiful bun. Side of curly fries were also divine. Thanks for the lunch.",
+      "time": 1708715191,
+      "translated": false
+    },
+    {
+      "author_name": "brenda m",
+      "author_url": "https://www.google.com/maps/contrib/111278261459968854313/reviews",
+      "language": "en",
+      "original_language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocKGEDE_4mIjHe3UQ0o4q97fpb4u9bHEF5-xppYs3WE0lIM=s128-c0x00000000-cc-rp-mo-ba5",
+      "rating": 5,
+      "relative_time_description": "a week ago",
+      "text": "OMG the food here is amazing the Chik'in sliders are the best they taste indistinguishable from real chicken I had mine on a bed of lettuce, The Blue pill bowl was delicious and fresh  not pictured),  sweet potatoe fries ,&  the Soul Survivor burger was also good. I have a wheat-sensitive belly so the bread was allot for my tummy  hoping for a sourdough or lettuce wrap option in the future. The staff was kind and knowledgeable and the atmosphere was cute and trendy.  New to my vegan journey this spot won't make me miss meat or dairy at all !",
+      "time": 1708726134,
+      "translated": false
+    },
+    {
+      "author_name": "Brandon Beard",
+      "author_url": "https://www.google.com/maps/contrib/114397169673684478269/reviews",
+      "language": "en",
+      "original_language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocL_zUjLaTTqkW0cI37UgmptPRjqtOEKpxx3DmoHHstn=s128-c0x00000000-cc-rp-mo-ba3",
+      "rating": 5,
+      "relative_time_description": "4 months ago",
+      "text": "First time here. Staff is friendly. Good was very fresh and tasty. Fries where banging and the burger tasted better then a real one. Highly recommend!",
+      "time": 1697657267,
+      "translated": false
+    },
+    {
+      "author_name": "Krystal Monique",
+      "author_url": "https://www.google.com/maps/contrib/116858583278152566502/reviews",
+      "language": "en",
+      "original_language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjXjPqkHIyeyHyJUCs-UQ1-waHtpFoFMjOMRnQKkbn5cW9TN=s128-c0x00000000-cc-rp-mo-ba3",
+      "rating": 5,
+      "relative_time_description": "in the last week",
+      "text": "My Husband and I visited there today.  This was our first time hearing of this place after googling it online.  The burgers were AMAZING.  I have eaten at many vegan restaurants and this by far was one of the best burgers that I’ve ever had.  We had the Soul Survivor and they were seasoned to perfection.  We will certainly be back when we’re back in Michigan.",
+      "time": 1709082969,
+      "translated": false
+    },
+    {
+      "author_name": "Noah Walker",
+      "author_url": "https://www.google.com/maps/contrib/114166286392095235297/reviews",
+      "language": "en",
+      "original_language": "en",
+      "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjVLtscLLRQQm53T6Kppx8PC9FbBt3uCWTryRpzcae7e3BA=s128-c0x00000000-cc-rp-mo",
+      "rating": 4,
+      "relative_time_description": "2 weeks ago",
+      "text": "I would say that while I wouldn't give it 5/5 stars, I will say the burger that I got was well-cooked, the onions were soft and cooked, the lettuce and tomato were there to provide freshness, and the cheese was good. The trap sauce is really more of a classic mustardy Shake Shack style flavor. Not bad if you're into that kind of sauce on a burger, but I just found it to be just decent.",
+      "time": 1708390978,
+      "translated": false
+    }
+  ],
+  "serves_beer": false,
+  "serves_dinner": true,
+  "serves_lunch": true,
+  "serves_vegetarian_food": true,
+  "serves_wine": false,
+  "takeout": true,
+  "types": [
+    "restaurant",
+    "food",
+    "point_of_interest",
+    "establishment"
+  ],
+  "url": "https://maps.google.com/?cid=3060236799522594777",
+  "user_ratings_total": 592,
+  "utc_offset": -300,
+  "vicinity": "20198 Livernois, Detroit",
+  "website": "https://www.trapvegan.com/",
+  "wheelchair_accessible_entrance": true
 }

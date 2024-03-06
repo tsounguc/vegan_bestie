@@ -58,9 +58,7 @@ class RestaurantModel extends Restaurant {
               0,
           isOpenNow: false,
           vicinity: dataMap['vicinity'] == null ? '' : dataMap['vicinity'] as String,
-          geometry: dataMap['geometry'] == null
-              ? const Geometry.empty()
-              : GeometryModel.fromMap(dataMap['geometry'] as DataMap),
+          geometry: GeometryModel.fromMap(dataMap['geometry'] as DataMap),
         );
 
   String toJson() => jsonEncode(toMap());
@@ -69,7 +67,11 @@ class RestaurantModel extends Restaurant {
         'place_id': id,
         'name': name,
         'distance': distance,
-        'photos': List<dynamic>.from(photos.map((x) => (x as PhotoModel).toMap())),
+        'photos': List<dynamic>.from(
+          photos.map(
+            (photo) => (photo as PhotoModel).toMap(),
+          ),
+        ),
         'price': price,
         'rating': rating,
         'user_ratings_total': reviewCount,
