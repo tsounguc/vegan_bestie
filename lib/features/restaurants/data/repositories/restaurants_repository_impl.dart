@@ -4,6 +4,7 @@ import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
@@ -37,5 +38,11 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
     } on RestaurantsException catch (e) {
       return Left(RestaurantsFailure.fromException(e));
     }
+  }
+
+  @override
+  ResultFuture<MapEntity> getUserLocation() {
+    // TODO: implement getUserLocation
+    throw UnimplementedError();
   }
 }
