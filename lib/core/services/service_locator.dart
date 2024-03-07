@@ -22,7 +22,7 @@
 // import '../../features/restaurants/domain/repositories_contracts/map_repository_contract.dart';
 // import '../../features/restaurants/domain/repositories_contracts/restaurant_details_repository_contract.dart';
 // import '../../features/restaurants/domain/repositories_contracts/restaurants_repository.dart';
-// import '../../features/restaurants/domain/usecases/get_current_location_usecase.dart';
+// import '../../features/restaurants/domain/usecases/get_user_location.dart';
 // import '../../features/restaurants/domain/usecases/get_restaurant_details.dart';
 // import '../../features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 // import '../../features/restaurants/domain/usecases/map_usecase.dart';
@@ -112,6 +112,11 @@
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
+import 'package:sheveegan/features/restaurants/data/repositories/restaurants_repository_impl.dart';
+import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 import 'package:sheveegan/features/scan_product/data/data_sources/barcode_scanner_plugin.dart';
 import 'package:sheveegan/features/scan_product/data/data_sources/scan_product_remote_data_source.dart';
 import 'package:sheveegan/features/scan_product/data/repositories/scan_product_repository_impl.dart';
@@ -132,17 +137,32 @@ Future<void> setUpServices() async {
         fetchProduct: serviceLocator(),
       ),
     )
+    ..registerFactory(
+      () => RestaurantsBloc(
+        getRestaurantsNearMe: serviceLocator(),
+        getRestaurantDetails: serviceLocator(),
+      ),
+    )
     // Use cases
     ..registerLazySingleton(() => ScanBarcode(serviceLocator()))
     ..registerLazySingleton(() => FetchProduct(serviceLocator()))
+    ..registerLazySingleton(() => GetRestaurantsNearMe(serviceLocator()))
     // Repositories
     ..registerLazySingleton<ScanProductRepository>(
       () => ScanProductRepositoryImpl(serviceLocator()),
+    )
+    ..registerLazySingleton<RestaurantsRepository>(
+      () => RestaurantsRepositoryImpl(serviceLocator()),
     )
     // Data Sources
     ..registerLazySingleton<ScanProductRemoteDataSource>(
       () => ScanProductRemoteDataSourceImpl(
         serviceLocator(),
+        serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<RestaurantsRemoteDataSource>(
+      () => RestaurantsRemoteDataSourceImpl(
         serviceLocator(),
       ),
     )

@@ -27,7 +27,7 @@ class MapCubit extends Cubit<MapState> {
     mapRestaurantsResult.fold((mapFailure) => emit(MapErrorState(error: mapFailure.message)), (mapEntity) {
       emit(MapLocationsFound(
         userLocation: userCurrentLocation,
-        markers: mapEntity.restaurantsMarkers!,
+        markers: mapEntity.markers!,
       ));
     });
   }

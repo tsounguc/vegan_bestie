@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => GeolocationBloc(),
         ),
         BlocProvider<RestaurantsBloc>(
-          create: (context) => RestaurantsBloc(),
+          create: (context) => serviceLocator<RestaurantsBloc>(),
         ),
         BlocProvider<MapCubit>(
           create: (context) => MapCubit(),

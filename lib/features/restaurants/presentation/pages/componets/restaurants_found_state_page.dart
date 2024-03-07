@@ -6,7 +6,7 @@ import '../../restaurants_bloc/restaurants_bloc.dart';
 import '../map_page.dart';
 
 class RestaurantsFoundStatePage extends StatelessWidget {
-  const RestaurantsFoundStatePage({Key? key}) : super(key: key);
+  const RestaurantsFoundStatePage({super.key});
 
   @override
   Widget build(BuildContext context) {

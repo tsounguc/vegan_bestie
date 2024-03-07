@@ -52,6 +52,19 @@ class RestaurantDetailsException extends Equatable implements Exception {
   List<Object?> get props => [message, statusCode];
 }
 
+class MapException extends Equatable implements Exception {
+  const MapException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final int statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
+}
+
 class CreateWithEmailAndPasswordException extends Equatable implements Exception {
   const CreateWithEmailAndPasswordException({required this.message});
 
@@ -121,15 +134,5 @@ class SearchProductException extends Equatable implements Exception {
   final String message;
 
   @override
-  List<Object?> get props => [message];
-}
-
-class MapException extends Equatable implements Exception {
-  const MapException({required this.message});
-
-  final String message;
-
-  @override
-  // TODO: implement props
   List<Object?> get props => [message];
 }

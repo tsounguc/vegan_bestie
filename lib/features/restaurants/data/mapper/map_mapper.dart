@@ -3,6 +3,6 @@ import '../models/map_model.dart';
 
 class MapMapper {
   MapEntity mapToEntity(MapModel mapModel) {
-    return MapEntity(restaurantsMarkers: mapModel.restaurantsMarkers);
+    return MapEntity(markers: mapModel.restaurantsMarkers);
   }
 }

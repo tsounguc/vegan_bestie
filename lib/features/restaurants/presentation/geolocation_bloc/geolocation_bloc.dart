@@ -9,14 +9,14 @@ import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/location_entity.dart';
 
-import '../../domain/usecases/get_current_location_usecase.dart';
+import '../../domain/usecases/get_user_location.dart';
 
 part 'geolocation_event.dart';
 
 part 'geolocation_state.dart';
 
 class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
-  final GetCurrentLocationUseCase _currentLocationUseCase = serviceLocator<GetCurrentLocationUseCase>();
+  final GetUserLocation _currentLocationUseCase = serviceLocator<GetUserLocation>();
   final GetLastLocationUseCase _lastLocationUseCase = serviceLocator<GetLastLocationUseCase>();
   StreamSubscription? _geolocationSubscription;
   Position? currentLocation;

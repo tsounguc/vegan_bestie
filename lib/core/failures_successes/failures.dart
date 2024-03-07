@@ -69,6 +69,20 @@ class RestaurantDetailsFailure extends Failure {
         );
 }
 
+class MapFailure extends Failure {
+  const MapFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  MapFailure.fromException(
+    MapException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
 class CreateWithEmailAndPasswordFailure extends Failure {
   const CreateWithEmailAndPasswordFailure({
     required super.message,
@@ -120,13 +134,6 @@ class LocationFailure extends Failure {
 
 class SearchProductFailure extends Failure {
   const SearchProductFailure({
-    required super.message,
-    required super.statusCode,
-  });
-}
-
-class MapFailure extends Failure {
-  const MapFailure({
     required super.message,
     required super.statusCode,
   });
