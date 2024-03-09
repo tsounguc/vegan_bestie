@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
-import 'package:sheveegan/features/scan_product/data/data_sources/barcode_scanner_plugin.dart';
+import 'package:sheveegan/core/services/restaurants_services/barcode_scanner_plugin.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
@@ -21,7 +19,7 @@ const kFetchProductEndPoint = '/api/v2/product/';
 class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
   const ScanProductRemoteDataSourceImpl(this._scanner, this._client);
 
-  final BarcodeScannerService _scanner;
+  final BarcodeScannerPlugin _scanner;
   final Client _client;
 
   @override
@@ -58,7 +56,7 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
     } on ScanException {
       rethrow;
     } catch (e) {
-      throw ScanException(message: e.toString());
+      throw ScanException(message: e.toString(), statusCode: 502);
     }
   }
 }

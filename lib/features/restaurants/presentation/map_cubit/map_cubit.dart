@@ -8,7 +8,7 @@ import '../../../../core/failures_successes/failures.dart';
 import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/map_entity.dart';
 import '../../domain/entities/restaurant.dart';
-import '../../domain/usecases/map_usecase.dart';
+import '../../domain/usecases/get_restaurants_markers.dart';
 
 part 'map_state.dart';
 

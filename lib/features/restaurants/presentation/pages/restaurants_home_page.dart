@@ -18,13 +18,61 @@ class RestaurantsHomePage extends StatefulWidget {
 }
 
 class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
+  late Position userLocation;
+  Widget currentPage = Container();
+
   @override
   Widget build(BuildContext context) {
     // return const Placeholder();
     return BlocConsumer<RestaurantsBloc, RestaurantsState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is UserLocationLoaded) {
+          userLocation = state.position;
+
+          if (userLocation.latitude.toStringAsFixed(3) != state.position.latitude.toStringAsFixed(3) ||
+              userLocation.longitude.toStringAsFixed(3) != state.position.longitude.toStringAsFixed(3)) {
+            debugPrint('Getting Restaurants');
+            BlocProvider.of<RestaurantsBloc>(
+              context,
+            ).add(const LoadGeolocationEvent());
+            userLocation = state.position;
+            debugPrint(
+              'userCurrentLocation: ${userLocation.latitude}'
+              ' ${userLocation.longitude}',
+            );
+            BlocProvider.of<RestaurantsBloc>(context).add(
+              GetRestaurantsEvent(
+                position: state.position,
+              ),
+            );
+          }
+        }
+
+        if (state is RestaurantsLoaded) {
+          BlocProvider.of<RestaurantsBloc>(context).add(
+            GetRestaurantsMarkersEvent(
+              restaurants: state.restaurants,
+            ),
+          );
+        }
+        //   displayRestaurants(
+        //           state.restaurants,
+        //           userCurrentLocation!,
+        //         );
+      },
       builder: (context, state) {
-        return Scaffold();
+        if (state is LoadingUserGeoLocation || state is LoadingRestaurants) {
+          currentPage = const LoadingPage();
+          return const LoadingPage();
+        } else if (state is RestaurantsLoaded) {
+          currentPage = const RestaurantsFoundStatePage();
+          return const RestaurantsFoundStatePage();
+        } else if (state is RestaurantsError) {
+          currentPage = ErrorPage(error: state.message);
+          return ErrorPage(error: state.message);
+        } else {
+          return currentPage;
+        }
       },
     );
   }

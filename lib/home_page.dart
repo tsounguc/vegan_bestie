@@ -11,6 +11,8 @@ import 'package:sheveegan/features/restaurants/presentation/geolocation_bloc/geo
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurants_home_page.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/scan_product_home_page.dart';
 
+import 'features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -30,15 +32,15 @@ class _HomePageState extends State<HomePage> {
   ];
 
   void _updateIndex(int value) {
-    final currentUserLocation = BlocProvider.of<GeolocationBloc>(
-      context,
-    ).currentLocation;
+    // final currentUserLocation = BlocProvider.of<GeolocationBloc>(
+    //   context,
+    // ).currentLocation;
     setState(() {
       _currentIndex = value;
       if (_currentIndex == 1) {
-        BlocProvider.of<GeolocationBloc>(
+        BlocProvider.of<RestaurantsBloc>(
           context,
-        ).add(LoadGeolocationEvent());
+        ).add(const LoadGeolocationEvent());
       }
     });
   }

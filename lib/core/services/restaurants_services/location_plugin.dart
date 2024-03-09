@@ -1,48 +1,51 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:sheveegan/core/failures_successes/exceptions.dart';
 
-abstract class CurrentLocationPluginContract {
-  Future getCurrentLocation();
-
-  Future getLastLocation();
-}
-
-class CurrentLocationPluginImpl implements CurrentLocationPluginContract {
-  @override
+class LocationPlugin {
   Future<Position> getCurrentLocation() async {
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
+        throw const UserLocationException(message: 'Location permissions are denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+      throw const UserLocationException(
+        message: 'Location permissions are permanently denied, '
+            'we cannot request permissions.',
+      );
     }
 
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    final position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
     return position;
   }
 
-  @override
-  Future getLastLocation() async {
+  Future<Position?> getLastLocation() async {
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
+        throw const UserLocationException(
+          message: 'Location permissions are denied',
+        );
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+      throw const UserLocationException(
+        message: 'Location permissions are permanently denied, '
+            'we cannot request permissions.',
+      );
     }
-    Position? lastPosition = await Geolocator.getLastKnownPosition();
+    final lastPosition = await Geolocator.getLastKnownPosition();
     return lastPosition;
   }
 }

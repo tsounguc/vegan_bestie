@@ -1,10 +1,7 @@
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 
-class MapModel {
-  Set<Marker>? restaurantsMarkers;
+class MapModel extends MapEntity {
+  MapModel({required super.markers});
 
-  MapModel({
-    this.restaurantsMarkers,
-  });
+  MapModel.empty() : this(markers: {});
 }

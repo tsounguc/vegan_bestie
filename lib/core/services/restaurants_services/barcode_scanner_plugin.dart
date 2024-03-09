@@ -6,7 +6,7 @@ import 'package:sheveegan/core/failures_successes/exceptions.dart';
 //   Future<String> scanBarcode();
 // }
 
-class BarcodeScannerService {
+class BarcodeScannerPlugin {
   Future<String> scanBarcode() async {
     final barcodeString = await FlutterBarcodeScanner.scanBarcode(
       '#ff6666',

@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
 
@@ -16,14 +16,14 @@ void main() {
     useCase = GetUserLocation(repository);
   });
 
-  final testResponse = MapEntity.empty();
-  const testFailure = MapFailure(message: 'message', statusCode: 500);
+  final testResponse = UserLocation.empty();
+  const testFailure = UserLocationFailure(message: 'message', statusCode: 500);
 
   test(
     'given the GetUserLocation use case '
     'when instantiated '
     'then call [RestaurantsRepository.getUserLocation] '
-    'and return [MapEntity]',
+    'and return [UserLocation]',
     () async {
       // Arrange
       when(
@@ -32,7 +32,7 @@ void main() {
       // Act
       final result = await useCase();
       // Assert
-      expect(result, Right<Failure, MapEntity>(testResponse));
+      expect(result, Right<Failure, UserLocation>(testResponse));
       verify(
         () => repository.getUserLocation(),
       ).called(1);
@@ -44,7 +44,7 @@ void main() {
     'given the GetRestaurantsNearMe use case '
     'when instantiated '
     'and call [RestaurantsRepository.getRestaurantsNearMe] is unsuccessful '
-    'then return [RestaurantsFailure]',
+    'then return [UserLocationFailure]',
     () async {
       // Arrange
       when(
@@ -55,7 +55,7 @@ void main() {
       // Assert
       expect(
         result,
-        const Left<Failure, MapEntity>(testFailure),
+        const Left<Failure, UserLocation>(testFailure),
       );
       verify(
         () => repository.getUserLocation(),

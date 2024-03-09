@@ -2,13 +2,13 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../../../core/failures_successes/exceptions.dart';
 import '../../../../core/services/service_locator.dart';
-import '../../../../core/services/restaurants_services/current_location_plugin.dart';
-import '../models/location_model.dart';
+import '../../../../core/services/restaurants_services/location_plugin.dart';
+import '../models/user_location_model.dart';
 
 abstract class CurrentLocationFromPluginContract {
-  Future<LocationModel> getCurrentLocation();
+  Future<UserLocationModel> getCurrentLocation();
 
-  Future<LocationModel> getLastLocation();
+  Future<UserLocationModel> getLastLocation();
 }
 
 class CurrentLocationFromGeoLocatorPluginImpl implements CurrentLocationFromPluginContract {
@@ -16,22 +16,22 @@ class CurrentLocationFromGeoLocatorPluginImpl implements CurrentLocationFromPlug
       serviceLocator<CurrentLocationPluginContract>();
 
   @override
-  Future<LocationModel> getCurrentLocation() async {
+  Future<UserLocationModel> getCurrentLocation() async {
     try {
       Position position = await currentLocationPluginContract.getCurrentLocation();
-      return LocationModel(position: position);
+      return UserLocationModel(position: position);
     } catch (e) {
-      throw LocationException(message: "Failed to get current location");
+      throw UserLocationException(message: "Failed to get current location");
     }
   }
 
   @override
-  Future<LocationModel> getLastLocation() async {
+  Future<UserLocationModel> getLastLocation() async {
     try {
       Position position = await currentLocationPluginContract.getLastLocation();
-      return LocationModel(position: position);
+      return UserLocationModel(position: position);
     } catch (e) {
-      throw LocationException(message: "Failed to get current location");
+      throw UserLocationException(message: "Failed to get current location");
     }
   }
 }

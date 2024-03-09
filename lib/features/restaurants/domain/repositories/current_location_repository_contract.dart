@@ -1,9 +1,10 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/failures_successes/failures.dart';
-import '../entities/location_entity.dart';
+import '../entities/user_location.dart';
 
 abstract class CurrentLocationRepositoryContract {
-  Future<Either<LocationFailure, LocationEntity>> getCurrentLocation();
-  Future<Either<LocationFailure, LocationEntity>> getLastLocation();
+  Future<Either<UserLocationFailure, UserLocation>> getCurrentLocation();
+
+  Future<Either<UserLocationFailure, UserLocation>> getLastLocation();
 }

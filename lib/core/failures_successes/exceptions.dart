@@ -52,10 +52,23 @@ class RestaurantDetailsException extends Equatable implements Exception {
   List<Object?> get props => [message, statusCode];
 }
 
+class UserLocationException extends Equatable implements Exception {
+  const UserLocationException({
+    required this.message,
+    this.statusCode = 500,
+  });
+
+  final String message;
+  final int statusCode;
+
+  @override
+  List<Object?> get props => [message];
+}
+
 class MapException extends Equatable implements Exception {
   const MapException({
     required this.message,
-    required this.statusCode,
+    this.statusCode = 500,
   });
 
   final String message;
@@ -112,15 +125,6 @@ class SignOutException extends Equatable implements Exception {
 
 class CurrentUserException extends Equatable implements Exception {
   const CurrentUserException({required this.message});
-
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class LocationException extends Equatable implements Exception {
-  const LocationException({required this.message});
 
   final String message;
 

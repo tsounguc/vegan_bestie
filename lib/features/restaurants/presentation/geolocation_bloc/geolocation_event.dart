@@ -4,10 +4,10 @@ abstract class GeolocationEvent extends Equatable {
   const GeolocationEvent();
 }
 
-class LoadGeolocationEvent extends GeolocationEvent {
-  @override
-  List<Object?> get props => [];
-}
+// class LoadGeolocationEvent extends GeolocationEvent {
+//   @override
+//   List<Object?> get props => [];
+// }
 
 class UpdateGeolocationEvent extends GeolocationEvent {
   final Position position;

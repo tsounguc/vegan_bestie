@@ -69,6 +69,20 @@ class RestaurantDetailsFailure extends Failure {
         );
 }
 
+class UserLocationFailure extends Failure {
+  const UserLocationFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  UserLocationFailure.fromException(
+    UserLocationException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
 class MapFailure extends Failure {
   const MapFailure({
     required super.message,
@@ -120,13 +134,6 @@ class SignOutFailure extends Failure {
 
 class CurrentUserFailure extends Failure {
   const CurrentUserFailure({
-    required super.message,
-    required super.statusCode,
-  });
-}
-
-class LocationFailure extends Failure {
-  const LocationFailure({
     required super.message,
     required super.statusCode,
   });

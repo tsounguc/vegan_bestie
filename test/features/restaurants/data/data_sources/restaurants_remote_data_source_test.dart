@@ -6,21 +6,37 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
+import 'package:sheveegan/core/services/restaurants_services/location_plugin.dart';
+import 'package:sheveegan/core/services/restaurants_services/map_plugin.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
+import 'package:sheveegan/features/restaurants/data/models/map_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 
 class MockClient extends Mock implements Client {}
 
+class MockLocationPlugin extends Mock implements LocationPlugin {}
+
+class MockGoogleMapPlugin extends Mock implements GoogleMapPlugin {}
+
 Future<void> main() async {
   await dotenv.load();
   late Client client;
+  late LocationPlugin locationPlugin;
+  late GoogleMapPlugin googleMapPlugin;
   late RestaurantsRemoteDataSource remoteDataSource;
   setUp(() {
     client = MockClient();
-    remoteDataSource = RestaurantsRemoteDataSourceImpl(client);
+    locationPlugin = MockLocationPlugin();
+    googleMapPlugin = MockGoogleMapPlugin();
+    remoteDataSource = RestaurantsRemoteDataSourceImpl(
+      client,
+      locationPlugin,
+      googleMapPlugin,
+    );
     registerFallbackValue(Uri());
   });
 
@@ -140,6 +156,116 @@ Future<void> main() async {
         );
         verify(() => client.get(any())).called(1);
         verifyNoMoreInteractions(client);
+      },
+    );
+  });
+
+  group('getUserLocation - ', () {
+    test(
+      'given RestaurantsRemoteDataSourceImpl '
+      'when [RestaurantsRemoteDataSourceImpl.getUserLocation] is called '
+      'and location permission granted '
+      'then return [UserLocation] ',
+      () async {
+        // Arrange
+        when(
+          () => locationPlugin.getCurrentLocation(),
+        ).thenAnswer((_) async => testPosition);
+        // Act
+        final userLocation = await remoteDataSource.getUserLocation();
+
+        // Assert
+        expect(userLocation, isA<UserLocation>());
+        verify(() => locationPlugin.getCurrentLocation()).called(1);
+        verifyNoMoreInteractions(locationPlugin);
+      },
+    );
+
+    test(
+      'given RestaurantsRemoteDataSourceImpl '
+      'when [RestaurantsRemoteDataSourceImpl.getUserLocation] is called '
+      'and location permission is not granted '
+      'then throw [UserLocationException]',
+      () async {
+        // Arrange
+        when(() => locationPlugin.getCurrentLocation()).thenThrow(
+          const UserLocationException(
+            message: 'Location permission Denied',
+          ),
+        );
+        // Act
+        final methodCall = remoteDataSource.getUserLocation;
+        // Assert
+        expect(
+          () async => methodCall(),
+          throwsA(
+            const UserLocationException(
+              message: 'Location permission Denied',
+            ),
+          ),
+        );
+        verify(() => locationPlugin.getCurrentLocation()).called(1);
+        verifyNoMoreInteractions(locationPlugin);
+      },
+    );
+  });
+
+  group('getRestaurantsMarkers - ', () {
+    final testRestaurants = <Restaurant>[];
+    final testMapModel = MapModel.empty();
+    test(
+      'given RestaurantsRemoteDataSourceImpl '
+      'when [RestaurantsRemoteDataSourceImpl.getRestaurantsMarkers] successfully called '
+      'then return [MapModel] ',
+      () async {
+        // Arrange
+        when(
+          () => googleMapPlugin.getRestaurantsMarkers(testRestaurants),
+        ).thenAnswer((_) async => testMapModel);
+        // Act
+        final result = await remoteDataSource.getRestaurantsMarkers(
+          restaurants: testRestaurants,
+        );
+
+        // Assert
+        expect(result, isA<MapModel>());
+        verify(
+          () => googleMapPlugin.getRestaurantsMarkers(testRestaurants),
+        ).called(1);
+        verifyNoMoreInteractions(googleMapPlugin);
+      },
+    );
+
+    test(
+      'given RestaurantsRemoteDataSourceImpl '
+      'when [RestaurantsRemoteDataSourceImpl.getRestaurantsMarkers] call unsuccessful '
+      'then throw [MapException]',
+      () async {
+        // Arrange
+        when(
+          () => googleMapPlugin.getRestaurantsMarkers(testRestaurants),
+        ).thenThrow(
+          const MapException(
+            message: 'message',
+          ),
+        );
+        // Act
+        final methodCall = remoteDataSource.getRestaurantsMarkers;
+        // Assert
+        expect(
+          () async => methodCall(
+            restaurants: testRestaurants,
+          ),
+          throwsA(
+            const MapException(
+              message: 'message',
+            ),
+          ),
+        );
+        verify(
+          () => googleMapPlugin.getRestaurantsMarkers(testRestaurants),
+        ).called(1);
+        verifyNoMoreInteractions(googleMapPlugin);
       },
     );
   });

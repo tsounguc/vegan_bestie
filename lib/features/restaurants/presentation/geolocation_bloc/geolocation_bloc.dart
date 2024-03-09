@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/location_entity.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 
 import '../../domain/usecases/get_user_location.dart';
 
@@ -25,7 +25,7 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
     on<LoadGeolocationEvent>((event, emit) async {
       emit(GeolocationLoadingState());
 
-      final Either<LocationFailure, LocationEntity> currentLocationResult =
+      final Either<UserLocationFailure, UserLocation> currentLocationResult =
           await _currentLocationUseCase.getCurrentLocation();
       currentLocationResult.fold(
         (locationFailure) => emit(GeolocationErrorState(error: locationFailure.message)),
@@ -36,7 +36,7 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
     on<UpdateGeolocationEvent>((event, emit) async {
       emit(GeolocationLoadingState());
       _geolocationSubscription?.cancel();
-      final Either<LocationFailure, LocationEntity> locationResult =
+      final Either<UserLocationFailure, UserLocation> locationResult =
           await _currentLocationUseCase.getCurrentLocation();
       locationResult.fold(
         (locationFailure) => emit(GeolocationErrorState(error: locationFailure.message)),
@@ -45,7 +45,7 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
     });
     on<TappedRestaurantTabEvent>((event, emit) async {
       emit(GeolocationInitialState());
-      final Either<LocationFailure, LocationEntity> locationResult =
+      final Either<UserLocationFailure, UserLocation> locationResult =
           await _currentLocationUseCase.getCurrentLocation();
       locationResult.fold(
         (locationFailure) => emit(GeolocationErrorState(error: locationFailure.message)),

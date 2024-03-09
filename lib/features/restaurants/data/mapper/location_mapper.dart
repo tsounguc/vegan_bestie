@@ -1,8 +1,8 @@
-import '../../domain/entities/location_entity.dart';
-import '../models/location_model.dart';
+import '../../domain/entities/user_location.dart';
+import '../models/user_location_model.dart';
 
 class LocationMapper {
-  LocationEntity mapToEntity(LocationModel locationModel) {
-    return LocationEntity(position: locationModel.position);
+  UserLocation mapToEntity(UserLocationModel locationModel) {
+    return UserLocation(position: locationModel.position);
   }
 }

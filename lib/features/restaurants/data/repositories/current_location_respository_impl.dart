@@ -4,36 +4,36 @@ import 'package:sheveegan/features/restaurants/data/mapper/location_mapper.dart'
 import '../../../../core/failures_successes/exceptions.dart';
 import '../../../../core/failures_successes/failures.dart';
 import '../../../../core/services/service_locator.dart';
-import '../../domain/entities/location_entity.dart';
+import '../../domain/entities/user_location.dart';
 import '../../domain/repositories_contracts/current_location_repository_contract.dart';
 import '../data_sources/current_location_from_plugin.dart';
-import '../models/location_model.dart';
+import '../models/user_location_model.dart';
 
 class CurrentLocationRepositoryImpl implements CurrentLocationRepositoryContract {
   CurrentLocationFromPluginContract currentLocationFromPluginContract =
       serviceLocator<CurrentLocationFromPluginContract>();
 
   @override
-  Future<Either<LocationFailure, LocationEntity>> getCurrentLocation() async {
+  Future<Either<UserLocationFailure, UserLocation>> getCurrentLocation() async {
     try {
-      LocationModel locationModel = await currentLocationFromPluginContract.getCurrentLocation();
+      UserLocationModel locationModel = await currentLocationFromPluginContract.getCurrentLocation();
       LocationMapper mapper = LocationMapper();
-      LocationEntity locationEntity = mapper.mapToEntity(locationModel);
+      UserLocation locationEntity = mapper.mapToEntity(locationModel);
       return Right(locationEntity);
-    } on LocationException catch (e) {
-      return Left(LocationFailure(message: e.message));
+    } on UserLocationException catch (e) {
+      return Left(UserLocationFailure(message: e.message));
     }
   }
 
   @override
-  Future<Either<LocationFailure, LocationEntity>> getLastLocation() async {
+  Future<Either<UserLocationFailure, UserLocation>> getLastLocation() async {
     try {
-      LocationModel locationModel = await currentLocationFromPluginContract.getLastLocation();
+      UserLocationModel locationModel = await currentLocationFromPluginContract.getLastLocation();
       LocationMapper mapper = LocationMapper();
-      LocationEntity locationEntity = mapper.mapToEntity(locationModel);
+      UserLocation locationEntity = mapper.mapToEntity(locationModel);
       return Right(locationEntity);
-    } on LocationException catch (e) {
-      return Left(LocationFailure(message: e.message));
+    } on UserLocationException catch (e) {
+      return Left(UserLocationFailure(message: e.message));
     }
   }
 }

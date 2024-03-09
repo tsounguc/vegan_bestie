@@ -1,5 +1,5 @@
 // import 'package:get_it/get_it.dart';
-// import 'package:sheveegan/core/services/restaurants_services/map_service.dart';
+// import 'package:sheveegan/core/services/restaurants_services/map_plugin.dart';
 // import 'package:sheveegan/features/restaurants/data/data_sources/map_info_from_remote_data_source_contract.dart';
 //
 // import '../../features/auth/data/data_sources/auth_remote_data_source.dart';
@@ -25,7 +25,7 @@
 // import '../../features/restaurants/domain/usecases/get_user_location.dart';
 // import '../../features/restaurants/domain/usecases/get_restaurant_details.dart';
 // import '../../features/restaurants/domain/usecases/get_restaurants_near_me.dart';
-// import '../../features/restaurants/domain/usecases/map_usecase.dart';
+// import '../../features/restaurants/domain/usecases/get_restaurants_markers.dart';
 // import '../../features/scan_product/data/data_sources/fetch_product_from_remote_data_source.dart';
 // import '../../features/scan_product/data/data_sources/scan_product_remote_data_source.dart';
 //
@@ -36,7 +36,7 @@
 // import 'auth_service.dart';
 // import 'barcode_scanner_plugin.dart';
 // import 'food_facts_services/food_facts_api_service.dart';
-// import 'restaurants_services/current_location_plugin.dart';
+// import 'restaurants_services/location_plugin.dart';
 // import 'restaurants_services/restaurants_service.dart';
 //
 // final GetIt serviceLocator = GetIt.instance;
@@ -112,12 +112,17 @@
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:sheveegan/core/services/restaurants_services/location_plugin.dart';
+import 'package:sheveegan/core/services/restaurants_services/map_plugin.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
 import 'package:sheveegan/features/restaurants/data/repositories/restaurants_repository_impl.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
-import 'package:sheveegan/features/scan_product/data/data_sources/barcode_scanner_plugin.dart';
+import 'package:sheveegan/core/services/restaurants_services/barcode_scanner_plugin.dart';
 import 'package:sheveegan/features/scan_product/data/data_sources/scan_product_remote_data_source.dart';
 import 'package:sheveegan/features/scan_product/data/repositories/scan_product_repository_impl.dart';
 import 'package:sheveegan/features/scan_product/domain/repositories/scan_product_repository.dart';
@@ -141,12 +146,17 @@ Future<void> setUpServices() async {
       () => RestaurantsBloc(
         getRestaurantsNearMe: serviceLocator(),
         getRestaurantDetails: serviceLocator(),
+        getUserLocation: serviceLocator(),
+        getRestaurantsMarkers: serviceLocator(),
       ),
     )
     // Use cases
     ..registerLazySingleton(() => ScanBarcode(serviceLocator()))
     ..registerLazySingleton(() => FetchProduct(serviceLocator()))
     ..registerLazySingleton(() => GetRestaurantsNearMe(serviceLocator()))
+    ..registerLazySingleton(() => GetRestaurantDetails(serviceLocator()))
+    ..registerLazySingleton(() => GetUserLocation(serviceLocator()))
+    ..registerLazySingleton(() => GetRestaurantsMarkers(serviceLocator()))
     // Repositories
     ..registerLazySingleton<ScanProductRepository>(
       () => ScanProductRepositoryImpl(serviceLocator()),
@@ -164,9 +174,13 @@ Future<void> setUpServices() async {
     ..registerLazySingleton<RestaurantsRemoteDataSource>(
       () => RestaurantsRemoteDataSourceImpl(
         serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
       ),
     )
     // External dependencies
-    ..registerLazySingleton(BarcodeScannerService.new)
+    ..registerLazySingleton(BarcodeScannerPlugin.new)
+    ..registerLazySingleton(LocationPlugin.new)
+    ..registerLazySingleton(GoogleMapPlugin.new)
     ..registerLazySingleton(Client.new);
 }
