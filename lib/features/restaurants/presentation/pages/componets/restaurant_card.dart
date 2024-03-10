@@ -3,30 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/strings.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_details_page.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurant_cubit/restaurant_details_cubit.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class RestaurantCard extends StatelessWidget {
   const RestaurantCard({
-    required this.dietRestrictions,
     required this.restaurant,
     super.key,
   });
 
-  final String? dietRestrictions;
-  final Restaurant? restaurant;
+  final Restaurant restaurant;
 
   @override
   Widget build(BuildContext context) {
+    final imageUrl = '$kImageBaseUrl${restaurant.photos[0].photoReference}&key=$kGoogleApiKey';
     return GestureDetector(
       onTap: () {
-        debugPrint(restaurant?.id);
-        BlocProvider.of<RestaurantDetailsCubit>(
+        debugPrint(restaurant.id);
+        BlocProvider.of<RestaurantsBloc>(
           context,
-        ).searchRestaurantDetails(restaurant?.id);
+        ).add(GetRestaurantDetailsEvent(id: restaurant.id));
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => RestaurantDetailsPage(),
@@ -42,35 +42,20 @@ class RestaurantCard extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.only(
-                left: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.025,
-                top: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.030,
-                bottom: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.030,
+                left: MediaQuery.of(context).size.width * 0.025,
+                top: MediaQuery.of(context).size.width * 0.030,
+                bottom: MediaQuery.of(context).size.width * 0.030,
               ),
               child: Center(
                 child: Ink(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.30,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.30,
+                  height: MediaQuery.of(context).size.width * 0.30,
+                  width: MediaQuery.of(context).size.width * 0.30,
                   decoration: BoxDecoration(
                     color: Colors.green.shade50,
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(restaurant!.imageUrl!),
+                      image: CachedNetworkImageProvider(imageUrl),
                     ),
                   ),
                 ),
@@ -87,12 +72,9 @@ class RestaurantCard extends StatelessWidget {
                       children: [
                         Flexible(
                           child: SizedBox(
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width * 0.30,
+                            width: MediaQuery.of(context).size.width * 0.30,
                             child: Text(
-                              restaurant!.name!,
+                              restaurant.name,
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: Colors.black,
@@ -103,8 +85,8 @@ class RestaurantCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${(restaurant!.distance! / 1609.344).round()} '
-                              '${Strings.distanceUnitText}',
+                          '${(restaurant.distance / 1609.344).round()} '
+                          '${Strings.distanceUnitText}',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 10.sp,
@@ -114,10 +96,7 @@ class RestaurantCard extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.007,
+                      height: MediaQuery.of(context).size.height * 0.007,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,7 +114,7 @@ class RestaurantCard extends StatelessWidget {
                               ),
                               Flexible(
                                 child: Text(
-                                  restaurant!.vicinity!,
+                                  restaurant.vicinity,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 10.sp,
@@ -146,7 +125,7 @@ class RestaurantCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          restaurant!.price ?? '',
+                          restaurant.price,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 10.sp,
@@ -155,15 +134,12 @@ class RestaurantCard extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.007,
+                      height: MediaQuery.of(context).size.height * 0.007,
                     ),
                     Row(
                       children: [
                         RatingBarIndicator(
-                          rating: restaurant!.rating!,
+                          rating: restaurant.rating,
                           itemBuilder: (BuildContext context, int index) {
                             return const Icon(
                               Icons.star,
@@ -174,13 +150,10 @@ class RestaurantCard extends StatelessWidget {
                           itemSize: 15,
                         ),
                         SizedBox(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.025,
+                          width: MediaQuery.of(context).size.width * 0.025,
                         ),
                         Text(
-                          '${restaurant!.reviewCount} ${Strings.reviewsText}',
+                          '${restaurant.reviewCount} ${Strings.reviewsText}',
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 12,
@@ -189,15 +162,11 @@ class RestaurantCard extends StatelessWidget {
                       ],
                     ),
                     IsOpenNowWidget(
-                      visible: restaurant?.isOpenNow != null,
-                      isOpenNow: restaurant?.isOpenNow != null && restaurant!.isOpenNow!,
-                      weekdayText: const [],
+                      isOpenNow: restaurant.openingHours.openNow,
+                      weekdayText: restaurant.openingHours.weekdayText,
                     ),
                     SizedBox(
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.007,
+                      height: MediaQuery.of(context).size.height * 0.007,
                     ),
                   ],
                 ),

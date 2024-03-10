@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:sheveegan/core/common/entities/restaurant_entities.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_details_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 
 class RestaurantModel extends Restaurant {
@@ -13,7 +14,7 @@ class RestaurantModel extends Restaurant {
     required super.price,
     required super.rating,
     required super.reviewCount,
-    required super.isOpenNow,
+    required super.openingHours,
     required super.vicinity,
     required super.geometry,
   });
@@ -27,7 +28,7 @@ class RestaurantModel extends Restaurant {
           price: '_empty.price',
           rating: 0,
           reviewCount: 0,
-          isOpenNow: false,
+          openingHours: OpeningHoursModel.empty(),
           vicinity: '_empty.vicinity',
           geometry: const Geometry.empty(),
         );
@@ -56,9 +57,15 @@ class RestaurantModel extends Restaurant {
                 dataMap['user_ratings_total'].toString(),
               ) ??
               0,
-          isOpenNow: false,
+          openingHours: dataMap['opening_hours'] == null
+              ? OpeningHoursModel.empty()
+              : OpeningHoursModel.fromMap(
+                  dataMap['opening_hours'] as DataMap,
+                ),
           vicinity: dataMap['vicinity'] == null ? '' : dataMap['vicinity'] as String,
-          geometry: GeometryModel.fromMap(dataMap['geometry'] as DataMap),
+          geometry: dataMap['geometry'] == null
+              ? const GeometryModel.empty()
+              : GeometryModel.fromMap(dataMap['geometry'] as DataMap),
         );
 
   String toJson() => jsonEncode(toMap());
@@ -75,7 +82,7 @@ class RestaurantModel extends Restaurant {
         'price': price,
         'rating': rating,
         'user_ratings_total': reviewCount,
-        'is_open_now': isOpenNow,
+        'opening_hours': (openingHours as OpeningHoursModel).toMap(),
         'vicinity': vicinity,
         'geometry': (geometry as GeometryModel).toMap(),
       };
@@ -88,7 +95,7 @@ class RestaurantModel extends Restaurant {
     String? price,
     double? rating,
     int? reviewCount,
-    bool? isOpenNow,
+    OpeningHours? openingHours,
     String? vicinity,
     Geometry? geometry,
   }) {
@@ -100,7 +107,7 @@ class RestaurantModel extends Restaurant {
       price: price ?? this.price,
       rating: rating ?? this.rating,
       reviewCount: reviewCount ?? this.reviewCount,
-      isOpenNow: isOpenNow ?? this.isOpenNow,
+      openingHours: openingHours ?? this.openingHours,
       vicinity: vicinity ?? this.vicinity,
       geometry: geometry ?? this.geometry,
     );
@@ -113,6 +120,12 @@ class GeometryModel extends Geometry {
   factory GeometryModel.fromJson(String source) => GeometryModel.fromMap(
         jsonDecode(source) as DataMap,
       );
+
+  const GeometryModel.empty()
+      : this(
+          location: const Location.empty(),
+          viewport: const Viewport.empty(),
+        );
 
   GeometryModel.fromMap(DataMap dataMap)
       : this(

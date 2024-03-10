@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/entities/restaurant_details.dart';
-
 class IsOpenNowWidget extends StatelessWidget {
-  const IsOpenNowWidget(
-      {Key? key,
-      required this.visible,
-      required this.isOpenNow,
-      this.iconSize = 16,
-      this.fontSize = 12,
-      required this.weekdayText})
-      : super(key: key);
+  const IsOpenNowWidget({
+    required this.isOpenNow,
+    required this.weekdayText,
+    this.visible = true,
+    this.iconSize = 16,
+    this.fontSize = 12,
+    super.key,
+  });
+
   final double? iconSize;
-  final bool? visible;
+  final bool visible;
   final bool isOpenNow;
   final double? fontSize;
   final List<String> weekdayText;
@@ -23,7 +22,7 @@ class IsOpenNowWidget extends StatelessWidget {
       visible: visible == true,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll(Colors.white),
+          backgroundColor: const MaterialStatePropertyAll(Colors.white),
           shape: weekdayText.isEmpty
               ? null
               : MaterialStatePropertyAll(
@@ -32,22 +31,26 @@ class IsOpenNowWidget extends StatelessWidget {
                   ),
                 ),
           padding: weekdayText.isEmpty
-              ? MaterialStatePropertyAll(
+              ? const MaterialStatePropertyAll(
                   EdgeInsets.zero,
                 )
-              : MaterialStatePropertyAll(
+              : const MaterialStatePropertyAll(
                   EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 ),
-          elevation: weekdayText.isEmpty ? MaterialStatePropertyAll(0) : MaterialStatePropertyAll(3),
+          elevation: weekdayText.isEmpty
+              ? const MaterialStatePropertyAll(
+                  0,
+                )
+              : const MaterialStatePropertyAll(
+                  3,
+                ),
         ),
         onPressed: weekdayText.isEmpty
             ? null
-            : () {
-                _displayHoursDialog(context);
-              },
+            : () => _displayHoursDialog(
+                  context,
+                ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(
               Icons.access_time,
@@ -60,7 +63,7 @@ class IsOpenNowWidget extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  isOpenNow ? "Open Now" : "Closed",
+                  isOpenNow ? 'Open Now' : 'Closed',
                   style: TextStyle(
                     color: isOpenNow ? Colors.green : Colors.red,
                     fontSize: fontSize,
@@ -75,12 +78,9 @@ class IsOpenNowWidget extends StatelessWidget {
     );
   }
 
-  void _displayHoursDialog(
+  Future<void> _displayHoursDialog(
     BuildContext context,
   ) async {
-    for (int index = 0; index < weekdayText.length; index++) {
-      print(weekdayText[index]);
-    }
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -89,32 +89,30 @@ class IsOpenNowWidget extends StatelessWidget {
           backgroundColor: Colors.white,
           title: Text(
             'Hours',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey.shade800, fontSize: 20),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.grey.shade800,
+                  fontSize: 20,
+                ),
           ),
           content: IntrinsicHeight(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Padding(
-                //   padding: const EdgeInsets.only(bottom: 15),
-                //   child: Text(
-                //     'Hours',
-                //     style: Theme.of(context)
-                //         .textTheme
-                //         .bodyMedium
-                //         ?.copyWith(color: Colors.grey.shade800, fontSize: 24),
-                //   ),
-                // ),
                 for (int index = 0; index < weekdayText.length; index++)
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       FittedBox(
                         child: Text(
-                          weekdayText[index].replaceAll(', ', '\n                     '),
-                          style: TextStyle(color: Colors.grey.shade800, fontSize: 14, fontWeight: FontWeight.w600),
+                          weekdayText[index].replaceAll(
+                            ', ',
+                            '\n                     ',
+                          ),
+                          style: TextStyle(
+                            color: Colors.grey.shade800,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ],
@@ -126,14 +124,18 @@ class IsOpenNowWidget extends StatelessWidget {
             TextButton(
               child: Text(
                 'OK',
-                style: TextStyle(color: Colors.grey.shade800, fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.grey.shade800,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
           ],
-          actionsPadding: EdgeInsets.symmetric(vertical: 5),
+          actionsPadding: const EdgeInsets.symmetric(vertical: 5),
         );
       },
     );

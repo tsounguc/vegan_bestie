@@ -117,10 +117,18 @@ class RestaurantDetailsModel extends RestaurantDetails {
           internationalPhoneNumber:
               dataMap['international_phone_number'] == null ? '' : dataMap['international_phone_number'] as String,
           name: dataMap['name'] == null ? '' : dataMap['name'] as String,
-          openingHours: OpeningHoursModel.fromMap(dataMap['opening_hours'] as DataMap),
+          openingHours: dataMap['opening_hours'] == null
+              ? OpeningHoursModel.empty()
+              : OpeningHoursModel.fromMap(
+                  dataMap['opening_hours'] as DataMap,
+                ),
           photos: dataMap['photos'] == null
               ? []
-              : List<Photo>.from((dataMap['photos'] as List).map((photo) => PhotoModel.fromMap(photo as DataMap))),
+              : List<Photo>.from(
+                  (dataMap['photos'] as List).map(
+                    (photo) => PhotoModel.fromMap(photo as DataMap),
+                  ),
+                ),
           placeId: dataMap['place_id'] == null ? '' : dataMap['place_id'] as String,
           plusCode: PlusCodeModel.fromMap(dataMap['plus_code'] as DataMap),
           rating: double.tryParse(dataMap['rating'].toString()) ?? 0.0,
@@ -320,6 +328,8 @@ class OpeningHoursModel extends OpeningHours {
     required super.weekdayText,
   });
 
+  OpeningHoursModel.empty() : this(openNow: false, periods: [], weekdayText: []);
+
   factory OpeningHoursModel.fromJson(String source) => OpeningHoursModel.fromMap(
         jsonDecode(source) as DataMap,
       );
@@ -327,14 +337,20 @@ class OpeningHoursModel extends OpeningHours {
   OpeningHoursModel.fromMap(DataMap dataMap)
       : this(
           openNow: dataMap['open_now'] == null ? false : dataMap['open_now'] as bool,
-          periods: List<OpeningHoursPeriod>.from(
-            (dataMap['periods'] as List).map(
-              (period) => OpeningHoursPeriodModel.fromMap(period as DataMap),
-            ),
-          ),
-          weekdayText: List<String>.from(
-            (dataMap['weekday_text'] as List).map((weekdayText) => weekdayText.toString()),
-          ),
+          periods: dataMap['periods'] == null
+              ? []
+              : List<OpeningHoursPeriod>.from(
+                  (dataMap['periods'] as List).map(
+                    (period) => OpeningHoursPeriodModel.fromMap(period as DataMap),
+                  ),
+                ),
+          weekdayText: dataMap['weekday_text'] == null
+              ? []
+              : List<String>.from(
+                  (dataMap['weekday_text'] as List).map(
+                    (weekdayText) => weekdayText.toString(),
+                  ),
+                ),
         );
 
   DataMap toMap() => {

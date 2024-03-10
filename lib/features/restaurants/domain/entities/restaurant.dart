@@ -10,7 +10,7 @@ class Restaurant extends Equatable {
     required this.price,
     required this.rating,
     required this.reviewCount,
-    required this.isOpenNow,
+    required this.openingHours,
     required this.vicinity,
     required this.geometry,
   });
@@ -24,7 +24,7 @@ class Restaurant extends Equatable {
           price: '_empty.price',
           rating: 0,
           reviewCount: 0,
-          isOpenNow: false,
+          openingHours: OpeningHours.empty(),
           vicinity: '_empty.',
           geometry: const Geometry.empty(),
         );
@@ -32,7 +32,7 @@ class Restaurant extends Equatable {
   final String id;
   final String name;
   final List<Photo> photos;
-  final bool isOpenNow;
+  final OpeningHours openingHours;
   final double distance;
   final String price;
   final double rating;
@@ -41,6 +41,16 @@ class Restaurant extends Equatable {
   final Geometry geometry;
 
   @override
-  List<Object?> get props =>
-      [id, name, photos, isOpenNow, distance, price, rating, reviewCount, vicinity, geometry];
+  List<Object?> get props => [
+        id,
+        name,
+        photos,
+        openingHours,
+        distance,
+        price,
+        rating,
+        reviewCount,
+        vicinity,
+        geometry,
+      ];
 }

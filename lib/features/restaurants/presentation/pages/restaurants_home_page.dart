@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sheveegan/core/common/screens/error/error.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
-import 'package:sheveegan/features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
-import 'package:sheveegan/features/restaurants/presentation/map_cubit/map_cubit.dart';
-import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurants_found_state_page.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurants_found_body.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class RestaurantsHomePage extends StatefulWidget {
@@ -19,11 +19,12 @@ class RestaurantsHomePage extends StatefulWidget {
 
 class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
   late Position userLocation;
+  late List<Restaurant> restaurants;
+  late Set<Marker> markers;
   Widget currentPage = Container();
 
   @override
   Widget build(BuildContext context) {
-    // return const Placeholder();
     return BlocConsumer<RestaurantsBloc, RestaurantsState>(
       listener: (context, state) {
         if (state is UserLocationLoaded) {
@@ -49,29 +50,28 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
         }
 
         if (state is RestaurantsLoaded) {
+          restaurants = state.restaurants;
           BlocProvider.of<RestaurantsBloc>(context).add(
             GetRestaurantsMarkersEvent(
               restaurants: state.restaurants,
             ),
           );
         }
-        //   displayRestaurants(
-        //           state.restaurants,
-        //           userCurrentLocation!,
-        //         );
+        if (state is MarkersLoaded) {
+          markers = state.markers;
+        }
       },
       builder: (context, state) {
-        if (state is LoadingUserGeoLocation || state is LoadingRestaurants) {
-          currentPage = const LoadingPage();
-          return const LoadingPage();
-        } else if (state is RestaurantsLoaded) {
-          currentPage = const RestaurantsFoundStatePage();
-          return const RestaurantsFoundStatePage();
+        if (state is MarkersLoaded) {
+          return RestaurantsFoundBody(
+            restaurants: restaurants,
+            userLocation: userLocation,
+            markers: markers,
+          );
         } else if (state is RestaurantsError) {
-          currentPage = ErrorPage(error: state.message);
           return ErrorPage(error: state.message);
         } else {
-          return currentPage;
+          return const LoadingPage();
         }
       },
     );

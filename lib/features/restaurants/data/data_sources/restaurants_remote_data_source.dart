@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
@@ -37,7 +35,6 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   final Client _client;
   final LocationPlugin _location;
   final GoogleMapPlugin _googleMap;
-  final apiKey = dotenv.env['GOOGLE_PLACES_API_KEY'];
 
   @override
   Future<RestaurantDetailsModel> getRestaurantDetails({
@@ -47,7 +44,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       final response = await _client.get(
         Uri.parse(
           '$kGooglePlaceBaseUrl$kGetRestaurantDetails'
-          'json?key=$apiKey&place_id=$id&fields=all',
+          'json?key=$kGoogleApiKey&place_id=$id&fields=all',
         ),
       );
 
@@ -78,7 +75,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       final response = await _client.get(
         Uri.parse(
           '$kGooglePlaceBaseUrl$kGetRestaurantsEndPoint'
-          'json?key=$apiKey&keyword=vegan'
+          'json?key=$kGoogleApiKey&keyword=vegan'
           '&type=restaurant&location=${position.latitude},${position.longitude}'
           '&radius=12500',
         ),
@@ -91,6 +88,9 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       }
 
       final data = jsonDecode(response.body) as DataMap;
+      for (var index = 0; index < (data['results'] as List).length; index++)
+        print(((data['results'] as List)[index] as DataMap)['opening_hours']);
+
       final restaurants = List<RestaurantModel>.from(
         (data['results'] as List).map(
           (e) => RestaurantModel.fromMap(e as DataMap),

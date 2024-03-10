@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sheveegan/core/common/screens/error/error.dart';
 
@@ -9,7 +10,15 @@ import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/features/restaurants/presentation/map_cubit/map_cubit.dart';
 
 class MapPage extends StatelessWidget {
-  const MapPage({Key? key}) : super(key: key);
+  const MapPage({
+    required this.userLocation,
+    required this.markers,
+    super.key,
+  });
+
+  final Position userLocation;
+
+  final Set<Marker> markers;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +35,7 @@ class MapPage extends StatelessWidget {
             markers: state.markers,
             initialCameraPosition: CameraPosition(
               target: LatLng(
-                state.userLocation.latitude,
+                userLocation.latitude,
                 state.userLocation.longitude,
               ),
               zoom: 11.4746,

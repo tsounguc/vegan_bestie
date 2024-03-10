@@ -96,7 +96,7 @@ Future<void> main() async {
         final methodCall = remoteDataSource.getRestaurantsNearMe;
         // Assert
         expect(
-          () async => methodCall(position: testPosition),
+          () => methodCall(position: testPosition),
           throwsA(
             const RestaurantsException(message: 'Server Down', statusCode: 500),
           ),

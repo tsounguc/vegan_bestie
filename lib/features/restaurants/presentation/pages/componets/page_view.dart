@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sheveegan/core/utils/constants.dart';
 
 import '../../../../../core/common/screens/loading/loading.dart';
 import '../../restaurant_cubit/restaurant_details_cubit.dart';
@@ -106,7 +107,7 @@ class _CustomPageViewState extends State<CustomPageView> {
                       image: NetworkImage(
                         state.restaurantDetailsEntity?.photos?[position].photoReference == null
                             ? state.restaurantDetailsEntity!.icon!
-                            : "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${state.restaurantDetailsEntity!.photos![position].photoReference}&key=${dotenv.env['GOOGLE_PLACES_API_KEY']}",
+                            : "$kImageBaseUrl${state.restaurantDetailsEntity!.photos![position].photoReference}&key=${kGoogleApiKey}",
                       ),
                     ),
                   ),
