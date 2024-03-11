@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   Position? userLocation;
   final List<Widget> _pages = [
     const ScanProductHomePage(),
-    const RestaurantsHomePage(),
+    RestaurantsHomePage(),
   ];
 
   void _updateIndex(int value) {

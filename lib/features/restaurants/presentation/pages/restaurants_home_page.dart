@@ -8,33 +8,24 @@ import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurants_found_body.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
-class RestaurantsHomePage extends StatefulWidget {
-  const RestaurantsHomePage({super.key});
+class RestaurantsHomePage extends StatelessWidget {
+  RestaurantsHomePage({super.key});
 
   static const String id = '/restaurantsHomepage';
 
-  @override
-  State<RestaurantsHomePage> createState() => _RestaurantsHomePageState();
-}
-
-class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
   Position? userCurrentLocation;
+
   late List<Restaurant>? restaurants;
+
   late Set<Marker>? markers;
+
   Widget currentPage = Container();
 
   // @override
-  // void initState() {
-  //   userCurrentLocation = context.read<RestaurantsBloc>().currentLocation;
-  //   super.initState();
-  // }
-
   bool locationChanged(UserLocationLoaded state) {
-    final latitude = userCurrentLocation?.latitude;
-    final longitude = userCurrentLocation?.longitude;
     return userCurrentLocation == null ||
-        latitude?.toStringAsFixed(3) != state.position.latitude.toStringAsFixed(3) ||
-        longitude?.toStringAsFixed(3) != state.position.longitude.toStringAsFixed(3);
+        userCurrentLocation?.latitude.toStringAsFixed(3) != state.position.latitude.toStringAsFixed(3) ||
+        userCurrentLocation?.longitude.toStringAsFixed(3) != state.position.longitude.toStringAsFixed(3);
   }
 
   @override
@@ -66,6 +57,7 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
 
         if (state is RestaurantsLoaded) {
           BlocProvider.of<RestaurantsBloc>(context).restaurants = state.restaurants;
+          restaurants = state.restaurants;
           BlocProvider.of<RestaurantsBloc>(context).add(
             GetRestaurantsMarkersEvent(
               restaurants: state.restaurants,
@@ -74,17 +66,17 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
         }
         if (state is MarkersLoaded) {
           BlocProvider.of<RestaurantsBloc>(context).markers = state.markers;
-          // markers = state.markers;
+          markers = state.markers;
         }
       },
       builder: (context, state) {
-        userCurrentLocation = BlocProvider.of<RestaurantsBloc>(context).currentLocation;
-        restaurants = BlocProvider.of<RestaurantsBloc>(context).restaurants;
-        markers = BlocProvider.of<RestaurantsBloc>(context).markers;
-        if (state is LoadingUserGeoLocation || state is LoadingRestaurants || state is LoadingUserGeoLocation) {
+        if (state is LoadingMarkers) {
           currentPage = const LoadingPage();
           return const LoadingPage();
         } else if (state is MarkersLoaded) {
+          userCurrentLocation = BlocProvider.of<RestaurantsBloc>(context).currentLocation;
+          restaurants = BlocProvider.of<RestaurantsBloc>(context).restaurants;
+          markers = BlocProvider.of<RestaurantsBloc>(context).markers;
           currentPage = RestaurantsFoundBody(
             restaurants: restaurants!,
             userLocation: userCurrentLocation!,
@@ -104,7 +96,6 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
           }
           return currentPage;
         }
-        return currentPage;
       },
     );
   }
