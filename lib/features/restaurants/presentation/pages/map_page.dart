@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sheveegan/core/common/screens/error/error.dart';
-
-import 'package:sheveegan/core/common/screens/loading/loading.dart';
-import 'package:sheveegan/features/restaurants/presentation/map_cubit/map_cubit.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class MapPage extends StatelessWidget {
   const MapPage({
@@ -22,51 +19,38 @@ class MapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MapCubit, MapState>(
-      builder: (context, state) {
-        if (state is MapErrorState) {
-          ErrorPage(error: state.error as String);
-        }
-        if (state is MapLocationsFound) {
-          debugPrint(state.markers.first.mapsId.value);
-          return GoogleMap(
-            myLocationEnabled: true,
-            myLocationButtonEnabled: false,
-            markers: state.markers,
-            initialCameraPosition: CameraPosition(
-              target: LatLng(
-                userLocation.latitude,
-                state.userLocation.longitude,
-              ),
-              zoom: 11.4746,
-            ),
-            onMapCreated: (GoogleMapController controller) => _onMapCreated(
-              context,
-              controller,
-              state,
-            ),
-          );
-        } else {
-          return const LoadingPage();
-        }
-      },
+    debugPrint(markers.first.mapsId.value);
+
+    return GoogleMap(
+      myLocationEnabled: true,
+      myLocationButtonEnabled: false,
+      markers: markers,
+      initialCameraPosition: CameraPosition(
+        target: LatLng(
+          userLocation.latitude,
+          userLocation.longitude,
+        ),
+        zoom: 11.4746,
+      ),
+      onMapCreated: (GoogleMapController controller) => _onMapCreated(
+        context,
+        controller,
+      ),
     );
   }
 
   Future<void> _onMapCreated(
     BuildContext context,
     GoogleMapController controller,
-    MapLocationsFound state,
   ) async {
-    BlocProvider.of<MapCubit>(context).controller = controller;
-    // userCurrentLocation = state.userLocation;
+    context.read<RestaurantsBloc>().controller = controller;
 
     Future.delayed(
       const Duration(milliseconds: 200),
-      () => context.read<MapCubit>().controller?.animateCamera(
+      () => context.read<RestaurantsBloc>().controller?.animateCamera(
             CameraUpdate.newLatLngBounds(
               MapUtils.boundsFromLatLngList(
-                state.markers.map((location) => location.position).toList(),
+                markers.map((location) => location.position).toList(),
               ),
               30,
             ),

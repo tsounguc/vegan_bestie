@@ -18,28 +18,43 @@ class RestaurantsHomePage extends StatefulWidget {
 }
 
 class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
-  late Position userLocation;
-  late List<Restaurant> restaurants;
-  late Set<Marker> markers;
+  Position? userCurrentLocation;
+  late List<Restaurant>? restaurants;
+  late Set<Marker>? markers;
   Widget currentPage = Container();
+
+  // @override
+  // void initState() {
+  //   userCurrentLocation = context.read<RestaurantsBloc>().currentLocation;
+  //   super.initState();
+  // }
+
+  bool locationChanged(UserLocationLoaded state) {
+    final latitude = userCurrentLocation?.latitude;
+    final longitude = userCurrentLocation?.longitude;
+    return userCurrentLocation == null ||
+        latitude?.toStringAsFixed(3) != state.position.latitude.toStringAsFixed(3) ||
+        longitude?.toStringAsFixed(3) != state.position.longitude.toStringAsFixed(3);
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<RestaurantsBloc, RestaurantsState>(
       listener: (context, state) {
         if (state is UserLocationLoaded) {
-          userLocation = state.position;
+          userCurrentLocation = context.read<RestaurantsBloc>().currentLocation;
 
-          if (userLocation.latitude.toStringAsFixed(3) != state.position.latitude.toStringAsFixed(3) ||
-              userLocation.longitude.toStringAsFixed(3) != state.position.longitude.toStringAsFixed(3)) {
+          if (locationChanged(state)) {
             debugPrint('Getting Restaurants');
             BlocProvider.of<RestaurantsBloc>(
               context,
             ).add(const LoadGeolocationEvent());
-            userLocation = state.position;
+            context.read<RestaurantsBloc>().currentLocation = state.position;
+            userCurrentLocation = state.position;
+
             debugPrint(
-              'userCurrentLocation: ${userLocation.latitude}'
-              ' ${userLocation.longitude}',
+              'userCurrentLocation: ${userCurrentLocation?.latitude}'
+              ' ${userCurrentLocation?.longitude}',
             );
             BlocProvider.of<RestaurantsBloc>(context).add(
               GetRestaurantsEvent(
@@ -50,7 +65,7 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
         }
 
         if (state is RestaurantsLoaded) {
-          restaurants = state.restaurants;
+          BlocProvider.of<RestaurantsBloc>(context).restaurants = state.restaurants;
           BlocProvider.of<RestaurantsBloc>(context).add(
             GetRestaurantsMarkersEvent(
               restaurants: state.restaurants,
@@ -58,21 +73,38 @@ class _RestaurantsHomePageState extends State<RestaurantsHomePage> {
           );
         }
         if (state is MarkersLoaded) {
-          markers = state.markers;
+          BlocProvider.of<RestaurantsBloc>(context).markers = state.markers;
+          // markers = state.markers;
         }
       },
       builder: (context, state) {
-        if (state is MarkersLoaded) {
+        userCurrentLocation = BlocProvider.of<RestaurantsBloc>(context).currentLocation;
+        restaurants = BlocProvider.of<RestaurantsBloc>(context).restaurants;
+        markers = BlocProvider.of<RestaurantsBloc>(context).markers;
+        if (state is LoadingUserGeoLocation || state is LoadingRestaurants || state is LoadingUserGeoLocation) {
+          currentPage = const LoadingPage();
+          return const LoadingPage();
+        } else if (state is MarkersLoaded) {
+          currentPage = RestaurantsFoundBody(
+            restaurants: restaurants!,
+            userLocation: userCurrentLocation!,
+            markers: markers!,
+          );
           return RestaurantsFoundBody(
-            restaurants: restaurants,
-            userLocation: userLocation,
-            markers: markers,
+            restaurants: restaurants!,
+            userLocation: userCurrentLocation!,
+            markers: markers!,
           );
         } else if (state is RestaurantsError) {
+          currentPage = ErrorPage(error: state.message);
           return ErrorPage(error: state.message);
         } else {
-          return const LoadingPage();
+          if (userCurrentLocation == null) {
+            currentPage = const LoadingPage();
+          }
+          return currentPage;
         }
+        return currentPage;
       },
     );
   }

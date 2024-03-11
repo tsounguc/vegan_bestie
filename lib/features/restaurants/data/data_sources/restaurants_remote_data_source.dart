@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
@@ -60,9 +61,11 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
         data['result'] as DataMap,
       );
       return restaurantDetails;
-    } on RestaurantDetailsException {
+    } on RestaurantDetailsException catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
       rethrow;
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
       throw RestaurantDetailsException(message: e.toString(), statusCode: 500);
     }
   }
@@ -98,9 +101,11 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       );
 
       return restaurants;
-    } on RestaurantsException {
+    } on RestaurantsException catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
       rethrow;
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
       throw RestaurantsException(message: e.toString(), statusCode: 500);
     }
   }
@@ -111,9 +116,11 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       final result = await _location.getCurrentLocation();
       final userLocation = UserLocationModel(position: result);
       return userLocation;
-    } on UserLocationException {
+    } on UserLocationException catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
       rethrow;
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
       throw UserLocationException(message: e.toString());
     }
   }
@@ -123,87 +130,12 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
     try {
       final result = await _googleMap.getRestaurantsMarkers(restaurants);
       return result;
-    } on MapException {
+    } on MapException catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
       rethrow;
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
       throw MapException(message: e.toString());
     }
   }
 }
-
-// class RestaurantsFromRemoteDataSourceYelpImpl implements RestaurantsRemoteDataSource {
-//   final RestaurantsApiServiceContract restaurantsApiServiceContract =
-//       serviceLocator<RestaurantsApiServiceContract>();
-//
-//   @override
-//   Future<List<YelpRestaurantModel>> getRestaurantsNearMe(Position position) async {
-//     try {
-//       //Receive results from api contract
-//       Map<String, dynamic> data = await restaurantsApiServiceContract.getRestaurantsNearMe(position);
-//       //Retrieve restaurants list from api received results
-//       List restaurantsData = data['businesses'];
-//
-//       // Initialize a list of restaurant json/map Objects
-//       List<Map<String, dynamic>> restaurantJsonObjectsList = [];
-//
-//       // Populate list of restaurant json/map objects with retrieved list from api received results
-//       for (int index = 0; index < restaurantsData.length; index++) {
-//         Map<String, dynamic> restaurantJsonObject = restaurantsData[index] as Map<String, dynamic>;
-//         restaurantJsonObjectsList.add(restaurantJsonObject);
-//       }
-//
-//       debugPrint('${restaurantJsonObjectsList[3]}');
-//       // Initialize a list of restaurant models
-//       List<YelpRestaurantModel> restaurantModelsList = [];
-//
-//       // Populate list of restaurant models
-//       for (int index = 0; index < restaurantJsonObjectsList.length; index++) {
-//         YelpRestaurantModel restaurantModel = YelpRestaurantModel.fromJson(restaurantJsonObjectsList[index]);
-//         restaurantModelsList.add(restaurantModel);
-//       }
-//
-//       return restaurantModelsList;
-//     } catch (e) {
-//       throw const GetRestaurantsException(message: "Failed to get list of restaurants");
-//     }
-//   }
-// }
-
-// class RestaurantsFromRemoteDataSourceGoogleImpl implements RestaurantsRemoteDataSource {
-//   final RestaurantsApiServiceContract restaurantsApiServiceContract =
-//       serviceLocator<RestaurantsApiServiceContract>();
-//
-//   @override
-//   Future<List<GoogleRestaurantModel>> getRestaurantsNearMe(Position position) async {
-//     try {
-//       //Receive results from api contract
-//       Map<String, dynamic> data = await restaurantsApiServiceContract.getRestaurantsNearMe(position);
-//       //Retrieve restaurants list from api received results
-//       List restaurantsData = data['results'];
-//
-//       // Initialize a list of restaurant json/map Objects
-//       List<Map<String, dynamic>> restaurantJsonObjectsList = [];
-//
-//       // Populate list of restaurant json/map objects with retrieved list from api received results
-//       for (int index = 0; index < restaurantsData.length; index++) {
-//         Map<String, dynamic> restaurantJsonObject = restaurantsData[index] as Map<String, dynamic>;
-//         restaurantJsonObjectsList.add(restaurantJsonObject);
-//       }
-//
-//       // debugPrint('${restaurantJsonObjectsList[3]}');
-//       // Initialize a list of restaurant models
-//       List<GoogleRestaurantModel> restaurantModelsList = [];
-//
-//       // Populate list of restaurant models
-//       for (int index = 0; index < restaurantJsonObjectsList.length; index++) {
-//         GoogleRestaurantModel restaurantModel = GoogleRestaurantModel.fromJson(restaurantJsonObjectsList[index]);
-//         restaurantModelsList.add(restaurantModel);
-//       }
-//
-//       return restaurantModelsList;
-//     } catch (e) {
-//       print(e.toString());
-//       throw const GetRestaurantsException(message: "Failed to get list of restaurants");
-//     }
-//   }
-// }

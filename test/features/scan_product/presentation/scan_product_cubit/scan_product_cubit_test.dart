@@ -77,7 +77,7 @@ void main() {
       act: (cubit) => cubit.scanBarcode(),
       expect: () => [
         const ScanningBarcode(),
-        ScanProductError(message: testScanFailure.errorMessage),
+        ScanProductError(message: testScanFailure.message),
       ],
       verify: (cubit) {
         verify(() => scanBarcode()).called(1);
@@ -131,7 +131,7 @@ void main() {
       ),
       expect: () => [
         const FetchingProduct(),
-        ScanProductError(message: testScanFailure.errorMessage),
+        ScanProductError(message: testScanFailure.message),
       ],
       verify: (cubit) async {
         verify(() => fetchProduct(testFetchProductParams)).called(1);

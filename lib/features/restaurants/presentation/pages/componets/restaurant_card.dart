@@ -20,7 +20,9 @@ class RestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = '$kImageBaseUrl${restaurant.photos[0].photoReference}&key=$kGoogleApiKey';
+    final imageUrl = restaurant.photos.isEmpty
+        ? restaurant.icon
+        : '$kImageBaseUrl${restaurant.photos[0].photoReference}&key=$kGoogleApiKey';
     return GestureDetector(
       onTap: () {
         debugPrint(restaurant.id);

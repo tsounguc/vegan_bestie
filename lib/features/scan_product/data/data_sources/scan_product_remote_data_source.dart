@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/services/restaurants_services/barcode_scanner_plugin.dart';
 import 'package:sheveegan/core/utils/constants.dart';
+import 'package:sheveegan/core/utils/strings.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
 import 'package:sheveegan/features/scan_product/data/models/food_product_model.dart';
@@ -31,7 +33,7 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
 
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw FetchProductException(
-          message: response.body,
+          message: Strings.productNotFound,
           statusCode: response.statusCode,
         );
       }
@@ -40,9 +42,11 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
 
       final foodProduct = FoodProductModel.fromMap(data['product'] as DataMap);
       return foodProduct;
-    } on FetchProductException {
+    } on FetchProductException catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
       rethrow;
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
       throw FetchProductException(message: e.toString(), statusCode: 500);
     }
   }
@@ -53,9 +57,11 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
       final result = await _scanner.scanBarcode();
       final barcode = BarcodeModel(barcode: result);
       return barcode;
-    } on ScanException {
+    } on ScanException catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
       rethrow;
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
       throw ScanException(message: e.toString(), statusCode: 502);
     }
   }

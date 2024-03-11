@@ -19,7 +19,7 @@ class ScanProductCubit extends Cubit<ScanProductState> {
     emit(const ScanningBarcode());
     final result = await _scanBarcode();
     result.fold(
-      (failure) => emit(ScanProductError(message: failure.errorMessage)),
+      (failure) => emit(ScanProductError(message: failure.message)),
       (success) => emit(BarcodeFound(barcode: success.barcode)),
     );
   }
@@ -29,7 +29,7 @@ class ScanProductCubit extends Cubit<ScanProductState> {
     final result = await _fetchProduct(FetchProductParams(barcode: barcode));
     final veganChecker = VeganChecker();
     result.fold(
-      (failure) => emit(ScanProductError(message: failure.errorMessage)),
+      (failure) => emit(ScanProductError(message: failure.message)),
       (product) {
         if (product.productName.isEmpty) {
           emit(const ProductNotFound());

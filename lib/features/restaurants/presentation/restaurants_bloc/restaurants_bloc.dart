@@ -33,6 +33,11 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
     on<GetRestaurantsMarkersEvent>(_getRestaurantsMarkersHandler);
   }
 
+  GoogleMapController? controller;
+  Position? currentLocation;
+  List<Restaurant>? restaurants;
+  Set<Marker>? markers;
+
   final GetRestaurantsNearMe _getRestaurantsNearMe;
   final GetRestaurantDetails _getRestaurantDetails;
   final GetUserLocation _getUserLocation;

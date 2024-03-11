@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/utils/constants.dart';
-
-import '../../../../../core/common/screens/loading/loading.dart';
-import '../../restaurant_cubit/restaurant_details_cubit.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class CustomPageView extends StatefulWidget {
-  const CustomPageView({Key? key}) : super(key: key);
+  const CustomPageView({super.key});
 
   @override
   State<CustomPageView> createState() => _CustomPageViewState();
@@ -16,66 +14,62 @@ class CustomPageView extends StatefulWidget {
 class _CustomPageViewState extends State<CustomPageView> {
   PageController pageController = PageController(viewportFraction: 0.87);
   var _currentPageValue = 0.0;
-  double _scaleFactor = 0.85;
+  final double _scaleFactor = 0.85;
   int currentPosition = 0;
   double height = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     pageController.addListener(() {
       setState(() {
         _currentPageValue = pageController.page!;
       });
-      debugPrint("Current value is $_currentPageValue");
+      debugPrint('Current value is $_currentPageValue');
     });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     pageController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // double height = MediaQuery.of(context).size.height * 0.43;
     if (height <= 0) {
       height = MediaQuery.of(context).size.height * 0.35;
     }
-    // double width = MediaQuery.of(context).size.width * 0.90;
-    return BlocBuilder<RestaurantDetailsCubit, RestaurantDetailsState>(
+    return BlocBuilder<RestaurantsBloc, RestaurantsState>(
       builder: (context, state) {
-        if (state is RestaurantDetailsFoundState) {
+        if (state is RestaurantDetailsLoaded) {
           return PageView.builder(
             controller: pageController,
-            itemCount: state.restaurantDetailsEntity!.photos!.length,
+            itemCount: state.restaurantDetails.photos.length,
             itemBuilder: (BuildContext context, int position) {
-              print("CurrentPageValue = $_currentPageValue");
-              debugPrint("Position = $position");
+              debugPrint('CurrentPageValue = $_currentPageValue');
+              debugPrint('Position = $position');
               currentPosition = position;
-              Matrix4 matrix = new Matrix4.identity();
+              var matrix = Matrix4.identity();
               if (position == _currentPageValue.floor()) {
-                var currentScale = 1 - (_currentPageValue - position) * (1 - _scaleFactor);
-                var currentTransformation = height * (1 - currentScale) / 2;
+                final currentScale = 1 - (_currentPageValue - position) * (1 - _scaleFactor);
+                final currentTransformation = height * (1 - currentScale) / 2;
                 matrix = Matrix4.diagonal3Values(1, currentScale, 1)
                   ..setTranslationRaw(0, currentTransformation, 0);
               } else if (position == _currentPageValue.floor() + 1) {
-                var currentScale = _scaleFactor + (_currentPageValue - position + 1) * (1 - _scaleFactor);
-                var currentTransformation = height * (1 - currentScale) / 2;
+                final currentScale = _scaleFactor + (_currentPageValue - position + 1) * (1 - _scaleFactor);
+                final currentTransformation = height * (1 - currentScale) / 2;
                 matrix = Matrix4.diagonal3Values(1, currentScale, 1);
                 matrix = Matrix4.diagonal3Values(1, currentScale, 1)
                   ..setTranslationRaw(0, currentTransformation, 0);
               } else if (position == _currentPageValue.floor() - 1) {
-                var currentScale = 1 - (_currentPageValue - position) * (1 - _scaleFactor);
-                var currentTransformation = height * (1 - currentScale) / 2;
+                final currentScale = 1 - (_currentPageValue - position) * (1 - _scaleFactor);
+                final currentTransformation = height * (1 - currentScale) / 2;
                 matrix = Matrix4.diagonal3Values(1, currentScale, 1);
                 matrix = Matrix4.diagonal3Values(1, currentScale, 1)
                   ..setTranslationRaw(0, currentTransformation, 0);
               } else {
-                var currentScale = _scaleFactor;
+                final currentScale = _scaleFactor;
                 matrix = Matrix4.diagonal3Values(1, currentScale, 1);
                 matrix = Matrix4.diagonal3Values(1, currentScale, 1)
                   ..setTranslationRaw(0, height * (1 - _scaleFactor), 1);
@@ -94,20 +88,14 @@ class _CustomPageViewState extends State<CustomPageView> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     border: Border.all(color: Colors.black26),
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //     color: Colors.black45,
-                    //     spreadRadius: 1,
-                    //     blurRadius: 6,
-                    //     offset: Offset(0, 2),
-                    //   ),
-                    // ],
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       image: NetworkImage(
-                        state.restaurantDetailsEntity?.photos?[position].photoReference == null
-                            ? state.restaurantDetailsEntity!.icon!
-                            : "$kImageBaseUrl${state.restaurantDetailsEntity!.photos![position].photoReference}&key=${kGoogleApiKey}",
+                        state.restaurantDetails.photos[position].photoReference.isEmpty
+                            ? state.restaurantDetails.icon
+                            : '$kImageBaseUrl'
+                                '${state.restaurantDetails.photos[position].photoReference}'
+                                '&key=$kGoogleApiKey',
                       ),
                     ),
                   ),
@@ -116,7 +104,7 @@ class _CustomPageViewState extends State<CustomPageView> {
             },
           );
         } else {
-          return LoadingPage();
+          return const LoadingPage();
         }
       },
     );

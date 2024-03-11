@@ -10,14 +10,9 @@ import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/strings.dart';
 import 'package:sheveegan/features/auth/presentation/auth_cubit/auth_cubit.dart';
-import 'package:sheveegan/features/restaurants/presentation/geolocation_bloc/geolocation_bloc.dart';
-import 'package:sheveegan/features/restaurants/presentation/map_cubit/map_cubit.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurant_cubit/restaurant_details_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
-import 'package:sheveegan/features/scan_product/presentation/pages/scan_product_home_page.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 import 'package:sheveegan/features/search/presentation/search_bloc/search_bloc.dart';
-
 import 'package:sheveegan/home_page.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 
@@ -50,26 +45,11 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(
-          create: (context) => AuthCubit(),
-        ),
         BlocProvider<ScanProductCubit>(
           create: (context) => serviceLocator<ScanProductCubit>(),
         ),
-        BlocProvider<GeolocationBloc>(
-          create: (context) => GeolocationBloc(),
-        ),
         BlocProvider<RestaurantsBloc>(
           create: (context) => serviceLocator<RestaurantsBloc>(),
-        ),
-        BlocProvider<MapCubit>(
-          create: (context) => MapCubit(),
-        ),
-        BlocProvider<SearchBloc>(
-          create: (context) => SearchBloc(),
-        ),
-        BlocProvider<RestaurantDetailsCubit>(
-          create: (context) => RestaurantDetailsCubit(),
         ),
       ],
       child: ScreenUtilInit(
@@ -81,7 +61,7 @@ class _MyAppState extends State<MyApp> {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.light,
-          home: const ScanProductHomePage(),
+          home: const HomePage(),
           onGenerateRoute: AppRouter.onGenerateRoute,
           // onUnknownRoute: AppRouter.onUnknownRoute,
         ),

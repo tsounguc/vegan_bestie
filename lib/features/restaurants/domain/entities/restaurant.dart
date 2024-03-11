@@ -4,6 +4,7 @@ import 'package:sheveegan/core/common/entities/restaurant_entities.dart';
 class Restaurant extends Equatable {
   const Restaurant({
     required this.id,
+    required this.icon,
     required this.name,
     required this.photos,
     required this.distance,
@@ -18,6 +19,7 @@ class Restaurant extends Equatable {
   Restaurant.empty()
       : this(
           id: '_empty.id',
+          icon: '_empty.id',
           name: '_empty.name',
           photos: [],
           distance: 0,
@@ -30,6 +32,7 @@ class Restaurant extends Equatable {
         );
 
   final String id;
+  final String icon;
   final String name;
   final List<Photo> photos;
   final OpeningHours openingHours;
@@ -43,6 +46,7 @@ class Restaurant extends Equatable {
   @override
   List<Object?> get props => [
         id,
+        icon,
         name,
         photos,
         openingHours,

@@ -100,9 +100,11 @@ class RestaurantDetailsModel extends RestaurantDetails {
                 ),
           adrAddress: dataMap['adr_address'] == null ? '' : dataMap['adr_address'] as String,
           businessStatus: dataMap['business_status'] == null ? '' : dataMap['business_status'] as String,
-          currentOpeningHours: CurrentOpeningHoursModel.fromMap(
-            dataMap['current_opening_hours'] as DataMap,
-          ),
+          currentOpeningHours: dataMap['current_opening_hours'] == null
+              ? CurrentOpeningHours.empty()
+              : CurrentOpeningHoursModel.fromMap(
+                  dataMap['current_opening_hours'] as DataMap,
+                ),
           delivery: dataMap['delivery'] == null ? false : dataMap['delivery'] as bool,
           dineIn: dataMap['dine_in'] == null ? false : dataMap['dine_in'] as bool,
           formattedAddress: dataMap['formatted_address'] == null ? '' : dataMap['formatted_address'] as String,

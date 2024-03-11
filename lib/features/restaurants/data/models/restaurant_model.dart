@@ -8,6 +8,7 @@ import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 class RestaurantModel extends Restaurant {
   const RestaurantModel({
     required super.id,
+    required super.icon,
     required super.name,
     required super.distance,
     required super.photos,
@@ -22,6 +23,7 @@ class RestaurantModel extends Restaurant {
   RestaurantModel.empty()
       : this(
           id: '_empty.id',
+          icon: '_empty.icon',
           name: '_empty.name',
           distance: 0,
           photos: [],
@@ -40,6 +42,7 @@ class RestaurantModel extends Restaurant {
   RestaurantModel.fromMap(DataMap dataMap)
       : this(
           id: dataMap['place_id'] == null ? '' : dataMap['place_id'] as String,
+          icon: dataMap['icon'] == null ? '' : dataMap['icon'] as String,
           name: dataMap['name'] == null ? '' : dataMap['name'] as String,
           distance: double.tryParse(dataMap['distance'].toString()) ?? 0.0,
           photos: dataMap['photos'] == null
@@ -72,6 +75,7 @@ class RestaurantModel extends Restaurant {
 
   DataMap toMap() => {
         'place_id': id,
+        'icon': icon,
         'name': name,
         'distance': distance,
         'photos': List<dynamic>.from(
@@ -89,6 +93,7 @@ class RestaurantModel extends Restaurant {
 
   RestaurantModel copyWith({
     String? id,
+    String? icon,
     String? name,
     double? distance,
     List<Photo>? photos,
@@ -101,6 +106,7 @@ class RestaurantModel extends Restaurant {
   }) {
     return RestaurantModel(
       id: id ?? this.id,
+      icon: icon ?? this.icon,
       name: name ?? this.name,
       distance: distance ?? this.distance,
       photos: photos ?? this.photos,
