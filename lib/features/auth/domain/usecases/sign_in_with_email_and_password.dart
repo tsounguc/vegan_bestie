@@ -1,15 +1,39 @@
-import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
+import 'package:sheveegan/core/use_case/use_case.dart';
+import 'package:sheveegan/core/utils/typedefs.dart';
+import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
+import 'package:sheveegan/features/auth/domain/repositories/auth_repository.dart';
 
-import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/services/service_locator.dart';
-import '../entities/user_entity.dart';
-import '../repositories_contracts/auth_repository.dart';
+class SignInWithEmailAndPassword extends UseCaseWithParams<UserEntity, SignInParams> {
+  const SignInWithEmailAndPassword(this._repository);
 
-class SignInWithEmailAndPasswordUseCase {
-  final AuthRepository _authRepositoryContract = serviceLocator<AuthRepository>();
+  final AuthRepository _repository;
 
-  Future<Either<SignInWithEmailAndPasswordFailure, UserEntity>> signInWithEmailAndPassword(
-      String email, String password) {
-    return _authRepositoryContract.signInWithEmailAndPassword(email, password);
-  }
+  @override
+  ResultFuture<UserEntity> call(
+    SignInParams params,
+  ) =>
+      _repository.signInWithEmailAndPassword(
+        email: params.email,
+        password: params.password,
+      );
+}
+
+class SignInParams extends Equatable {
+  const SignInParams({
+    required this.email,
+    required this.password,
+  });
+
+  const SignInParams.empty()
+      : this(
+          email: '',
+          password: '',
+        );
+
+  final String email;
+  final String password;
+
+  @override
+  List<Object?> get props => [email, password];
 }
