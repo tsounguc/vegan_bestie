@@ -1,10 +1,14 @@
 import 'package:dartz/dartz.dart';
+import 'package:sheveegan/core/utils/typedefs.dart';
 import '../../../../core/failures_successes/failures.dart';
 import '../entities/user_entity.dart';
 
 abstract class AuthRepositoryContract {
-  Future<Either<CreateWithEmailAndPasswordFailure, UserEntity>> createUserAccount(
-      String userName, String email, String password);
+  ResultFuture<UserEntity> createUserAccount({
+    String userName,
+    String email,
+    String password,
+  });
 
   Future<Either<SignInWithEmailAndPasswordFailure, UserEntity>> signInWithEmailAndPassword(
       String email, String password);

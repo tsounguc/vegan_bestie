@@ -3,10 +3,10 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/failures_successes/failures.dart';
 import '../../../../core/services/service_locator.dart';
 import '../entities/user_entity.dart';
-import '../repositories_contracts/auth_repository_contract.dart';
+import '../repositories_contracts/auth_repository.dart';
 
 class CreateUserAccountUseCase {
-  final AuthRepositoryContract _authRepositoryContract = serviceLocator<AuthRepositoryContract>();
+  final AuthRepository _authRepositoryContract = serviceLocator<AuthRepository>();
 
   Future<Either<CreateWithEmailAndPasswordFailure, UserEntity>> createUserAccount(
       String userName, String email, String password) {
