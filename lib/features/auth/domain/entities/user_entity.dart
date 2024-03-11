@@ -8,6 +8,15 @@ class UserEntity extends Equatable {
     this.photoUrl,
     this.bio,
   });
+
+  const UserEntity.empty()
+      : this(
+          uid: '',
+          name: '',
+          email: '',
+          photoUrl: '',
+          bio: '',
+        );
   final String uid;
   final String name;
   final String email;
@@ -16,4 +25,9 @@ class UserEntity extends Equatable {
 
   @override
   List<Object?> get props => [uid, email];
+
+  @override
+  String toString() {
+    return 'LocalUser{uid: $uid, email: $email, fullName: $name bio: $bio }';
+  }
 }
