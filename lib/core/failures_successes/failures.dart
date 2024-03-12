@@ -97,15 +97,36 @@ class MapFailure extends Failure {
         );
 }
 
-class CreateWithEmailAndPasswordFailure extends Failure {
-  const CreateWithEmailAndPasswordFailure({
+class SignInWithEmailAndPasswordFailure extends Failure {
+  const SignInWithEmailAndPasswordFailure({
     required super.message,
     required super.statusCode,
   });
+
+  SignInWithEmailAndPasswordFailure.fromException(
+    SignInWithEmailAndPasswordException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
 }
 
-class SignInWithEmailAndPasswordFailure extends Failure {
-  const SignInWithEmailAndPasswordFailure({
+class ForgotPasswordFailure extends Failure {
+  const ForgotPasswordFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  ForgotPasswordFailure.fromException(
+    ForgotPasswordException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
+class CreateWithEmailAndPasswordFailure extends Failure {
+  const CreateWithEmailAndPasswordFailure({
     required super.message,
     required super.statusCode,
   });
