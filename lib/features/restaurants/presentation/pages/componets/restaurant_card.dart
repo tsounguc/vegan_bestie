@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/strings.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
@@ -23,6 +24,14 @@ class RestaurantCard extends StatelessWidget {
     final imageUrl = restaurant.photos.isEmpty
         ? restaurant.icon
         : '$kImageBaseUrl${restaurant.photos[0].photoReference}&key=$kGoogleApiKey';
+    final position = context.read<RestaurantsBloc>().currentLocation!;
+
+    final distance = Geolocator.distanceBetween(
+      position.latitude,
+      position.longitude,
+      restaurant.geometry.location.lat,
+      restaurant.geometry.location.lng,
+    );
     return GestureDetector(
       onTap: () {
         debugPrint(restaurant.id);
@@ -87,7 +96,7 @@ class RestaurantCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${(restaurant.distance / 1609.344).round()} '
+                          '${(distance / 1609.344).round()} '
                           '${Strings.distanceUnitText}',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

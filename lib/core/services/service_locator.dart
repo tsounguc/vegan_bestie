@@ -4,10 +4,10 @@
 //
 // import '../../features/auth/data/data_sources/auth_remote_data_source.dart';
 // import '../../features/auth/data/repository_impl/auth_repository_impl.dart';
-// import '../../features/auth/domain/repositories_contracts/auth_repository_contract.dart';
-// import '../../features/auth/domain/usecases/create_with_email_and_password_usecases.dart';
+// import '../../features/auth/domain/repositories_contracts/auth_repository.dart';
+// import '../../features/auth/domain/usecases/create_with_email_and_password.dart';
 // import '../../features/auth/domain/usecases/current_user_usecase.dart';
-// import '../../features/auth/domain/usecases/sign_in_with_email_and_password_usecase.dart';
+// import '../../features/auth/domain/usecases/sign_in_with_email_and_password.dart';
 // import '../../features/auth/domain/usecases/sign_in_with_facebook_usecase.dart';
 // import '../../features/auth/domain/usecases/sign_in_with_google_usecase.dart';
 // import '../../features/auth/domain/usecases/sign_out_usecase.dart';

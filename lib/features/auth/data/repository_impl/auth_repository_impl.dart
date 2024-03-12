@@ -7,9 +7,9 @@ import 'package:sheveegan/features/auth/data/data_sources/auth_remote_data_sourc
 import 'package:sheveegan/features/auth/data/mappers/user_mapper.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
-import 'package:sheveegan/features/auth/domain/repositories_contracts/auth_repository_contract.dart';
+import 'package:sheveegan/features/auth/domain/repositories_contracts/auth_repository.dart';
 
-class AuthRepositoryImpl implements AuthRepositoryContract {
+class AuthRepositoryImpl implements AuthRepository {
   AuthRemoteDataSourceContract authRemoteDataSourceContract = serviceLocator<AuthRemoteDataSourceContract>();
 
   @override

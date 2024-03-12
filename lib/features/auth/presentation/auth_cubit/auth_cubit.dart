@@ -2,12 +2,12 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:sheveegan/features/auth/domain/usecases/sign_in_with_email_and_password_usecase.dart';
+import 'package:sheveegan/features/auth/domain/usecases/sign_in_with_email_and_password.dart';
 
 import '../../../../core/failures_successes/failures.dart';
 import '../../../../core/services/service_locator.dart';
 import '../../domain/entities/user_entity.dart';
-import '../../domain/usecases/create_with_email_and_password_usecases.dart';
+import '../../domain/usecases/create_with_email_and_password.dart';
 import '../../domain/usecases/current_user_usecase.dart';
 import '../../domain/usecases/sign_in_with_facebook_usecase.dart';
 import '../../domain/usecases/sign_in_with_google_usecase.dart';
@@ -17,8 +17,8 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final CreateUserAccountUseCase _createUserAccountUseCase = serviceLocator<CreateUserAccountUseCase>();
-  final SignInWithEmailAndPasswordUseCase _signInWithEmailAndPasswordUseCase =
-      serviceLocator<SignInWithEmailAndPasswordUseCase>();
+  final SignInWithEmailAndPassword _signInWithEmailAndPasswordUseCase =
+      serviceLocator<SignInWithEmailAndPassword>();
   final SignInWithGoogleUseCase _signInWithGoogleUseCase = serviceLocator<SignInWithGoogleUseCase>();
   final SignInWithFacebookUseCase _signInWithFacebookUseCase = serviceLocator<SignInWithFacebookUseCase>();
   final SignOutUseCase _signOutUseCase = serviceLocator<SignOutUseCase>();
