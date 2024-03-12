@@ -26,6 +26,14 @@ class UserModel extends UserEntity {
           bio: map['bio'] as String?,
         );
 
+  DataMap toMap() => {
+        'uid': uid,
+        'name': name,
+        'email': email,
+        'photoUrl': photoUrl,
+        'bio': bio,
+      };
+
   UserModel copyWith({
     String? uid,
     String? name,
