@@ -105,12 +105,16 @@ class ForgotPasswordException extends Equatable implements Exception {
 }
 
 class CreateWithEmailAndPasswordException extends Equatable implements Exception {
-  const CreateWithEmailAndPasswordException({required this.message});
+  const CreateWithEmailAndPasswordException({
+    required this.message,
+    this.statusCode = 500,
+  });
 
   final String message;
+  final int statusCode;
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, statusCode];
 }
 
 class SignInWithGoogleException extends Equatable implements Exception {

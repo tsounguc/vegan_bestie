@@ -130,6 +130,13 @@ class CreateWithEmailAndPasswordFailure extends Failure {
     required super.message,
     required super.statusCode,
   });
+
+  CreateWithEmailAndPasswordFailure.fromException(
+    CreateWithEmailAndPasswordException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
 }
 
 class SignInWithGoogleFailure extends Failure {

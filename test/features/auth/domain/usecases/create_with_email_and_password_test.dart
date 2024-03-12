@@ -3,54 +3,55 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
-import 'package:sheveegan/features/auth/domain/usecases/sign_in_with_email_and_password.dart';
+import 'package:sheveegan/features/auth/domain/usecases/create_with_email_and_password.dart';
 
 import 'auth_repo.mock.dart';
 
 void main() {
   late MockAuthRepo repository;
-  late SignInWithEmailAndPassword useCase;
+  late CreateUserAccount useCase;
 
   const tEmail = 'Test email';
   const tPassword = 'Test password';
+  const tUserName = 'Test userName';
 
   setUp(() {
     repository = MockAuthRepo();
-    useCase = SignInWithEmailAndPassword(repository);
+    useCase = CreateUserAccount(repository);
   });
 
   const tUser = UserEntity.empty();
-  const testFailure = SignInWithEmailAndPasswordFailure(
+  const testFailure = CreateWithEmailAndPasswordFailure(
     message: 'message',
     statusCode: 500,
   );
 
   test(
-    'given the SignInWithEmailAndPassword use case '
+    'given the CreateUserAccount use case '
     'when instantiated '
-    'then call [AuthRepository.getRestaurantsNearMe] '
+    'then call [AuthRepository.createUserAccount] '
     'and return [UserEntity]',
     () async {
       when(
-        () => repository.signInWithEmailAndPassword(
-          email: any(named: 'email'),
-          password: any(named: 'password'),
-        ),
+        () => repository.createUserAccount(
+            email: any(named: 'email'), password: any(named: 'password'), userName: any(named: 'userName')),
       ).thenAnswer((_) async => const Right(tUser));
 
       final result = await useCase(
-        const SignInParams(
+        const CreateUserAccountParams(
           email: tEmail,
           password: tPassword,
+          userName: tUserName,
         ),
       );
 
       expect(result, const Right<dynamic, UserEntity>(tUser));
 
       verify(
-        () => repository.signInWithEmailAndPassword(
+        () => repository.createUserAccount(
           email: tEmail,
           password: tPassword,
+          userName: tUserName,
         ),
       ).called(1);
 
@@ -59,23 +60,25 @@ void main() {
   );
 
   test(
-    'given the SignInWithEmailAndPassword use case '
+    'given the CreateUserAccount use case '
     'when instantiated '
-    'and call [AuthRepository.signInWithEmailAndPassword] is unsuccessful '
+    'and call [AuthRepository.createUserAccount] is unsuccessful '
     'then return [SignInWithEmailAndPasswordFailure]',
     () async {
       // Arrange
       when(
-        () => repository.signInWithEmailAndPassword(
+        () => repository.createUserAccount(
           email: any(named: 'email'),
           password: any(named: 'password'),
+          userName: any(named: 'userName'),
         ),
       ).thenAnswer((_) async => const Left(testFailure));
       // Act
       final result = await useCase(
-        const SignInParams(
+        const CreateUserAccountParams(
           email: tEmail,
           password: tPassword,
+          userName: tUserName,
         ),
       );
       // Assert
@@ -84,9 +87,10 @@ void main() {
         const Left<Failure, UserEntity>(testFailure),
       );
       verify(
-        () => repository.signInWithEmailAndPassword(
+        () => repository.createUserAccount(
           email: tEmail,
           password: tPassword,
+          userName: tUserName,
         ),
       ).called(1);
       verifyNoMoreInteractions(repository);
