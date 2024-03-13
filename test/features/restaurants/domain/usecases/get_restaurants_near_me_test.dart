@@ -16,7 +16,7 @@ void main() {
     useCase = GetRestaurantsNearMe(repository);
   });
   final params = GetRestaurantsNearMeParams.empty();
-  const testFailure = RestaurantsFailure(message: 'message', statusCode: 500);
+  final testFailure = RestaurantsFailure(message: 'message', statusCode: 500);
   final testResponse = [Restaurant.empty()];
   test(
     'given the GetRestaurantsNearMe use case '
@@ -48,13 +48,13 @@ void main() {
       // Arrange
       when(
         () => repository.getRestaurantsNearMe(position: params.position),
-      ).thenAnswer((_) async => const Left(testFailure));
+      ).thenAnswer((_) async => Left(testFailure));
       // Act
       final result = await useCase(params);
       // Assert
       expect(
         result,
-        const Left<Failure, List<Restaurant>>(testFailure),
+        Left<Failure, List<Restaurant>>(testFailure),
       );
       verify(
         () => repository.getRestaurantsNearMe(

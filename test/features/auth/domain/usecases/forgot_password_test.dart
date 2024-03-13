@@ -15,7 +15,7 @@ void main() {
     usecase = ForgotPassword(repository);
   });
 
-  const testFailure = ForgotPasswordFailure(
+  final testFailure = ForgotPasswordFailure(
     message: 'message',
     statusCode: 500,
   );
@@ -59,7 +59,7 @@ void main() {
           email: any(named: 'email'),
         ),
       ).thenAnswer(
-        (_) async => const Left(testFailure),
+        (_) async => Left(testFailure),
       );
 
       final result = await usecase('email');
@@ -67,7 +67,7 @@ void main() {
       expect(
         result,
         equals(
-          const Left<ForgotPasswordFailure, void>(testFailure),
+          Left<ForgotPasswordFailure, void>(testFailure),
         ),
       );
 

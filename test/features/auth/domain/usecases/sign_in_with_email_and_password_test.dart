@@ -20,7 +20,7 @@ void main() {
   });
 
   const tUser = UserEntity.empty();
-  const testFailure = SignInWithEmailAndPasswordFailure(
+  final testFailure = SignInWithEmailAndPasswordFailure(
     message: 'message',
     statusCode: 500,
   );
@@ -70,7 +70,7 @@ void main() {
           email: any(named: 'email'),
           password: any(named: 'password'),
         ),
-      ).thenAnswer((_) async => const Left(testFailure));
+      ).thenAnswer((_) async => Left(testFailure));
       // Act
       final result = await useCase(
         const SignInParams(
@@ -81,7 +81,7 @@ void main() {
       // Assert
       expect(
         result,
-        const Left<Failure, UserEntity>(testFailure),
+        Left<Failure, UserEntity>(testFailure),
       );
       verify(
         () => repository.signInWithEmailAndPassword(

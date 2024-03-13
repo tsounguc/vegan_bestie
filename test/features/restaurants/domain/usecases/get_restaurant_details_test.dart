@@ -17,7 +17,7 @@ void main() {
   });
   final testResponse = RestaurantDetails.empty();
   const params = GetRestaurantDetailsParams.empty();
-  const testFailure = RestaurantDetailsFailure(
+  final testFailure = RestaurantDetailsFailure(
     message: 'message',
     statusCode: 500,
   );
@@ -52,14 +52,14 @@ void main() {
       when(
         () => repository.getRestaurantDetails(id: params.id),
       ).thenAnswer(
-        (_) async => const Left(testFailure),
+        (_) async => Left(testFailure),
       );
       // Act
       final result = await useCase(params);
       // Assert
       expect(
         result,
-        const Left<Failure, RestaurantDetails>(testFailure),
+        Left<Failure, RestaurantDetails>(testFailure),
       );
       verify(
         () => repository.getRestaurantDetails(id: params.id),

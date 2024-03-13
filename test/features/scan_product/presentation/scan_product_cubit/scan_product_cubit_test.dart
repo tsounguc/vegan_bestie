@@ -43,7 +43,7 @@ void main() {
 
   group('scanBarcode - ', () {
     const testBarcode = Barcode.empty();
-    const testScanFailure = ScanFailure(message: 'message', statusCode: 400);
+    final testScanFailure = ScanFailure(message: 'message', statusCode: 400);
     blocTest<ScanProductCubit, ScanProductState>(
       'given ScanProductCubit '
       'when [ScanProductCubit.scanBarcode] call completed successfully '
@@ -70,7 +70,7 @@ void main() {
       'then emit [ScanningBarcode, ScanProductError] ',
       build: () {
         when(() => scanBarcode()).thenAnswer(
-          (_) async => const Left(testScanFailure),
+          (_) async => Left(testScanFailure),
         );
         return cubit;
       },
@@ -88,7 +88,7 @@ void main() {
 
   group('fetchProduct - ', () {
     final testFoodProduct = FoodProduct.empty();
-    const testScanFailure = ScanFailure(message: 'message', statusCode: 400);
+    final testScanFailure = ScanFailure(message: 'message', statusCode: 400);
 
     blocTest<ScanProductCubit, ScanProductState>(
       'given ScanProductCubit '
@@ -122,7 +122,7 @@ void main() {
       'then emit [FetchingProduct, ScanProductError] ',
       build: () {
         when(() => fetchProduct(any())).thenAnswer(
-          (_) async => const Left(testScanFailure),
+          (_) async => Left(testScanFailure),
         );
         return cubit;
       },

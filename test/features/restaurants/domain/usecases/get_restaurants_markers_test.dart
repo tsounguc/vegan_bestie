@@ -18,7 +18,7 @@ void main() {
   });
 
   final params = GetRestaurantsMarkersParams.empty();
-  const testFailure = MapFailure(message: 'message', statusCode: 500);
+  final testFailure = MapFailure(message: 'message', statusCode: 500);
   final testResponse = MapEntity.empty();
 
   test(
@@ -53,13 +53,13 @@ void main() {
       // Arrange
       when(
         () => repository.getRestaurantsMarkers(restaurants: params.restaurants),
-      ).thenAnswer((_) async => const Left(testFailure));
+      ).thenAnswer((_) async => Left(testFailure));
       // Act
       final result = await useCase(params);
       // Assert
       expect(
         result,
-        const Left<Failure, MapEntity>(testFailure),
+        Left<Failure, MapEntity>(testFailure),
       );
       verify(
         () => repository.getRestaurantsMarkers(

@@ -2,22 +2,26 @@ import 'package:equatable/equatable.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 
 abstract class Failure extends Equatable {
-  const Failure({
+  Failure({
     required this.statusCode,
     required this.message,
-  });
+  }) : assert(
+          statusCode is String || statusCode is int,
+          'StatusCode cannot be a ${statusCode.runtimeType}',
+        );
 
   final String message;
   final dynamic statusCode;
 
-  String get errorMessage => '$statusCode Error: $message';
+  String get errorMessage => '$statusCode ${statusCode is String ? '' : 'Error'}'
+      ': $message';
 
   @override
   List<Object?> get props => [message, statusCode];
 }
 
 class FetchProductFailure extends Failure {
-  const FetchProductFailure({
+  FetchProductFailure({
     required super.message,
     required super.statusCode,
   });
@@ -30,7 +34,7 @@ class FetchProductFailure extends Failure {
 }
 
 class ScanFailure extends Failure {
-  const ScanFailure({
+  ScanFailure({
     required super.message,
     required super.statusCode,
   });
@@ -38,12 +42,12 @@ class ScanFailure extends Failure {
   ScanFailure.fromException(ScanException exception)
       : this(
           message: exception.message,
-          statusCode: null,
+          statusCode: exception.statusCode,
         );
 }
 
 class RestaurantsFailure extends Failure {
-  const RestaurantsFailure({
+  RestaurantsFailure({
     required super.message,
     required super.statusCode,
   });
@@ -56,7 +60,7 @@ class RestaurantsFailure extends Failure {
 }
 
 class RestaurantDetailsFailure extends Failure {
-  const RestaurantDetailsFailure({
+  RestaurantDetailsFailure({
     required super.message,
     required super.statusCode,
   });
@@ -70,7 +74,7 @@ class RestaurantDetailsFailure extends Failure {
 }
 
 class UserLocationFailure extends Failure {
-  const UserLocationFailure({
+  UserLocationFailure({
     required super.message,
     required super.statusCode,
   });
@@ -84,7 +88,7 @@ class UserLocationFailure extends Failure {
 }
 
 class MapFailure extends Failure {
-  const MapFailure({
+  MapFailure({
     required super.message,
     required super.statusCode,
   });
@@ -98,7 +102,7 @@ class MapFailure extends Failure {
 }
 
 class SignInWithEmailAndPasswordFailure extends Failure {
-  const SignInWithEmailAndPasswordFailure({
+  SignInWithEmailAndPasswordFailure({
     required super.message,
     required super.statusCode,
   });
@@ -112,7 +116,7 @@ class SignInWithEmailAndPasswordFailure extends Failure {
 }
 
 class ForgotPasswordFailure extends Failure {
-  const ForgotPasswordFailure({
+  ForgotPasswordFailure({
     required super.message,
     required super.statusCode,
   });
@@ -126,7 +130,7 @@ class ForgotPasswordFailure extends Failure {
 }
 
 class CreateWithEmailAndPasswordFailure extends Failure {
-  const CreateWithEmailAndPasswordFailure({
+  CreateWithEmailAndPasswordFailure({
     required super.message,
     required super.statusCode,
   });
@@ -139,36 +143,50 @@ class CreateWithEmailAndPasswordFailure extends Failure {
         );
 }
 
+class UpdateUserDataFailure extends Failure {
+  UpdateUserDataFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  UpdateUserDataFailure.fromException(
+    UpdateUserDataException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
 class SignInWithGoogleFailure extends Failure {
-  const SignInWithGoogleFailure({
+  SignInWithGoogleFailure({
     required super.message,
     required super.statusCode,
   });
 }
 
 class SignInWithFacebookFailure extends Failure {
-  const SignInWithFacebookFailure({
+  SignInWithFacebookFailure({
     required super.message,
     required super.statusCode,
   });
 }
 
 class SignOutFailure extends Failure {
-  const SignOutFailure({
+  SignOutFailure({
     required super.message,
     required super.statusCode,
   });
 }
 
 class CurrentUserFailure extends Failure {
-  const CurrentUserFailure({
+  CurrentUserFailure({
     required super.message,
     required super.statusCode,
   });
 }
 
 class SearchProductFailure extends Failure {
-  const SearchProductFailure({
+  SearchProductFailure({
     required super.message,
     required super.statusCode,
   });

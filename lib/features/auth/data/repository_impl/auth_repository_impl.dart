@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:sheveegan/core/enums/update_user.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
@@ -36,7 +37,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(result);
     } on SignInWithEmailAndPasswordException catch (e) {
       return Left(
-        SignInWithEmailAndPasswordFailure(message: e.message, statusCode: 500),
+        SignInWithEmailAndPasswordFailure(message: e.message, statusCode: '500'),
       );
     }
   }
@@ -56,8 +57,21 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(result);
     } on CreateWithEmailAndPasswordException catch (e) {
       return Left(
-        CreateWithEmailAndPasswordFailure(message: e.message, statusCode: 500),
+        CreateWithEmailAndPasswordFailure(message: e.message, statusCode: '500'),
       );
+    }
+  }
+
+  @override
+  ResultVoid updateUser({required UpdateUserAction action, required userData}) async {
+    try {
+      await _remoteDataSource.updateUser(
+        action: action,
+        userData: userData,
+      );
+      return const Right(null);
+    } on UpdateUserDataException catch (e) {
+      return Left(UpdateUserDataFailure.fromException(e));
     }
   }
 

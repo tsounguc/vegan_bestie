@@ -21,16 +21,16 @@ void main() {
   setUp(() {
     remoteDataSource = MockAuthRemoteDataSource();
     repositoryImpl = AuthRepositoryImpl(remoteDataSource);
-    testForgotPasswordException = const ForgotPasswordException(
-      message: 'message',
-    );
+    testForgotPasswordException = const ForgotPasswordException(message: 'message', statusCode: '');
 
     testSignInException = const SignInWithEmailAndPasswordException(
       message: 'message',
+      statusCode: '500',
     );
 
     testCreateUserException = const CreateWithEmailAndPasswordException(
       message: 'message',
+      statusCode: '500',
     );
 
     testModel = const UserModel.empty();

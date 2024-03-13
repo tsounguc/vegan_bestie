@@ -50,22 +50,22 @@ void main() {
     testGetRestaurantsParams = GetRestaurantsNearMeParams.empty();
     testGetRestaurantDetailsParams = const GetRestaurantDetailsParams.empty();
     testGetRestaurantsMarkersParams = GetRestaurantsMarkersParams.empty();
-    testRestaurantsFailure = const RestaurantsFailure(
+    testRestaurantsFailure = RestaurantsFailure(
       message: 'message',
       statusCode: 400,
     );
 
-    testRestaurantDetailsFailure = const RestaurantDetailsFailure(
+    testRestaurantDetailsFailure = RestaurantDetailsFailure(
       message: 'message',
       statusCode: 400,
     );
 
-    testUserLocationFailure = const UserLocationFailure(
+    testUserLocationFailure = UserLocationFailure(
       message: 'message',
       statusCode: 400,
     );
 
-    testMapFailure = const MapFailure(
+    testMapFailure = MapFailure(
       message: 'message',
       statusCode: 500,
     );

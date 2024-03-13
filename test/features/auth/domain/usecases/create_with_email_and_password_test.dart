@@ -21,7 +21,7 @@ void main() {
   });
 
   const tUser = UserEntity.empty();
-  const testFailure = CreateWithEmailAndPasswordFailure(
+  final testFailure = CreateWithEmailAndPasswordFailure(
     message: 'message',
     statusCode: 500,
   );
@@ -72,7 +72,7 @@ void main() {
           password: any(named: 'password'),
           userName: any(named: 'userName'),
         ),
-      ).thenAnswer((_) async => const Left(testFailure));
+      ).thenAnswer((_) async => Left(testFailure));
       // Act
       final result = await useCase(
         const CreateUserAccountParams(
@@ -84,7 +84,7 @@ void main() {
       // Assert
       expect(
         result,
-        const Left<Failure, UserEntity>(testFailure),
+        Left<Failure, UserEntity>(testFailure),
       );
       verify(
         () => repository.createUserAccount(

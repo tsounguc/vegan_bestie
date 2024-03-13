@@ -78,27 +78,27 @@ class MapException extends Equatable implements Exception {
   List<Object?> get props => [message, statusCode];
 }
 
-class SignInWithEmailAndPasswordException extends Equatable implements Exception {
-  const SignInWithEmailAndPasswordException({
+class ForgotPasswordException extends Equatable implements Exception {
+  const ForgotPasswordException({
     required this.message,
-    this.statusCode = 500,
+    required this.statusCode,
   });
 
   final String message;
-  final int statusCode;
+  final String statusCode;
 
   @override
   List<Object?> get props => [message, statusCode];
 }
 
-class ForgotPasswordException extends Equatable implements Exception {
-  const ForgotPasswordException({
+class SignInWithEmailAndPasswordException extends Equatable implements Exception {
+  const SignInWithEmailAndPasswordException({
     required this.message,
-    this.statusCode = 500,
+    required this.statusCode,
   });
 
   final String message;
-  final int statusCode;
+  final String statusCode;
 
   @override
   List<Object?> get props => [message, statusCode];
@@ -107,11 +107,24 @@ class ForgotPasswordException extends Equatable implements Exception {
 class CreateWithEmailAndPasswordException extends Equatable implements Exception {
   const CreateWithEmailAndPasswordException({
     required this.message,
-    this.statusCode = 500,
+    required this.statusCode,
   });
 
   final String message;
-  final int statusCode;
+  final String statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
+}
+
+class UpdateUserDataException extends Equatable implements Exception {
+  const UpdateUserDataException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final String statusCode;
 
   @override
   List<Object?> get props => [message, statusCode];

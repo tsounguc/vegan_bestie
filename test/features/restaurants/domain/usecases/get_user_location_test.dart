@@ -17,7 +17,7 @@ void main() {
   });
 
   final testResponse = UserLocation.empty();
-  const testFailure = UserLocationFailure(message: 'message', statusCode: 500);
+  final testFailure = UserLocationFailure(message: 'message', statusCode: 500);
 
   test(
     'given the GetUserLocation use case '
@@ -49,13 +49,13 @@ void main() {
       // Arrange
       when(
         () => repository.getUserLocation(),
-      ).thenAnswer((_) async => const Left(testFailure));
+      ).thenAnswer((_) async => Left(testFailure));
       // Act
       final result = await useCase();
       // Assert
       expect(
         result,
-        const Left<Failure, UserLocation>(testFailure),
+        Left<Failure, UserLocation>(testFailure),
       );
       verify(
         () => repository.getUserLocation(),

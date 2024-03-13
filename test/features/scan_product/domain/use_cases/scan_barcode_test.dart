@@ -16,9 +16,9 @@ void main() {
   setUp(() {
     repository = MockScanProductRepository();
     useCase = ScanBarcode(repository);
-    testFailure = const ScanFailure(
+    testFailure = ScanFailure(
       message: 'Invalid Barcode',
-      statusCode: null,
+      statusCode: '',
     );
     testResponse = const Barcode.empty();
   });
