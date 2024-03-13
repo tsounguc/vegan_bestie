@@ -17,11 +17,11 @@ abstract class AuthRepository {
     required String password,
   });
 
-  ResultFuture<UserEntity> signInWithGoogle();
-
-  ResultFuture<UserEntity> signInWithFacebook();
-
-  ResultVoid signOut();
-
-  ResultFuture<UserEntity> currentUser();
+// ResultFuture<UserEntity> signInWithGoogle();
+//
+// ResultFuture<UserEntity> signInWithFacebook();
+//
+// ResultVoid signOut();
+//
+// ResultFuture<UserEntity> currentUser();
 }
