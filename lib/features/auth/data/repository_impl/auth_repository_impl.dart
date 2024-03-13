@@ -1,11 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:sheveegan/core/enums/update_user.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/auth/data/data_sources/auth_remote_data_source.dart';
-import 'package:sheveegan/features/auth/data/mappers/user_mapper.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
 import 'package:sheveegan/features/auth/domain/repositories/auth_repository.dart';
 
@@ -37,7 +35,10 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(result);
     } on SignInWithEmailAndPasswordException catch (e) {
       return Left(
-        SignInWithEmailAndPasswordFailure(message: e.message, statusCode: '500'),
+        SignInWithEmailAndPasswordFailure(
+          message: e.message,
+          statusCode: '500',
+        ),
       );
     }
   }
@@ -57,13 +58,19 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(result);
     } on CreateWithEmailAndPasswordException catch (e) {
       return Left(
-        CreateWithEmailAndPasswordFailure(message: e.message, statusCode: '500'),
+        CreateWithEmailAndPasswordFailure(
+          message: e.message,
+          statusCode: '500',
+        ),
       );
     }
   }
 
   @override
-  ResultVoid updateUser({required UpdateUserAction action, required userData}) async {
+  ResultVoid updateUser({
+    required UpdateUserAction action,
+    required userData,
+  }) async {
     try {
       await _remoteDataSource.updateUser(
         action: action,

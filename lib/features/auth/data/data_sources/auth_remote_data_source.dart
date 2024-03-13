@@ -5,15 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sheveegan/core/enums/update_user.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
-import 'package:sheveegan/core/services/auth_service.dart';
-import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/constants.dart';
+import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
-
-import '../../../../core/utils/typedefs.dart';
 
 abstract class AuthRemoteDataSource {
   Future<void> forgotPassword(String email);
@@ -43,8 +39,6 @@ abstract class AuthRemoteDataSource {
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  // final authServiceContract = serviceLocator<AuthServiceContract<User?, UserCredential>>();
-
   AuthRemoteDataSourceImpl({
     required FirebaseAuth authClient,
     required FirebaseFirestore cloudStoreClint,
@@ -157,7 +151,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       rethrow;
     } catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
-      throw SignInWithEmailAndPasswordException(message: e.toString(), statusCode: '505');
+      throw SignInWithEmailAndPasswordException(
+        message: e.toString(),
+        statusCode: '505',
+      );
     }
   }
 
