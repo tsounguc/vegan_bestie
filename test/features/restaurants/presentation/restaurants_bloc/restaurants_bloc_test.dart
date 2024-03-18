@@ -76,8 +76,8 @@ void main() {
 
   test(
       'given RestaurantsBloc '
-      'when cubit is instantiated '
-      'then initial should be [RestaurantsInitial]', () async {
+      'when bloc is instantiated '
+      'then initial state should be [RestaurantsInitial]', () async {
     // Arrange
     // Act
     // Assert

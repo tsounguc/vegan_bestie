@@ -39,20 +39,66 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _signInWithEmailAndPasswordHandler(
     SignInWithEmailAndPasswordEvent event,
     Emitter<AuthState> emit,
-  ) async {}
+  ) async {
+    emit(const AuthLoading());
+    final result = await _signInWithEmailAndPassword(
+      SignInParams(email: event.email, password: event.password),
+    );
+
+    result.fold(
+      (failure) => emit(AuthError(message: failure.errorMessage)),
+      (user) => emit(SignedIn(user)),
+    );
+  }
 
   Future<void> _createUserAccountHandler(
     CreateUserAccountEvent event,
     Emitter<AuthState> emit,
-  ) async {}
+  ) async {
+    emit(const AuthLoading());
+    final result = await _createUserAccount(
+      CreateUserAccountParams(
+        email: event.email,
+        password: event.password,
+        fullName: event.fullName,
+      ),
+    );
+
+    result.fold(
+      (failure) => emit(AuthError(message: failure.errorMessage)),
+      (user) => emit(SignedUp(user)),
+    );
+  }
 
   Future<void> _forgotPasswordHandler(
     ForgotPasswordEvent event,
     Emitter<AuthState> emit,
-  ) async {}
+  ) async {
+    emit(const AuthLoading());
+
+    final result = await _forgotPassword(event.email);
+
+    result.fold(
+      (failure) => emit(AuthError(message: failure.errorMessage)),
+      (success) => emit(const ForgotPasswordSent()),
+    );
+  }
 
   Future<void> _updateUserHandler(
     UpdateUserEvent event,
     Emitter<AuthState> emit,
-  ) async {}
+  ) async {
+    emit(const AuthLoading());
+    final result = await _updateUser(
+      UpdateUserParams(
+        action: event.action,
+        userData: event.userData,
+      ),
+    );
+
+    result.fold(
+      (failure) => emit(AuthError(message: failure.errorMessage)),
+      (success) => emit(const UserUpdated()),
+    );
+  }
 }

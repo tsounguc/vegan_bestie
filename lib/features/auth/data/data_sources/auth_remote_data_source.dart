@@ -106,11 +106,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         message: e.message ?? 'Error Occurred',
         statusCode: e.code,
       );
-    }
-    // on CreateWithEmailAndPasswordException {
-    //   rethrow;
-    // }
-    catch (e, s) {
+    } on CreateWithEmailAndPasswordException {
+      rethrow;
+    } catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw CreateWithEmailAndPasswordException(
         message: e.toString(),

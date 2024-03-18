@@ -8,7 +8,7 @@ class ForgotPassword extends UseCaseWithParams<void, String> {
   final AuthRepository _repository;
 
   @override
-  ResultFuture<void> call(String params) => _repository.forgotPassword(
+  ResultVoid call(String params) => _repository.forgotPassword(
         email: params,
       );
 }

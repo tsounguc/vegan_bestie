@@ -41,7 +41,7 @@ void main() {
         const CreateUserAccountParams(
           email: tEmail,
           password: tPassword,
-          userName: tUserName,
+          fullName: tUserName,
         ),
       );
 
@@ -78,7 +78,7 @@ void main() {
         const CreateUserAccountParams(
           email: tEmail,
           password: tPassword,
-          userName: tUserName,
+          fullName: tUserName,
         ),
       );
       // Assert
