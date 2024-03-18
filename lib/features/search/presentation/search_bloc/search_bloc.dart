@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/services/service_locator.main.dart';
+import '../../../../core/services/service_locator.dart';
 import '../../../../core/services/vegan_checker.dart';
 import '../../domain/entities/search_product_entity.dart';
 import '../../domain/usecases/search_product_usecase.dart';
