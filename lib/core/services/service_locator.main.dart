@@ -110,10 +110,21 @@
 //   serviceLocator.registerSingleton<MapUseCase>(MapUseCase());
 // }
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:sheveegan/core/services/restaurants_services/location_plugin.dart';
 import 'package:sheveegan/core/services/restaurants_services/map_plugin.dart';
+import 'package:sheveegan/features/auth/data/data_sources/auth_remote_data_source.dart';
+import 'package:sheveegan/features/auth/data/repository_impl/auth_repository_impl.dart';
+import 'package:sheveegan/features/auth/domain/repositories/auth_repository.dart';
+import 'package:sheveegan/features/auth/domain/usecases/create_with_email_and_password.dart';
+import 'package:sheveegan/features/auth/domain/usecases/forgot_password.dart';
+import 'package:sheveegan/features/auth/domain/usecases/sign_in_with_email_and_password.dart';
+import 'package:sheveegan/features/auth/domain/usecases/update_user.dart';
+import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
 import 'package:sheveegan/features/restaurants/data/repositories/restaurants_repository_impl.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
@@ -133,7 +144,46 @@ import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/
 final serviceLocator = GetIt.instance;
 
 Future<void> setUpServices() async {
-  // Scan_Product Feature
+  await _initAuth();
+  await _initScan();
+  await _initRestaurauts();
+}
+
+Future<void> _initAuth() async {
+  serviceLocator
+    // App Logic
+    ..registerFactory(
+      () => AuthBloc(
+        signInWithEmailAndPassword: serviceLocator(),
+        createUserAccount: serviceLocator(),
+        forgotPassword: serviceLocator(),
+        updateUser: serviceLocator(),
+      ),
+    )
+    // Use cases
+    ..registerLazySingleton(() => SignInWithEmailAndPassword(serviceLocator()))
+    ..registerLazySingleton(() => CreateUserAccount(serviceLocator()))
+    ..registerLazySingleton(() => ForgotPassword(serviceLocator()))
+    ..registerLazySingleton(() => UpdateUser(serviceLocator()))
+    // Repositories
+    ..registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(serviceLocator()),
+    )
+    // Data Sources
+    ..registerLazySingleton<AuthRemoteDataSource>(
+      () => AuthRemoteDataSourceImpl(
+        authClient: serviceLocator(),
+        cloudStoreClient: serviceLocator(),
+        dbClient: serviceLocator(),
+      ),
+    )
+    // External dependencies
+    ..registerLazySingleton(() => FirebaseAuth.instance)
+    ..registerLazySingleton(() => FirebaseFirestore.instance)
+    ..registerLazySingleton(() => FirebaseStorage.instance);
+}
+
+Future<void> _initScan() async {
   serviceLocator
     // App Logic
     ..registerFactory(
@@ -142,6 +192,27 @@ Future<void> setUpServices() async {
         fetchProduct: serviceLocator(),
       ),
     )
+    // Use cases
+    ..registerLazySingleton(() => ScanBarcode(serviceLocator()))
+    ..registerLazySingleton(() => FetchProduct(serviceLocator()))
+    // Repositories
+    ..registerLazySingleton<ScanProductRepository>(
+      () => ScanProductRepositoryImpl(serviceLocator()),
+    )
+    // Data Sources
+    ..registerLazySingleton<ScanProductRemoteDataSource>(
+      () => ScanProductRemoteDataSourceImpl(
+        serviceLocator(),
+        serviceLocator(),
+      ),
+    )
+    // External dependencies
+    ..registerLazySingleton(BarcodeScannerPlugin.new);
+}
+
+Future<void> _initRestaurauts() async {
+  serviceLocator
+    // App Logic
     ..registerFactory(
       () => RestaurantsBloc(
         getRestaurantsNearMe: serviceLocator(),
@@ -151,26 +222,16 @@ Future<void> setUpServices() async {
       ),
     )
     // Use cases
-    ..registerLazySingleton(() => ScanBarcode(serviceLocator()))
-    ..registerLazySingleton(() => FetchProduct(serviceLocator()))
     ..registerLazySingleton(() => GetRestaurantsNearMe(serviceLocator()))
     ..registerLazySingleton(() => GetRestaurantDetails(serviceLocator()))
     ..registerLazySingleton(() => GetUserLocation(serviceLocator()))
     ..registerLazySingleton(() => GetRestaurantsMarkers(serviceLocator()))
     // Repositories
-    ..registerLazySingleton<ScanProductRepository>(
-      () => ScanProductRepositoryImpl(serviceLocator()),
-    )
     ..registerLazySingleton<RestaurantsRepository>(
       () => RestaurantsRepositoryImpl(serviceLocator()),
     )
     // Data Sources
-    ..registerLazySingleton<ScanProductRemoteDataSource>(
-      () => ScanProductRemoteDataSourceImpl(
-        serviceLocator(),
-        serviceLocator(),
-      ),
-    )
+
     ..registerLazySingleton<RestaurantsRemoteDataSource>(
       () => RestaurantsRemoteDataSourceImpl(
         serviceLocator(),
@@ -179,7 +240,6 @@ Future<void> setUpServices() async {
       ),
     )
     // External dependencies
-    ..registerLazySingleton(BarcodeScannerPlugin.new)
     ..registerLazySingleton(LocationPlugin.new)
     ..registerLazySingleton(GoogleMapPlugin.new)
     ..registerLazySingleton(Client.new);

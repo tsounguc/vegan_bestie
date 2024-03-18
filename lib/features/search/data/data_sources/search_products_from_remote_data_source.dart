@@ -1,5 +1,5 @@
 // import '../../../../core/failures_successes/exceptions.dart';
-// import '../../../../core/services/service_locator.dart';
+// import '../../../../core/services/service_locator.main.dart';
 // import '../models/search_product_model.dart';
 //
 // abstract class SearchProductsFromRemoteDataSourceContract {

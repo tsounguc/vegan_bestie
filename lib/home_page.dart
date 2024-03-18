@@ -6,7 +6,6 @@ import 'package:sheveegan/core/common/widgets/custom_circle_avatar.dart';
 import 'package:sheveegan/core/common/widgets/custom_drawer.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/utils/size_config.dart';
-import 'package:sheveegan/features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurants_home_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/scan_product_home_page.dart';
@@ -80,7 +79,8 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.only(right: 12),
                     child: TextButton(
                       onPressed: () {
-                        BlocProvider.of<AuthCubit>(context).goToLoginPage();
+                        // TODO(Login-Handler): Push to login Screen
+                        // BlocProvider.of<AuthCubit>(context).goToLoginPage();
                       },
                       child: Text(
                         'Log In',

@@ -10,8 +10,6 @@ import '../../../features/auth/presentation/pages/welcome_page.dart';
 import '../../../features/restaurants/presentation/pages/restaurants_home_page.dart';
 import '../../../features/scan_product/presentation/pages/report_issue_page.dart';
 import '../../../features/scan_product/presentation/pages/scan_results_page.dart';
-import '../../../features/social_network/presentation/pages/edit_profile_page.dart';
-import '../../../features/social_network/presentation/pages/profile_page.dart';
 import '../../../features/auth/presentation/pages/login_page.dart';
 
 class AppRouter {
@@ -23,31 +21,27 @@ class AppRouter {
     final arguments = settings.arguments;
     switch (settings.name) {
       case HomePage.id:
-        return MaterialPageRoute(builder: (context) => HomePage());
+        return MaterialPageRoute(builder: (context) => const HomePage());
       case AuthPage.id:
-        return MaterialPageRoute(builder: (context) => AuthPage());
+        return MaterialPageRoute(builder: (context) => const AuthPage());
       case LoginPage.id:
-        return MaterialPageRoute(builder: (context) => LoginPage());
-      case ProfilePage.id:
-        return MaterialPageRoute(builder: (context) => ProfilePage());
-      case EditProfilePage.id:
-        return MaterialPageRoute(builder: (context) => EditProfilePage());
+        return MaterialPageRoute(builder: (context) => const LoginPage());
       case RegistrationPage.id:
-        return MaterialPageRoute(builder: (context) => RegistrationPage());
+        return MaterialPageRoute(builder: (context) => const RegistrationPage());
       case WelcomePage.id:
-        return MaterialPageRoute(builder: (context) => WelcomePage());
+        return MaterialPageRoute(builder: (context) => const WelcomePage());
       case ForgotPasswordPage.id:
         return MaterialPageRoute(builder: (context) => ForgotPasswordPage());
       case RestaurantsHomePage.id:
         return MaterialPageRoute(builder: (context) => RestaurantsHomePage());
       case ScanProductHomePage.id:
-        return MaterialPageRoute(builder: (context) => ScanProductHomePage());
+        return MaterialPageRoute(builder: (context) => const ScanProductHomePage());
       case ScanResultsPage.id:
-        return MaterialPageRoute(builder: (context) => ScanResultsPage());
+        return MaterialPageRoute(builder: (context) => const ScanResultsPage());
       case ReportIssuePage.id:
-        return MaterialPageRoute(builder: (context) => ReportIssuePage());
+        return MaterialPageRoute(builder: (context) => const ReportIssuePage());
       case SelectIncorrectInformation.id:
-        return MaterialPageRoute(builder: (context) => SelectIncorrectInformation());
+        return MaterialPageRoute(builder: (context) => const SelectIncorrectInformation(),);
       default:
         throw Exception('Route not found!');
     }
