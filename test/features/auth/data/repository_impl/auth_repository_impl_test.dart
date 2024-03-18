@@ -21,7 +21,10 @@ void main() {
   setUp(() {
     remoteDataSource = MockAuthRemoteDataSource();
     repositoryImpl = AuthRepositoryImpl(remoteDataSource);
-    testForgotPasswordException = const ForgotPasswordException(message: 'message', statusCode: '');
+    testForgotPasswordException = const ForgotPasswordException(
+      message: 'message',
+      statusCode: '',
+    );
 
     testSignInException = const SignInWithEmailAndPasswordException(
       message: 'message',
@@ -56,7 +59,7 @@ void main() {
       () async {
         // Arrange
         when(
-          () => remoteDataSource.forgotPassword(any()),
+          () => remoteDataSource.forgotPassword(email: any(named: 'email')),
         ).thenAnswer((_) async => Future.value());
         // Act
         final result = await repositoryImpl.forgotPassword(
@@ -68,7 +71,7 @@ void main() {
           equals(const Right<Failure, void>(null)),
         );
         verify(
-          () => remoteDataSource.forgotPassword(testEmail),
+          () => remoteDataSource.forgotPassword(email: testEmail),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);
       },
@@ -82,7 +85,7 @@ void main() {
       () async {
         // Arrange
         when(
-          () => remoteDataSource.forgotPassword(testEmail),
+          () => remoteDataSource.forgotPassword(email: testEmail),
         ).thenThrow(testForgotPasswordException);
         // Act
         final result = await repositoryImpl.forgotPassword(
@@ -98,7 +101,7 @@ void main() {
           ),
         );
         verify(
-          () => remoteDataSource.forgotPassword(testEmail),
+          () => remoteDataSource.forgotPassword(email: testEmail),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);
       },
@@ -115,8 +118,8 @@ void main() {
         // Arrange
         when(
           () => remoteDataSource.signInWithEmailAndPassword(
-            any(),
-            any(),
+            email: any(named: 'email'),
+            password: any(named: 'password'),
           ),
         ).thenAnswer((_) async => testModel);
         // Act
@@ -131,8 +134,8 @@ void main() {
         );
         verify(
           () => remoteDataSource.signInWithEmailAndPassword(
-            testEmail,
-            testPassword,
+            email: testEmail,
+            password: testPassword,
           ),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);
@@ -148,8 +151,8 @@ void main() {
         // Arrange
         when(
           () => remoteDataSource.signInWithEmailAndPassword(
-            any(),
-            any(),
+            email: any(named: 'email'),
+            password: any(named: 'password'),
           ),
         ).thenThrow(testSignInException);
         // Act
@@ -170,8 +173,8 @@ void main() {
         );
         verify(
           () => remoteDataSource.signInWithEmailAndPassword(
-            testEmail,
-            testPassword,
+            email: testEmail,
+            password: testPassword,
           ),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);
@@ -188,7 +191,11 @@ void main() {
       () async {
         // Arrange
         when(
-          () => remoteDataSource.createUserAccount(any(), any(), any()),
+          () => remoteDataSource.createUserAccount(
+            fullName: any(named: 'fullName'),
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
         ).thenAnswer((_) async => testModel);
         // Act
         final result = await repositoryImpl.createUserAccount(
@@ -203,9 +210,9 @@ void main() {
         );
         verify(
           () => remoteDataSource.createUserAccount(
-            any(),
-            any(),
-            any(),
+            fullName: any(named: 'fullName'),
+            email: any(named: 'email'),
+            password: any(named: 'password'),
           ),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);
@@ -220,7 +227,11 @@ void main() {
       () async {
         // Arrange
         when(
-          () => remoteDataSource.createUserAccount(any(), any(), any()),
+          () => remoteDataSource.createUserAccount(
+            fullName: any(named: 'fullName'),
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
         ).thenThrow(testCreateUserException);
         // Act
         final result = await repositoryImpl.createUserAccount(
@@ -241,9 +252,9 @@ void main() {
         );
         verify(
           () => remoteDataSource.createUserAccount(
-            any(),
-            any(),
-            any(),
+            fullName: any(named: 'fullName'),
+            email: any(named: 'email'),
+            password: any(named: 'password'),
           ),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);

@@ -15,7 +15,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   ResultVoid forgotPassword({required String email}) async {
     try {
-      await _remoteDataSource.forgotPassword(email);
+      await _remoteDataSource.forgotPassword(email: email);
       return const Right(null);
     } on ForgotPasswordException catch (e) {
       return Left(ForgotPasswordFailure.fromException(e));
@@ -29,8 +29,8 @@ class AuthRepositoryImpl implements AuthRepository {
   }) async {
     try {
       final result = await _remoteDataSource.signInWithEmailAndPassword(
-        email,
-        password,
+        email: email,
+        password: password,
       );
       return Right(result);
     } on SignInWithEmailAndPasswordException catch (e) {
@@ -51,9 +51,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }) async {
     try {
       final result = await _remoteDataSource.createUserAccount(
-        userName,
-        email,
-        password,
+        fullName: userName,
+        email: email,
+        password: password,
       );
       return Right(result);
     } on CreateWithEmailAndPasswordException catch (e) {
@@ -69,7 +69,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   ResultVoid updateUser({
     required UpdateUserAction action,
-    required userData,
+    required dynamic userData,
   }) async {
     try {
       await _remoteDataSource.updateUser(

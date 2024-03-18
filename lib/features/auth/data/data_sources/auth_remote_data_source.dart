@@ -12,15 +12,18 @@ import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<void> forgotPassword(String email);
+  Future<void> forgotPassword({required String email});
 
-  Future<UserModel> signInWithEmailAndPassword(String email, String password);
+  Future<UserModel> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  });
 
-  Future<UserModel> createUserAccount(
-    String userName,
-    String email,
-    String password,
-  );
+  Future<UserModel> createUserAccount({
+    required String fullName,
+    required String email,
+    required String password,
+  });
 
   Future<void> updateUser({
     required UpdateUserAction action,
@@ -41,10 +44,10 @@ abstract class AuthRemoteDataSource {
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl({
     required FirebaseAuth authClient,
-    required FirebaseFirestore cloudStoreClint,
+    required FirebaseFirestore cloudStoreClient,
     required FirebaseStorage dbClient,
   })  : _authClient = authClient,
-        _cloudStoreClient = cloudStoreClint,
+        _cloudStoreClient = cloudStoreClient,
         _dbClient = dbClient;
 
   final FirebaseAuth _authClient;
@@ -52,7 +55,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseStorage _dbClient;
 
   @override
-  Future<void> forgotPassword(String email) async {
+  Future<void> forgotPassword({required String email}) async {
     try {
       await _authClient.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
@@ -70,18 +73,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel> createUserAccount(
-    String userName,
-    String email,
-    String password,
-  ) async {
+  Future<UserModel> createUserAccount({
+    required String fullName,
+    required String email,
+    required String password,
+  }) async {
     try {
       final userCredential = await _authClient.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      await userCredential.user?.updateDisplayName(userName);
+      await userCredential.user?.updateDisplayName(fullName);
       await userCredential.user?.updatePhotoURL(kDefaultAvatar);
 
       await _setUserData(
@@ -89,10 +92,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         email,
       );
       final user = UserModel(
-        uid: userCredential.user?.uid as String,
-        email: userCredential.user?.email as String,
-        name: userCredential.user?.displayName as String,
-        photoUrl: userCredential.user?.photoURL as String,
+        uid: userCredential.user?.uid ?? '',
+        email: userCredential.user?.email ?? '',
+        name: userCredential.user?.displayName ?? '',
+        photoUrl: userCredential.user!.photoURL,
         bio: '',
       );
 
@@ -103,9 +106,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         message: e.message ?? 'Error Occurred',
         statusCode: e.code,
       );
-    } on CreateWithEmailAndPasswordException {
-      rethrow;
-    } catch (e, s) {
+    }
+    // on CreateWithEmailAndPasswordException {
+    //   rethrow;
+    // }
+    catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw CreateWithEmailAndPasswordException(
         message: e.toString(),
@@ -115,10 +120,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel> signInWithEmailAndPassword(
-    String email,
-    String password,
-  ) async {
+  Future<UserModel> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
     try {
       final result = await _authClient.signInWithEmailAndPassword(
         email: email,
@@ -174,7 +179,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           await _authClient.currentUser?.updateDisplayName(
             userData as String,
           );
-          await _updateUserData({'name': userData});
+          await _updateUserData({'fullName': userData});
         case UpdateUserAction.photoUrl:
           // Save new picture in firebase storage
           final ref = _dbClient.ref().child('profile_pics/${_authClient.currentUser?.uid}');
