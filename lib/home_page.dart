@@ -13,7 +13,7 @@ import 'package:sheveegan/features/scan_product/presentation/pages/scan_product_
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-  static const String id = '/';
+  static const String id = '/homePage';
 
   @override
   State<HomePage> createState() => _HomePageState();
