@@ -53,6 +53,7 @@ dependencies:
   url_launcher:
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.2.19
+  provider: ^6.1.1
   #  lint:
   #  googleapis: ^9.1.0
 
