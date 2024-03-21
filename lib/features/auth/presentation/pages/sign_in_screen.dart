@@ -11,7 +11,8 @@ import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/auth/presentation/pages/components/other_auth_options.dart';
 import 'package:sheveegan/features/auth/presentation/pages/components/sign_in_form.dart';
-import 'package:sheveegan/features/auth/presentation/pages/registration_page.dart';
+import 'package:sheveegan/features/auth/presentation/pages/forgot_password_screen.dart';
+import 'package:sheveegan/features/auth/presentation/pages/sign_up_screen.dart';
 import 'package:sheveegan/home_page.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -55,29 +56,40 @@ class _SignInScreenState extends State<SignInScreen> {
                 shrinkWrap: true,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 children: [
-                  const Text(
+                  Text(
                     'Login',
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 32, color: Colors.black),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 28.r,
+                      color: Colors.black,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Sign in to your account',
-                        style: TextStyle(fontSize: 14, color: Colors.black),
+                        style: TextStyle(
+                          fontSize: 14.r,
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                       Baseline(
                         baseline: 100,
                         baselineType: TextBaseline.alphabetic,
                         child: TextButton(
                           onPressed: () {
-                            // Navigator.pushReplacementNamed(
-                            //   context,
-                            //   SignUpScreen.id,
-                            // );
+                            Navigator.pushReplacementNamed(
+                              context,
+                              SignUpScreen.id,
+                            );
                           },
-                          child: const Text('Register account?'),
+                          child: Text(
+                            'Register account?',
+                            style: TextStyle(fontSize: 14.r),
+                          ),
                         ),
                       ),
                     ],
@@ -95,12 +107,15 @@ class _SignInScreenState extends State<SignInScreen> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        // Navigator.pushNamed(
-                        //   context,
-                        //   '/forgot-password',
-                        // );
+                        Navigator.pushNamed(
+                          context,
+                          ForgotPasswordScreen.id,
+                        );
                       },
-                      child: const Text('Forgot Password?'),
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(fontSize: 14.r),
+                      ),
                     ),
                   ),
                   const SizedBox(

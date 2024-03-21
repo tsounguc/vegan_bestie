@@ -10,12 +10,12 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => const HomePage());
       case SignInScreen.id:
         return MaterialPageRoute(builder: (context) => const SignInScreen());
-      // case RegistrationPage.id:
-      //   return MaterialPageRoute(builder: (context) => const RegistrationPage());
+      case SignUpScreen.id:
+        return MaterialPageRoute(builder: (context) => const SignUpScreen());
       case WelcomePage.id:
         return MaterialPageRoute(builder: (context) => const WelcomePage());
-      // case ForgotPasswordPage.id:
-      //   return MaterialPageRoute(builder: (context) => ForgotPasswordPage());
+      case ForgotPasswordScreen.id:
+        return MaterialPageRoute(builder: (context) => ForgotPasswordScreen());
       case RestaurantsHomePage.id:
         return MaterialPageRoute(builder: (context) => RestaurantsHomePage());
       case ScanProductHomePage.id:

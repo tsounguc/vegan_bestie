@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:sheveegan/features/auth/presentation/pages/registration_page.dart';
+import 'package:sheveegan/features/auth/presentation/pages/sign_up_screen.dart';
 
 import '../../../../core/common/screens/error/error.dart';
 import '../../../../core/common/screens/loading/loading.dart';
 import '../../../../home_page.dart';
-import 'forgot_password.dart';
+import 'forgot_password_screen.dart';
 import 'sign_in_screen.dart';
 import 'welcome_page.dart';
 

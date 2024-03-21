@@ -46,7 +46,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     result.fold(
-      (failure) => emit(AuthError(message: failure.errorMessage)),
+      (failure) => emit(AuthError(message: failure.message)),
       (user) => emit(SignedIn(user)),
     );
   }
@@ -65,7 +65,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     result.fold(
-      (failure) => emit(AuthError(message: failure.errorMessage)),
+      (failure) => emit(AuthError(message: failure.message)),
       (user) => emit(SignedUp(user)),
     );
   }
@@ -79,7 +79,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await _forgotPassword(event.email);
 
     result.fold(
-      (failure) => emit(AuthError(message: failure.errorMessage)),
+      (failure) => emit(AuthError(message: failure.message)),
       (success) => emit(const ForgotPasswordSent()),
     );
   }
@@ -97,7 +97,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     result.fold(
-      (failure) => emit(AuthError(message: failure.errorMessage)),
+      (failure) => emit(AuthError(message: failure.message)),
       (success) => emit(const UserUpdated()),
     );
   }

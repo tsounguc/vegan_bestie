@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IField extends StatelessWidget {
   const IField({
@@ -43,7 +44,11 @@ class IField extends StatelessWidget {
       onTapOutside: (_) {
         FocusScope.of(context).unfocus();
       },
-      style: const TextStyle(color: Colors.black, fontWeight: FontWeight.normal, fontSize: 16),
+      style: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.normal,
+        fontSize: 14.r,
+      ),
       keyboardType: keyboardType,
       obscureText: obscureText,
       readOnly: readOnly,
@@ -68,8 +73,8 @@ class IField extends StatelessWidget {
         suffixIcon: suffixIcon,
         hintText: hintText,
         hintStyle: hintStyle ??
-            const TextStyle(
-              fontSize: 16,
+            TextStyle(
+              fontSize: 16.r,
               fontWeight: FontWeight.w400,
             ),
       ),

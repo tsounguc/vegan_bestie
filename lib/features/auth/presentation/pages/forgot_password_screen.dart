@@ -1,3 +1,135 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/app/providers/user_provider.dart';
+import 'package:sheveegan/core/common/widgets/buttons.dart';
+import 'package:sheveegan/core/common/widgets/i_field.dart';
+import 'package:sheveegan/core/utils/core_utils.dart';
+import 'package:sheveegan/features/auth/data/models/user_model.dart';
+import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:sheveegan/features/auth/presentation/pages/sign_in_screen.dart';
+
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
+
+  static const String id = '/forgotPasswordScreen';
+
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final emailController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: BlocConsumer<AuthBloc, AuthState>(
+        listener: (_, state) {
+          if (state is AuthError) {
+            CoreUtils.showSnackBar(context, state.message);
+          } else if (state is ForgotPasswordSent) {
+            CoreUtils.showSnackBar(context, 'A link was sent to your email');
+            Navigator.pushReplacementNamed(context, SignInScreen.id);
+          }
+        },
+        builder: (context, state) {
+          return SafeArea(
+            child: Center(
+              child: ListView(
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                children: [
+                  Text(
+                    'Forgotten password',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 28.r,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 50.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          'Provide your email and we will send you '
+                          'a link to reset your password',
+                          style: TextStyle(
+                            fontSize: 14.r,
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 50.h),
+                  Form(
+                    key: formKey,
+                    child: IField(
+                      controller: emailController,
+                      hintText: 'Email',
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  if (state is AuthLoading)
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  else
+                    LongButton(
+                      onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        FirebaseAuth.instance.currentUser?.reload();
+                        if (formKey.currentState!.validate()) {
+                          context.read<AuthBloc>().add(
+                                ForgotPasswordEvent(
+                                  email: emailController.text.trim(),
+                                ),
+                              );
+                        }
+                      },
+                      label: 'Reset Password',
+                    ),
+                  const SizedBox(height: 10),
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'Go back',
+                        style: TextStyle(fontSize: 14.r),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
