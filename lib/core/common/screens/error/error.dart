@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/screens/product_screens/product_not_found.dart';
-import 'package:sheveegan/core/utils/strings.dart';
+import 'package:sheveegan/core/resources/strings.dart';
 
 class ErrorPage extends StatelessWidget {
   const ErrorPage({

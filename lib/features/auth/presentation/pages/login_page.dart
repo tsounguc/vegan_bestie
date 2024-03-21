@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/common/widgets/auth_error_message_widget.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
-import 'package:sheveegan/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/auth/presentation/pages/components/other_auth_options.dart';
 import 'package:sheveegan/features/auth/presentation/pages/registration_page.dart';
 
@@ -31,9 +31,9 @@ class _LoginPageState extends State<LoginPage> {
     return PopScope(
       onPopInvoked: (didPop) {},
       canPop: false,
-      child: BlocBuilder<AuthCubit, AuthState>(
+      child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          if (state is AuthLoadingState) {
+          if (state is AuthLoading) {
             _passwordController.clear();
             return const LoadingPage();
           }
@@ -141,11 +141,13 @@ class _LoginPageState extends State<LoginPage> {
                           onEditingComplete: () {
                             FocusScope.of(context).unfocus();
                             if (_formKey.currentState!.validate()) {
-                              BlocProvider.of<AuthCubit>(
+                              BlocProvider.of<AuthBloc>(
                                 context,
-                              ).signInWithEmailAndPassword(
-                                _emailController.text.trim(),
-                                _passwordController.text.trim(),
+                              ).add(
+                                SignInWithEmailAndPasswordEvent(
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim(),
+                                ),
                               );
                             }
                           },
@@ -161,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                                 });
                               },
                               icon: Icon(
-                                !isPasswordHidden ? Icons.visibility_off : Icons.visibility,
+                                !isPasswordHidden ? Icons.visibility_off_outlined : Icons.visibility_outlined,
                               ),
                             ),
                             suffixIconColor: Colors.green.shade900,
@@ -206,9 +208,10 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.only(bottom: 8),
                               child: TextButton(
                                 onPressed: () {
-                                  BlocProvider.of<AuthCubit>(
-                                    context,
-                                  ).gotToForgotPasswordPage();
+                                  // TODO(Login-Handler): Push to ForgotPasswordScreen
+                                  // BlocProvider.of<AuthBloc>(
+                                  //   context,
+                                  // ).gotToForgotPasswordPage();
                                 },
                                 child: const Text(
                                   'Forgot Password?',
@@ -225,11 +228,13 @@ class _LoginPageState extends State<LoginPage> {
                         LongButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              BlocProvider.of<AuthCubit>(
+                              BlocProvider.of<AuthBloc>(
                                 context,
-                              ).signInWithEmailAndPassword(
-                                _emailController.text.trim(),
-                                _passwordController.text.trim(),
+                              ).add(
+                                SignInWithEmailAndPasswordEvent(
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim(),
+                                ),
                               );
                             }
                           },
@@ -277,19 +282,18 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             TextButton(
                               onPressed: () {
+                                // TODO(Login-Handler): Push to SignUpScreen
                                 if (!Navigator.canPop(context)) {
-                                  debugPrint("Register now can't pop");
-                                  BlocProvider.of<AuthCubit>(
-                                    context,
-                                  ).goToRegister();
+                                  // BlocProvider.of<AuthBloc>(
+                                  //   context,
+                                  // ).goToRegister();
                                 } else {
-                                  debugPrint('Register now can pop');
-                                  BlocProvider.of<AuthCubit>(
-                                    context,
-                                  ).goToRegister();
-                                  Navigator.of(
-                                    context,
-                                  ).pushNamed(RegistrationPage.id);
+                                  // BlocProvider.of<AuthBloc>(
+                                  //   context,
+                                  // ).goToRegister();
+                                  // Navigator.of(
+                                  //   context,
+                                  // ).pushNamed(RegistrationPage.id);
                                 }
                               },
                               child: const Text(
@@ -311,9 +315,10 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                BlocProvider.of<AuthCubit>(
-                                  context,
-                                ).continueAsGuest();
+                                // TODO(Login-Handler): Continue as guest
+                                // BlocProvider.of<AuthBloc>(
+                                //   context,
+                                // ).continueAsGuest();
                               },
                               child: const Text(
                                 'Continue as a guest',

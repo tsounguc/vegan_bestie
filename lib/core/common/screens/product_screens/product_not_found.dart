@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
-import 'package:sheveegan/core/utils/strings.dart';
+import 'package:sheveegan/core/resources/strings.dart';
 
 class ProductNotFoundPage extends StatelessWidget {
   const ProductNotFoundPage({super.key, this.message});

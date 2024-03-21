@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// TODO(Colors-Class): Put these colors in a class
 Color primaryTextColor = Color(0xFF414C6B);
 Color secondaryTextColor = Color(0xFFE4979E);
 Color titleTextColor = Colors.green.shade900;

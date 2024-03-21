@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
-import 'package:sheveegan/core/utils/strings.dart';
+import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/core/services/restaurants_services/barcode_scanner_plugin.dart';
 import 'package:sheveegan/core/utils/constants.dart';

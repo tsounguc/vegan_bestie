@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/common/widgets/auth_error_message_widget.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
-import 'package:sheveegan/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/auth/presentation/pages/components/other_auth_options.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -31,9 +31,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is AuthLoadingState) {
+        if (state is AuthLoading) {
           _passwordController.clear();
           _confirmPasswordController.clear();
           return const LoadingPage();
@@ -248,12 +248,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           onEditingComplete: () {
                             FocusScope.of(_formKey.currentContext!).unfocus();
                             if (_formKey.currentState!.validate()) {
-                              BlocProvider.of<AuthCubit>(
+                              BlocProvider.of<AuthBloc>(
                                 context,
-                              ).createUserAccount(
-                                _nameController.text.trim(),
-                                _emailController.text.trim(),
-                                _passwordController.text.trim(),
+                              ).add(
+                                CreateUserAccountEvent(
+                                  fullName: _nameController.text.trim(),
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim(),
+                                ),
                               );
                             }
                           },
@@ -300,12 +302,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         LongButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              BlocProvider.of<AuthCubit>(
+                              BlocProvider.of<AuthBloc>(
                                 context,
-                              ).createUserAccount(
-                                _nameController.text.trim(),
-                                _emailController.text.trim(),
-                                _passwordController.text.trim(),
+                              ).add(
+                                CreateUserAccountEvent(
+                                  fullName: _nameController.text.trim(),
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim(),
+                                ),
                               );
                             }
                           },
@@ -353,9 +357,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             ),
                             TextButton(
                               onPressed: () {
-                                BlocProvider.of<AuthCubit>(
-                                  context,
-                                ).goToLoginPage();
+                                // TODO(Login-Handler): Push to LoginPage
+                                // BlocProvider.of<AuthBloc>(
+                                //   context,
+                                // ).goToLoginPage();
                               },
                               child: const Text(
                                 'Login',

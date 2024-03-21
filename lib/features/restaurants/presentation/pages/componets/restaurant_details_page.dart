@@ -8,8 +8,9 @@ import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/common/screens/webview/web_view_screen.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
+import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/core/utils/size_config.dart';
-import 'package:sheveegan/core/utils/strings.dart';
+import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/dine_in_takeout_delivery.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/page_view.dart';
@@ -65,41 +66,26 @@ class RestaurantDetailsPage extends StatelessWidget {
             appBar: AppBar(
               leadingWidth: 80,
               toolbarHeight: toolbarHeight,
-              backgroundColor: Theme
-                  .of(context)
-                  .colorScheme
-                  .background,
+              backgroundColor: Theme.of(context).colorScheme.background,
               leading: !Navigator.of(context).canPop()
                   ? null
                   : const CustomBackButton(
-                color: Colors.black,
-              ),
+                      color: Colors.black,
+                    ),
               centerTitle: true,
               title: SizedBox(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.5,
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: VeganBestieLogoWidget(size: 25, fontSize: 35),
               ),
             ),
-            backgroundColor: Theme
-                .of(context)
-                .colorScheme
-                .background,
+            backgroundColor: Theme.of(context).colorScheme.background,
             body: Stack(
               children: [
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.49,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    height: MediaQuery.of(context).size.height * 0.49,
+                    width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,33 +95,23 @@ class RestaurantDetailsPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width * 0.85,
+                              width: MediaQuery.of(context).size.width * 0.85,
                               // height: 35,
                               child: Text(
                                 state.restaurantDetails.name,
-                                style: Theme
-                                    .of(
+                                style: Theme.of(
                                   context,
-                                )
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 24,
-                                ),
+                                ).textTheme.bodyMedium?.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                    ),
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.010,
+                          height: MediaQuery.of(context).size.height * 0.010,
                         ),
                         Container(
                           padding: const EdgeInsets.only(left: 3),
@@ -148,19 +124,13 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 size: 14,
                               ),
                               SizedBox(
-                                width: MediaQuery
-                                    .of(
-                                  context,
-                                )
-                                    .size
-                                    .width *
+                                width: MediaQuery.of(
+                                      context,
+                                    ).size.width *
                                     0.005,
                               ),
                               SizedBox(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.75,
+                                width: MediaQuery.of(context).size.width * 0.75,
                                 child: Text(
                                   state.restaurantDetails.formattedAddress,
                                   style: TextStyle(
@@ -172,19 +142,13 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.01,
+                                width: MediaQuery.of(context).size.width * 0.01,
                               ),
                             ],
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.010,
+                          height: MediaQuery.of(context).size.height * 0.010,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 3),
@@ -194,10 +158,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.010,
+                          height: MediaQuery.of(context).size.height * 0.010,
                         ),
                         DineInTakeoutDeliveryWidget(
                           dineIn: state.restaurantDetails.dineIn,
@@ -205,10 +166,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                           delivery: state.restaurantDetails.delivery,
                         ),
                         SizedBox(
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.020,
+                          height: MediaQuery.of(context).size.height * 0.020,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 6),
@@ -224,10 +182,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.025,
+                          height: MediaQuery.of(context).size.height * 0.025,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 5, right: 5),
@@ -273,12 +228,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery
-                                        .of(
-                                      context,
-                                    )
-                                        .size
-                                        .height *
+                                    height: MediaQuery.of(
+                                          context,
+                                        ).size.height *
                                         0.01,
                                   ),
                                   Text(
@@ -291,10 +243,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.12,
+                                width: MediaQuery.of(context).size.width * 0.12,
                               ),
                               Column(
                                 children: [
@@ -322,11 +271,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     ),
                                     onPressed: () {
                                       final appleUrl =
-                                          'https://maps.apple.com/?q=${state.restaurantDetails.name} ${state
-                                          .restaurantDetails.formattedAddress}';
+                                          'https://maps.apple.com/?q=${state.restaurantDetails.name} ${state.restaurantDetails.formattedAddress}';
                                       final googleUrl =
-                                          'https://www.google.com/maps/search/?api=1&query=${state
-                                          .restaurantDetails.name} ${state.restaurantDetails.formattedAddress}';
+                                          'https://www.google.com/maps/search/?api=1&query=${state.restaurantDetails.name} ${state.restaurantDetails.formattedAddress}';
                                       if (Platform.isIOS) {
                                         launchUrl(
                                           Uri.parse(appleUrl),
@@ -345,12 +292,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery
-                                        .of(
-                                      context,
-                                    )
-                                        .size
-                                        .height *
+                                    height: MediaQuery.of(
+                                          context,
+                                        ).size.height *
                                         0.01,
                                   ),
                                   Text(
@@ -363,10 +307,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.12,
+                                width: MediaQuery.of(context).size.width * 0.12,
                               ),
                               Column(
                                 children: [
@@ -396,19 +337,15 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       if (state.restaurantDetails.website.isNotEmpty) {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
-                                            builder: (_) =>
-                                                WebViewScreen(
-                                                  url: state.restaurantDetails.website,
-                                                ),
+                                            builder: (_) => WebViewScreen(
+                                              url: state.restaurantDetails.website,
+                                            ),
                                           ),
                                         );
                                       } else {
-                                        ScaffoldMessenger.of(
+                                        CoreUtils.showSnackBar(
                                           context,
-                                        ).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('No Website Found'),
-                                          ),
+                                          'No Website Found',
                                         );
                                       }
                                     },
@@ -419,12 +356,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: MediaQuery
-                                        .of(
-                                      context,
-                                    )
-                                        .size
-                                        .height *
+                                    height: MediaQuery.of(
+                                          context,
+                                        ).size.height *
                                         0.01,
                                   ),
                                   Text(
@@ -440,33 +374,18 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.03,
+                          height: MediaQuery.of(context).size.height * 0.03,
                         ),
                       ],
                     ),
                   ),
                 ),
                 Positioned(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 1,
-                  top: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.0,
-                  left: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.0,
+                  width: MediaQuery.of(context).size.width * 1,
+                  top: MediaQuery.of(context).size.height * 0.0,
+                  left: MediaQuery.of(context).size.width * 0.0,
                   child: SizedBox(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.35,
                     child: const CustomPageView(),
                   ),
                 ),

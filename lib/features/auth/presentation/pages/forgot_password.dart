@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/auth_error_message_widget.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
-import 'package:sheveegan/core/utils/colors.dart';
-import 'package:sheveegan/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:sheveegan/core/resources/colors.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   ForgotPasswordPage({super.key});
@@ -129,9 +128,9 @@ class ForgotPasswordPage extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              BlocProvider.of<AuthCubit>(
-                                context,
-                              ).goToLoginPage();
+                              // BlocProvider.of<AuthCubit>(
+                              //   context,
+                              // ).goToLoginPage();
                             },
                             child: const Text(
                               'Login',

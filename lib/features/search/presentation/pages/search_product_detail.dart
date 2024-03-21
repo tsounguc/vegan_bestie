@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:sheveegan/core/resources/vegan_icon.dart';
 import 'package:sheveegan/core/utils/size_config.dart';
-import 'package:sheveegan/core/utils/strings.dart';
+import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/features/search/presentation/search_bloc/search_bloc.dart';
 
 class SearchProductDetail extends StatelessWidget {

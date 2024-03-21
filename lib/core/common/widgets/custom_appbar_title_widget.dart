@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sheveegan/core/utils/strings.dart';
+import 'package:sheveegan/core/resources/strings.dart';
 
 class CustomAppbarTitleWidget extends StatelessWidget {
   const CustomAppbarTitleWidget({
@@ -7,6 +7,7 @@ class CustomAppbarTitleWidget extends StatelessWidget {
     required this.imageTwoName,
     super.key,
   });
+
   final String imageOneName;
   final String imageTwoName;
 

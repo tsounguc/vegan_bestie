@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
-import 'package:sheveegan/core/utils/strings.dart';
+import 'package:sheveegan/core/resources/strings.dart';
+import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/scan_results_page.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 import 'package:sheveegan/themes/app_theme.dart';
@@ -24,18 +25,9 @@ class ScanProductHomePage extends StatelessWidget {
                 context,
               ).fetchProduct(barcode: state.barcode);
             } else if (state is ScanProductError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    state.message,
-                    style: TextStyle(
-                      color: Theme.of(
-                        context,
-                      ).snackBarTheme.contentTextStyle?.color,
-                    ),
-                  ),
-                  duration: const Duration(milliseconds: 2000),
-                ),
+              CoreUtils.showSnackBar(
+                context,
+                state.message,
               );
             }
           },

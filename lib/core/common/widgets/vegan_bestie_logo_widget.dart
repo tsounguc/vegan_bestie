@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sheveegan/core/utils/strings.dart';
+import 'package:sheveegan/core/resources/strings.dart';
 
 class VeganBestieLogoWidget extends StatelessWidget {
   VeganBestieLogoWidget({super.key, this.size = 35, this.fontSize = 52});

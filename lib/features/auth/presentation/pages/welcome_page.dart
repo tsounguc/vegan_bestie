@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
-import 'package:sheveegan/core/utils/strings.dart';
-import 'package:sheveegan/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -48,7 +47,7 @@ class WelcomePage extends StatelessWidget {
                   children: [
                     LongButton(
                       onPressed: () {
-                        BlocProvider.of<AuthCubit>(context).goToLoginPage();
+                        // BlocProvider.of<AuthCubit>(context).goToLoginPage();
                       },
                       text: 'Login',
                     ),
@@ -57,7 +56,7 @@ class WelcomePage extends StatelessWidget {
                     ),
                     LongButton(
                       onPressed: () {
-                        BlocProvider.of<AuthCubit>(context).goToRegister();
+                        // BlocProvider.of<AuthCubit>(context).goToRegister();
                       },
                       text: 'Register',
                     ),
@@ -66,7 +65,7 @@ class WelcomePage extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        BlocProvider.of<AuthCubit>(context).continueAsGuest();
+                        // BlocProvider.of<AuthCubit>(context).continueAsGuest();
                       },
                       child: const Text(
                         'Continue as a guest',

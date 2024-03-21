@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/screens/webview/navigation_controls.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
+import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/core/utils/size_config.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -71,8 +72,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
                       mode: LaunchMode.externalNonBrowserApplication,
                     );
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Device does not support Google Play Store')),
+                    CoreUtils.showSnackBar(
+                      context,
+                      'Device does not support Google Play Store',
                     );
                   }
                   print('blocking navigation to $navigationRequest}');
@@ -84,10 +86,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
                       mode: LaunchMode.externalNonBrowserApplication,
                     );
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Device does not support App Store'),
-                      ),
+                    CoreUtils.showSnackBar(
+                      context,
+                      'Device does not support App Store',
                     );
                   }
                   debugPrint('blocking navigation to $navigationRequest}');
