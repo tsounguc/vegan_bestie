@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,10 +38,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         listener: (_, state) {
           if (state is AuthError) {
             CoreUtils.showSnackBar(context, state.message);
-          } else if (state is ForgotPasswordSent) {
-            CoreUtils.showSnackBar(context, 'A link was sent to your email');
-            Navigator.pushReplacementNamed(context, SignInScreen.id);
           }
+          // else if (state is ForgotPasswordSent) {
+          //   CoreUtils.showSnackBar(context, 'A link was sent to your email');
+          //   Navigator.pushReplacementNamed(context, SignInScreen.id);
+          // }
         },
         builder: (context, state) {
           return SafeArea(
@@ -63,8 +65,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     children: [
                       Flexible(
                         child: Text(
-                          'Provide your email and we will send you '
-                          'a link to reset your password',
+                          state is ForgotPasswordSent
+                              ? "We've sent you an email with a link to reset "
+                                  'your password. Please check your email.'
+                              : 'Provide your email and we will send you '
+                                  'a link to reset your password',
                           style: TextStyle(
                             fontSize: 14.r,
                             color: Colors.black,
@@ -75,25 +80,25 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ],
                   ),
                   SizedBox(height: 50.h),
-                  Form(
-                    key: formKey,
-                    child: IField(
-                      controller: emailController,
-                      hintText: 'Email',
-                      keyboardType: TextInputType.emailAddress,
+                  Visibility(
+                    visible: state is! ForgotPasswordSent,
+                    child: Form(
+                      key: formKey,
+                      child: IField(
+                        controller: emailController,
+                        hintText: 'Email',
+                        keyboardType: TextInputType.emailAddress,
+                      ),
                     ),
                   ),
                   SizedBox(
-                    height: 20.h,
-                  ),
-                  const SizedBox(
-                    height: 30,
+                    height: 50.h,
                   ),
                   if (state is AuthLoading)
                     const Center(
                       child: CircularProgressIndicator(),
                     )
-                  else
+                  else if (state is! ForgotPasswordSent)
                     LongButton(
                       onPressed: () {
                         FocusManager.instance.primaryFocus?.unfocus();

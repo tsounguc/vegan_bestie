@@ -5,14 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:sheveegan/core/common/app/providers/user_provider.dart';
+import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
-import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/auth/presentation/pages/sign_in_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
-import 'package:sheveegan/home_page.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 
 void main() async {
@@ -55,17 +56,20 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: ScreenUtilInit(
-        builder: (context, child) => MaterialApp(
-          builder: DevicePreview.appBuilder,
-          locale: DevicePreview.locale(context),
-          debugShowCheckedModeBanner: false,
-          title: Strings.appTitle,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: ThemeMode.light,
-          home: const SignInScreen(),
-          onGenerateRoute: AppRouter.onGenerateRoute,
-          // onUnknownRoute: AppRouter.onUnknownRoute,
+        builder: (context, child) => ChangeNotifierProvider(
+          create: (context) => UserProvider(),
+          child: MaterialApp(
+            builder: DevicePreview.appBuilder,
+            locale: DevicePreview.locale(context),
+            debugShowCheckedModeBanner: false,
+            title: Strings.appTitle,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: ThemeMode.light,
+            home: const SignInScreen(),
+            onGenerateRoute: AppRouter.onGenerateRoute,
+            // onUnknownRoute: AppRouter.onUnknownRoute,
+          ),
         ),
       ),
     );
