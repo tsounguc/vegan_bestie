@@ -8,6 +8,7 @@ import 'package:sheveegan/core/utils/size_config.dart';
 
 class SelectIncorrectInformation extends StatefulWidget {
   const SelectIncorrectInformation({super.key});
+
   static const String id = '/SelectIncorrectInformation';
 
   @override
@@ -80,7 +81,7 @@ class _SelectIncorrectInformationState extends State<SelectIncorrectInformation>
               },
             ),
             const Spacer(),
-            LongButton(onPressed: () {}, text: 'Next'),
+            LongButton(onPressed: () {}, label: 'Next'),
           ],
         ),
       ),
@@ -90,6 +91,7 @@ class _SelectIncorrectInformationState extends State<SelectIncorrectInformation>
 
 class IncorrectInformation {
   IncorrectInformation({required this.isSelected, required this.information});
+
   bool isSelected;
   String information;
 }

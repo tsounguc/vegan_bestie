@@ -8,14 +8,14 @@ class AppRouter {
     switch (settings.name) {
       case HomePage.id:
         return MaterialPageRoute(builder: (context) => const HomePage());
-      case LoginPage.id:
-        return MaterialPageRoute(builder: (context) => const LoginPage());
-      case RegistrationPage.id:
-        return MaterialPageRoute(builder: (context) => const RegistrationPage());
+      case SignInScreen.id:
+        return MaterialPageRoute(builder: (context) => const SignInScreen());
+      // case RegistrationPage.id:
+      //   return MaterialPageRoute(builder: (context) => const RegistrationPage());
       case WelcomePage.id:
         return MaterialPageRoute(builder: (context) => const WelcomePage());
-      case ForgotPasswordPage.id:
-        return MaterialPageRoute(builder: (context) => ForgotPasswordPage());
+      // case ForgotPasswordPage.id:
+      //   return MaterialPageRoute(builder: (context) => ForgotPasswordPage());
       case RestaurantsHomePage.id:
         return MaterialPageRoute(builder: (context) => RestaurantsHomePage());
       case ScanProductHomePage.id:

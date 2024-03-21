@@ -8,7 +8,7 @@ import '../../../../core/common/screens/error/error.dart';
 import '../../../../core/common/screens/loading/loading.dart';
 import '../../../../home_page.dart';
 import 'forgot_password.dart';
-import 'login_page.dart';
+import 'sign_in_screen.dart';
 import 'welcome_page.dart';
 
 // class AuthPage extends StatefulWidget {

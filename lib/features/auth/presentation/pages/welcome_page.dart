@@ -49,7 +49,7 @@ class WelcomePage extends StatelessWidget {
                       onPressed: () {
                         // BlocProvider.of<AuthCubit>(context).goToLoginPage();
                       },
-                      text: 'Login',
+                      label: 'Login',
                     ),
                     const SizedBox(
                       height: 20,
@@ -58,7 +58,7 @@ class WelcomePage extends StatelessWidget {
                       onPressed: () {
                         // BlocProvider.of<AuthCubit>(context).goToRegister();
                       },
-                      text: 'Register',
+                      label: 'Register',
                     ),
                     const SizedBox(
                       height: 20,

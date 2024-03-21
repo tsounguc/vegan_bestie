@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sheveegan/core/common/screens/product_screens/product_not_found.dart';
 import 'package:sheveegan/features/auth/presentation/pages/forgot_password.dart';
-import 'package:sheveegan/features/auth/presentation/pages/login_page.dart';
+import 'package:sheveegan/features/auth/presentation/pages/sign_in_screen.dart';
 import 'package:sheveegan/features/auth/presentation/pages/registration_page.dart';
 import 'package:sheveegan/features/auth/presentation/pages/welcome_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurants_home_page.dart';

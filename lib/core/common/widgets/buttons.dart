@@ -4,27 +4,27 @@ class LongButton extends StatelessWidget {
   const LongButton({
     Key? key,
     required this.onPressed,
-    required this.text,
+    required this.label,
   }) : super(key: key);
   final void Function()? onPressed;
-  final String text;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
       minWidth: double.infinity,
       height: 50,
-      color: Colors.white,
+      color: Theme.of(context).primaryColor,
       onPressed: onPressed,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30),
       ),
       child: Text(
-        text,
+        label,
         style: TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 18,
-          color: Colors.green.shade900,
+          color: Colors.white,
         ),
       ),
     );

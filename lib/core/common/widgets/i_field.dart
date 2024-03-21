@@ -43,6 +43,7 @@ class IField extends StatelessWidget {
       onTapOutside: (_) {
         FocusScope.of(context).unfocus();
       },
+      style: const TextStyle(color: Colors.black, fontWeight: FontWeight.normal, fontSize: 16),
       keyboardType: keyboardType,
       obscureText: obscureText,
       readOnly: readOnly,
@@ -61,7 +62,7 @@ class IField extends StatelessWidget {
           ),
         ),
         // overriding the default padding helps with that puffy look
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         filled: filled,
         fillColor: fillColor,
         suffixIcon: suffixIcon,
