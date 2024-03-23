@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sheveegan/core/common/screens/product_screens/product_not_found.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
+import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/auth/presentation/pages/forgot_password_screen.dart';
 import 'package:sheveegan/features/auth/presentation/pages/sign_in_screen.dart';
 import 'package:sheveegan/features/auth/presentation/pages/sign_up_screen.dart';

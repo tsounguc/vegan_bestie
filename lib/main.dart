@@ -66,7 +66,6 @@ class _MyAppState extends State<MyApp> {
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: ThemeMode.light,
-            home: const SignInScreen(),
             onGenerateRoute: AppRouter.onGenerateRoute,
             // onUnknownRoute: AppRouter.onUnknownRoute,
           ),

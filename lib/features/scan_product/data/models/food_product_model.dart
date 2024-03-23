@@ -11,18 +11,7 @@ class FoodProductModel extends FoodProduct {
     required super.ingredientsText,
     required super.labels,
     required super.imageFrontUrl,
-    required super.proteins,
-    required super.proteins100G,
-    required super.proteinsUnit,
-    required super.proteinsValue,
-    required super.carbohydrates,
-    required super.carbohydrates100G,
-    required super.carbohydratesUnit,
-    required super.carbohydratesValue,
-    required super.fat,
-    required super.fat100G,
-    required super.fatUnit,
-    required super.fatValue,
+    required super.nutriments,
     this.id,
     this.keywords,
     this.imageFrontSmallUrl,
@@ -49,18 +38,7 @@ class FoodProductModel extends FoodProduct {
           ingredientsText: '_empty.ingredientsText',
           labels: '_empty.labels',
           imageFrontUrl: '_empty.imageFrontUrl',
-          proteins: 0,
-          proteins100G: 0,
-          proteinsUnit: '_empty.proteinsUnit',
-          proteinsValue: 0,
-          carbohydrates: 0,
-          carbohydrates100G: 0,
-          carbohydratesUnit: '_empty.carbohydratesUnit',
-          carbohydratesValue: 0,
-          fat: 0,
-          fat100G: 0,
-          fatUnit: '_empty.fatUnit',
-          fatValue: 0,
+          nutriments: const NutrimentsModel.empty(),
           id: '_empty.id',
           keywords: [],
           imageFrontSmallUrl: '_empty.imageFrontSmallUrl',
@@ -97,30 +75,9 @@ class FoodProductModel extends FoodProduct {
           ingredientsText: dataMap['ingredients_text'] == null ? '' : dataMap['ingredients_text'] as String,
           labels: dataMap['labels'] == null ? '' : dataMap['labels'] as String,
           imageFrontUrl: dataMap['image_front_url'] == null ? '' : dataMap['image_front_url'] as String,
-          proteins: double.tryParse(dataMap['proteins'].toString()) ?? 0.0,
-          proteins100G: double.tryParse(
-                dataMap['proteins_100g'].toString(),
-              ) ??
-              0,
-          proteinsUnit: dataMap['protein_unit'] == null ? '' : dataMap['protein_unit'] as String,
-          proteinsValue: double.tryParse(dataMap['proteins_value'].toString()) ?? 0.0,
-          carbohydrates: double.tryParse(
-                dataMap['carbohydrates'].toString(),
-              ) ??
-              0.0,
-          carbohydrates100G: double.tryParse(
-                dataMap['carbohydrates_100g'].toString(),
-              ) ??
-              0.0,
-          carbohydratesUnit: dataMap['carbohydrates_unit'] == null ? '' : dataMap['carbohydrates_unit'] as String,
-          carbohydratesValue: double.tryParse(
-                dataMap['carbohydrates_value'].toString(),
-              ) ??
-              0.0,
-          fat: double.tryParse(dataMap['fat'].toString()) ?? 0.0,
-          fat100G: double.tryParse(dataMap['fat_100g'].toString()) ?? 0.0,
-          fatUnit: dataMap['fat_unit'] == null ? '' : dataMap['fat_unit'] as String,
-          fatValue: double.tryParse(dataMap['fat_value'].toString()) ?? 0.0,
+          nutriments: dataMap['nutriments'] == null
+              ? const NutrimentsModel.empty()
+              : NutrimentsModel.fromMap(dataMap['nutriments'] as DataMap),
           id: dataMap['_id'] == null ? '' : dataMap['_id'] as String,
           keywords: dataMap['_keywords'] == null ? [] : List<String>.from(dataMap['_keywords'] as List),
           imageFrontSmallUrl:
@@ -155,18 +112,7 @@ class FoodProductModel extends FoodProduct {
     String? ingredientsText,
     String? labels,
     String? imageFrontUrl,
-    double? proteins,
-    double? proteins100G,
-    String? proteinsUnit,
-    double? proteinsValue,
-    double? carbohydrates,
-    double? carbohydrates100G,
-    String? carbohydratesUnit,
-    double? carbohydratesValue,
-    double? fat,
-    double? fat100G,
-    String? fatUnit,
-    double? fatValue,
+    Nutriments? nutriments,
     String? id,
     List<String>? keywords,
     String? imageFrontSmallUrl,
@@ -191,18 +137,7 @@ class FoodProductModel extends FoodProduct {
       ingredientsText: ingredientsText ?? this.ingredientsText,
       labels: labels ?? this.labels,
       imageFrontUrl: imageFrontUrl ?? this.imageFrontUrl,
-      proteins: proteins ?? this.proteins,
-      proteins100G: proteins100G ?? this.proteins100G,
-      proteinsUnit: proteinsUnit ?? this.proteinsUnit,
-      proteinsValue: proteinsValue ?? this.proteinsValue,
-      carbohydrates: carbohydrates ?? this.carbohydrates,
-      carbohydrates100G: carbohydrates100G ?? this.carbohydrates100G,
-      carbohydratesUnit: carbohydratesUnit ?? this.carbohydratesUnit,
-      carbohydratesValue: carbohydratesValue ?? this.carbohydratesValue,
-      fat: fat ?? this.fat,
-      fat100G: fat100G ?? this.fat100G,
-      fatUnit: fatUnit ?? this.fatUnit,
-      fatValue: fatValue ?? this.fatValue,
+      nutriments: nutriments ?? this.nutriments,
       id: id ?? this.id,
       keywords: keywords ?? this.keywords,
       imageFrontSmallUrl: imageFrontSmallUrl ?? this.imageFrontSmallUrl,
@@ -227,22 +162,15 @@ class FoodProductModel extends FoodProduct {
   DataMap toMap() => {
         'code': code,
         'product_name': productName,
-        'ingredients': ingredients,
+        'ingredients': List<dynamic>.from(
+          ingredients.map(
+            (ingredient) => (ingredient as IngredientModel).toMap(),
+          ),
+        ),
         'ingredients_text': ingredientsText,
         'labels': labels,
         'image_front_url': imageFrontUrl,
-        'proteins': proteins,
-        'proteins_100g': proteins100G,
-        'proteins_unit': proteinsUnit,
-        'proteins_value': proteinsValue,
-        'carbohydrates': carbohydrates,
-        'carbohydrates_100g': carbohydrates100G,
-        'carbohydrates_unit': carbohydratesUnit,
-        'carbohydrates_value': carbohydratesValue,
-        'fat': fat,
-        'fat_100g': fat100G,
-        'fat_unit': fatUnit,
-        'fat_value': fatValue,
+        'nutriments': (nutriments as NutrimentsModel).toMap(),
         '_id': id,
         '_keywords': keywords,
         'image_front_small_url': imageFrontSmallUrl,
@@ -277,6 +205,88 @@ class FoodProductModel extends FoodProduct {
   final String? quantity;
   final String? servingQuantity;
   final String? servingSize;
+}
+
+class NutrimentsModel extends Nutriments {
+  const NutrimentsModel({
+    required super.proteins,
+    required super.proteins100G,
+    required super.proteinsUnit,
+    required super.proteinsValue,
+    required super.carbohydrates,
+    required super.carbohydrates100G,
+    required super.carbohydratesUnit,
+    required super.carbohydratesValue,
+    required super.fat,
+    required super.fat100G,
+    required super.fatUnit,
+    required super.fatValue,
+  });
+
+  const NutrimentsModel.empty()
+      : this(
+          proteins: 0,
+          proteins100G: 0,
+          proteinsUnit: '_empty.proteinsUnit',
+          proteinsValue: 0,
+          carbohydrates: 0,
+          carbohydrates100G: 0,
+          carbohydratesUnit: '_empty.carbohydratesUnit',
+          carbohydratesValue: 0,
+          fat: 0,
+          fat100G: 0,
+          fatUnit: '_empty.fatUnit',
+          fatValue: 0,
+        );
+
+  factory NutrimentsModel.fromJson(String source) => NutrimentsModel.fromMap(
+        jsonDecode(source) as DataMap,
+      );
+
+  NutrimentsModel.fromMap(DataMap dataMap)
+      : this(
+          proteins: double.tryParse(dataMap['proteins'].toString()) ?? 0.0,
+          proteins100G: double.tryParse(
+                dataMap['proteins_100g'].toString(),
+              ) ??
+              0,
+          proteinsUnit: dataMap['proteins_unit'] == null ? '' : dataMap['proteins_unit'] as String,
+          proteinsValue: double.tryParse(dataMap['proteins_value'].toString()) ?? 0.0,
+          carbohydrates: double.tryParse(
+                dataMap['carbohydrates'].toString(),
+              ) ??
+              0.0,
+          carbohydrates100G: double.tryParse(
+                dataMap['carbohydrates_100g'].toString(),
+              ) ??
+              0.0,
+          carbohydratesUnit: dataMap['carbohydrates_unit'] == null ? '' : dataMap['carbohydrates_unit'] as String,
+          carbohydratesValue: double.tryParse(
+                dataMap['carbohydrates_value'].toString(),
+              ) ??
+              0.0,
+          fat: double.tryParse(dataMap['fat'].toString()) ?? 0.0,
+          fat100G: double.tryParse(dataMap['fat_100g'].toString()) ?? 0.0,
+          fatUnit: dataMap['fat_unit'] == null ? '' : dataMap['fat_unit'] as String,
+          fatValue: double.tryParse(dataMap['fat_value'].toString()) ?? 0.0,
+        );
+
+  String toJson() => jsonEncode(toMap());
+
+  DataMap toMap() => {
+        'proteins': proteins,
+        'proteins_100g': proteins100G,
+        'proteins_unit': proteinsUnit,
+        'proteins_value': proteinsValue,
+        'carbohydrates': carbohydrates,
+        'carbohydrates_100g': carbohydrates100G,
+        'carbohydrates_unit': carbohydratesUnit,
+        'carbohydrates_value': carbohydratesValue,
+        'fat': fat,
+        'fat_100g': fat100G,
+        'fat_unit': fatUnit,
+        'fat_value': fatValue,
+      };
 }
 
 class IngredientModel extends Ingredient {
@@ -319,7 +329,11 @@ class IngredientModel extends Ingredient {
 
   DataMap toMap() => {
         'id': id,
-        'ingredients': ingredients,
+        'ingredients': List<dynamic>.from(
+          ingredients.map(
+            (ingredient) => (ingredient as IngredientModel).toMap(),
+          ),
+        ),
         'percent_estimate': percentEstimate,
         'percent_max': percentMax,
         'percent_min': percentMin,

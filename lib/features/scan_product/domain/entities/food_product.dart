@@ -8,6 +8,42 @@ class FoodProduct extends Equatable {
     required this.ingredientsText,
     required this.labels,
     required this.imageFrontUrl,
+    required this.nutriments,
+  });
+
+  FoodProduct.empty()
+      : this(
+          code: '_empty.code',
+          productName: '_empty.productName',
+          ingredients: [],
+          ingredientsText: '_empty.',
+          labels: '_empty.',
+          imageFrontUrl: '_empty.',
+          nutriments: const Nutriments.empty(),
+        );
+
+  final String code;
+  final String productName;
+  final List<Ingredient> ingredients;
+  final String ingredientsText;
+  final String labels;
+  final String imageFrontUrl;
+  final Nutriments nutriments;
+
+  @override
+  List<Object?> get props => [
+        code,
+        productName,
+        ingredients,
+        ingredientsText,
+        labels,
+        imageFrontUrl,
+        nutriments,
+      ];
+}
+
+class Nutriments extends Equatable {
+  const Nutriments({
     required this.proteins,
     required this.proteins100G,
     required this.proteinsUnit,
@@ -22,14 +58,8 @@ class FoodProduct extends Equatable {
     required this.fatValue,
   });
 
-  FoodProduct.empty()
+  const Nutriments.empty()
       : this(
-          code: '_empty.code',
-          productName: '_empty.productName',
-          ingredients: [],
-          ingredientsText: '_empty.',
-          labels: '_empty.',
-          imageFrontUrl: '_empty.',
           proteins: 0,
           proteins100G: 0,
           proteinsUnit: '_empty.',
@@ -44,12 +74,6 @@ class FoodProduct extends Equatable {
           fatValue: 0,
         );
 
-  final String code;
-  final String productName;
-  final List<Ingredient> ingredients;
-  final String ingredientsText;
-  final String labels;
-  final String imageFrontUrl;
   final double proteins;
   final double proteins100G;
   final String proteinsUnit;
@@ -65,12 +89,6 @@ class FoodProduct extends Equatable {
 
   @override
   List<Object?> get props => [
-        code,
-        productName,
-        ingredients,
-        ingredientsText,
-        labels,
-        imageFrontUrl,
         proteins,
         proteins100G,
         proteinsUnit,
@@ -112,6 +130,7 @@ class Ingredient extends Equatable {
 
   final String id;
   final List<Ingredient> ingredients;
+
   final double percentEstimate;
   final double percentMax;
   final double percentMin;

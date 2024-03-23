@@ -91,8 +91,6 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       }
 
       final data = jsonDecode(response.body) as DataMap;
-      for (var index = 0; index < (data['results'] as List).length; index++)
-        print(((data['results'] as List)[index] as DataMap)['opening_hours']);
 
       final restaurants = List<RestaurantModel>.from(
         (data['results'] as List).map(

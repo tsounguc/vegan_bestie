@@ -42,19 +42,19 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
     return BlocBuilder<ScanProductCubit, ScanProductState>(
       builder: (context, state) {
         if (state is ProductFound) {
-          final proteinsAmount = state.product.proteins100G;
-          final carbsAmount = state.product.carbohydrates100G;
-          final fatAmount = state.product.fat100G;
+          final proteinsAmount = state.product.nutriments.proteins100G;
+          final carbsAmount = state.product.nutriments.carbohydrates100G;
+          final fatAmount = state.product.nutriments.fat100G;
           final total = proteinsAmount + carbsAmount + fatAmount;
-          var proteinsPct = proteinsAmount / total * 100;
+          var proteinsPct = (proteinsAmount / total) * 100;
           if (proteinsPct.isNaN || proteinsPct.isInfinite || proteinsPct.isNegative) {
             proteinsPct = 0;
           }
-          var carbsPct = carbsAmount / total * 100;
+          var carbsPct = (carbsAmount / total) * 100;
           if (carbsPct.isNaN || carbsPct.isInfinite || carbsPct.isNegative) {
             carbsPct = 0;
           }
-          var fatPct = fatAmount / total * 100;
+          var fatPct = (fatAmount / total) * 100;
           if (fatPct.isNaN || fatPct.isInfinite || fatPct.isNegative) {
             fatPct = 0;
           }
@@ -202,11 +202,9 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                   width: 10,
                                 ),
                                 color: Colors.green.shade800,
-                                value: state.product.proteinsValue,
+                                value: state.product.nutriments.proteinsValue,
                               ),
-                              SizedBox(
-                                height: height * 0.0075,
-                              ),
+                              SizedBox(height: height * 0.0075),
                               MacroNutrientWidget(
                                 title: Strings.carbsText,
                                 percentage: carbsPct,
@@ -217,7 +215,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                   width: 10,
                                 ),
                                 color: Colors.amberAccent.shade100,
-                                value: state.product.carbohydratesValue,
+                                value: state.product.nutriments.carbohydratesValue,
                               ),
                               SizedBox(
                                 height: height * 0.0075,
@@ -232,7 +230,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                                   width: 10,
                                 ),
                                 color: Colors.deepPurpleAccent.shade100,
-                                value: state.product.fatValue,
+                                value: state.product.nutriments.fatValue,
                               ),
                             ],
                           ),

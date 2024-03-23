@@ -22,25 +22,24 @@ class MacroNutrientWidget extends StatelessWidget {
     return Row(
       children: [
         Container(
-            height: 45,
-            width: 45,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              // border: Border.all(color: Colors.black12),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  spreadRadius: 0,
-                  blurRadius: 1,
-                  offset: Offset(1, 2),
-                ),
-              ],
-            ),
-            child: icon
-            // child: Icon(icon, color: color),
-            ),
+          height: 45,
+          width: 45,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            // border: Border.all(color: Colors.black12),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 1,
+                offset: Offset(1, 2),
+              ),
+            ],
+          ),
+          child: icon,
+          // child: Icon(icon, color: color),
+        ),
         const SizedBox(width: 20),
         Expanded(
           child: Column(
@@ -50,18 +49,16 @@ class MacroNutrientWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '$title (${(percentage * 100).toStringAsFixed(1)}%)',
+                    '$title (${percentage.toStringAsFixed(1)}%)',
                     style: TextStyle(color: Colors.black, fontSize: 12.sp),
                   ),
                   Text(
                     " ${value?.toStringAsFixed(1) ?? "0.0"} g",
                     style: TextStyle(color: Colors.black, fontSize: 13.sp),
-                  )
+                  ),
                 ],
               ),
-              SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               LinearProgressIndicator(
                 value: percentage,
                 valueColor: AlwaysStoppedAnimation<Color>(color),
@@ -69,7 +66,7 @@ class MacroNutrientWidget extends StatelessWidget {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

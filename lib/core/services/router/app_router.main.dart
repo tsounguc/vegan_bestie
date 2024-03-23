@@ -6,6 +6,23 @@ class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
     switch (settings.name) {
+      case '/':
+        return MaterialPageRoute(
+          builder: (context) {
+            if (serviceLocator<FirebaseAuth>().currentUser != null) {
+              final user = serviceLocator<FirebaseAuth>().currentUser!;
+              final userModel = UserModel(
+                uid: user.uid,
+                email: user.email ?? '',
+                name: user.displayName ?? '',
+              );
+              context.userProvider.initUser(userModel);
+              return const HomePage();
+            } else {
+              return const SignInScreen();
+            }
+          },
+        );
       case HomePage.id:
         return MaterialPageRoute(builder: (context) => const HomePage());
       case SignInScreen.id:

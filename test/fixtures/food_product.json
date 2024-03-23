@@ -1133,41 +1133,12 @@
     "nova_group": 4,
     "nova_group_debug": "",
     "nova_groups": "4",
-    "nova_groups_markers": {
-      "3": [
-        [
-          "ingredients",
-          "en:salt"
-        ]
-      ],
-      "4": [
-        [
-          "additives",
-          "en:e418"
-        ],
-        [
-          "ingredients",
-          "en:flavouring"
-        ]
-      ]
-    },
-    "nova_groups_tags": [
-      "en:4-ultra-processed-food-and-drink-products"
-    ],
+    "nova_groups_markers": {},
+    "nova_groups_tags": [],
     "nucleotides_prev_tags": [],
     "nucleotides_tags": [],
-    "nutrient_levels": {
-      "fat": "moderate",
-      "salt": "low",
-      "saturated-fat": "low",
-      "sugars": "low"
-    },
-    "nutrient_levels_tags": [
-      "en:fat-in-moderate-quantity",
-      "en:saturated-fat-in-low-quantity",
-      "en:sugars-in-low-quantity",
-      "en:salt-in-low-quantity"
-    ],
+    "nutrient_levels": {},
+    "nutrient_levels_tags": [],
     "nutriments": {
       "calcium": 0.125,
       "calcium_100g": 0.0521,
@@ -1205,9 +1176,9 @@
       "fiber_serving": 0.8,
       "fiber_unit": "g",
       "fiber_value": 0.8,
-      "folates": 2.5e-05,
-      "folates_100g": 1.04e-05,
-      "folates_serving": 2.5e-05,
+      "folates": 0.000025,
+      "folates_100g": 0.0000104,
+      "folates_serving": 0.000025,
       "folates_unit": "µg",
       "folates_value": 25,
       "fruits-vegetables-legumes-estimate-from-ingredients_100g": 25,
@@ -1279,18 +1250,18 @@
       "trans-fat_serving": 0,
       "trans-fat_unit": "g",
       "trans-fat_value": 0,
-      "vitamin-a": 6.24e-05,
-      "vitamin-a_100g": 2.6e-05,
-      "vitamin-a_serving": 6.24e-05,
+      "vitamin-a": 0.0000624,
+      "vitamin-a_100g": 0.000026,
+      "vitamin-a_serving": 0.0000624,
       "vitamin-a_unit": "IU",
       "vitamin-a_value": 208,
-      "vitamin-b12": 1.25e-06,
-      "vitamin-b12_100g": 5.21e-07,
-      "vitamin-b12_serving": 1.25e-06,
+      "vitamin-b12": 0.00000125,
+      "vitamin-b12_100g": 5.21e-7,
+      "vitamin-b12_serving": 0.00000125,
       "vitamin-b12_unit": "µg",
       "vitamin-b12_value": 1.25,
       "vitamin-b2": 0.000212,
-      "vitamin-b2_100g": 8.83e-05,
+      "vitamin-b2_100g": 0.0000883,
       "vitamin-b2_serving": 0.000212,
       "vitamin-b2_unit": "mg",
       "vitamin-b2_value": 0.212,
@@ -1299,9 +1270,9 @@
       "vitamin-c_serving": 0,
       "vitamin-c_unit": "mg",
       "vitamin-c_value": 0,
-      "vitamin-d": 1.25e-06,
-      "vitamin-d_100g": 5.21e-07,
-      "vitamin-d_serving": 1.25e-06,
+      "vitamin-d": 0.00000125,
+      "vitamin-d_100g": 5.21e-7,
+      "vitamin-d_serving": 0.00000125,
       "vitamin-d_unit": "IU",
       "vitamin-d_value": 50
     },

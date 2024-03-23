@@ -132,7 +132,7 @@ void main() {
       ),
       expect: () => [
         const AuthLoading(),
-        AuthError(message: testSignInFailure.errorMessage),
+        AuthError(message: testSignInFailure.message),
       ],
       verify: (bloc) {
         verify(() => signInWithEmailAndPassword(testSignInParams)).called(1);
@@ -188,7 +188,7 @@ void main() {
       ),
       expect: () => [
         const AuthLoading(),
-        AuthError(message: testCreateUserAccountFailure.errorMessage),
+        AuthError(message: testCreateUserAccountFailure.message),
       ],
       verify: (bloc) {
         verify(() => createUserAccount(testCreateUserAccountParams)).called(1);
@@ -242,7 +242,7 @@ void main() {
       ),
       expect: () => [
         const AuthLoading(),
-        AuthError(message: testForgotPasswordFailure.errorMessage),
+        AuthError(message: testForgotPasswordFailure.message),
       ],
       verify: (bloc) {
         verify(() => forgotPassword(testEmail)).called(1);
@@ -297,7 +297,7 @@ void main() {
       ),
       expect: () => [
         const AuthLoading(),
-        AuthError(message: testUpdateUserFailure.errorMessage),
+        AuthError(message: testUpdateUserFailure.message),
       ],
       verify: (bloc) {
         verify(() => updateUser(testUpdateUserParams)).called(1);
