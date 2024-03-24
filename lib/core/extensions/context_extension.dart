@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sheveegan/core/common/app/providers/tab_navigator.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
 
@@ -17,4 +18,10 @@ extension ContextExtension on BuildContext {
   UserProvider get userProvider => read<UserProvider>();
 
   UserEntity? get currentUser => userProvider.user;
+
+  TabNavigator get tabNavigator => read<TabNavigator>();
+
+  void pop() => tabNavigator.pop();
+
+  void push(Widget page) => tabNavigator.push(TabItem(child: page));
 }
