@@ -1,8 +1,8 @@
 part of 'search_bloc.dart';
 
 abstract class SearchState extends Equatable {
-  bool get hasReachedEndOfResults;
   const SearchState();
+  bool get hasReachedEndOfResults;
 }
 
 class SearchInitialState extends SearchState {
@@ -24,9 +24,9 @@ class SearchingState extends SearchState {
 }
 
 class SearchFoundState extends SearchState {
-  final List<SearchProductEntity> searchProducts;
 
-  SearchFoundState({required this.searchProducts});
+  const SearchFoundState({required this.searchProducts});
+  final List<SearchProductEntity> searchProducts;
   @override
   List<Object?> get props => [];
 
@@ -35,9 +35,9 @@ class SearchFoundState extends SearchState {
 }
 
 class SearchQueryChangedState extends SearchState {
-  final String textControllerText;
 
-  SearchQueryChangedState({required this.textControllerText});
+  const SearchQueryChangedState({required this.textControllerText});
+  final String textControllerText;
 
   @override
   bool get hasReachedEndOfResults => true;
@@ -47,10 +47,10 @@ class SearchQueryChangedState extends SearchState {
 }
 
 class SearchProductDetailState extends SearchState {
+  const SearchProductDetailState({this.selectedProduct, this.isVegan, this.nonVeganIngredientsInProduct});
   final SearchProductEntity? selectedProduct;
   final bool? isVegan;
   final String? nonVeganIngredientsInProduct;
-  SearchProductDetailState({this.selectedProduct, this.isVegan, this.nonVeganIngredientsInProduct});
 
   @override
   bool get hasReachedEndOfResults => true;
@@ -60,9 +60,9 @@ class SearchProductDetailState extends SearchState {
 }
 
 class SearchQueryNotFoundState extends SearchState {
-  final String message;
 
-  SearchQueryNotFoundState({required this.message});
+  const SearchQueryNotFoundState({required this.message});
+  final String message;
 
   @override
   bool get hasReachedEndOfResults => true;
@@ -72,9 +72,9 @@ class SearchQueryNotFoundState extends SearchState {
 }
 
 class SearchErrorState extends SearchState {
-  final error;
 
-  SearchErrorState({required this.error});
+  const SearchErrorState({required this.error});
+  final error;
 
   @override
   bool get hasReachedEndOfResults => false;

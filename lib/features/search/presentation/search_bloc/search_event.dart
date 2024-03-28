@@ -10,16 +10,16 @@ class SearchButtonPressedEvent extends SearchEvent {
 }
 
 class SearchQuerySubmittedEvent extends SearchEvent {
+  const SearchQuerySubmittedEvent({required this.query});
   final String query;
-  SearchQuerySubmittedEvent({required this.query});
 
   @override
   List<Object?> get props => [];
 }
 
 class SearchQueryChangedEvent extends SearchEvent {
+  const SearchQueryChangedEvent({required this.searchQuery});
   final String searchQuery;
-  SearchQueryChangedEvent({required this.searchQuery});
   @override
   List<Object?> get props => [];
 }
@@ -30,8 +30,8 @@ class SearchQueryClearedEvent extends SearchEvent {
 }
 
 class SearchProductPressedEvent extends SearchEvent {
+  const SearchProductPressedEvent({required this.selectedProduct});
   final SearchProductEntity selectedProduct;
-  SearchProductPressedEvent({required this.selectedProduct});
 
   @override
   List<Object?> get props => [];

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../search_bloc/search_bloc.dart';
+import 'package:sheveegan/features/search/presentation/search_bloc/search_bloc.dart';
 
 class SearchBar extends StatelessWidget {
-  const SearchBar({Key? key}) : super(key: key);
+  const SearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +23,10 @@ class SearchBar extends StatelessWidget {
               // focusNode: new FocusNode(),
               controller: BlocProvider.of<SearchBloc>(context).searchTextController,
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search, color: Theme.of(context).backgroundColor),
+                prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.background),
                 suffixIcon: state is SearchQueryChangedState && state.textControllerText.isNotEmpty
                     ? IconButton(
-                        icon: Icon(Icons.cancel, color: Theme.of(context).backgroundColor),
+                        icon: Icon(Icons.cancel, color: Theme.of(context).colorScheme.background),
                         onPressed: () {
                           BlocProvider.of<SearchBloc>(context).searchTextController.clear();
                           BlocProvider.of<SearchBloc>(context).add(SearchQueryClearedEvent());
@@ -34,15 +34,15 @@ class SearchBar extends StatelessWidget {
                       )
                     : null,
                 hintText: 'Search Product',
-                hintStyle: TextStyle(color: Theme.of(context).backgroundColor, fontSize: 16.sp),
+                hintStyle: TextStyle(color: Theme.of(context).colorScheme.background, fontSize: 16.sp),
                 border: InputBorder.none,
               ),
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
               // focusNode: new FocusNode(),
               onTap: () {
                 if (BlocProvider.of<SearchBloc>(context).searchTextController.text.isNotEmpty) {
                   BlocProvider.of<SearchBloc>(context).add(SearchQueryChangedEvent(
-                      searchQuery: BlocProvider.of<SearchBloc>(context).searchTextController.text));
+                      searchQuery: BlocProvider.of<SearchBloc>(context).searchTextController.text,),);
                 } else if (BlocProvider.of<SearchBloc>(context).searchTextController.text.isEmpty) {
                   BlocProvider.of<SearchBloc>(context).add(SearchQueryClearedEvent());
                 }

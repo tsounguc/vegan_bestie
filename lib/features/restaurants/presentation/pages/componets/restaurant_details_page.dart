@@ -8,9 +8,9 @@ import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/common/screens/webview/web_view_screen.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
+import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/core/utils/size_config.dart';
-import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/dine_in_takeout_delivery.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/page_view.dart';
@@ -239,7 +239,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       color: Colors.grey.shade800,
                                       fontSize: 14,
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                               SizedBox(
@@ -303,7 +303,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       color: Colors.grey.shade800,
                                       fontSize: 14,
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                               SizedBox(

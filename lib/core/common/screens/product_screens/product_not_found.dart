@@ -52,7 +52,7 @@ class ProductNotFoundPage extends StatelessWidget {
                   Text(
                     message ?? 'this product',
                     style: TextStyle(color: Colors.grey, fontSize: 16.sp),
-                  )
+                  ),
                 ],
               ),
             ),

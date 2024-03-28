@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:sheveegan/core/common/screens/loading/loading.dart';
-import 'package:sheveegan/core/common/widgets/custom_circle_avatar.dart';
-import 'package:sheveegan/core/common/widgets/custom_drawer.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/utils/size_config.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurants_home_page.dart';

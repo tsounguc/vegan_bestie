@@ -148,7 +148,7 @@ class RestaurantDetailsModel extends RestaurantDetails {
           servesLunch: dataMap['serves_lunch'] == null ? false : dataMap['serves_lunch'] as bool,
           servesVegetarianFood:
               dataMap['serves_vegetarian_food'] == null ? false : dataMap['serves_vegetarian_food'] as bool,
-          servesWine: dataMap["serves_wine"] == null ? false : dataMap["serves_wine"] as bool,
+          servesWine: dataMap['serves_wine'] == null ? false : dataMap['serves_wine'] as bool,
           takeout: dataMap['takeout'] == null ? false : dataMap['takeout'] as bool,
           types: dataMap['types'] == null
               ? []
@@ -280,7 +280,7 @@ class CurrentOpeningHoursModel extends CurrentOpeningHours {
             (period) => (period as CurrentOpeningHoursPeriodModel).toMap(),
           ),
         ),
-        'weekday_text': weekdayText
+        'weekday_text': weekdayText,
       };
 }
 
@@ -294,7 +294,7 @@ class CurrentOpeningHoursPeriodModel extends CurrentOpeningHoursPeriod {
   CurrentOpeningHoursPeriodModel.fromMap(DataMap dataMap)
       : this(
             close: PurpleCloseModel.fromMap(dataMap['close'] as DataMap),
-            open: PurpleCloseModel.fromMap(dataMap['open'] as DataMap));
+            open: PurpleCloseModel.fromMap(dataMap['open'] as DataMap),);
 
   DataMap toMap() => {
         'close': (close as PurpleCloseModel).toMap(),
@@ -376,7 +376,7 @@ class OpeningHoursPeriodModel extends OpeningHoursPeriod {
   OpeningHoursPeriodModel.fromMap(DataMap dataMap)
       : this(
             close: FluffyCloseModel.fromMap(dataMap['close'] as DataMap),
-            open: FluffyCloseModel.fromMap(dataMap['open'] as DataMap));
+            open: FluffyCloseModel.fromMap(dataMap['open'] as DataMap),);
 
   DataMap toMap() => {
         'close': (close as FluffyCloseModel).toMap(),
@@ -414,7 +414,7 @@ class ReviewModel extends Review {
       required super.relativeTimeDescription,
       required super.text,
       required super.time,
-      required super.translated});
+      required super.translated,});
 
   factory ReviewModel.fromJson(String source) => ReviewModel.fromMap(
         jsonDecode(source) as DataMap,

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 class LongButton extends StatelessWidget {
   const LongButton({
-    Key? key,
-    required this.onPressed,
-    required this.label,
-  }) : super(key: key);
+    required this.onPressed, required this.label, super.key,
+  });
   final void Function()? onPressed;
   final String label;
 
@@ -21,7 +19,7 @@ class LongButton extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 18,
           color: Colors.white,

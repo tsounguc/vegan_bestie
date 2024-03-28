@@ -499,7 +499,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 //                             ),
 //                             TextButton(
 //                               onPressed: () {
-//                                 // TODO(Login-Handler): Push to LoginPage
+//                                 // `TODO`(Login-Handler): Push to LoginPage
 //                                 // BlocProvider.of<AuthBloc>(
 //                                 //   context,
 //                                 // ).goToLoginPage();

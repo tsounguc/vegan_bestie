@@ -1,13 +1,12 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
 class ClippingClass extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    var path = Path();
-    double width = size.width;
-    double height = size.height;
+    final path = Path();
+    final width = size.width;
+    final height = size.height;
     // (0, 0) // 1. Point
     path.lineTo(0, height - 75); // 2. Point
     path.quadraticBezierTo(
@@ -50,9 +49,9 @@ class ClippingClass extends CustomClipper<Path> {
 class ClippingClassTwo extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    var path = Path();
-    double width = size.width;
-    double height = size.height;
+    final path = Path();
+    final width = size.width;
+    final height = size.height;
     // (0, 0) // 1. Point
     path.lineTo(0, height / 2); // 2. Point
     path.quadraticBezierTo(

@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
-import 'package:sheveegan/core/common/screens/loading/loading.dart';
-import 'package:sheveegan/core/common/widgets/auth_error_message_widget.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:sheveegan/features/auth/presentation/pages/components/other_auth_options.dart';
 import 'package:sheveegan/features/auth/presentation/pages/components/sign_in_form.dart';
 import 'package:sheveegan/features/auth/presentation/pages/forgot_password_screen.dart';
 import 'package:sheveegan/features/auth/presentation/pages/sign_up_screen.dart';
@@ -351,7 +348,7 @@ class _SignInScreenState extends State<SignInScreen> {
 //                               padding: const EdgeInsets.only(bottom: 8),
 //                               child: TextButton(
 //                                 onPressed: () {
-//                                   // TODO(Login-Handler): Push to ForgotPasswordScreen
+//                                   // `TODO`(Login-Handler): Push to ForgotPasswordScreen
 //                                   // BlocProvider.of<AuthBloc>(
 //                                   //   context,
 //                                   // ).gotToForgotPasswordPage();
@@ -425,7 +422,7 @@ class _SignInScreenState extends State<SignInScreen> {
 //                             ),
 //                             TextButton(
 //                               onPressed: () {
-//                                 // TODO(Login-Handler): Push to SignUpScreen
+//                                 // `TODO`(Login-Handler): Push to SignUpScreen
 //                                 if (!Navigator.canPop(context)) {
 //                                   // BlocProvider.of<AuthBloc>(
 //                                   //   context,
@@ -458,7 +455,7 @@ class _SignInScreenState extends State<SignInScreen> {
 //                           children: [
 //                             TextButton(
 //                               onPressed: () {
-//                                 // TODO(Login-Handler): Continue as guest
+//                                 // `TODO`(Login-Handler): Continue as guest
 //                                 // BlocProvider.of<AuthBloc>(
 //                                 //   context,
 //                                 // ).continueAsGuest();

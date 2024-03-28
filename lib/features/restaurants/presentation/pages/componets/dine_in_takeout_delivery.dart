@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 
 class DineInTakeoutDeliveryWidget extends StatelessWidget {
   DineInTakeoutDeliveryWidget({
-    Key? key,
-    required this.dineIn,
-    required this.takeout,
-    required this.delivery,
-  }) : super(key: key);
+    required this.dineIn, required this.takeout, required this.delivery, super.key,
+  });
   bool? dineIn;
   bool? takeout;
   bool? delivery;
@@ -14,17 +11,12 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Visibility(
           visible: dineIn == true,
-          maintainSize: false,
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.27,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.width * 0.04,
@@ -39,10 +31,10 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
                   color: Colors.grey.shade800,
                   size: 18,
                 ),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 Flexible(
                   child: Text(
-                    "Dine-in",
+                    'Dine-in',
                     style: TextStyle(
                       color: Colors.grey.shade800,
                       fontSize: 14,
@@ -56,12 +48,9 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
         ),
         Visibility(
           visible: takeout == true,
-          maintainSize: false,
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.27,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.width * 0.04,
@@ -76,10 +65,10 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
                   color: Colors.grey.shade800,
                   size: 18,
                 ),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 Flexible(
                   child: Text(
-                    "Takeout",
+                    'Takeout',
                     style: TextStyle(
                       color: Colors.grey.shade800,
                       fontSize: 14,
@@ -93,12 +82,9 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
         ),
         Visibility(
           visible: delivery == true,
-          maintainSize: false,
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.27,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.width * 0.04,
@@ -113,10 +99,10 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
                   color: Colors.grey.shade800,
                   size: 18,
                 ),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 Flexible(
                   child: Text(
-                    "Delivery",
+                    'Delivery',
                     style: TextStyle(
                       color: Colors.grey.shade800,
                       fontSize: 14,

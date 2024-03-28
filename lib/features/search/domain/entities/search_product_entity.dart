@@ -1,22 +1,4 @@
 class SearchProductEntity {
-  String? code;
-  String? productName;
-  List<SearchIngredientEntity>? ingredients;
-  String? ingredientsText;
-  String? labels;
-  String? imageFrontUrl;
-  double? proteins;
-  double? proteins100G;
-  String? proteinsUnit;
-  double? proteinsValue;
-  double? carbohydrates;
-  double? carbohydrates100G;
-  String? carbohydratesUnit;
-  double? carbohydratesValue;
-  double? fat;
-  double? fat100G;
-  String? fatUnit;
-  double? fatValue;
 
   SearchProductEntity({
     this.code,
@@ -38,6 +20,24 @@ class SearchProductEntity {
     this.fatUnit,
     this.fatValue,
   });
+  String? code;
+  String? productName;
+  List<SearchIngredientEntity>? ingredients;
+  String? ingredientsText;
+  String? labels;
+  String? imageFrontUrl;
+  double? proteins;
+  double? proteins100G;
+  String? proteinsUnit;
+  double? proteinsValue;
+  double? carbohydrates;
+  double? carbohydrates100G;
+  String? carbohydratesUnit;
+  double? carbohydratesValue;
+  double? fat;
+  double? fat100G;
+  String? fatUnit;
+  double? fatValue;
 }
 
 class SearchIngredientEntity {

@@ -2,23 +2,21 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/screens/error/error.dart';
+import 'package:sheveegan/core/common/screens/loading/loading.dart';
+import 'package:sheveegan/core/common/screens/product_screens/product_not_found.dart';
+import 'package:sheveegan/features/search/presentation/pages/components/search_initial_state_widget.dart';
+import 'package:sheveegan/features/search/presentation/pages/search_product_detail.dart';
 import 'package:sheveegan/features/search/presentation/search_bloc/search_bloc.dart';
 
-import '../../../../core/common/screens/error/error.dart';
-import '../../../../core/common/screens/loading/loading.dart';
-import '../../../../core/common/screens/product_screens/product_not_found.dart';
-import 'components/search_bar.dart';
-import 'components/search_initial_state_widget.dart';
-import 'search_product_detail.dart';
-
 class SearchPage extends StatelessWidget {
-  SearchPage({Key? key}) : super(key: key);
+  const SearchPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
         appBar: AppBar(
@@ -27,14 +25,14 @@ class SearchPage extends StatelessWidget {
           automaticallyImplyLeading: false,
           // title: SearchBar(),
           elevation: 0,
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
         ),
         backgroundColor: Colors.green.shade50,
         // backgroundColor: Theme.of(context).backgroundColor,
         body: BlocBuilder<SearchBloc, SearchState>(
           builder: (BuildContext context, state) {
             if (state is SearchingState) {
-              return LoadingPage();
+              return const LoadingPage();
             } else if (state is SearchQueryNotFoundState) {
               return ProductNotFoundPage(message: state.message);
             } else if (state is SearchErrorState) {
@@ -42,7 +40,7 @@ class SearchPage extends StatelessWidget {
                 error: state.error as String,
               );
             } else if (state is SearchInitialState) {
-              return SearchInitialStateWidget();
+              return const SearchInitialStateWidget();
             } else if (state is SearchFoundState) {
               return NotificationListener<ScrollNotification>(
                 child: ListView.builder(
@@ -53,7 +51,7 @@ class SearchPage extends StatelessWidget {
                       return Card(
                         color: Colors.white,
                         child: Padding(
-                          padding: EdgeInsets.only(right: 8.0.r, top: 16.r, left: 8.0, bottom: 16.0.r),
+                          padding: EdgeInsets.only(right: 8.0.r, top: 16.r, left: 8, bottom: 16.0.r),
                           child: ListTile(
                             leading: state.searchProducts[index].imageFrontUrl != null &&
                                     state.searchProducts[index].imageFrontUrl!.isNotEmpty
@@ -78,7 +76,7 @@ class SearchPage extends StatelessWidget {
                               ),
                             ),
                             trailing: IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.navigate_next,
                                 color: Colors.black,
                               ),
@@ -86,7 +84,7 @@ class SearchPage extends StatelessWidget {
                                 BlocProvider.of<SearchBloc>(context)
                                     .add(SearchProductPressedEvent(selectedProduct: state.searchProducts[index]));
                                 Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (_) => SearchProductDetail()));
+                                    .push(MaterialPageRoute(builder: (_) => const SearchProductDetail()));
                               },
                             ),
                           ),

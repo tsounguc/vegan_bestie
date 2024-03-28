@@ -1,6 +1,5 @@
 import 'package:sheveegan/core/use_case/use_case.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
 

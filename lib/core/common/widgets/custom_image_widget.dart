@@ -1,22 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/loading/loading.dart';
+import 'package:sheveegan/core/common/screens/loading/loading.dart';
 
 class CustomImageWidget extends StatelessWidget {
-  CustomImageWidget({
-    Key? key,
-    required this.imageUrl,
+  const CustomImageWidget({
+    required this.imageUrl, super.key,
     this.height,
     this.width,
-  }) : super(key: key);
+  });
   final String? imageUrl;
   final double? height;
   final double? width;
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("image Url: $imageUrl");
+    debugPrint('image Url: $imageUrl');
     return Container(
       height: height ?? MediaQuery.of(context).size.height * 0.43,
       width: width ?? MediaQuery.of(context).size.width * 0.80,
@@ -24,11 +23,11 @@ class CustomImageWidget extends StatelessWidget {
         color: Theme.of(context).colorScheme.background,
         // gradient:
         //     RadialGradient(colors: [Color(0XFF2E7D32), Colors.green.shade500]),
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(25),
           bottomRight: Radius.circular(25),
         ),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black45,
             spreadRadius: 2,
@@ -38,7 +37,7 @@ class CustomImageWidget extends StatelessWidget {
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(25),
           bottomRight: Radius.circular(25),
         ),
@@ -49,7 +48,7 @@ class CustomImageWidget extends StatelessWidget {
                 color: Colors.grey,
               )
             : CachedNetworkImage(
-                progressIndicatorBuilder: (context, text, downloadProgress) => LoadingPage(),
+                progressIndicatorBuilder: (context, text, downloadProgress) => const LoadingPage(),
                 fit: BoxFit.cover,
                 imageUrl: imageUrl!,
                 errorWidget: (context, error, value) => Container(),

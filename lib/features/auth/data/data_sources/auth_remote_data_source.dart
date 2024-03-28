@@ -364,7 +364,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 //
 // @override
 // Future<void> forgotPassword(String email) {
-//   // TODO: implement forgotPassword
+//   // `TODO`: implement forgotPassword
 //   throw UnimplementedError();
 // }
 }

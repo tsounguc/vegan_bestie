@@ -15,24 +15,23 @@ class _LoadingPageState extends State<LoadingPage> {
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Spacer(),
-            CircularProgressIndicator(),
+            const Spacer(),
+            const CircularProgressIndicator(),
             SizedBox(
               height: 10.h,
             ),
             Visibility(
               visible: false,
               child: Text(
-                "Searching...",
+                'Searching...',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18.sp,
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
           ],
         ),
       ),

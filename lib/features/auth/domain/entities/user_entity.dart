@@ -24,7 +24,7 @@ class UserEntity extends Equatable {
   final String? bio;
 
   @override
-  List<Object?> get props => [uid, email];
+  List<Object?> get props => [uid, name, email, photoUrl, bio];
 
   @override
   String toString() {

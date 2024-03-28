@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
-import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/core/services/restaurants_services/barcode_scanner_plugin.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/scan_product/data/data_sources/scan_product_remote_data_source.dart';
@@ -128,7 +125,7 @@ void main() {
         expect(
           () async => methodCall(barcode: testBarcode),
           throwsA(
-            FetchProductException(
+            const FetchProductException(
               message: Strings.productNotFound,
               statusCode: 500,
             ),

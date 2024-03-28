@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../core/failures_successes/failures.dart';
-import '../../../../core/services/service_locator.dart';
-import '../entities/search_product_entity.dart';
-import '../respositories_contracts/search_product_repository_contract.dart';
+import 'package:sheveegan/core/failures_successes/failures.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
+import 'package:sheveegan/features/search/domain/entities/search_product_entity.dart';
+import 'package:sheveegan/features/search/domain/respositories_contracts/search_product_repository_contract.dart';
 
 class SearchProductUseCase {
   final SearchProductRepositoryContract _searchProudctRepositoryContract =

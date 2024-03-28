@@ -4,10 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/resources/vegan_icon.dart';
 import 'package:sheveegan/core/utils/size_config.dart';
-import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/features/search/presentation/search_bloc/search_bloc.dart';
 
 class SearchProductDetail extends StatelessWidget {
@@ -115,7 +114,7 @@ class SearchProductDetail extends StatelessWidget {
                   backgroundColor: state.selectedProduct!.imageFrontUrl != null
                       ? Colors.transparent
                       : state.isVegan!
-                          ? Theme.of(context).backgroundColor
+                          ? Theme.of(context).colorScheme.background
                           : Colors.red,
                   body: SingleChildScrollView(
                     child: Column(
@@ -155,7 +154,7 @@ class SearchProductDetail extends StatelessWidget {
                                                 state.selectedProduct!.productName!,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .headline5!
+                                                    .headlineSmall!
                                                     .copyWith(fontWeight: FontWeight.bold, color: Colors.black),
                                               ),
                                             ),
@@ -169,10 +168,10 @@ class SearchProductDetail extends StatelessWidget {
                                                 height: 50.h,
                                                 message: Strings.toolTipVeganMessage,
                                                 textStyle: TextStyle(fontSize: 14.sp),
-                                                decoration: BoxDecoration(color: Colors.green),
+                                                decoration: const BoxDecoration(color: Colors.green),
                                                 child: Icon(
                                                   VeganIcon.vegan_icon,
-                                                  color: Theme.of(context).backgroundColor,
+                                                  color: Theme.of(context).colorScheme.background,
                                                   size: 40.r,
                                                 ),
                                               ),
@@ -180,19 +179,17 @@ class SearchProductDetail extends StatelessWidget {
                                                     state.selectedProduct!.ingredientsText!.isNotEmpty) &&
                                                 !state.isVegan!)
                                               Tooltip(
-                                                decoration: BoxDecoration(color: Colors.red),
+                                                decoration: const BoxDecoration(color: Colors.red),
                                                 height: 50.h,
-                                                message: Strings.toolTipNonVeganMessage +
-                                                    ' ' +
-                                                    state.nonVeganIngredientsInProduct!,
+                                                message: '${Strings.toolTipNonVeganMessage} ${state.nonVeganIngredientsInProduct!}',
                                                 textStyle: TextStyle(fontSize: 14.sp),
+                                                showDuration: const Duration(seconds: 5),
                                                 child: Icon(
                                                   Icons.not_interested_outlined,
                                                   size: 40.r,
                                                   color: Colors.red,
                                                 ),
-                                                showDuration: Duration(seconds: 5),
-                                              )
+                                              ),
                                           ],
                                         ),
                                         SizedBox(
@@ -200,14 +197,12 @@ class SearchProductDetail extends StatelessWidget {
                                         ),
                                         Expanded(
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "Barcode: ${state.selectedProduct?.code}",
+                                                    'Barcode: ${state.selectedProduct?.code}',
                                                     style: TextStyle(
                                                       fontSize: 16.sp,
                                                       color: Colors.black,
@@ -258,18 +253,18 @@ class SearchProductDetail extends StatelessWidget {
                                                 children: [
                                                   Flexible(
                                                     child: Text(
-                                                      "${state.selectedProduct?.labels ?? ''}",
+                                                      state.selectedProduct?.labels ?? '',
                                                       style: TextStyle(fontSize: 14.sp, color: Colors.black),
                                                     ),
-                                                  )
+                                                  ),
                                                 ],
-                                              )
+                                              ),
                                             ],
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
@@ -279,16 +274,14 @@ class SearchProductDetail extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      state.selectedProduct!.imageFrontUrl == null
-                                          ? Container(
+                                      if (state.selectedProduct!.imageFrontUrl == null) Container(
                                               height: 213.r,
                                               width: 187.r,
                                               decoration: BoxDecoration(
                                                   color: state.isVegan!
-                                                      ? Theme.of(context).backgroundColor
+                                                      ? Theme.of(context).colorScheme.background
                                                       : Colors.red,
                                                   borderRadius: BorderRadius.all(
                                                     Radius.circular(35.r),
@@ -298,16 +291,15 @@ class SearchProductDetail extends StatelessWidget {
                                                       color: Colors.black38.withOpacity(0.10),
                                                       spreadRadius: 2,
                                                       blurRadius: 7,
-                                                      offset: Offset(5, 7),
-                                                    )
-                                                  ]),
+                                                      offset: const Offset(5, 7),
+                                                    ),
+                                                  ],),
                                               child: Icon(
                                                 Icons.image_outlined,
                                                 color: state.isVegan! ? Colors.green.shade50 : Colors.red.shade50,
                                                 size: 175.r,
                                               ),
-                                            )
-                                          : Container(
+                                            ) else Container(
                                               decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.all(
                                                     Radius.circular(35.r),
@@ -317,9 +309,9 @@ class SearchProductDetail extends StatelessWidget {
                                                       color: Colors.black38.withOpacity(0.25),
                                                       spreadRadius: 2,
                                                       blurRadius: 7,
-                                                      offset: Offset(5, 7),
-                                                    )
-                                                  ]),
+                                                      offset: const Offset(5, 7),
+                                                    ),
+                                                  ],),
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(35),
                                                 child: CachedNetworkImage(
@@ -345,7 +337,7 @@ class SearchProductDetail extends StatelessWidget {
             ),
           );
         } else {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );

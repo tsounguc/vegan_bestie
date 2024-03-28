@@ -34,7 +34,7 @@ void main() {
     () async {
       when(
         () => repository.createUserAccount(
-            email: any(named: 'email'), password: any(named: 'password'), userName: any(named: 'userName')),
+            email: any(named: 'email'), password: any(named: 'password'), userName: any(named: 'userName'),),
       ).thenAnswer((_) async => const Right(tUser));
 
       final result = await useCase(

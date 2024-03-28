@@ -76,7 +76,7 @@ class RestaurantsFoundBody extends StatelessWidget {
                   ],
                 ),
               );
-            }),
+            },),
       ],
     );
   }

@@ -10,12 +10,15 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) {
             if (serviceLocator<FirebaseAuth>().currentUser != null) {
+              // get user info from firebase
               final user = serviceLocator<FirebaseAuth>().currentUser!;
+              // create userModel with user info
               final userModel = UserModel(
                 uid: user.uid,
                 email: user.email ?? '',
                 name: user.displayName ?? '',
               );
+              // store user model in user provider
               context.userProvider.initUser(userModel);
               return const HomePage();
             } else {

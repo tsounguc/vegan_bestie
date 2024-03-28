@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/custom_image_widget.dart';
-import 'package:sheveegan/core/resources/vegan_icon.dart';
 import 'package:sheveegan/core/resources/strings.dart';
+import 'package:sheveegan/core/resources/vegan_icon.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/components/macronutrient_widget.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 

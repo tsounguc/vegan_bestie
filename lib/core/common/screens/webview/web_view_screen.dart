@@ -186,7 +186,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                           color: Colors.black,
                           fontSize: 18.sp,
                         ),
-                        child: Text('Loading $loadingPercentage')),
+                        child: Text('Loading $loadingPercentage'),),
                   ],
                 ),
               ),

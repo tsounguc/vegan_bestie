@@ -150,7 +150,7 @@ class AppTheme {
           statusBarIconBrightness: themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
           systemNavigationBarIconBrightness: themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
           systemNavigationBarColor: themeMode == ThemeMode.light ? lightBackgroundColor : darkBackgroundColor,
-          systemNavigationBarDividerColor: Colors.transparent),
+          systemNavigationBarDividerColor: Colors.transparent,),
     );
   }
 }
