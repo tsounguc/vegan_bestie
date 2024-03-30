@@ -13,17 +13,23 @@ class ScanResultsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget page = Container();
     return BlocBuilder<ScanProductCubit, ScanProductState>(
       builder: (context, state) {
         if (state is FetchingProduct) {
-          return const LoadingPage();
+          page = const LoadingPage();
+          debugPrint('Fetching Product State');
         } else if (state is ScanProductError) {
-          return ErrorPage(error: state.message);
+          page = ErrorPage(error: state.message);
+          debugPrint('Scan Product Error State');
         } else if (state is ProductNotFound) {
-          return const ProductNotFoundPage();
+          debugPrint('Product Not Found State');
+          page = const ProductNotFoundPage();
+        } else if (state is ProductFound) {
+          debugPrint('Product Found State');
+          page = const ProductFoundPageTwo();
         }
-        return const ProductFoundPageTwo();
-        // return ProductFoundPage();
+        return page;
       },
     );
   }

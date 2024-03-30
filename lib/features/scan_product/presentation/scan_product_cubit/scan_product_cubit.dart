@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/vegan_checker.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/scan_product/domain/use_cases/fetch_product.dart';
@@ -29,12 +30,19 @@ class ScanProductCubit extends Cubit<ScanProductState> {
     final result = await _fetchProduct(FetchProductParams(barcode: barcode));
     final veganChecker = VeganChecker();
     result.fold(
-      (failure) => emit(ScanProductError(message: failure.message)),
+      (failure) {
+        if (failure.message == Strings.productNotFound) {
+          emit(const ProductNotFound());
+        } else {
+          emit(ScanProductError(message: failure.message));
+        }
+      },
       (product) {
         if (product.productName.isEmpty) {
           emit(const ProductNotFound());
         } else {
           final isVegan = veganChecker.veganCheck(product);
+          print('product found');
           emit(
             ProductFound(
               product: product,

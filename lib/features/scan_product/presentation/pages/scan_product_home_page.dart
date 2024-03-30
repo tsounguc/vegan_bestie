@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/screens/product_screens/product_not_found.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
-import 'package:sheveegan/features/scan_product/presentation/pages/scan_results_page.dart';
+import 'package:sheveegan/features/scan_product/presentation/pages/product_found_page2.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 import 'package:simple_animations/simple_animations.dart';
@@ -16,30 +17,32 @@ class ScanProductHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<ScanProductCubit, ScanProductState>(
-          listener: (blocContext, state) {
-            if (state is BarcodeFound) {
-              BlocProvider.of<ScanProductCubit>(
-                context,
-              ).fetchProduct(barcode: state.barcode);
-            } else if (state is ScanProductError) {
-              CoreUtils.showSnackBar(
-                context,
-                state.message,
-              );
-            }
-          },
-        ),
-        BlocListener<ScanProductCubit, ScanProductState>(
-          listener: (context, state) {
-            if (state is FetchingProduct) {
-              Navigator.of(context).pushNamed(ScanResultsPage.id);
-            }
-          },
-        ),
-      ],
+    return BlocListener<ScanProductCubit, ScanProductState>(
+      listener: (blocContext, state) {
+        if (state is BarcodeFound) {
+          BlocProvider.of<ScanProductCubit>(
+            context,
+          ).fetchProduct(barcode: state.barcode);
+        } else if (state is ScanProductError) {
+          print(state.message);
+          CoreUtils.showSnackBar(
+            context,
+            state.message,
+          );
+        } else if (state is ProductNotFound) {
+          Navigator.of(context).pushNamed(
+            ProductNotFoundPage.id,
+          );
+        } else if (state is ProductFound) {
+          print('Fetching Product \n');
+          // Builder(builder: ())
+          Navigator.of(context).pushNamed(
+            ProductFoundPageTwo.id,
+            arguments: context.read<ScanProductCubit>(),
+          );
+          // context.push(const ProductFoundPageTwo());
+        }
+      },
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(
@@ -90,7 +93,7 @@ class ScanProductHomePage extends StatelessWidget {
                       return Container(
                         width: value,
                         height: value,
-                        color: Colors.transparent,
+                        color: Colors.white,
                         child: animationChild,
                       );
                     },
@@ -108,6 +111,9 @@ class ScanProductHomePage extends StatelessWidget {
                         ),
                         backgroundColor: MaterialStateProperty.all(
                           Colors.white,
+                        ),
+                        surfaceTintColor: MaterialStateProperty.all(
+                          Theme.of(context).primaryColor,
                         ),
                         shape: MaterialStateProperty.all(const CircleBorder()),
                       ),

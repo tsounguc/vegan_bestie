@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/custom_image_widget.dart';
 import 'package:sheveegan/core/resources/strings.dart';
@@ -11,6 +12,8 @@ import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/
 
 class ProductFoundPageTwo extends StatefulWidget {
   const ProductFoundPageTwo({super.key});
+
+  static const String id = '/productFoundPage';
 
   @override
   State<ProductFoundPageTwo> createState() => _ProductFoundPageTwoState();
@@ -62,7 +65,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
           final width = MediaQuery.of(context).size.width;
 
           return Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Colors.white,
             body: Stack(
               children: [
                 Positioned(
@@ -308,8 +311,8 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
                 ),
                 Positioned(
                   width: width * 1,
-                  top: height * 0.0,
-                  left: width * 0.0,
+                  top: 0,
+                  left: 0,
                   child: CustomImageWidget(
                     imageUrl: state.product.imageFrontUrl,
                     height: height * 0.45,
@@ -324,7 +327,7 @@ class _ProductFoundPageTwoState extends State<ProductFoundPageTwo> {
             ),
           );
         }
-        return Container();
+        return const LoadingPage();
       },
     );
   }
