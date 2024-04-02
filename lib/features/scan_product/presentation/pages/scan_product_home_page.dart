@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheveegan/core/common/screens/product_screens/product_not_found.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
-import 'package:sheveegan/features/scan_product/presentation/pages/product_found_page2.dart';
+import 'package:sheveegan/features/scan_product/presentation/pages/scan_results_page.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 import 'package:simple_animations/simple_animations.dart';
@@ -29,18 +29,11 @@ class ScanProductHomePage extends StatelessWidget {
             context,
             state.message,
           );
-        } else if (state is ProductNotFound) {
+        } else {
           Navigator.of(context).pushNamed(
-            ProductNotFoundPage.id,
-          );
-        } else if (state is ProductFound) {
-          print('Fetching Product \n');
-          // Builder(builder: ())
-          Navigator.of(context).pushNamed(
-            ProductFoundPageTwo.id,
+            ScanResultsPage.id,
             arguments: context.read<ScanProductCubit>(),
           );
-          // context.push(const ProductFoundPageTwo());
         }
       },
       child: SingleChildScrollView(
@@ -73,13 +66,13 @@ class ScanProductHomePage extends StatelessWidget {
                         ),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
+                    height: context.height * 0.02,
                   ),
                   CustomAnimationBuilder<double>(
                     control: Control.mirror,
                     tween: Tween(
-                      begin: MediaQuery.of(context).size.width * 0.55,
-                      end: MediaQuery.of(context).size.width * 0.53,
+                      begin: context.width * 0.55,
+                      end: context.width * 0.53,
                       // begin: 200.r,
                       // end: 185.r,
                     ),
