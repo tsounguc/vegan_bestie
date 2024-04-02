@@ -7,8 +7,8 @@ class AppRouter {
     final arguments = settings.arguments;
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(
-          builder: (context) {
+        return _pageBuilder(
+          (context) {
             if (serviceLocator<FirebaseAuth>().currentUser != null) {
               // get user info from firebase
               final user = serviceLocator<FirebaseAuth>().currentUser!;
@@ -20,34 +20,113 @@ class AppRouter {
               );
               // store user model in user provider
               context.userProvider.initUser(userModel);
-              return const HomePage();
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (_) => serviceLocator<ScanProductCubit>(),
+                  ),
+                  BlocProvider(
+                    create: (_) => serviceLocator<RestaurantsBloc>(),
+                  ),
+                  BlocProvider(
+                    create: (_) => serviceLocator<AuthBloc>(),
+                  ),
+                ],
+                child: const HomePage(),
+              );
             } else {
-              return const SignInScreen();
+              return BlocProvider(
+                create: (_) => serviceLocator<AuthBloc>(),
+                child: const SignInScreen(),
+              );
             }
           },
+          settings: settings,
         );
       case HomePage.id:
-        return MaterialPageRoute(builder: (context) => const HomePage());
-      case SignInScreen.id:
-        return MaterialPageRoute(builder: (context) => const SignInScreen());
-      case SignUpScreen.id:
-        return MaterialPageRoute(builder: (context) => const SignUpScreen());
-      case WelcomePage.id:
-        return MaterialPageRoute(builder: (context) => const WelcomePage());
-      case ForgotPasswordScreen.id:
-        return MaterialPageRoute(builder: (context) => ForgotPasswordScreen());
-      case RestaurantsHomePage.id:
-        return MaterialPageRoute(builder: (context) => RestaurantsHomePage());
-      case ScanProductHomePage.id:
-        return MaterialPageRoute(builder: (context) => const ScanProductHomePage());
-      case ScanResultsPage.id:
-        return MaterialPageRoute(builder: (context) => const ScanResultsPage());
-      case ReportIssuePage.id:
-        return MaterialPageRoute(builder: (context) => const ReportIssuePage());
-      case SelectIncorrectInformation.id:
-        return MaterialPageRoute(
-          builder: (context) => const SelectIncorrectInformation(),
+        return _pageBuilder(
+          (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) => serviceLocator<ScanProductCubit>(),
+              ),
+              BlocProvider(
+                create: (_) => serviceLocator<RestaurantsBloc>(),
+              ),
+              BlocProvider(
+                create: (_) => serviceLocator<AuthBloc>(),
+              ),
+            ],
+            child: const HomePage(),
+          ),
+          settings: settings,
         );
+      case SignInScreen.id:
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<AuthBloc>(),
+            child: const SignInScreen(),
+          ),
+          settings: settings,
+        );
+      case SignUpScreen.id:
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<AuthBloc>(),
+            child: const SignUpScreen(),
+          ),
+          settings: settings,
+        );
+      case ForgotPasswordScreen.id:
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<AuthBloc>(),
+            child: const ForgotPasswordScreen(),
+          ),
+          settings: settings,
+        );
+      case WelcomePage.id:
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<AuthBloc>(),
+            child: const WelcomePage(),
+          ),
+          settings: settings,
+        );
+
+      case EditProfileScreen.id:
+        return _pageBuilder(
+          (_) => BlocProvider<AuthBloc>.value(
+            value: settings.arguments! as AuthBloc,
+            child: const EditProfileScreen(),
+          ),
+          settings: settings,
+        );
+
+      case ScanResultsPage.id:
+        return _pageBuilder(
+          (_) => BlocProvider<ScanProductCubit>.value(
+            value: settings.arguments! as ScanProductCubit,
+            child: const ScanResultsPage(),
+          ),
+          settings: settings,
+        );
+      case RestaurantDetailsPage.id:
+        return _pageBuilder(
+          (_) => BlocProvider.value(
+            value: settings.arguments! as RestaurantsBloc,
+            child: RestaurantDetailsPage(),
+          ),
+          settings: settings,
+        );
+      // return MaterialPageRoute(
+      //   builder: (context) => const ProductFoundPageTwo(),
+      // );
+      // case ProductFoundPageTwo.id:
+      //   return MaterialPageRoute(
+      //     builder: (context) => const ProductFoundPageTwo(),
+      //   );
+
       default:
         throw Exception('Route not found!');
     }
@@ -55,7 +134,21 @@ class AppRouter {
 
   static Route<dynamic> onUnknownRoute(RouteSettings settings) {
     return MaterialPageRoute(
-      builder: (_) => ProductNotFoundPage(),
+      builder: (_) => const ProductNotFoundPage(),
+    );
+  }
+
+  static PageRouteBuilder<dynamic> _pageBuilder(
+    Widget Function(BuildContext context) page, {
+    required RouteSettings settings,
+  }) {
+    return PageRouteBuilder(
+      settings: settings,
+      transitionsBuilder: (_, animation, __, child) => FadeTransition(
+        opacity: animation,
+        child: child,
+      ),
+      pageBuilder: (context, _, __) => page(context),
     );
   }
 }
