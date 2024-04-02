@@ -8,6 +8,7 @@ import 'package:sheveegan/core/common/widgets/custom_image_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/resources/vegan_icon.dart';
+import 'package:sheveegan/features/scan_product/presentation/pages/components/flexible_space_bar_bottom.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/components/macronutrient_widget.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 
@@ -22,20 +23,27 @@ class ProductFoundPage extends StatefulWidget {
 
 class _ProductFoundPageState extends State<ProductFoundPage> {
   final _scrollController = ScrollController();
-  final GlobalKey _toolTipKey = GlobalKey();
+  final _toolTipKey = GlobalKey<TooltipState>();
+
+  Future<void> showAndCloseTooltip() async {
+    final toolTip = _toolTipKey.currentState;
+    await Future<void>.delayed(
+      const Duration(milliseconds: 10),
+    );
+    toolTip?.ensureTooltipVisible();
+    await Future<void>.delayed(
+      const Duration(seconds: 3),
+    );
+    Tooltip.dismissAllToolTips();
+  }
 
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
-      final dynamic toolTip = _toolTipKey.currentState;
-
-      final state = BlocProvider.of<ScanProductCubit>(context).state;
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      final state = BlocProvider.of<ScanProductCubit>(_toolTipKey.currentContext!).state;
       if (state is ProductFound && state.product.ingredients.isNotEmpty) {
-        await Future<void>.delayed(const Duration(milliseconds: 10));
-        toolTip.ensureTooltipVisible();
-        await Future<void>.delayed(const Duration(seconds: 3));
-        toolTip.deactivate();
+        await showAndCloseTooltip();
       }
     });
   }
@@ -87,104 +95,10 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
                   ),
                   bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(0),
-                    child: Container(
-                      width: double.maxFinite,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 30,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(25.r),
-                          topLeft: Radius.circular(25.r),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: context.width * 0.5,
-                            child: Text(
-                              state.product.productName,
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          if (state.product.ingredients.isNotEmpty)
-                            Container(
-                              height: context.width * 0.09,
-                              width: context.width * 0.12,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    blurRadius: 1,
-                                    offset: Offset(2, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Tooltip(
-                                key: _toolTipKey,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 14,
-                                  horizontal: 16,
-                                ),
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 50,
-                                ),
-                                textAlign: TextAlign.start,
-                                message: state.isVegan == true
-                                    ? Strings.toolTipVeganMessage
-                                    : state.isVegan == false
-                                        ? '${Strings.toolTipNonVeganMessage} '
-                                            '${state.nonVeganIngredients}'
-                                        : null,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: state.isVegan == true ? Colors.green : Colors.blue,
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10),
-                                    bottomRight: Radius.circular(10),
-                                  ),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 1,
-                                      offset: Offset(1, 2),
-                                    ),
-                                  ],
-                                ),
-                                triggerMode: TooltipTriggerMode.tap,
-                                showDuration: const Duration(
-                                  milliseconds: 2750,
-                                ),
-                                child: state.isVegan == true
-                                    ? const Icon(
-                                        VeganIcon.vegan_icon,
-                                        color: Colors.green,
-                                        size: 22,
-                                      )
-                                    : Center(
-                                        child: Icon(
-                                          Icons.info_outlined,
-                                          color: Colors.blueGrey.shade600,
-                                        ),
-                                      ),
-                              ),
-                            ),
-                        ],
-                      ),
+                    child: FlexibleSpaceBarBottom(
+                      toolTipKey: _toolTipKey,
+                      state: state,
+                      onTooltipTriggered: showAndCloseTooltip,
                     ),
                   ),
                 ),

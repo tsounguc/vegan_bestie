@@ -29,7 +29,7 @@ class ScanProductHomePage extends StatelessWidget {
             context,
             state.message,
           );
-        } else {
+        } else if (state is FetchingProduct) {
           Navigator.of(context).pushNamed(
             ScanResultsPage.id,
             arguments: context.read<ScanProductCubit>(),
