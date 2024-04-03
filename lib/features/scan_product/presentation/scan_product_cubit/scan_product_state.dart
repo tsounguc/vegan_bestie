@@ -32,15 +32,23 @@ class ProductFound extends ScanProductState {
   const ProductFound({
     required this.product,
     required this.isVegan,
+    required this.isVegetarian,
     required this.nonVeganIngredients,
   });
 
   final FoodProduct product;
   final bool isVegan;
+
+  final bool isVegetarian;
   final String nonVeganIngredients;
 
   @override
-  List<Object> get props => [product, isVegan, nonVeganIngredients];
+  List<Object> get props => [
+        product,
+        isVegan,
+        isVegetarian,
+        nonVeganIngredients,
+      ];
 }
 
 class ProductNotFound extends ScanProductState {

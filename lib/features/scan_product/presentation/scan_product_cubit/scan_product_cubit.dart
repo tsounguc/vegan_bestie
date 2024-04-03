@@ -43,13 +43,28 @@ class ScanProductCubit extends Cubit<ScanProductState> {
         } else {
           final isVegan = veganChecker.veganCheck(product);
           print('product found');
-          emit(
-            ProductFound(
-              product: product,
-              nonVeganIngredients: veganChecker.nonVeganIngredientsInProduct,
-              isVegan: isVegan,
-            ),
-          );
+          var isVegetarian = false;
+          if (!isVegan) {
+            isVegetarian = veganChecker.vegetarianCheck(product);
+            emit(
+              ProductFound(
+                product: product,
+                nonVeganIngredients: isVegetarian
+                    ? veganChecker.nonVeganIngredientsInProduct
+                    : veganChecker.nonVegetarianIngredientsInProduct,
+                isVegan: false,
+                isVegetarian: isVegetarian,
+              ),
+            );
+          } else {
+            emit(
+              ProductFound(
+                  product: product,
+                  nonVeganIngredients: veganChecker.nonVeganIngredientsInProduct,
+                  isVegan: isVegan,
+                  isVegetarian: false),
+            );
+          }
         }
       },
     );

@@ -43,7 +43,7 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       final state = BlocProvider.of<ScanProductCubit>(
-        _toolTipKey.currentContext!,
+        context,
       ).state;
       if (state is ProductFound && state.product.ingredients.isNotEmpty) {
         await showAndCloseTooltip();

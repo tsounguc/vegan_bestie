@@ -36,7 +36,7 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: context.width * 0.6,
+            width: context.width * 0.65,
             child: Text(
               state.product.productName,
               style: TextStyle(
@@ -55,7 +55,7 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: const [
                   BoxShadow(
-                    color: Colors.black12,
+                    color: Colors.black26,
                     blurRadius: 1,
                     offset: Offset(2, 2),
                   ),
@@ -73,17 +73,24 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                 textAlign: TextAlign.start,
                 message: state.isVegan == true
                     ? Strings.toolTipVeganMessage
-                    : state.isVegan == false
-                        ? '${Strings.toolTipNonVeganMessage} '
+                    : state.isVegetarian == true
+                        ? '${Strings.toolTipVegetarianMessage}'
                             '${state.nonVeganIngredients}'
-                        : null,
+                        : state.isVegan == false && state.isVegetarian == false
+                            ? '${Strings.toolTipNonVeganMessage}'
+                                '${state.nonVeganIngredients}'
+                            : null,
                 textStyle: TextStyle(
                   color: Colors.white,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
                 ),
                 decoration: BoxDecoration(
-                  color: state.isVegan == true ? Colors.green : Colors.blue,
+                  color: state.isVegan == true
+                      ? Colors.green
+                      : state.isVegetarian == true
+                          ? Color(0xFFe2e360)
+                          : Colors.blue,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10),
@@ -105,14 +112,20 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                     ? const Icon(
                         VeganIcon.vegan_icon,
                         color: Colors.green,
-                        size: 22,
+                        size: 25,
                       )
-                    : Center(
-                        child: Icon(
-                          Icons.info_outlined,
-                          color: Colors.blueGrey.shade600,
-                        ),
-                      ),
+                    : state.isVegetarian == true
+                        ? const Icon(
+                            VeganIcon.vegan_icon,
+                            color: Color(0xFFe2e360),
+                            size: 25,
+                          )
+                        : Center(
+                            child: Icon(
+                              Icons.info_outlined,
+                              color: Colors.blueGrey.shade600,
+                            ),
+                          ),
               ),
             ),
         ],

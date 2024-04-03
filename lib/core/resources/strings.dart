@@ -4,8 +4,10 @@ class Strings {
 
   static const productNotFound = 'Product Not Found';
   static const toolTipVeganMessage = "It's Vegan! 😊";
+  static const toolTipVegetarianMessage = "It's Vegetarian 🙂 "
+      '\nNon-vegan ingredients: ';
 
-  static const toolTipNonVeganMessage = "It's Not Vegan 😞\nContains";
+  static const toolTipNonVeganMessage = "It's not Vegan or Vegetarian 😞\nContains ";
   static const scanCanceledMessage = 'Scan Canceled';
   static const macrosText = 'Macros';
   static const proteinText = 'Protein';
