@@ -19,6 +19,7 @@ class AppTheme {
   static Color darkParticles = const Color(0XFF2E7D32);
 
   static final lightTheme = ThemeData(
+    useMaterial3: true,
     primarySwatch: MaterialColor(lightPrimaryColor.value, <int, Color>{
       50: Colors.green.shade50,
       100: Colors.green.shade100,
@@ -31,7 +32,10 @@ class AppTheme {
       800: Colors.green.shade800,
       900: Colors.green.shade900,
     }),
-    appBarTheme: AppBarTheme(elevation: 0, backgroundColor: lightBackgroundColor),
+    appBarTheme: AppBarTheme(
+      elevation: 0,
+      backgroundColor: lightBackgroundColor,
+    ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: lightBackgroundColor,
       selectedItemColor: lightPrimaryColor,
@@ -57,14 +61,14 @@ class AppTheme {
         color: lightPrimaryColor,
         fontWeight: FontWeight.bold,
       ),
-      titleLarge: GoogleFonts.dancingScript().copyWith(
+      titleLarge: TextStyle(
         color: lightPrimaryColor,
-        fontSize: 30,
-        fontWeight: FontWeight.bold,
+        // fontSize: 30,
+        fontWeight: FontWeight.w600,
       ),
       titleMedium: TextStyle(
         color: lightPrimaryColor,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.normal,
       ),
       bodyLarge: TextStyle(
         color: lightPrimaryColor,
@@ -76,11 +80,12 @@ class AppTheme {
         fontSize: 16,
         fontWeight: FontWeight.w600,
       ),
-      bodySmall: const TextStyle(color: Colors.black),
+      // bodySmall: const TextStyle(color: Colors.black),
     ),
   );
 
   static final darkTheme = ThemeData(
+    useMaterial3: true,
     primarySwatch: MaterialColor(
       Colors.green.shade900.value,
       <int, Color>{
@@ -146,11 +151,12 @@ class AppTheme {
   static void setStatusBarAndNavigationBarColors(ThemeMode themeMode) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
-          systemNavigationBarIconBrightness: themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
-          systemNavigationBarColor: themeMode == ThemeMode.light ? lightBackgroundColor : darkBackgroundColor,
-          systemNavigationBarDividerColor: Colors.transparent,),
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
+        systemNavigationBarIconBrightness: themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
+        systemNavigationBarColor: themeMode == ThemeMode.light ? lightBackgroundColor : darkBackgroundColor,
+        systemNavigationBarDividerColor: Colors.transparent,
+      ),
     );
   }
 }

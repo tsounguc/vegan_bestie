@@ -32,6 +32,8 @@ dependencies:
   equatable:
   flutter_barcode_scanner: ^2.0.0
   http: ^0.13.5
+  iconly: ^1.0.1
+  image_picker: ^1.0.7
   simple_animations: ^5.0.2
   device_preview: ^1.1.0
   flutter_screenutil: ^5.9.0

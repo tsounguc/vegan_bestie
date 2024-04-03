@@ -14,6 +14,9 @@ class IField extends StatelessWidget {
     this.keyboardType,
     this.hintStyle,
     this.overrideValidator = false,
+    this.maxLines = 1,
+    this.minLines,
+    this.borderRadius,
     super.key,
   });
 
@@ -28,6 +31,9 @@ class IField extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool overrideValidator;
   final TextStyle? hintStyle;
+  final BorderRadius? borderRadius;
+  final int? maxLines;
+  final int? minLines;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +47,8 @@ class IField extends StatelessWidget {
               }
               return validator?.call(value);
             },
+      maxLines: maxLines,
+      minLines: minLines,
       onTapOutside: (_) {
         FocusScope.of(context).unfocus();
       },
@@ -54,14 +62,14 @@ class IField extends StatelessWidget {
       readOnly: readOnly,
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(90),
+          borderRadius: borderRadius ?? BorderRadius.circular(90),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(90),
+          borderRadius: borderRadius ?? BorderRadius.circular(90),
           borderSide: const BorderSide(color: Colors.grey),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(90),
+          borderRadius: borderRadius ?? BorderRadius.circular(90),
           borderSide: BorderSide(
             color: Theme.of(context).primaryColor,
           ),

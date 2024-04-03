@@ -20,35 +20,13 @@ class _CustomBackButtonState extends State<CustomBackButton> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        PopScope(
-          onPopInvoked: (didPop) {
-            try {
-              context.pop();
-            } catch (_) {
-              if (Navigator.canPop(context)) {
-                setState(() {
-                  canPop = false;
-                });
-              } else {
-                setState(() {
-                  canPop = false;
-                });
-              }
-            }
+        IconButton(
+          onPressed: () {
+            Navigator.pop(context);
           },
-          canPop: canPop,
-          child: IconButton(
-            onPressed: () {
-              try {
-                context.pop();
-              } catch (_) {
-                Navigator.pop(context);
-              }
-            },
-            icon: Icon(
-              Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
-              color: widget.color,
-            ),
+          icon: Icon(
+            Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+            color: widget.color,
           ),
         ),
       ],

@@ -150,12 +150,11 @@ class VeganChecker {
     if (ingredientsText.contains(',')) {
       ingredientsText = ingredientsText.replaceAll('(', ',');
       ingredientsText = ingredientsText.replaceAll(')', '');
-      ingredientListFromText = ingredientsText.split(',')..forEach(debugPrint);
+      ingredientListFromText = ingredientsText.split(',');
+      // ..forEach(debugPrint);
     }
-    // Ingredients not found in the data base
-    if (product.ingredients.isEmpty) {
-      isVegan = false;
-    }
+    // List of Ingredients not found in the data base
+    isVegan = product.ingredients.isNotEmpty;
     // Labels is empty or null
     if (product.labels.isEmpty) {
       debugPrint('Labels is empty or null');

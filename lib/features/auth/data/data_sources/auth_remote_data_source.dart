@@ -137,7 +137,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       var userData = await _getUserData(user.uid);
-      print(userData.data());
       if (userData.exists) {
         return UserModel.fromMap(userData.data()!);
       }

@@ -121,7 +121,7 @@ class ProductFoundBody extends StatelessWidget {
           radius: const Radius.circular(10),
           thickness: 10,
           child: SizedBox(
-            height: context.height * 0.125,
+            height: context.height * 0.15,
             child: SingleChildScrollView(
               controller: scrollController,
               child: Padding(

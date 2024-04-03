@@ -7,6 +7,8 @@ import 'package:sheveegan/core/resources/strings.dart';
 class ProductNotFoundPage extends StatelessWidget {
   const ProductNotFoundPage({super.key, this.message});
 
+  static const String id = '/productNotFoundPage';
+
   final String? message;
 
   @override

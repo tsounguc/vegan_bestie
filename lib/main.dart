@@ -2,17 +2,14 @@ import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:sheveegan/core/common/app/providers/bottom_navigation_bar_provider.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
-import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
-import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 
 void main() async {
@@ -42,32 +39,21 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiProvider(
       providers: [
-        BlocProvider<AuthBloc>(
-          create: (context) => serviceLocator<AuthBloc>(),
-        ),
-        BlocProvider<ScanProductCubit>(
-          create: (context) => serviceLocator<ScanProductCubit>(),
-        ),
-        BlocProvider<RestaurantsBloc>(
-          create: (context) => serviceLocator<RestaurantsBloc>(),
-        ),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => BottomNavigationBarProvider()),
       ],
       child: ScreenUtilInit(
-        builder: (context, child) => ChangeNotifierProvider(
-          create: (context) => UserProvider(),
-          child: MaterialApp(
-            builder: DevicePreview.appBuilder,
-            locale: DevicePreview.locale(context),
-            debugShowCheckedModeBanner: false,
-            title: Strings.appTitle,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: ThemeMode.light,
-            onGenerateRoute: AppRouter.onGenerateRoute,
-            // onUnknownRoute: AppRouter.onUnknownRoute,
-          ),
+        builder: (context, child) => MaterialApp(
+          builder: DevicePreview.appBuilder,
+          locale: DevicePreview.locale(context),
+          debugShowCheckedModeBanner: false,
+          title: Strings.appTitle,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.light,
+          onGenerateRoute: AppRouter.onGenerateRoute,
         ),
       ),
     );
