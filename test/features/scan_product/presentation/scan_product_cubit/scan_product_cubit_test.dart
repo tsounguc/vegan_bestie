@@ -108,6 +108,7 @@ void main() {
         ProductFound(
           product: testFoodProduct,
           isVegan: false,
+          isVegetarian: false,
           nonVeganIngredients: '',
         ),
       ],
