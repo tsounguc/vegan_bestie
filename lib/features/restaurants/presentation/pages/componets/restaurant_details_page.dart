@@ -23,6 +23,8 @@ class RestaurantDetailsPage extends StatelessWidget {
     super.key,
   });
 
+  static const String id = '/restaurantDetailsPage';
+
   String restaurantType = '';
 
   final dateFormat = DateFormat('h:mm a');

@@ -38,45 +38,46 @@ class RestaurantsFoundBody extends StatelessWidget {
           },
         ),
         DraggableScrollableSheet(
-            minChildSize: 0.165,
-            maxChildSize: 0.90,
-            builder: (
-              BuildContext context,
-              ScrollController scrollController,
-            ) {
-              return ColoredBox(
-                color: Theme.of(context).colorScheme.background,
-                child: Column(
-                  children: [
-                    SingleChildScrollView(
+          minChildSize: 0.165,
+          maxChildSize: 0.90,
+          builder: (
+            BuildContext context,
+            ScrollController scrollController,
+          ) {
+            return ColoredBox(
+              color: Theme.of(context).colorScheme.background,
+              child: Column(
+                children: [
+                  SingleChildScrollView(
+                    controller: scrollController,
+                    physics: const ClampingScrollPhysics(),
+                    child: SizedBox(
+                      width: 50,
+                      height: 25,
+                      child: Divider(
+                        thickness: 5,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
                       controller: scrollController,
                       physics: const ClampingScrollPhysics(),
-                      child: SizedBox(
-                        width: 50,
-                        height: 25,
-                        child: Divider(
-                          thickness: 5,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
+                      shrinkWrap: true,
+                      itemCount: restaurants.length,
+                      itemBuilder: (context, restaurantIndex) {
+                        return RestaurantCard(
+                          restaurant: restaurants[restaurantIndex],
+                        );
+                      },
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        controller: scrollController,
-                        physics: const ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: restaurants.length,
-                        itemBuilder: (context, restaurantIndex) {
-                          return RestaurantCard(
-                            restaurant: restaurants[restaurantIndex],
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ],
     );
   }

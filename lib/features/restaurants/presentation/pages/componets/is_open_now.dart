@@ -23,6 +23,7 @@ class IsOpenNowWidget extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: const MaterialStatePropertyAll(Colors.white),
+          surfaceTintColor: const MaterialStatePropertyAll(Colors.white),
           shape: weekdayText.isEmpty
               ? null
               : MaterialStatePropertyAll(

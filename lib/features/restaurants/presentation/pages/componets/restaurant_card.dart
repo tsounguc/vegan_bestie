@@ -38,15 +38,15 @@ class RestaurantCard extends StatelessWidget {
         BlocProvider.of<RestaurantsBloc>(
           context,
         ).add(GetRestaurantDetailsEvent(id: restaurant.id));
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => RestaurantDetailsPage(),
-          ),
+        Navigator.of(context).pushNamed(
+          RestaurantDetailsPage.id,
+          arguments: context.read<RestaurantsBloc>(),
         );
       },
       child: Card(
         color: Colors.white,
         clipBehavior: Clip.antiAlias,
+        surfaceTintColor: Colors.white,
         elevation: 5,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Row(

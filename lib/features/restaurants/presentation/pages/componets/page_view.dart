@@ -78,7 +78,6 @@ class _CustomPageViewState extends State<CustomPageView> {
                 transform: matrix,
                 child: Container(
                   height: height,
-                  // width: width,
                   margin: const EdgeInsets.only(
                     left: 5,
                     right: 5,
@@ -87,7 +86,22 @@ class _CustomPageViewState extends State<CustomPageView> {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.black26),
+                    // border: Border.all(color: Colors.black12),
+                    boxShadow: _currentPageValue != position
+                        ? const [
+                            BoxShadow(
+                              color: Colors.black38,
+                              blurRadius: 2,
+                              offset: Offset(2, 4),
+                            ),
+                          ]
+                        : const [
+                            BoxShadow(
+                              color: Colors.black38,
+                              blurRadius: 2,
+                              offset: Offset(2, 4),
+                            ),
+                          ],
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       image: NetworkImage(
