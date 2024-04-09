@@ -6,15 +6,18 @@ abstract class Failure extends Equatable {
     required this.statusCode,
     required this.message,
   }) : assert(
-          statusCode is String || statusCode is int,
+          statusCode is! String || statusCode is int,
           'StatusCode cannot be a ${statusCode.runtimeType}',
         );
 
   final String message;
   final dynamic statusCode;
 
-  String get errorMessage => '$statusCode ${statusCode is String ? '' : 'Error'}'
-      ': $message';
+  String get errorMessage {
+    final showErrorText = statusCode! is String || int.tryParse(statusCode as String) != null;
+    return '$statusCode ${showErrorText ? 'Error' : ''}'
+        ': $message';
+  }
 
   @override
   List<Object?> get props => [message, statusCode];
