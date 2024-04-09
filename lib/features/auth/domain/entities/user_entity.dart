@@ -23,6 +23,8 @@ class UserEntity extends Equatable {
   final String? photoUrl;
   final String? bio;
 
+  bool get isAdmin => email == 'christiantsoungui@gmail.com';
+
   @override
   List<Object?> get props => [uid, name, email, photoUrl, bio];
 
