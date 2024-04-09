@@ -5,7 +5,7 @@ final serviceLocator = GetIt.instance;
 Future<void> setUpServices() async {
   await _initAuth();
   await _initScan();
-  await _initRestaurauts();
+  await _initRestaurants();
 }
 
 Future<void> _initAuth() async {
@@ -69,7 +69,7 @@ Future<void> _initScan() async {
     ..registerLazySingleton(BarcodeScannerPlugin.new);
 }
 
-Future<void> _initRestaurauts() async {
+Future<void> _initRestaurants() async {
   serviceLocator
     // App Logic
     ..registerFactory(
