@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CoreUtils {
   const CoreUtils._();
@@ -22,5 +25,22 @@ class CoreUtils {
           ),
         ),
       );
+  }
+
+  static void showLoadingDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (_) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  static Future<File?> pickImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      return File(image.path);
+    }
+    return null;
   }
 }
