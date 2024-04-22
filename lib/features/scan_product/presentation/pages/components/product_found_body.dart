@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
+import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/components/macronutrient_widget.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 
@@ -10,7 +11,7 @@ class ProductFoundBody extends StatelessWidget {
     required this.fatPercentage,
     required this.carbsPercentage,
     required this.proteinsPercentage,
-    required this.state,
+    required this.product,
     required this.scrollController,
     super.key,
   });
@@ -18,7 +19,7 @@ class ProductFoundBody extends StatelessWidget {
   final double fatPercentage;
   final double carbsPercentage;
   final double proteinsPercentage;
-  final ProductFound state;
+  final FoodProduct product;
   final ScrollController scrollController;
 
   @override
@@ -62,7 +63,7 @@ class ProductFoundBody extends StatelessWidget {
                   width: 10,
                 ),
                 color: Colors.green.shade800,
-                value: state.product.nutriments.proteinsValue,
+                value: product.nutriments.proteinsValue,
               ),
               SizedBox(height: context.height * 0.0075),
               MacroNutrientWidget(
@@ -75,7 +76,7 @@ class ProductFoundBody extends StatelessWidget {
                   width: 10,
                 ),
                 color: Colors.amberAccent.shade100,
-                value: state.product.nutriments.carbohydratesValue,
+                value: product.nutriments.carbohydratesValue,
               ),
               SizedBox(
                 height: context.height * 0.0075,
@@ -90,7 +91,7 @@ class ProductFoundBody extends StatelessWidget {
                   width: 10,
                 ),
                 color: Colors.deepPurpleAccent.shade100,
-                value: state.product.nutriments.fatValue,
+                value: product.nutriments.fatValue,
               ),
             ],
           ),
@@ -130,9 +131,7 @@ class ProductFoundBody extends StatelessWidget {
                   vertical: context.height * 0.0025,
                 ),
                 child: Text(
-                  state.product.ingredientsText.isNotEmpty
-                      ? state.product.ingredientsText
-                      : Strings.ingredientsNotFoundText,
+                  product.ingredientsText.isNotEmpty ? product.ingredientsText : Strings.ingredientsNotFoundText,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 12.sp,

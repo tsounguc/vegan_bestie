@@ -3,9 +3,12 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
+import 'package:sheveegan/features/auth/domain/usecases/remove_food_product.dart';
+import 'package:sheveegan/features/auth/domain/usecases/save_food_product.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/barcode.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/scan_product/domain/use_cases/fetch_product.dart';
+import 'package:sheveegan/features/scan_product/domain/use_cases/fetch_saved_products_list.dart';
 import 'package:sheveegan/features/scan_product/domain/use_cases/scan_barcode.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 
@@ -13,17 +16,32 @@ class MockScanProduct extends Mock implements ScanBarcode {}
 
 class MockFetchProduct extends Mock implements FetchProduct {}
 
+class MockSaveFoodProduct extends Mock implements SaveFoodProduct {}
+
+class MockRemoveFoodProduct extends Mock implements RemoveFoodProduct {}
+
+class MockFetchSavedProductsList extends Mock implements FetchSavedProductsList {}
+
 void main() {
   late ScanBarcode scanBarcode;
   late FetchProduct fetchProduct;
+  late SaveFoodProduct saveFoodProduct;
+  late RemoveFoodProduct removeFoodProduct;
+  late FetchSavedProductsList fetchSavedProductsList;
   late ScanProductCubit cubit;
   late FetchProductParams testFetchProductParams;
   setUp(() {
     scanBarcode = MockScanProduct();
     fetchProduct = MockFetchProduct();
+    saveFoodProduct = MockSaveFoodProduct();
+    removeFoodProduct = MockRemoveFoodProduct();
+    fetchSavedProductsList = MockFetchSavedProductsList();
     cubit = ScanProductCubit(
       scanBarcode: scanBarcode,
       fetchProduct: fetchProduct,
+      saveFoodProduct: saveFoodProduct,
+      removeFoodProduct: removeFoodProduct,
+      fetchSavedProductsList: fetchSavedProductsList,
     );
     testFetchProductParams = const FetchProductParams.empty();
     registerFallbackValue(testFetchProductParams);
@@ -107,9 +125,6 @@ void main() {
         const FetchingProduct(),
         ProductFound(
           product: testFoodProduct,
-          isVegan: false,
-          isVegetarian: false,
-          nonVeganIngredients: '',
         ),
       ],
       verify: (cubit) {

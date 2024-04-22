@@ -10,9 +10,11 @@ import 'package:sheveegan/features/auth/presentation/pages/forgot_password_scree
 import 'package:sheveegan/features/auth/presentation/pages/sign_in_screen.dart';
 import 'package:sheveegan/features/auth/presentation/pages/sign_up_screen.dart';
 import 'package:sheveegan/features/auth/presentation/pages/welcome_page.dart';
+import 'package:sheveegan/features/profile/presentation/screens/all_saved_products_page.dart';
 import 'package:sheveegan/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_details_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/product_found_page.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/scan_results_page.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';

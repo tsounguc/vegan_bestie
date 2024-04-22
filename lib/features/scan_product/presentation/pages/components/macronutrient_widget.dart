@@ -60,7 +60,7 @@ class MacroNutrientWidget extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               LinearProgressIndicator(
-                value: percentage,
+                value: percentage / 100,
                 valueColor: AlwaysStoppedAnimation<Color>(color),
                 backgroundColor: Colors.grey,
               ),

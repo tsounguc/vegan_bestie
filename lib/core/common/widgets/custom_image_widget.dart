@@ -5,10 +5,12 @@ import 'package:sheveegan/core/common/screens/loading/loading.dart';
 
 class CustomImageWidget extends StatelessWidget {
   const CustomImageWidget({
-    required this.imageUrl, super.key,
+    required this.imageUrl,
+    super.key,
     this.height,
     this.width,
   });
+
   final String? imageUrl;
   final double? height;
   final double? width;
@@ -19,15 +21,15 @@ class CustomImageWidget extends StatelessWidget {
     return Container(
       height: height ?? MediaQuery.of(context).size.height * 0.43,
       width: width ?? MediaQuery.of(context).size.width * 0.80,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+      decoration: const BoxDecoration(
+        color: Colors.grey,
         // gradient:
         //     RadialGradient(colors: [Color(0XFF2E7D32), Colors.green.shade500]),
-        borderRadius: const BorderRadius.only(
+        borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(25),
           bottomRight: Radius.circular(25),
         ),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
             color: Colors.black45,
             spreadRadius: 2,

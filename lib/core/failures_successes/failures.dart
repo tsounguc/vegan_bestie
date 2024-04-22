@@ -160,6 +160,20 @@ class UpdateUserDataFailure extends Failure {
         );
 }
 
+class SaveFoodProductFailure extends Failure {
+  SaveFoodProductFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  SaveFoodProductFailure.fromException(
+    SaveFoodProductException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
 class SignInWithGoogleFailure extends Failure {
   SignInWithGoogleFailure({
     required super.message,

@@ -373,9 +373,9 @@ class VeganChecker {
               !_nonVegetarianIngredientsInProduct.contains('$nonVegetarianIngredient, ')) {
             debugPrint(
               '$ingredient is text and '
-              '$nonVegetarianIngredient is from non vegan list',
+              '$nonVegetarianIngredient is from non vegetarian list',
             );
-            _nonVeganIngredientsInProduct = '$_nonVeganIngredientsInProduct'
+            _nonVegetarianIngredientsInProduct = '$_nonVegetarianIngredientsInProduct'
                 '$nonVegetarianIngredient, ';
             isVegetarian = false;
           }

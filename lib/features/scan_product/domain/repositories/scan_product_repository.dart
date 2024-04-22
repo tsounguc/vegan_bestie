@@ -6,4 +6,10 @@ abstract class ScanProductRepository {
   ResultFuture<Barcode> scanBarcode();
 
   ResultFuture<FoodProduct> fetchProduct({required String barcode});
+
+  ResultVoid saveFoodProduct({required String barcode});
+
+  ResultVoid removeFoodProduct({required String barcode});
+
+  ResultFuture<List<FoodProduct>> fetchSavedProductsList({required List<String> productsList});
 }

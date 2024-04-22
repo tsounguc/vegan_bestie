@@ -23,7 +23,9 @@ class ScanResultsPage extends StatelessWidget {
         } else if (state is ProductNotFound) {
           page = const ProductNotFoundPage();
         } else if (state is ProductFound) {
-          page = const ProductFoundPage();
+          page = ProductFoundPage(
+            product: state.product,
+          );
         }
         return page;
       },

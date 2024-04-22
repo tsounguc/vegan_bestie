@@ -46,6 +46,17 @@ class ForgotPasswordEvent extends AuthEvent {
   List<Object> get props => [email];
 }
 
+class SaveFoodProductEvent extends AuthEvent {
+  SaveFoodProductEvent({
+    required this.barcode,
+  });
+
+  final String barcode;
+
+  @override
+  List<Object> get props => [barcode];
+}
+
 class UpdateUserEvent extends AuthEvent {
   UpdateUserEvent({
     required this.action,

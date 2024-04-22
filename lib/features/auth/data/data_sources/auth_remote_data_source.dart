@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:sheveegan/core/enums/update_user.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/utils/constants.dart';
+import 'package:sheveegan/core/utils/firebase_constants.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 
@@ -87,6 +88,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       await userCredential.user?.updateDisplayName(fullName);
       await userCredential.user?.updatePhotoURL(kDefaultAvatar);
 
+      //
       await _setUserData(
         _authClient.currentUser!,
         email,
@@ -123,6 +125,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String password,
   }) async {
     try {
+      // sign in and store result
       final result = await _authClient.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -136,12 +139,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         );
       }
 
+      // get user data from firestore with user uid
       var userData = await _getUserData(user.uid);
+
       if (userData.exists) {
         return UserModel.fromMap(userData.data()!);
       }
 
+      // if user doesn't have data in firestore
+      // upload data to firestore
       await _setUserData(user, email);
+      // get user data from firestore with user uid
       userData = await _getUserData(user.uid);
 
       return UserModel.fromMap(userData.data()!);
@@ -229,27 +237,31 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   Future<DocumentSnapshot<DataMap>> _getUserData(String uid) async {
-    return _cloudStoreClient.collection('users').doc(uid).get();
+    return _users.doc(uid).get();
   }
 
   Future<void> _setUserData(User user, String fallbackEmail) async {
-    await _cloudStoreClient.collection('users').doc(user.uid).set(
+    await _users.doc(user.uid).set(
           UserModel(
             uid: user.uid,
             email: user.email ?? fallbackEmail,
             name: user.displayName ?? '',
             photoUrl: user.photoURL ?? '',
             bio: '',
+            savedProductsBarcodes: const [],
           ).toMap(),
         );
   }
 
   Future<void> _updateUserData(DataMap data) async {
-    await _cloudStoreClient
-        .collection('users')
+    await _users
         .doc(
           _authClient.currentUser?.uid,
         )
         .update(data);
   }
+
+  CollectionReference<Map<String, dynamic>> get _users => _cloudStoreClient.collection(
+        FirebaseConstants.usersCollection,
+      );
 }

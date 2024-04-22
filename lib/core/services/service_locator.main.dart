@@ -49,11 +49,17 @@ Future<void> _initScan() async {
       () => ScanProductCubit(
         scanBarcode: serviceLocator(),
         fetchProduct: serviceLocator(),
+        saveFoodProduct: serviceLocator(),
+        removeFoodProduct: serviceLocator(),
+        fetchSavedProductsList: serviceLocator(),
       ),
     )
     // Use cases
     ..registerLazySingleton(() => ScanBarcode(serviceLocator()))
     ..registerLazySingleton(() => FetchProduct(serviceLocator()))
+    ..registerLazySingleton(() => SaveFoodProduct(serviceLocator()))
+    ..registerLazySingleton(() => RemoveFoodProduct(serviceLocator()))
+    ..registerLazySingleton(() => FetchSavedProductsList(serviceLocator()))
     // Repositories
     ..registerLazySingleton<ScanProductRepository>(
       () => ScanProductRepositoryImpl(serviceLocator()),
@@ -63,10 +69,14 @@ Future<void> _initScan() async {
       () => ScanProductRemoteDataSourceImpl(
         serviceLocator(),
         serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
       ),
     )
     // External dependencies
-    ..registerLazySingleton(BarcodeScannerPlugin.new);
+    ..registerLazySingleton(BarcodeScannerPlugin.new)
+    ..registerLazySingleton(VeganChecker.new);
 }
 
 Future<void> _initRestaurants() async {
@@ -90,7 +100,6 @@ Future<void> _initRestaurants() async {
       () => RestaurantsRepositoryImpl(serviceLocator()),
     )
     // Data Sources
-
     ..registerLazySingleton<RestaurantsRemoteDataSource>(
       () => RestaurantsRemoteDataSourceImpl(
         serviceLocator(),

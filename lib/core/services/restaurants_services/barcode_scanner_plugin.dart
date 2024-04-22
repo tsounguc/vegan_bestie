@@ -18,10 +18,11 @@ class BarcodeScannerPlugin {
     if (barcodeString == '-1') {
       throw const ScanException(message: 'Scan Cancelled');
     }
-    if (int.tryParse(barcodeString) == null ||
-        barcodeString.isEmpty ||
-        barcodeString.length < 12 ||
-        barcodeString.length > 13) {
+    if (int.tryParse(barcodeString) == null || barcodeString.isEmpty
+        // ||
+        // barcodeString.length < 12 ||
+        // barcodeString.length > 13
+        ) {
       debugPrint('Invalid Barcode');
       throw const ScanException(message: 'Invalid Barcode');
     }

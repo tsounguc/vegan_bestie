@@ -1,0 +1,112 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/cli_commands.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/screens/loading/loading.dart';
+import 'package:sheveegan/core/common/widgets/custom_image_widget.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
+
+class ProductCard extends StatelessWidget {
+  const ProductCard({
+    required this.product,
+    this.onTap,
+    super.key,
+  });
+
+  final FoodProduct product;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        color: Colors.white,
+        clipBehavior: Clip.antiAlias,
+        surfaceTintColor: Colors.white,
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.width * 0.030,
+              ),
+              width: MediaQuery.of(context).size.width * 0.35,
+              child: Center(
+                child: product.imageFrontUrl.isEmpty
+                    ? Container(
+                        decoration: BoxDecoration(
+                          color: product.isVegan
+                              ? Colors.green.shade50
+                              : product.isVegetarian
+                                  ? const Color(0xFFe2e360)
+                                  : Colors.blue.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          Icons.image_outlined,
+                          size: MediaQuery.of(context).size.width * 0.35,
+                          color: Colors.white,
+                        ),
+                      )
+                    : Ink(
+                        height: MediaQuery.of(context).size.width * 0.35,
+                        width: MediaQuery.of(context).size.width * 0.35,
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: CachedNetworkImageProvider(
+                              product.imageFrontUrl,
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.30,
+                child: Text(
+                  product.productName.capitalize(),
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                product.isVegan
+                    ? 'Vegan'
+                    : product.isVegetarian
+                        ? 'Vegetarian'
+                        : '',
+                style: TextStyle(
+                  color: product.isVegan
+                      ? context.theme.primaryColor
+                      : product.isVegetarian
+                          ? const Color(0xFFe2e360)
+                          : Colors.blue.shade300,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+}

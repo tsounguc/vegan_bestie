@@ -31,4 +31,38 @@ class ScanProductRepositoryImpl implements ScanProductRepository {
       return Left(ScanFailure.fromException(e));
     }
   }
+
+  @override
+  ResultVoid removeFoodProduct({required String barcode}) async {
+    try {
+      final result = await _remoteDataSource.removeFoodProduct(
+        barcode: barcode,
+      );
+      return Right(result);
+    } on SaveFoodProductException catch (e) {
+      return Left(SaveFoodProductFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid saveFoodProduct({required String barcode}) async {
+    try {
+      final result = await _remoteDataSource.saveFoodProduct(
+        barcode: barcode,
+      );
+      return Right(result);
+    } on SaveFoodProductException catch (e) {
+      return Left(SaveFoodProductFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<List<FoodProduct>> fetchSavedProductsList({required List<String> productsList}) async {
+    try {
+      final result = await _remoteDataSource.fetchSavedProductsList(barcodesList: productsList);
+      return Right(result);
+    } on FetchProductException catch (e) {
+      return Left(FetchProductFailure.fromException(e));
+    }
+  }
 }

@@ -20,6 +20,7 @@ class AppRouter {
               );
               // store user model in user provider
               context.userProvider.initUser(userModel);
+
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
@@ -117,6 +118,22 @@ class AppRouter {
             value: settings.arguments! as RestaurantsBloc,
             child: RestaurantDetailsPage(),
           ),
+          settings: settings,
+        );
+      case ProductFoundPage.id:
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<ScanProductCubit>(),
+            child: ProductFoundPage(
+              product: settings.arguments! as FoodProduct,
+            ),
+          ),
+          settings: settings,
+        );
+
+      case AllSavedProductsPage.id:
+        return _pageBuilder(
+          (_) => const AllSavedProductsPage(),
           settings: settings,
         );
       // return MaterialPageRoute(

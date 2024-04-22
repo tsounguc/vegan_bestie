@@ -31,9 +31,30 @@ class FetchingProduct extends ScanProductState {
 class ProductFound extends ScanProductState {
   const ProductFound({
     required this.product,
+  });
+
+  final FoodProduct product;
+
+  @override
+  List<Object> get props => [
+        product,
+      ];
+}
+
+class SavingFoodProduct extends ScanProductState {
+  const SavingFoodProduct();
+}
+
+class RemovingFoodProduct extends ScanProductState {
+  const RemovingFoodProduct();
+}
+
+class FoodProductSaved extends ScanProductState {
+  const FoodProductSaved({
+    required this.product,
+    required this.nonVeganIngredients,
     required this.isVegan,
     required this.isVegetarian,
-    required this.nonVeganIngredients,
   });
 
   final FoodProduct product;
@@ -41,14 +62,16 @@ class ProductFound extends ScanProductState {
 
   final bool isVegetarian;
   final String nonVeganIngredients;
+}
 
-  @override
-  List<Object> get props => [
-        product,
-        isVegan,
-        isVegetarian,
-        nonVeganIngredients,
-      ];
+class FetchingProductsList extends ScanProductState {
+  const FetchingProductsList();
+}
+
+class SavedProductsListFetched extends ScanProductState {
+  const SavedProductsListFetched({required this.savedProductsList});
+
+  final List<FoodProduct> savedProductsList;
 }
 
 class ProductNotFound extends ScanProductState {

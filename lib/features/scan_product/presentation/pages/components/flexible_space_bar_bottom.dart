@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/resources/vegan_icon.dart';
+import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 
 class FlexibleSpaceBarBottom extends StatelessWidget {
   const FlexibleSpaceBarBottom({
     required GlobalKey<State<Tooltip>> toolTipKey,
-    required this.state,
+    // required this.state,
+    required this.product,
     this.onTooltipTriggered,
     super.key,
   }) : _toolTipKey = toolTipKey;
-  final ProductFound state;
+
+  // final ProductFound state;
+  final FoodProduct product;
 
   final GlobalKey<State<Tooltip>> _toolTipKey;
   final void Function()? onTooltipTriggered;
@@ -38,7 +43,7 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
           SizedBox(
             width: context.width * 0.65,
             child: Text(
-              state.product.productName,
+              product.productName.capitalize(),
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w500,
@@ -46,7 +51,7 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
               ),
             ),
           ),
-          if (state.product.ingredients.isNotEmpty)
+          if (product.ingredients.isNotEmpty)
             Container(
               height: context.width * 0.09,
               width: context.width * 0.12,
@@ -71,14 +76,14 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                   horizontal: 50,
                 ),
                 textAlign: TextAlign.start,
-                message: state.isVegan == true
+                message: product.isVegan == true
                     ? Strings.toolTipVeganMessage
-                    : state.isVegetarian == true
+                    : product.isVegetarian == true
                         ? '${Strings.toolTipVegetarianMessage}'
-                            '${state.nonVeganIngredients}'
-                        : state.isVegan == false && state.isVegetarian == false
+                            '${product.nonVeganIngredients}'
+                        : product.isVegan == false && product.isVegetarian == false
                             ? '${Strings.toolTipNonVeganMessage}'
-                                '${state.nonVeganIngredients}'
+                                '${product.nonVeganIngredients}'
                             : null,
                 textStyle: TextStyle(
                   color: Colors.white,
@@ -86,9 +91,9 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
                 decoration: BoxDecoration(
-                  color: state.isVegan == true
+                  color: product.isVegan == true
                       ? Colors.green
-                      : state.isVegetarian == true
+                      : product.isVegetarian == true
                           ? Color(0xFFe2e360)
                           : Colors.blue,
                   borderRadius: const BorderRadius.only(
@@ -108,13 +113,13 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                 showDuration: const Duration(
                   milliseconds: 3000,
                 ),
-                child: state.isVegan == true
+                child: product.isVegan == true
                     ? const Icon(
                         VeganIcon.vegan_icon,
                         color: Colors.green,
                         size: 25,
                       )
-                    : state.isVegetarian == true
+                    : product.isVegetarian == true
                         ? const Icon(
                             VeganIcon.vegan_icon,
                             color: Color(0xFFe2e360),

@@ -8,6 +8,7 @@ class UserModel extends UserEntity {
     required super.email,
     super.photoUrl,
     super.bio,
+    super.savedProductsBarcodes,
   });
 
   const UserModel.empty()
@@ -17,13 +18,20 @@ class UserModel extends UserEntity {
           email: '',
         );
 
-  UserModel.fromMap(DataMap map)
+  UserModel.fromMap(DataMap dataMap)
       : this(
-          uid: map['uid'] as String,
-          name: map['name'] as String,
-          email: map['email'] as String,
-          photoUrl: map['photoUrl'] as String?,
-          bio: map['bio'] as String?,
+          uid: dataMap['uid'] as String,
+          name: dataMap['name'] as String,
+          email: dataMap['email'] as String,
+          photoUrl: dataMap['photoUrl'] as String?,
+          bio: dataMap['bio'] as String?,
+          savedProductsBarcodes: dataMap['savedProductsBarcodes'] == null
+              ? []
+              : List<String>.from(
+                  (dataMap['savedProductsBarcodes'] as List).map(
+                    (foodProductId) => foodProductId,
+                  ),
+                ),
         );
 
   DataMap toMap() => {
@@ -32,6 +40,7 @@ class UserModel extends UserEntity {
         'email': email,
         'photoUrl': photoUrl,
         'bio': bio,
+        'savedProductsBarcodes': savedProductsBarcodes,
       };
 
   UserModel copyWith({
@@ -40,6 +49,7 @@ class UserModel extends UserEntity {
     String? email,
     String? photoUrl,
     String? bio,
+    List<String>? savedProductsBarcodes,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -47,6 +57,7 @@ class UserModel extends UserEntity {
       email: email ?? this.email,
       photoUrl: photoUrl ?? this.photoUrl,
       bio: bio ?? this.bio,
+      savedProductsBarcodes: savedProductsBarcodes ?? this.savedProductsBarcodes,
     );
   }
 }

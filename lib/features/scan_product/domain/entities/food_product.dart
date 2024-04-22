@@ -1,15 +1,17 @@
 import 'package:equatable/equatable.dart';
 
 class FoodProduct extends Equatable {
-  const FoodProduct({
-    required this.code,
-    required this.productName,
-    required this.ingredients,
-    required this.ingredientsText,
-    required this.labels,
-    required this.imageFrontUrl,
-    required this.nutriments,
-  });
+  const FoodProduct(
+      {required this.code,
+      required this.productName,
+      required this.ingredients,
+      required this.ingredientsText,
+      required this.labels,
+      required this.imageFrontUrl,
+      required this.nutriments,
+      required this.isVegan,
+      required this.isVegetarian,
+      required this.nonVeganIngredients});
 
   FoodProduct.empty()
       : this(
@@ -20,6 +22,9 @@ class FoodProduct extends Equatable {
           labels: '_empty.',
           imageFrontUrl: '_empty.',
           nutriments: const Nutriments.empty(),
+          isVegan: false,
+          isVegetarian: false,
+          nonVeganIngredients: '_empty.nonVeganIngredients',
         );
 
   final String code;
@@ -29,6 +34,9 @@ class FoodProduct extends Equatable {
   final String labels;
   final String imageFrontUrl;
   final Nutriments nutriments;
+  final bool isVegan;
+  final bool isVegetarian;
+  final String nonVeganIngredients;
 
   @override
   List<Object?> get props => [
@@ -39,6 +47,9 @@ class FoodProduct extends Equatable {
         labels,
         imageFrontUrl,
         nutriments,
+        isVegan,
+        isVegetarian,
+        nonVeganIngredients,
       ];
 }
 
