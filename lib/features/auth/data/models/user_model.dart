@@ -49,7 +49,7 @@ class UserModel extends UserEntity {
         'photoUrl': photoUrl,
         'bio': bio,
         'savedProductsBarcodes': savedProductsBarcodes,
-        'savedRestaurantsIds': savedRestaurantsIds
+        'savedRestaurantsIds': savedRestaurantsIds,
       };
 
   UserModel copyWith({

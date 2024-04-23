@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 
 class VeganBestieLogoWidget extends StatelessWidget {
-  VeganBestieLogoWidget({super.key, this.size = 35, this.fontSize = 52});
+  const VeganBestieLogoWidget({super.key, this.size = 35, this.fontSize = 52});
 
-  double size;
-  double fontSize;
+  final double size;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {

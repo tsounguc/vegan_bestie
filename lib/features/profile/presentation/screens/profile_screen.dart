@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_products_provider.dart';
@@ -21,7 +20,6 @@ import 'package:sheveegan/features/profile/presentation/screens/edit_profile_scr
 import 'package:sheveegan/features/profile/presentation/widgets/product_card.dart';
 import 'package:sheveegan/features/profile/presentation/widgets/restaurant_card.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_details_page.dart';
-import 'package:sheveegan/features/restaurants/presentation/pages/componets/horizontal_restaurant_card.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/product_found_page.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -160,7 +158,7 @@ class ProfileScreen extends StatelessWidget {
                                 border: const Border(
                                     right: BorderSide(color: Colors.black12),
                                     left: BorderSide(color: Colors.black12),
-                                    top: BorderSide(color: Colors.black12)),
+                                    top: BorderSide(color: Colors.black12),),
                                 borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(25.r),
                                   topLeft: Radius.circular(25.r),
@@ -211,7 +209,7 @@ class ProfileScreen extends StatelessWidget {
                                             .take(4)
                                             .map(
                                               (product) => Padding(
-                                                padding: const EdgeInsets.only(right: 16.0),
+                                                padding: const EdgeInsets.only(right: 16),
                                                 child: ProductCard(
                                                   product: product,
                                                   onTap: () => Navigator.of(context).pushNamed(
@@ -272,7 +270,7 @@ class ProfileScreen extends StatelessWidget {
                               ),
                               SizedBox(
                                 height: 10.h,
-                              )
+                              ),
                             ],
                           ),
                         ),

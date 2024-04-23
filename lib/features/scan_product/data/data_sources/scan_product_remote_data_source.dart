@@ -36,8 +36,13 @@ abstract class ScanProductRemoteDataSource {
 const kFetchProductEndPoint = '/api/v2/product/';
 
 class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
-  const ScanProductRemoteDataSourceImpl(this._scanner, this._client, this._cloudStoreClient, this._authClient,
-      this._veganChecker);
+  const ScanProductRemoteDataSourceImpl(
+    this._scanner,
+    this._client,
+    this._cloudStoreClient,
+    this._authClient,
+    this._veganChecker,
+  );
 
   final BarcodeScannerPlugin _scanner;
   final Client _client;
@@ -62,8 +67,8 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
       final data = jsonDecode(response.body);
 
       var foodProduct = FoodProductModel.fromMap(data['product'] as DataMap);
-      final isVegan = serviceLocator<VeganChecker>().veganCheck(foodProduct);
-      final isVegetarian = serviceLocator<VeganChecker>().vegetarianCheck(foodProduct);
+      final isVegan = _veganChecker.veganCheck(foodProduct);
+      final isVegetarian = _veganChecker.vegetarianCheck(foodProduct);
       return foodProduct = foodProduct.copyWith(
         isVegan: isVegan,
         isVegetarian: !isVegan && isVegetarian,
@@ -148,8 +153,7 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
     return productsList;
   }
 
-  CollectionReference<Map<String, dynamic>> get _users =>
-      _cloudStoreClient.collection(
+  CollectionReference<Map<String, dynamic>> get _users => _cloudStoreClient.collection(
         FirebaseConstants.usersCollection,
       );
 }

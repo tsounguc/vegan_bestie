@@ -5,7 +5,6 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/resources/vegan_icon.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
-import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 
 class FlexibleSpaceBarBottom extends StatelessWidget {
   const FlexibleSpaceBarBottom({
@@ -94,7 +93,7 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                   color: product.isVegan == true
                       ? Colors.green
                       : product.isVegetarian == true
-                          ? Color(0xFFe2e360)
+                          ? const Color(0xFFe2e360)
                           : Colors.blue,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),

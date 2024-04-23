@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class CustomPageView extends StatefulWidget {
-  const CustomPageView({super.key, required this.restaurantDetails});
+  const CustomPageView({required this.restaurantDetails, super.key});
 
   final RestaurantDetails restaurantDetails;
 

@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sheveegan/features/auth/domain/usecases/remove_restaurant.dart';
 import 'package:sheveegan/features/auth/domain/usecases/save_restaurant.dart';
-
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_details.dart';
@@ -14,10 +14,7 @@ import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_n
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
 import 'package:sheveegan/features/scan_product/domain/use_cases/get_saved_restaurants_list.dart';
 
-import '../../../auth/domain/usecases/remove_restaurant.dart';
-
 part 'restaurants_event.dart';
-
 part 'restaurants_state.dart';
 
 class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {

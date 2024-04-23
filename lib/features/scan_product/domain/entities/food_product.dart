@@ -11,7 +11,7 @@ class FoodProduct extends Equatable {
       required this.nutriments,
       required this.isVegan,
       required this.isVegetarian,
-      required this.nonVeganIngredients});
+      required this.nonVeganIngredients,});
 
   FoodProduct.empty()
       : this(

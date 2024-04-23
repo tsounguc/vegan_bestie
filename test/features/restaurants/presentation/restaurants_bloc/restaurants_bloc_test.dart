@@ -3,6 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
+import 'package:sheveegan/features/auth/domain/usecases/remove_restaurant.dart';
+import 'package:sheveegan/features/auth/domain/usecases/save_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
@@ -12,6 +14,7 @@ import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_m
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'package:sheveegan/features/scan_product/domain/use_cases/get_saved_restaurants_list.dart';
 
 class MockGetRestaurantsNearMe extends Mock implements GetRestaurantsNearMe {}
 
@@ -20,6 +23,12 @@ class MockGetRestaurantDetails extends Mock implements GetRestaurantDetails {}
 class MockGetUserLocation extends Mock implements GetUserLocation {}
 
 class MockGetRestaurantsMarkers extends Mock implements GetRestaurantsMarkers {}
+
+class MockGetSavedRestaurantsList extends Mock implements GetSavedRestaurantsList {}
+
+class MockSaveRestaurant extends Mock implements SaveRestaurant {}
+
+class MockRemoveRestaurant extends Mock implements RemoveRestaurant {}
 
 void main() {
   late GetRestaurantsNearMe getRestaurantsNearMe;
@@ -46,6 +55,9 @@ void main() {
       getRestaurantDetails: getRestaurantDetails,
       getUserLocation: getUserLocation,
       getRestaurantsMarkers: getRestaurantsMarkers,
+      getSavedRestaurantsList: MockGetSavedRestaurantsList(),
+      saveRestaurant: MockSaveRestaurant(),
+      removeRestaurant: MockRemoveRestaurant(),
     );
     testGetRestaurantsParams = GetRestaurantsNearMeParams.empty();
     testGetRestaurantDetailsParams = const GetRestaurantDetailsParams.empty();

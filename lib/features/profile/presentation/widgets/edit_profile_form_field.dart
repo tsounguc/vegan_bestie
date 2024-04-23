@@ -44,7 +44,7 @@ class EditProfileFormField extends StatelessWidget {
           maxLines: maxLines,
           minLines: minLines,
         ),
-        const SizedBox(height: 30)
+        const SizedBox(height: 30),
       ],
     );
   }

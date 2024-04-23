@@ -47,7 +47,7 @@ class ForgotPasswordEvent extends AuthEvent {
 }
 
 class SaveFoodProductEvent extends AuthEvent {
-  SaveFoodProductEvent({
+  const SaveFoodProductEvent({
     required this.barcode,
   });
 

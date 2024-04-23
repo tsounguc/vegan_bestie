@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
@@ -22,13 +25,22 @@ class MockLocationPlugin extends Mock implements LocationPlugin {}
 
 class MockGoogleMapPlugin extends Mock implements GoogleMapPlugin {}
 
+class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+
 Future<void> main() async {
   await dotenv.load();
   late Client client;
   late LocationPlugin locationPlugin;
   late GoogleMapPlugin googleMapPlugin;
   late RestaurantsRemoteDataSource remoteDataSource;
-  setUp(() {
+  late FirebaseAuth authClient;
+  late FirebaseFirestore cloudStoreClient;
+  setUp(() async {
+    // instantiate Firebase Auth client
+    authClient = MockFirebaseAuth();
+
+    // instantiate FireStore client
+    cloudStoreClient = FakeFirebaseFirestore();
     client = MockClient();
     locationPlugin = MockLocationPlugin();
     googleMapPlugin = MockGoogleMapPlugin();
@@ -36,6 +48,8 @@ Future<void> main() async {
       client,
       locationPlugin,
       googleMapPlugin,
+      cloudStoreClient,
+      authClient,
     );
     registerFallbackValue(Uri());
   });
@@ -215,8 +229,8 @@ Future<void> main() async {
     final testMapModel = MapModel.empty();
     test(
       'given RestaurantsRemoteDataSourceImpl '
-      'when [RestaurantsRemoteDataSourceImpl.getRestaurantsMarkers] successfully called '
-      'then return [MapModel] ',
+      'when [RestaurantsRemoteDataSourceImpl.getRestaurantsMarkers] '
+      'successfully called then return [MapModel] ',
       () async {
         // Arrange
         when(

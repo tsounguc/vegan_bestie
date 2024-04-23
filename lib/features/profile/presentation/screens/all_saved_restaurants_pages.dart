@@ -3,21 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:sheveegan/core/common/app/providers/saved_products_provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_restaurants_provider.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/constants.dart';
-import 'package:sheveegan/features/profile/presentation/widgets/horizontal_product_card.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
-import 'package:sheveegan/features/restaurants/presentation/pages/componets/horizontal_restaurant_card.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_details_page.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
-import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 
 class AllSavedRestaurantsPage extends StatelessWidget {
   const AllSavedRestaurantsPage({super.key});
@@ -186,7 +180,7 @@ class AllSavedRestaurantsPage extends StatelessWidget {
                                     ),
                                     IsOpenNowWidget(
                                       isOpenNow: restaurant.openingHours.openNow,
-                                      weekdayText: [],
+                                      weekdayText: const [],
                                     ),
                                     SizedBox(
                                       height: MediaQuery.of(context).size.height * 0.007,

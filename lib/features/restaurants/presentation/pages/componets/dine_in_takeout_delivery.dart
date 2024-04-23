@@ -22,7 +22,6 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.18,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.width * 0.04,

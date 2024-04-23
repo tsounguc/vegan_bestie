@@ -46,7 +46,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
         centerTitle: true,
         title: SizedBox(
           width: MediaQuery.of(context).size.width * 0.5,
-          child: VeganBestieLogoWidget(size: 25, fontSize: 35),
+          child: const VeganBestieLogoWidget(size: 25, fontSize: 35),
         ),
       ),
       body: Stack(
@@ -63,7 +63,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                       path: navigationRequest.url.substring(3),
                     ),
                   );
-                  print('blocking navigation to $navigationRequest}');
+                  debugPrint('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
                 } else if (navigationRequest.url.contains('https://play.google.com/')) {
                   if (Platform.isAndroid) {
@@ -77,7 +77,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                       'Device does not support Google Play Store',
                     );
                   }
-                  print('blocking navigation to $navigationRequest}');
+                  debugPrint('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
                 } else if (navigationRequest.url.contains('https://apps.apple.com/')) {
                   if (Platform.isIOS) {
@@ -100,35 +100,13 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   );
                   debugPrint('blocking navigation to $navigationRequest}');
                   return NavigationDecision.prevent;
-                }
-                // else if (navigationRequest.url.contains("maps")) {
-                //   if (Platform.isIOS) {
-                //     launchUrl(
-                //       Uri(
-                //         scheme: 'maps',
-                //         path: navigationRequest.url.substring(5),
-                //       ),
-                //     );
-                //   } else {
-                //     launchUrl(
-                //       Uri.parse(navigationRequest.url),
-                //       mode: LaunchMode.externalNonBrowserApplication,
-                //     );
-                //   }
-                //   print('blocking navigation to $navigationRequest}');
-                //   return NavigationDecision.prevent;
-                // }
-                else {
+                } else {
                   debugPrint('allowing navigation to $navigationRequest');
                   return NavigationDecision.navigate;
                 }
               },
               javascriptMode: JavascriptMode.unrestricted,
               onPageStarted: (url) {
-                // _webViewController
-                //     .runJavascript("document.getElementsByTagName('header')[0].style.display='none'");
-                // _webViewController
-                //     .runJavascript("document.getElementsByTagName('footer')[0].style.display='none'");
                 setState(() {
                   loadingPercentage = 0;
                 });
@@ -141,19 +119,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
               },
               onPageFinished: (url) {
                 debugPrint('onPageFinished $url');
-                // _webViewController.runJavascript(
-                //     "document.getElementById('consumer-header-container__09f24__ieW2P border--bottom__09f24___mg5X border-color--default__09f24__NPAKY background-color--white__09f24__ulvSM').style.display='none'");
-                // _webViewController
-                //     .runJavascript("document.getElementsByTagName('footer')[0].style.display='none'");
-                // _webViewController
-                //     .runJavascriptReturningResult("javascript:(function() { " +
-                //         "var head = document.getElementsByTagName('header')[0];" +
-                //         "head.parentNode.removeChild(head);" +
-                //         "var footer = document.getElementsByTagName('footer')[0];" +
-                //         "footer.parentNode.removeChild(footer);" +
-                //         "})()")
-                //     .then((value) => debugPrint('Page finished loading Javascript'))
-                //     .catchError((onError) => debugPrint('$onError'));
                 setState(() {
                   loadingPercentage = 100;
                 });
@@ -161,10 +126,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
               onWebViewCreated: (WebViewController webViewController) {
                 _webViewController = webViewController;
                 _controller.complete(webViewController);
-                // _webViewController
-                //     .runJavascript("document.getElementsByTagName('header')[0].style.display='none'");
-                // _webViewController
-                //     .runJavascript("document.getElementsByTagName('footer')[0].style.display='none'");
               },
             ),
           ),
@@ -182,11 +143,12 @@ class _WebViewScreenState extends State<WebViewScreen> {
                       height: 15.h,
                     ),
                     DefaultTextStyle(
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18.sp,
-                        ),
-                        child: Text('Loading $loadingPercentage'),),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18.sp,
+                      ),
+                      child: Text('Loading $loadingPercentage'),
+                    ),
                   ],
                 ),
               ),

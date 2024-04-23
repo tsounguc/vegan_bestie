@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/restaurants_services/barcode_scanner_plugin.dart';
+import 'package:sheveegan/core/services/vegan_checker.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/scan_product/data/data_sources/scan_product_remote_data_source.dart';
 import 'package:sheveegan/features/scan_product/data/models/barcode_model.dart';
@@ -15,14 +19,33 @@ class MockScanner extends Mock implements BarcodeScannerPlugin {}
 
 class MockClient extends Mock implements Client {}
 
+class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+
+class MockVeganChecker extends Mock implements VeganChecker {}
+
 void main() {
   late BarcodeScannerPlugin scanner;
   late Client client;
+  late FirebaseFirestore cloudStoreClient;
   late ScanProductRemoteDataSource remoteDataSource;
+  late FirebaseAuth authClient;
+  late VeganChecker veganChecker;
   setUp(() {
     scanner = MockScanner();
     client = MockClient();
-    remoteDataSource = ScanProductRemoteDataSourceImpl(scanner, client);
+    // instantiate FireStore client
+    cloudStoreClient = FakeFirebaseFirestore();
+    // instantiate Firebase Auth client
+    authClient = MockFirebaseAuth();
+    veganChecker = MockVeganChecker();
+
+    remoteDataSource = ScanProductRemoteDataSourceImpl(
+      scanner,
+      client,
+      cloudStoreClient,
+      authClient,
+      veganChecker,
+    );
     registerFallbackValue(Uri());
   });
   group('scanBarcode', () {

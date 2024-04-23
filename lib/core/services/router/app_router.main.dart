@@ -4,7 +4,6 @@ class AppRouter {
   const AppRouter._();
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
-    final arguments = settings.arguments;
     switch (settings.name) {
       case '/':
         return _pageBuilder(

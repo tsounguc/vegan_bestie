@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
-import 'package:sheveegan/core/extensions/context_extension.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});
@@ -19,7 +18,7 @@ class ProfileHeader extends StatelessWidget {
             border: const Border(
                 right: BorderSide(color: Colors.black12),
                 left: BorderSide(color: Colors.black12),
-                bottom: BorderSide(color: Colors.black12)),
+                bottom: BorderSide(color: Colors.black12),),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(25.r),
               bottomRight: Radius.circular(25.r),
@@ -33,12 +32,11 @@ class ProfileHeader extends StatelessWidget {
             // ],
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               children: [
                 SizedBox(height: 10.h),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
                       user?.bio ?? '',

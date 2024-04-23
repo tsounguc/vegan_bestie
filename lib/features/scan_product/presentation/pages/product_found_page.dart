@@ -16,8 +16,7 @@ import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/
 
 class ProductFoundPage extends StatefulWidget {
   const ProductFoundPage({
-    super.key,
-    required this.product,
+    required this.product, super.key,
   });
 
   final FoodProduct product;

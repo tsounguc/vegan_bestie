@@ -4,7 +4,6 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/components/macronutrient_widget.dart';
-import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
 
 class ProductFoundBody extends StatelessWidget {
   const ProductFoundBody({
