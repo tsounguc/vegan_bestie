@@ -72,9 +72,8 @@ android {
     }
 
     lintOptions {
-//        checkReleaseBuilds false
+        checkReleaseBuilds false
         abortOnError false
-
     }
 
     signingConfigs {
