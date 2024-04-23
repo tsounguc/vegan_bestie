@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_products_provider.dart';
+import 'package:sheveegan/core/common/app/providers/saved_restaurants_provider.dart';
 import 'package:sheveegan/core/common/app/providers/tab_navigator.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
@@ -21,6 +22,8 @@ extension ContextExtension on BuildContext {
   UserEntity? get currentUser => userProvider.user;
 
   SavedProductsProvider get savedProductsProvider => read<SavedProductsProvider>();
+
+  SavedRestaurantsProvider get savedRestaurantsProvider => read<SavedRestaurantsProvider>();
 
   TabNavigator get tabNavigator => read<TabNavigator>();
 

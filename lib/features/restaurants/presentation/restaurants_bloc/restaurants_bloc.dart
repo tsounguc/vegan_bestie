@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sheveegan/features/auth/domain/usecases/save_restaurant.dart';
 
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
@@ -11,6 +12,9 @@ import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_de
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
+import 'package:sheveegan/features/scan_product/domain/use_cases/get_saved_restaurants_list.dart';
+
+import '../../../auth/domain/usecases/remove_restaurant.dart';
 
 part 'restaurants_event.dart';
 
@@ -22,15 +26,24 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
     required GetRestaurantsNearMe getRestaurantsNearMe,
     required GetRestaurantDetails getRestaurantDetails,
     required GetRestaurantsMarkers getRestaurantsMarkers,
+    required GetSavedRestaurantsList getSavedRestaurantsList,
+    required SaveRestaurant saveRestaurant,
+    required RemoveRestaurant removeRestaurant,
   })  : _getUserLocation = getUserLocation,
         _getRestaurantsNearMe = getRestaurantsNearMe,
         _getRestaurantDetails = getRestaurantDetails,
         _getRestaurantsMarkers = getRestaurantsMarkers,
+        _getSavedRestaurantsList = getSavedRestaurantsList,
+        _saveRestaurant = saveRestaurant,
+        _removeRestaurant = removeRestaurant,
         super(const RestaurantsInitial()) {
     on<LoadGeolocationEvent>(_geoLocationHandler);
     on<GetRestaurantsEvent>(_getRestaurantsHandler);
     on<GetRestaurantDetailsEvent>(_getRestaurantDetailsHandler);
     on<GetRestaurantsMarkersEvent>(_getRestaurantsMarkersHandler);
+    on<FetchSavedRestaurantsListEvent>(_fetchRestaurantsListHandler);
+    on<SaveRestaurantEvent>(_saveRestaurantHandler);
+    on<RemoveRestaurantEvent>(_removeRestaurantHandler);
   }
 
   GoogleMapController? controller;
@@ -42,6 +55,9 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
   final GetRestaurantDetails _getRestaurantDetails;
   final GetUserLocation _getUserLocation;
   final GetRestaurantsMarkers _getRestaurantsMarkers;
+  final GetSavedRestaurantsList _getSavedRestaurantsList;
+  final SaveRestaurant _saveRestaurant;
+  final RemoveRestaurant _removeRestaurant;
 
   Future<void> _getRestaurantsHandler(
     GetRestaurantsEvent event,
@@ -97,6 +113,59 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
     result.fold(
       (failure) => emit(RestaurantsError(message: failure.errorMessage)),
       (mapEntity) => emit(MarkersLoaded(markers: mapEntity.markers)),
+    );
+  }
+
+  Future<void> _fetchRestaurantsListHandler(
+    FetchSavedRestaurantsListEvent event,
+    Emitter<RestaurantsState> emit,
+  ) async {
+    emit(const FetchingSavedRestaurantsList());
+    final result = await _getSavedRestaurantsList(
+      event.savedRestaurantsIdsList,
+    );
+
+    result.fold(
+      (failure) => emit(
+        RestaurantsError(message: failure.errorMessage),
+      ),
+      (savedRestaurantsList) => emit(
+        SavedRestaurantsListFetched(
+          savedRestaurantsList: savedRestaurantsList,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _saveRestaurantHandler(
+    SaveRestaurantEvent event,
+    Emitter<RestaurantsState> emit,
+  ) async {
+    emit(const SavingRestaurant());
+    final result = await _saveRestaurant(event.restaurant.placeId);
+    result.fold(
+      (failure) => RestaurantsError(message: failure.message),
+      (success) => emit(
+        RestaurantDetailsLoaded(
+          restaurantDetails: event.restaurant,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _removeRestaurantHandler(
+    RemoveRestaurantEvent event,
+    Emitter<RestaurantsState> emit,
+  ) async {
+    emit(const RemovingRestaurant());
+    final result = await _removeRestaurant(event.restaurant.placeId);
+    result.fold(
+      (failure) => RestaurantsError(message: failure.message),
+      (success) => emit(
+        RestaurantDetailsLoaded(
+          restaurantDetails: event.restaurant,
+        ),
+      ),
     );
   }
 }

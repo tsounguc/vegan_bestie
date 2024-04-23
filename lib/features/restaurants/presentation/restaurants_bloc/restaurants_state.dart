@@ -45,6 +45,26 @@ class RestaurantDetailsLoaded extends RestaurantsState {
   List<Object> get props => [restaurantDetails];
 }
 
+class FetchingSavedRestaurantsList extends RestaurantsState {
+  const FetchingSavedRestaurantsList();
+}
+
+class SavedRestaurantsListFetched extends RestaurantsState {
+  const SavedRestaurantsListFetched({
+    required this.savedRestaurantsList,
+  });
+
+  final List<RestaurantDetails> savedRestaurantsList;
+}
+
+class SavingRestaurant extends RestaurantsState {
+  const SavingRestaurant();
+}
+
+class RemovingRestaurant extends RestaurantsState {
+  const RemovingRestaurant();
+}
+
 class UserLocationLoaded extends RestaurantsState {
   const UserLocationLoaded({required this.position});
 

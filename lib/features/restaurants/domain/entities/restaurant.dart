@@ -14,6 +14,7 @@ class Restaurant extends Equatable {
     required this.openingHours,
     required this.vicinity,
     required this.geometry,
+    required this.servesVegetarianFood,
   });
 
   Restaurant.empty()
@@ -29,6 +30,7 @@ class Restaurant extends Equatable {
           openingHours: OpeningHours.empty(),
           vicinity: '_empty.',
           geometry: const Geometry.empty(),
+          servesVegetarianFood: false,
         );
 
   final String id;
@@ -42,6 +44,7 @@ class Restaurant extends Equatable {
   final int reviewCount;
   final String vicinity;
   final Geometry geometry;
+  final bool servesVegetarianFood;
 
   @override
   List<Object?> get props => [
@@ -56,5 +59,6 @@ class Restaurant extends Equatable {
         reviewCount,
         vicinity,
         geometry,
+        servesVegetarianFood,
       ];
 }

@@ -9,6 +9,7 @@ class UserModel extends UserEntity {
     super.photoUrl,
     super.bio,
     super.savedProductsBarcodes,
+    super.savedRestaurantsIds,
   });
 
   const UserModel.empty()
@@ -32,6 +33,13 @@ class UserModel extends UserEntity {
                     (foodProductId) => foodProductId,
                   ),
                 ),
+          savedRestaurantsIds: dataMap['savedRestaurantsIds'] == null
+              ? []
+              : List<String>.from(
+                  (dataMap['savedRestaurantsIds'] as List).map(
+                    (foodProductId) => foodProductId,
+                  ),
+                ),
         );
 
   DataMap toMap() => {
@@ -41,6 +49,7 @@ class UserModel extends UserEntity {
         'photoUrl': photoUrl,
         'bio': bio,
         'savedProductsBarcodes': savedProductsBarcodes,
+        'savedRestaurantsIds': savedRestaurantsIds
       };
 
   UserModel copyWith({
@@ -50,6 +59,7 @@ class UserModel extends UserEntity {
     String? photoUrl,
     String? bio,
     List<String>? savedProductsBarcodes,
+    List<String>? savedRestaurantsIds,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -58,6 +68,7 @@ class UserModel extends UserEntity {
       photoUrl: photoUrl ?? this.photoUrl,
       bio: bio ?? this.bio,
       savedProductsBarcodes: savedProductsBarcodes ?? this.savedProductsBarcodes,
+      savedRestaurantsIds: savedRestaurantsIds ?? this.savedRestaurantsIds,
     );
   }
 }

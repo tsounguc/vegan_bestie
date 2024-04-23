@@ -8,26 +8,6 @@ class SavedProductsProvider extends ChangeNotifier {
 
   List<FoodProduct>? get savedProductsList => _savedProductsList;
 
-  void initSavedProductList(List<String> savedBarcodesList, BuildContext context) {
-    if (savedBarcodesList.isEmpty) {
-      _savedProductsList = [];
-    } else if (savedBarcodesList.isNotEmpty) {
-      // BlocProvider.of<ScanProductCubit>(
-      //   context,
-      // ).fetchProductsList(savedBarcodesList);
-      //
-      // final state = BlocProvider.of<ScanProductCubit>(
-      //   context,
-      // ).state;
-
-      // if (state is SavedProductsListFetched) {
-      //   print('init ${state.savedProductsList[1].productName}');
-      //   _savedProductsList = state.savedProductsList;
-      //   Future.delayed(Duration.zero, notifyListeners);
-      // }
-    }
-  }
-
   set savedProductsList(List<FoodProduct>? savedProductsList) {
     if (_savedProductsList != savedProductsList) {
       _savedProductsList = savedProductsList;

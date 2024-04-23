@@ -114,9 +114,11 @@ class AppRouter {
         );
       case RestaurantDetailsPage.id:
         return _pageBuilder(
-          (_) => BlocProvider.value(
-            value: settings.arguments! as RestaurantsBloc,
-            child: RestaurantDetailsPage(),
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<RestaurantsBloc>(),
+            child: RestaurantDetailsPage(
+              restaurantDetails: settings.arguments! as RestaurantDetails,
+            ),
           ),
           settings: settings,
         );
@@ -134,6 +136,12 @@ class AppRouter {
       case AllSavedProductsPage.id:
         return _pageBuilder(
           (_) => const AllSavedProductsPage(),
+          settings: settings,
+        );
+
+      case AllSavedRestaurantsPage.id:
+        return _pageBuilder(
+          (_) => const AllSavedRestaurantsPage(),
           settings: settings,
         );
       // return MaterialPageRoute(

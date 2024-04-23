@@ -174,6 +174,20 @@ class SaveFoodProductFailure extends Failure {
         );
 }
 
+class SaveRestaurantFailure extends Failure {
+  SaveRestaurantFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  SaveRestaurantFailure.fromException(
+    SaveRestaurantException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
 class SignInWithGoogleFailure extends Failure {
   SignInWithGoogleFailure({
     required super.message,

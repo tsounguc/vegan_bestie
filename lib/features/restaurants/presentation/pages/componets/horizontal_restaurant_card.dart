@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,8 +12,8 @@ import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_o
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_details_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
-class RestaurantCard extends StatelessWidget {
-  const RestaurantCard({
+class HorizontalRestaurantCard extends StatelessWidget {
+  const HorizontalRestaurantCard({
     required this.restaurant,
     super.key,
   });
@@ -38,10 +39,6 @@ class RestaurantCard extends StatelessWidget {
         BlocProvider.of<RestaurantsBloc>(
           context,
         ).add(GetRestaurantDetailsEvent(id: restaurant.id));
-        Navigator.of(context).pushNamed(
-          RestaurantDetailsPage.id,
-          arguments: context.read<RestaurantsBloc>(),
-        );
       },
       child: Card(
         color: Colors.white,
@@ -85,7 +82,7 @@ class RestaurantCard extends StatelessWidget {
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.30,
                             child: Text(
-                              restaurant.name,
+                              restaurant.name.capitalize(),
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: Colors.black,

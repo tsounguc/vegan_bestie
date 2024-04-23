@@ -37,3 +37,21 @@ class GetRestaurantsMarkersEvent extends RestaurantsEvent {
   @override
   List<Object> get props => [restaurants];
 }
+
+class FetchSavedRestaurantsListEvent extends RestaurantsEvent {
+  const FetchSavedRestaurantsListEvent({required this.savedRestaurantsIdsList});
+
+  final List<String> savedRestaurantsIdsList;
+}
+
+class RemoveRestaurantEvent extends RestaurantsEvent {
+  const RemoveRestaurantEvent({required this.restaurant});
+
+  final RestaurantDetails restaurant;
+}
+
+class SaveRestaurantEvent extends RestaurantsEvent {
+  const SaveRestaurantEvent({required this.restaurant});
+
+  final RestaurantDetails restaurant;
+}

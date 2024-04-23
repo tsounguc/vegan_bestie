@@ -64,4 +64,42 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
       return Left(MapFailure.fromException(e));
     }
   }
+
+  @override
+  ResultFuture<List<RestaurantDetails>> getSavedRestaurantsList({
+    required List<String> restaurantsList,
+  }) async {
+    try {
+      final result = await _remoteDataSource.getSavedRestaurantsList(
+        restaurantsIdsList: restaurantsList,
+      );
+      return Right(result);
+    } on RestaurantDetailsException catch (e) {
+      return Left(RestaurantDetailsFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid removeRestaurant({required String restaurantId}) async {
+    try {
+      final result = await _remoteDataSource.removeRestaurant(
+        restaurantId: restaurantId,
+      );
+      return Right(result);
+    } on SaveRestaurantException catch (e) {
+      return Left(SaveRestaurantFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid saveRestaurant({required String restaurantId}) async {
+    try {
+      final result = await _remoteDataSource.saveRestaurant(
+        restaurantId: restaurantId,
+      );
+      return Right(result);
+    } on SaveRestaurantException catch (e) {
+      return Left(SaveRestaurantFailure.fromException(e));
+    }
+  }
 }

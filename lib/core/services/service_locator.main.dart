@@ -88,6 +88,9 @@ Future<void> _initRestaurants() async {
         getRestaurantDetails: serviceLocator(),
         getUserLocation: serviceLocator(),
         getRestaurantsMarkers: serviceLocator(),
+        getSavedRestaurantsList: serviceLocator(),
+        saveRestaurant: serviceLocator(),
+        removeRestaurant: serviceLocator(),
       ),
     )
     // Use cases
@@ -95,6 +98,9 @@ Future<void> _initRestaurants() async {
     ..registerLazySingleton(() => GetRestaurantDetails(serviceLocator()))
     ..registerLazySingleton(() => GetUserLocation(serviceLocator()))
     ..registerLazySingleton(() => GetRestaurantsMarkers(serviceLocator()))
+    ..registerLazySingleton(() => GetSavedRestaurantsList(serviceLocator()))
+    ..registerLazySingleton(() => SaveRestaurant(serviceLocator()))
+    ..registerLazySingleton(() => RemoveRestaurant(serviceLocator()))
     // Repositories
     ..registerLazySingleton<RestaurantsRepository>(
       () => RestaurantsRepositoryImpl(serviceLocator()),
@@ -102,6 +108,8 @@ Future<void> _initRestaurants() async {
     // Data Sources
     ..registerLazySingleton<RestaurantsRemoteDataSource>(
       () => RestaurantsRemoteDataSourceImpl(
+        serviceLocator(),
+        serviceLocator(),
         serviceLocator(),
         serviceLocator(),
         serviceLocator(),

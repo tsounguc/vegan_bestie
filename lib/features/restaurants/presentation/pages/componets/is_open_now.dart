@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IsOpenNowWidget extends StatelessWidget {
   const IsOpenNowWidget({
@@ -20,7 +21,7 @@ class IsOpenNowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Visibility(
       visible: visible == true,
-      child: ElevatedButton(
+      child: ElevatedButton.icon(
         style: ButtonStyle(
           backgroundColor: const MaterialStatePropertyAll(Colors.white),
           surfaceTintColor: const MaterialStatePropertyAll(Colors.white),
@@ -28,7 +29,7 @@ class IsOpenNowWidget extends StatelessWidget {
               ? null
               : MaterialStatePropertyAll(
                   RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                 ),
           padding: weekdayText.isEmpty
@@ -36,7 +37,7 @@ class IsOpenNowWidget extends StatelessWidget {
                   EdgeInsets.zero,
                 )
               : const MaterialStatePropertyAll(
-                  EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  EdgeInsets.symmetric(vertical: 15, horizontal: 12),
                 ),
           elevation: weekdayText.isEmpty
               ? const MaterialStatePropertyAll(
@@ -51,29 +52,18 @@ class IsOpenNowWidget extends StatelessWidget {
             : () => _displayHoursDialog(
                   context,
                 ),
-        child: Row(
-          children: [
-            Icon(
-              Icons.access_time,
-              size: iconSize,
-              color: isOpenNow ? Colors.green : Colors.red,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.005,
-            ),
-            Row(
-              children: [
-                Text(
-                  isOpenNow ? 'Open Now' : 'Closed',
-                  style: TextStyle(
-                    color: isOpenNow ? Colors.green : Colors.red,
-                    fontSize: fontSize,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ],
+        icon: Icon(
+          Icons.access_time,
+          size: iconSize,
+          color: isOpenNow ? Colors.green : Colors.red,
+        ),
+        label: Text(
+          isOpenNow ? 'Open Now' : 'Closed',
+          style: TextStyle(
+            color: isOpenNow ? Colors.green : Colors.red,
+            fontSize: fontSize,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
@@ -88,11 +78,12 @@ class IsOpenNowWidget extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
           title: Text(
             'Hours',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey.shade800,
-                  fontSize: 20,
+                  color: Colors.black,
+                  fontSize: 18.sp,
                 ),
           ),
           content: IntrinsicHeight(
@@ -110,9 +101,9 @@ class IsOpenNowWidget extends StatelessWidget {
                             '\n                     ',
                           ),
                           style: TextStyle(
-                            color: Colors.grey.shade800,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
                       ),
@@ -124,11 +115,11 @@ class IsOpenNowWidget extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               child: Text(
-                'OK',
+                'Ok',
                 style: TextStyle(
-                  color: Colors.grey.shade800,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               onPressed: () {
@@ -136,7 +127,10 @@ class IsOpenNowWidget extends StatelessWidget {
               },
             ),
           ],
-          actionsPadding: const EdgeInsets.symmetric(vertical: 5),
+          actionsPadding: const EdgeInsets.symmetric(
+            vertical: 15,
+            horizontal: 15,
+          ),
         );
       },
     );

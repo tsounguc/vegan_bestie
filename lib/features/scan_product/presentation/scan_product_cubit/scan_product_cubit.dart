@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sheveegan/core/resources/strings.dart';
-import 'package:sheveegan/core/services/vegan_checker.dart';
 import 'package:sheveegan/features/auth/domain/usecases/remove_food_product.dart';
 import 'package:sheveegan/features/auth/domain/usecases/save_food_product.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
@@ -12,13 +11,13 @@ import 'package:sheveegan/features/scan_product/domain/use_cases/scan_barcode.da
 part 'scan_product_state.dart';
 
 class ScanProductCubit extends Cubit<ScanProductState> {
-  ScanProductCubit(
-      {required ScanBarcode scanBarcode,
-      required FetchProduct fetchProduct,
-      required SaveFoodProduct saveFoodProduct,
-      required RemoveFoodProduct removeFoodProduct,
-      required FetchSavedProductsList fetchSavedProductsList})
-      : _scanBarcode = scanBarcode,
+  ScanProductCubit({
+    required ScanBarcode scanBarcode,
+    required FetchProduct fetchProduct,
+    required SaveFoodProduct saveFoodProduct,
+    required RemoveFoodProduct removeFoodProduct,
+    required FetchSavedProductsList fetchSavedProductsList,
+  })  : _scanBarcode = scanBarcode,
         _fetchProduct = fetchProduct,
         _saveFoodProduct = saveFoodProduct,
         _removeFoodProduct = removeFoodProduct,
@@ -29,7 +28,6 @@ class ScanProductCubit extends Cubit<ScanProductState> {
   final SaveFoodProduct _saveFoodProduct;
   final RemoveFoodProduct _removeFoodProduct;
   final FetchSavedProductsList _fetchSavedProductsList;
-  final veganChecker = VeganChecker();
 
   Future<void> scanBarcode() async {
     emit(const ScanningBarcode());
@@ -110,7 +108,6 @@ class ScanProductCubit extends Cubit<ScanProductState> {
       ),
       (savedProductsList) {
         emit(SavedProductsListFetched(savedProductsList: savedProductsList));
-        ;
       },
     );
   }

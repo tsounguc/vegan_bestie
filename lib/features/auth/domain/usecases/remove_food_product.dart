@@ -8,5 +8,5 @@ class RemoveFoodProduct extends UseCaseWithParams<void, String> {
   final ScanProductRepository _repository;
 
   @override
-  ResultFuture<void> call(String params) async => _repository.removeFoodProduct(barcode: params);
+  ResultVoid call(String params) async => _repository.removeFoodProduct(barcode: params);
 }

@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/bottom_navigation_bar_provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_products_provider.dart';
+import 'package:sheveegan/core/common/app/providers/saved_restaurants_provider.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
@@ -44,6 +45,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => SavedProductsProvider()),
+        ChangeNotifierProvider(create: (_) => SavedRestaurantsProvider()),
         ChangeNotifierProvider(create: (_) => BottomNavigationBarProvider()),
       ],
       child: ScreenUtilInit(

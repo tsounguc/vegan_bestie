@@ -25,12 +25,23 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext buildContext) {
-    return BlocListener<ScanProductCubit, ScanProductState>(
-      listener: (context, state) {
-        if (state is SavedProductsListFetched) {
-          context.savedProductsProvider.savedProductsList = state.savedProductsList;
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ScanProductCubit, ScanProductState>(
+          listener: (context, state) {
+            if (state is SavedProductsListFetched) {
+              context.savedProductsProvider.savedProductsList = state.savedProductsList;
+            }
+          },
+        ),
+        BlocListener<RestaurantsBloc, RestaurantsState>(
+          listener: (context, state) {
+            if (state is SavedRestaurantsListFetched) {
+              context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
+            }
+          },
+        ),
+      ],
       child: StreamBuilder<UserModel>(
         stream: serviceLocator<FirebaseFirestore>()
             .collection('users')
@@ -44,10 +55,22 @@ class _HomePageState extends State<HomePage> {
             context.userProvider.user = snapshot.data;
             print('Saved ${context.userProvider.user!.savedProductsBarcodes}');
             final savedBarcodesList = context.userProvider.user!.savedProductsBarcodes;
-            if (savedBarcodesList?.length != context.savedProductsProvider.savedProductsList?.length)
+
+            if (savedBarcodesList?.length != context.savedProductsProvider.savedProductsList?.length) {
               BlocProvider.of<ScanProductCubit>(
                 context,
               ).fetchProductsList(savedBarcodesList!);
+            }
+            final savedRestaurantsIdsList = context.userProvider.user!.savedRestaurantsIds;
+            if (savedRestaurantsIdsList?.length != context.savedRestaurantsProvider.savedRestaurantsList?.length) {
+              BlocProvider.of<RestaurantsBloc>(
+                context,
+              ).add(
+                FetchSavedRestaurantsListEvent(
+                  savedRestaurantsIdsList: savedRestaurantsIdsList!,
+                ),
+              );
+            }
             // context.savedProductsProvider.initSavedProductList(
             //   context.userProvider.user!.savedFoodProducts ?? [],
             //   context,

@@ -17,4 +17,12 @@ abstract class RestaurantsRepository {
   ResultFuture<MapEntity> getRestaurantsMarkers({
     required List<Restaurant> restaurants,
   });
+
+  ResultFuture<List<RestaurantDetails>> getSavedRestaurantsList({
+    required List<String> restaurantsList,
+  });
+
+  ResultVoid removeRestaurant({required String restaurantId});
+
+  ResultVoid saveRestaurant({required String restaurantId});
 }

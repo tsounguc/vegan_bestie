@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
@@ -6,6 +8,7 @@ import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/services/restaurants_services/location_plugin.dart';
 import 'package:sheveegan/core/services/restaurants_services/map_plugin.dart';
 import 'package:sheveegan/core/utils/constants.dart';
+import 'package:sheveegan/core/utils/firebase_constants.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/models/map_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_details_model.dart';
@@ -24,18 +27,36 @@ abstract class RestaurantsRemoteDataSource {
 
   Future<UserLocationModel> getUserLocation();
 
-  Future<MapModel> getRestaurantsMarkers({required List<Restaurant> restaurants});
+  Future<MapModel> getRestaurantsMarkers({
+    required List<Restaurant> restaurants,
+  });
+
+  Future<List<RestaurantDetailsModel>> getSavedRestaurantsList({
+    required List<String> restaurantsIdsList,
+  });
+
+  Future<void> removeRestaurant({required String restaurantId});
+
+  Future<void> saveRestaurant({required String restaurantId});
 }
 
 const kGetRestaurantsEndPoint = 'nearbysearch/';
 const kGetRestaurantDetails = 'details/';
 
 class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
-  RestaurantsRemoteDataSourceImpl(this._client, this._location, this._googleMap);
+  RestaurantsRemoteDataSourceImpl(
+    this._client,
+    this._location,
+    this._googleMap,
+    this._cloudStoreClient,
+    this._authClient,
+  );
 
   final Client _client;
   final LocationPlugin _location;
   final GoogleMapPlugin _googleMap;
+  final FirebaseFirestore _cloudStoreClient;
+  final FirebaseAuth _authClient;
 
   @override
   Future<RestaurantDetailsModel> getRestaurantDetails({
@@ -136,4 +157,58 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       throw MapException(message: e.toString());
     }
   }
+
+  @override
+  Future<List<RestaurantDetailsModel>> getSavedRestaurantsList({required List<String> restaurantsIdsList}) async {
+    final restaurantsList = <RestaurantDetailsModel>[];
+    for (final restaurantId in restaurantsIdsList) {
+      final restaurant = await getRestaurantDetails(id: restaurantId);
+      restaurantsList.add(restaurant);
+    }
+    return restaurantsList;
+  }
+
+  @override
+  Future<void> removeRestaurant({required String restaurantId}) async {
+    try {
+      await _users.doc(_authClient.currentUser?.uid).update({
+        'savedRestaurantsIds': FieldValue.arrayRemove([restaurantId]),
+      });
+    } on FirebaseException catch (e) {
+      throw SaveFoodProductException(
+        message: e.message ?? 'Error Occurred',
+        statusCode: e.code,
+      );
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw SaveFoodProductException(
+        message: e.toString(),
+        statusCode: '505',
+      );
+    }
+  }
+
+  @override
+  Future<void> saveRestaurant({required String restaurantId}) async {
+    try {
+      await _users.doc(_authClient.currentUser?.uid).update({
+        'savedRestaurantsIds': FieldValue.arrayUnion([restaurantId]),
+      });
+    } on FirebaseException catch (e) {
+      throw SaveFoodProductException(
+        message: e.message ?? 'Error Occurred',
+        statusCode: e.code,
+      );
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw SaveFoodProductException(
+        message: e.toString(),
+        statusCode: '505',
+      );
+    }
+  }
+
+  CollectionReference<Map<String, dynamic>> get _users => _cloudStoreClient.collection(
+        FirebaseConstants.usersCollection,
+      );
 }

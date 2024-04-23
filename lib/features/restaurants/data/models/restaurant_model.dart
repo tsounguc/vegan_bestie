@@ -18,6 +18,7 @@ class RestaurantModel extends Restaurant {
     required super.openingHours,
     required super.vicinity,
     required super.geometry,
+    required super.servesVegetarianFood,
   });
 
   RestaurantModel.empty()
@@ -33,6 +34,7 @@ class RestaurantModel extends Restaurant {
           openingHours: OpeningHoursModel.empty(),
           vicinity: '_empty.vicinity',
           geometry: const Geometry.empty(),
+          servesVegetarianFood: true,
         );
 
   factory RestaurantModel.fromJson(String source) => RestaurantModel.fromMap(
@@ -69,6 +71,8 @@ class RestaurantModel extends Restaurant {
           geometry: dataMap['geometry'] == null
               ? const GeometryModel.empty()
               : GeometryModel.fromMap(dataMap['geometry'] as DataMap),
+          servesVegetarianFood:
+              dataMap['serves_vegetarian_food'] == null ? false : dataMap['serves_vegetarian_food'] as bool,
         );
 
   String toJson() => jsonEncode(toMap());
@@ -89,6 +93,7 @@ class RestaurantModel extends Restaurant {
         'opening_hours': (openingHours as OpeningHoursModel).toMap(),
         'vicinity': vicinity,
         'geometry': (geometry as GeometryModel).toMap(),
+        'serves_vegetarian_food': servesVegetarianFood,
       };
 
   RestaurantModel copyWith({
@@ -103,6 +108,7 @@ class RestaurantModel extends Restaurant {
     OpeningHours? openingHours,
     String? vicinity,
     Geometry? geometry,
+    bool? servesVegetarianFood,
   }) {
     return RestaurantModel(
       id: id ?? this.id,
@@ -116,6 +122,7 @@ class RestaurantModel extends Restaurant {
       openingHours: openingHours ?? this.openingHours,
       vicinity: vicinity ?? this.vicinity,
       geometry: geometry ?? this.geometry,
+      servesVegetarianFood: servesVegetarianFood ?? this.servesVegetarianFood,
     );
   }
 }

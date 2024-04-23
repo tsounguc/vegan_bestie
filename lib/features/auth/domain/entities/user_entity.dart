@@ -8,6 +8,7 @@ class UserEntity extends Equatable {
     this.photoUrl,
     this.bio,
     this.savedProductsBarcodes,
+    this.savedRestaurantsIds,
   });
 
   const UserEntity.empty()
@@ -18,6 +19,7 @@ class UserEntity extends Equatable {
           photoUrl: '',
           bio: '',
           savedProductsBarcodes: const [],
+          savedRestaurantsIds: const [],
         );
   final String uid;
   final String name;
@@ -25,6 +27,7 @@ class UserEntity extends Equatable {
   final String? photoUrl;
   final String? bio;
   final List<String>? savedProductsBarcodes;
+  final List<String>? savedRestaurantsIds;
 
   bool get isAdmin => email == 'christiantsoungui@gmail.com';
 
@@ -36,11 +39,13 @@ class UserEntity extends Equatable {
         photoUrl,
         bio,
         savedProductsBarcodes,
+        savedRestaurantsIds,
       ];
 
   @override
   String toString() {
     return 'LocalUser{ uid: $uid, email: $email, fullName: $name '
-        'bio: $bio savedFoodProduct: $savedProductsBarcodes }';
+        'bio: $bio savedFoodProduct: $savedProductsBarcodes '
+        'savedRestaurants: $savedRestaurantsIds }';
   }
 }

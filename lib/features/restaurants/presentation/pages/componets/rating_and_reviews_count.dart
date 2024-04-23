@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RatingAndReviewsCountWidget extends StatelessWidget {
   const RatingAndReviewsCountWidget({
-    required this.rating, required this.reviewCount, super.key,
+    required this.rating,
+    required this.reviewCount,
+    super.key,
   });
+
   final double rating;
   final int reviewCount;
 
@@ -21,16 +25,17 @@ class RatingAndReviewsCountWidget extends StatelessWidget {
             );
           },
           unratedColor: Colors.grey.shade400,
-          itemSize: 20,
+          itemSize: 16,
         ),
         const SizedBox(
           width: 7,
         ),
         Text(
-          '$reviewCount reviews',
+          '$reviewCount Reviews',
           style: TextStyle(
-            color: Colors.grey.shade800,
-            fontSize: 14,
+            color: Colors.black,
+            fontSize: 12.sp,
+            fontWeight: FontWeight.normal,
           ),
         ),
       ],
