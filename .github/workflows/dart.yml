@@ -41,7 +41,7 @@ jobs:
         with:
           #11
           channel: 'stable'
-          flutter-version-file: pubspec.yaml
+          flutter-version-file: 'pubspec.yaml'
           #          flutter-version: "3.19.5"
           cache: true
       #12
