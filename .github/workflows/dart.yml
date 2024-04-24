@@ -26,28 +26,64 @@ jobs:
     #7
     steps:
       #8
-      - uses: actions/checkout@v4
-      #9
-      - uses: actions/setup-java@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      #9 Set Up Java
+      - name: Set Up Java
+        uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '12.x'
+          java-version: '20'
           cache: 'gradle'
       #10
-      - uses: subosito/flutter-action@v2
+      - name: Set Up Flutter
+        uses: subosito/flutter-action@v2
         with:
           #11
           flutter-version: "3.19.5"
           channel: 'stable'
           cache: true
       #12
-      - name: Get dependencies
+      - name: Install Dependencies
         run: flutter pub get
-      #      - run: flutter clean
-      # Runs a set of commands using the runners shell
-      - name: Start release build
-        #        run: flutter build appbundle --release
+
+      #13
+      - name: Test flutter app
+        run: flutter test
+      #14
+      - name: Build APK
         run: flutter build apk --release
+      #15
+      - name: Build appBundle
+        run: flutter build appbundle
+
+      #16
+      - name: Build IPA
+        run:
+          flutter build ipa --no-codesign
+      - name: Compress Archives and IPAs
+        run: |
+          cd build
+          tar -czf ios_build.tar.gz ios
+      #17
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Releases
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+            build/ios_build.tar.gz
+
+      #18
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab,build/ios_build.tar.gz"
+          tag: v1.0.${{ github.run_number }}
+#          token: ${{ secrets.TOKEN }}
+
 #      - name: Push to Releases
 #        uses: ncipollo/release-action@v1
 #        with:
