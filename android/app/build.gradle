@@ -66,9 +66,7 @@ android {
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        manifestPlaceholders = [
-                googleMapsApiKey: googleMapsApiKey
-        ]
+        manifestPlaceholders["googleMapsApiKey"] = googleMapsApiKey
     }
 
     lintOptions {
