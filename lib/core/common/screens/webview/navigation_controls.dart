@@ -13,75 +13,52 @@ class NavigationControls extends StatelessWidget {
   });
 
   final MainAxisAlignment? mainAxisAlignment;
-  final Completer<WebViewController> controller;
+  final WebViewController controller;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<WebViewController>(
-      future: controller.future,
-      builder: (context, snapshot) {
-        final controller = snapshot.data;
-        if (snapshot.connectionState != ConnectionState.done || controller == null) {
-          return Row(
-            mainAxisAlignment: mainAxisAlignment!,
-            children: <Widget>[
-              Icon(
-                Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
-                color: Colors.white,
-              ),
-              Icon(
-                Platform.isAndroid ? Icons.arrow_forward_ios : Icons.arrow_forward,
-                color: Colors.white,
-              ),
-              const Icon(Icons.replay, color: Colors.white),
-            ],
-          );
-        }
-
-        return Row(
-          mainAxisAlignment: mainAxisAlignment!,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
-                color: Colors.black,
-              ),
-              onPressed: () async {
-                if (await controller.canGoBack()) {
-                  await controller.goBack();
-                } else {
-                  CoreUtils.showSnackBar(
-                    context,
-                    'No forward history item',
-                  );
-                  return;
-                }
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                Platform.isAndroid ? Icons.arrow_forward_ios : Icons.arrow_forward,
-                color: Colors.black,
-              ),
-              onPressed: () async {
-                if (await controller.canGoForward()) {
-                  await controller.goForward();
-                } else {
-                  CoreUtils.showSnackBar(
-                    context,
-                    'No forward history item',
-                  );
-                  return;
-                }
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.replay, color: Colors.black),
-              onPressed: controller.reload,
-            ),
-          ],
-        );
-      },
+    return Row(
+      mainAxisAlignment: mainAxisAlignment!,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(
+            Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () async {
+            if (await controller.canGoBack()) {
+              await controller.goBack();
+            } else {
+              CoreUtils.showSnackBar(
+                context,
+                'No forward history item',
+              );
+              return;
+            }
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            Platform.isAndroid ? Icons.arrow_forward_ios : Icons.arrow_forward,
+            color: Colors.black,
+          ),
+          onPressed: () async {
+            if (await controller.canGoForward()) {
+              await controller.goForward();
+            } else {
+              CoreUtils.showSnackBar(
+                context,
+                'No forward history item',
+              );
+              return;
+            }
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.replay, color: Colors.black),
+          onPressed: controller.reload,
+        ),
+      ],
     );
   }
 }
