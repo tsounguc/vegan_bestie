@@ -21,40 +21,42 @@ environment:
   sdk: '>=3.0.5 <4.0.0'
 
 dependencies:
+  bloc: ^8.1.4
+  cached_network_image: ^3.3.1
+  cloud_firestore: ^4.15.5
+  cupertino_icons: ^1.0.8
+  dartz:
+  device_preview: ^1.1.0
+  equatable:
+  firebase_auth: ^4.19.4
+  firebase_core: ^2.25.4
+  firebase_storage: ^11.7.4
+  fl_chart: ^0.67.0
   flutter:
     sdk: flutter
-  fl_chart:
-  google_fonts:
-  get_it:
-  dartz:
-  flutter_bloc:
-  bloc:
-  equatable:
   flutter_barcode_scanner: ^2.0.0
-  http: ^0.13.5
-  iconly: ^1.0.1
-  image_picker: ^1.0.7
-  simple_animations: ^5.0.2
-  device_preview: ^1.1.0
-  flutter_screenutil: ^5.9.0
-  cached_network_image: ^3.3.1
-  webview_flutter: ^3.0.4
-  flutter_dotenv: ^5.0.2
-  font_awesome_flutter:
-  firebase_core: ^2.25.4
-  firebase_auth: ^4.17.5
-  cloud_firestore: ^4.15.5
-  firebase_storage: ^11.6.10
-  google_sign_in: ^6.2.1
-  flutter_facebook_auth:
-  flutter_rating_bar: ^4.0.1
-  geolocator: ^11.0.0
-  google_maps_flutter:
-  intl:
-  url_launcher:
+  flutter_bloc: ^8.1.5
+  flutter_dotenv: ^5.1.0
+  flutter_facebook_auth: ^6.2.0
   flutter_launcher_icons: ^0.13.1
-  flutter_native_splash: ^2.2.19
+  #  flutter_localizations:
+  flutter_native_splash: ^2.4.0
+  flutter_rating_bar: ^4.0.1
+  flutter_screenutil: ^5.9.0
+  font_awesome_flutter: ^10.7.0
+  geolocator: ^11.0.0
+  get_it: ^7.7.0
+  google_fonts: ^6.2.1
+  google_maps_flutter: ^2.6.1
+  google_sign_in: ^6.2.1
+  http: ^1.2.1
+  iconly: ^1.0.1
+  image_picker: ^1.1.0
+  intl: ^0.18.1
   provider: ^6.1.1
+  simple_animations: ^5.0.2
+  url_launcher: ^6.2.6
+  webview_flutter: ^4.7.0
   #  lint:
   #  googleapis: ^9.1.0
 
@@ -64,14 +66,14 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+
 
 dev_dependencies:
-  bloc_test: ^9.1.6
-  fake_cloud_firestore: ^2.4.8
+  bloc_test: ^9.1.7
+  fake_cloud_firestore: ^2.5.1
   firebase_auth_mocks: ^0.13.0
   firebase_storage_mocks: ^0.6.1
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.2
   flutter_test:
     sdk: flutter
   google_sign_in_mocks: ^0.3.0
