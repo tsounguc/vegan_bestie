@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
       #9 Set Up Java
       - name: Set Up Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '20'
@@ -51,11 +51,11 @@ jobs:
       #      - name: Test flutter app
       #        run: flutter test
       #14
-      - name: Build APK
-        run: flutter build apk --release
+      #      - name: Build APK
+      #        run: flutter build apk --release
       #15
       - name: Build appBundle
-        run: flutter build appbundle
+        run: flutter build aot
 
       #16
       - name: Build IPA
