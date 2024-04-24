@@ -33,7 +33,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '21.x'
+          java-version: '18.x'
           cache: 'gradle'
       #10
       - name: Set Up Flutter
@@ -55,8 +55,8 @@ jobs:
       #        run: flutter test
       #14
       - name: Build APK
-        run: flutter build apk
-      #        run: flutter build apk --release --verbose
+        #        run: flutter build apk
+        run: flutter build apk --release --verbose
       #15
       - name: Build appBundle
         run: flutter build appbundle
