@@ -56,7 +56,7 @@ jobs:
       #14
       - name: Build APK
         #        run: flutter build apk
-        run: flutter build apk --release --verbose --warning-mode all
+        run: flutter build apk --release --verbose '--warning-mode all'
       #15
       - name: Build appBundle
         run: flutter build appbundle
