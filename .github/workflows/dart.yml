@@ -45,8 +45,8 @@ jobs:
           cache: true
       #12
       - run: flutter clean
-      - name: Install Dependencies
 
+      - name: Install Dependencies
         run: flutter pub get
 
       #13
@@ -54,7 +54,7 @@ jobs:
       #        run: flutter test
       #14
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --verbose
       #15
       - name: Build appBundle
         run: flutter build appbundle
