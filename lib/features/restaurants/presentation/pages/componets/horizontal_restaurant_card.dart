@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
@@ -23,7 +23,8 @@ class HorizontalRestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final imageUrl = restaurant.photos.isEmpty
         ? restaurant.icon
-        : '$kImageBaseUrl${restaurant.photos[0].photoReference}&key=$kGoogleApiKey';
+        : '$kImageBaseUrl${restaurant.photos[0].photoReference}'
+            '&key=$kGoogleApiKey';
     final position = context.read<RestaurantsBloc>().currentLocation!;
 
     final distance = Geolocator.distanceBetween(
