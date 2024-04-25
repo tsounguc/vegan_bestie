@@ -188,6 +188,20 @@ class SaveRestaurantFailure extends Failure {
         );
 }
 
+class AddRestaurantFailure extends Failure {
+  AddRestaurantFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  AddRestaurantFailure.fromException(
+    AddRestaurantException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
 class SignInWithGoogleFailure extends Failure {
   SignInWithGoogleFailure({
     required super.message,

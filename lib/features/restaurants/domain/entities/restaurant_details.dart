@@ -20,7 +20,7 @@ class RestaurantDetails extends Equatable {
     required this.name,
     required this.openingHours,
     required this.photos,
-    required this.placeId,
+    required this.id,
     required this.plusCode,
     required this.rating,
     required this.reference,
@@ -60,7 +60,7 @@ class RestaurantDetails extends Equatable {
           name: '_empty.name',
           openingHours: OpeningHours.empty(),
           photos: [],
-          placeId: '_empty.placeId',
+          id: '_empty.placeId',
           plusCode: const PlusCode.empty(),
           rating: 0,
           reference: '_empty.reference',
@@ -98,7 +98,7 @@ class RestaurantDetails extends Equatable {
   final String name;
   final OpeningHours openingHours;
   final List<Photo> photos;
-  final String placeId;
+  final String id;
   final PlusCode plusCode;
   final double rating;
   final String reference;
@@ -137,7 +137,7 @@ class RestaurantDetails extends Equatable {
         name,
         openingHours,
         photos,
-        placeId,
+        id,
         plusCode,
         rating,
         reference,

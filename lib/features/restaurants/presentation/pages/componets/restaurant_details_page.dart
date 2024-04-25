@@ -55,14 +55,14 @@ class RestaurantDetailsPage extends StatelessWidget {
     shape: MaterialStatePropertyAll(
       RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
-          20,
+          25,
         ),
       ),
     ),
     padding: const MaterialStatePropertyAll(
       EdgeInsets.symmetric(
-        vertical: 20,
-        horizontal: 20,
+        vertical: 15,
+        horizontal: 12,
       ),
     ),
     elevation: const MaterialStatePropertyAll(
@@ -142,14 +142,14 @@ class RestaurantDetailsPage extends StatelessWidget {
                 child: Icon(
                   Icons.bookmark,
                   color: user!.savedRestaurantsIds!.contains(
-                    restaurantDetails.placeId,
+                    restaurantDetails.id,
                   )
                       ? Colors.amberAccent
                       : Colors.white,
                   // size: 30,
                 ),
                 onPressed: () => user.savedRestaurantsIds!.contains(
-                  restaurantDetails.placeId,
+                  restaurantDetails.id,
                 )
                     ? removeRestaurant(restaurantDetails, context)
                     : saveRestaurant(restaurantDetails, context),
@@ -274,7 +274,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   child: const Icon(
                                     Icons.call,
                                     color: Colors.black,
-                                    size: 24,
+                                    size: 20,
                                   ),
                                 ),
                                 SizedBox(
@@ -294,7 +294,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                               ],
                             ),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.12,
+                              width: MediaQuery.of(context).size.width * 0.03,
                             ),
                             Column(
                               children: [
@@ -316,7 +316,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   child: const Icon(
                                     Icons.directions,
                                     color: Colors.black,
-                                    size: 24,
+                                    size: 20,
                                   ),
                                 ),
                                 SizedBox(
@@ -336,7 +336,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                               ],
                             ),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.12,
+                              width: MediaQuery.of(context).size.width * 0.03,
                             ),
                             Column(
                               children: [
@@ -361,7 +361,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   child: const Icon(
                                     Icons.launch,
                                     color: Colors.black,
-                                    size: 24,
+                                    size: 20,
                                   ),
                                 ),
                                 SizedBox(
@@ -372,6 +372,36 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 ),
                                 Text(
                                   Strings.websiteText,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.03,
+                            ),
+                            Column(
+                              children: [
+                                ElevatedButton(
+                                  style: elevatedButtonStyle,
+                                  onPressed: () {},
+                                  child: const Icon(
+                                    Icons.edit,
+                                    color: Colors.black,
+                                    size: 20,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: MediaQuery.of(
+                                        context,
+                                      ).size.height *
+                                      0.01,
+                                ),
+                                Text(
+                                  'Add review',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12.sp,

@@ -15,6 +15,7 @@ import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location
 import 'package:sheveegan/features/scan_product/domain/use_cases/get_saved_restaurants_list.dart';
 
 part 'restaurants_event.dart';
+
 part 'restaurants_state.dart';
 
 class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
@@ -139,7 +140,7 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
     Emitter<RestaurantsState> emit,
   ) async {
     emit(const SavingRestaurant());
-    final result = await _saveRestaurant(event.restaurant.placeId);
+    final result = await _saveRestaurant(event.restaurant.id);
     result.fold(
       (failure) => RestaurantsError(message: failure.message),
       (success) => emit(
@@ -155,7 +156,7 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
     Emitter<RestaurantsState> emit,
   ) async {
     emit(const RemovingRestaurant());
-    final result = await _removeRestaurant(event.restaurant.placeId);
+    final result = await _removeRestaurant(event.restaurant.id);
     result.fold(
       (failure) => RestaurantsError(message: failure.message),
       (success) => emit(

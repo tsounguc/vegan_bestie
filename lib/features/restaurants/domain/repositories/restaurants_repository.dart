@@ -3,6 +3,7 @@ import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 
 abstract class RestaurantsRepository {
@@ -10,7 +11,9 @@ abstract class RestaurantsRepository {
     required Position position,
   });
 
-  ResultFuture<RestaurantDetails> getRestaurantDetails({required String id});
+  ResultFuture<RestaurantDetails> getRestaurantDetails({
+    required String id,
+  });
 
   ResultFuture<UserLocation> getUserLocation();
 
@@ -25,4 +28,10 @@ abstract class RestaurantsRepository {
   ResultVoid removeRestaurant({required String restaurantId});
 
   ResultVoid saveRestaurant({required String restaurantId});
+
+  ResultVoid addRestaurantReview({
+    required RestaurantReview restaurantReview,
+  });
+
+  ResultFuture<List<RestaurantReview>> getRestaurantReviews(String postId);
 }

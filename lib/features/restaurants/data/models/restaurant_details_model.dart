@@ -24,7 +24,7 @@ class RestaurantDetailsModel extends RestaurantDetails {
     required super.name,
     required super.openingHours,
     required super.photos,
-    required super.placeId,
+    required super.id,
     required super.plusCode,
     required super.rating,
     required super.reference,
@@ -64,7 +64,7 @@ class RestaurantDetailsModel extends RestaurantDetails {
           name: '_empty.name',
           openingHours: OpeningHours.empty(),
           photos: [],
-          placeId: '_empty.place_id',
+          id: '_empty.place_id',
           plusCode: const PlusCode.empty(),
           rating: 0,
           reference: '_empty.reference',
@@ -131,7 +131,7 @@ class RestaurantDetailsModel extends RestaurantDetails {
                     (photo) => PhotoModel.fromMap(photo as DataMap),
                   ),
                 ),
-          placeId: dataMap['place_id'] == null ? '' : dataMap['place_id'] as String,
+          id: dataMap['place_id'] == null ? '' : dataMap['place_id'] as String,
           plusCode: PlusCodeModel.fromMap(dataMap['plus_code'] as DataMap),
           rating: double.tryParse(dataMap['rating'].toString()) ?? 0.0,
           reference: dataMap['reference'] == null ? '' : dataMap['reference'] as String,
@@ -192,7 +192,7 @@ class RestaurantDetailsModel extends RestaurantDetails {
             (photo) => (photo as PhotoModel).toMap(),
           ),
         ),
-        'place_id': placeId,
+        'place_id': id,
         'plus_code': (plusCode as PlusCodeModel).toMap(),
         'rating': rating,
         'reference': reference,
@@ -293,8 +293,9 @@ class CurrentOpeningHoursPeriodModel extends CurrentOpeningHoursPeriod {
 
   CurrentOpeningHoursPeriodModel.fromMap(DataMap dataMap)
       : this(
-            close: PurpleCloseModel.fromMap(dataMap['close'] as DataMap),
-            open: PurpleCloseModel.fromMap(dataMap['open'] as DataMap),);
+          close: PurpleCloseModel.fromMap(dataMap['close'] as DataMap),
+          open: PurpleCloseModel.fromMap(dataMap['open'] as DataMap),
+        );
 
   DataMap toMap() => {
         'close': (close as PurpleCloseModel).toMap(),
@@ -375,8 +376,9 @@ class OpeningHoursPeriodModel extends OpeningHoursPeriod {
 
   OpeningHoursPeriodModel.fromMap(DataMap dataMap)
       : this(
-            close: FluffyCloseModel.fromMap(dataMap['close'] as DataMap),
-            open: FluffyCloseModel.fromMap(dataMap['open'] as DataMap),);
+          close: FluffyCloseModel.fromMap(dataMap['close'] as DataMap),
+          open: FluffyCloseModel.fromMap(dataMap['open'] as DataMap),
+        );
 
   DataMap toMap() => {
         'close': (close as FluffyCloseModel).toMap(),
@@ -404,17 +406,18 @@ class FluffyCloseModel extends FluffyClose {
 }
 
 class ReviewModel extends Review {
-  const ReviewModel(
-      {required super.authorName,
-      required super.authorUrl,
-      required super.language,
-      required super.originalLanguage,
-      required super.profilePhotoUrl,
-      required super.rating,
-      required super.relativeTimeDescription,
-      required super.text,
-      required super.time,
-      required super.translated,});
+  const ReviewModel({
+    required super.authorName,
+    required super.authorUrl,
+    required super.language,
+    required super.originalLanguage,
+    required super.profilePhotoUrl,
+    required super.rating,
+    required super.relativeTimeDescription,
+    required super.text,
+    required super.time,
+    required super.translated,
+  });
 
   factory ReviewModel.fromJson(String source) => ReviewModel.fromMap(
         jsonDecode(source) as DataMap,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
@@ -13,8 +14,11 @@ import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/models/map_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_details_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/user_location_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class RestaurantsRemoteDataSource {
   Future<List<RestaurantModel>> getRestaurantsNearMe({
@@ -35,9 +39,17 @@ abstract class RestaurantsRemoteDataSource {
     required List<String> restaurantsIdsList,
   });
 
-  Future<void> removeRestaurant({required String restaurantId});
+  Future<void> removeRestaurant({
+    required String restaurantId,
+  });
 
-  Future<void> saveRestaurant({required String restaurantId});
+  Future<void> saveRestaurant({
+    required String restaurantId,
+  });
+
+  Future<void> addRestaurantReview(RestaurantReview restaurantReview);
+
+  Future<List<RestaurantReviewModel>> getRestaurantReviews(String postId);
 }
 
 const kGetRestaurantsEndPoint = 'nearbysearch/';
@@ -49,6 +61,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
     this._location,
     this._googleMap,
     this._cloudStoreClient,
+    this._dbClient,
     this._authClient,
   );
 
@@ -56,6 +69,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   final LocationPlugin _location;
   final GoogleMapPlugin _googleMap;
   final FirebaseFirestore _cloudStoreClient;
+  final FirebaseStorage _dbClient;
   final FirebaseAuth _authClient;
 
   @override
@@ -205,6 +219,90 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
         message: e.toString(),
         statusCode: '505',
       );
+    }
+  }
+
+  @override
+  Future<void> addRestaurantReview(RestaurantReview restaurantReview) async {
+    try {
+      final user = _authClient.currentUser;
+      if (user == null) {
+        throw const AddRestaurantException(
+          message: 'User is not authenticated',
+          statusCode: '401',
+        );
+      }
+      // Create restaurantReview firestore reference
+      final restaurantReviewReference = _cloudStoreClient.collection('restaurantReviews').doc();
+
+      // Create restaurantReview model with restaurantReview id from references
+      var restaurantReviewModel = (restaurantReview as RestaurantReviewModel).copyWith(
+        id: restaurantReviewReference.id,
+      );
+
+      // // Create profile image firebase storage reference
+      // final profileImageReference = _dbClient.ref().child(
+      //       'restaurantReviews/${restaurantReviewModel.id}/profile_image/${restaurantReviewModel.userProfilePic}-pfp',
+      //     );
+      //
+      // // use profile image reference to store image in firebase storage
+      // // set the restaurantReviewModel image to the url returned
+      // await profileImageReference.putFile(File(restaurantReviewModel.userProfilePic)).then((value) async {
+      //   final url = await value.ref.getDownloadURL();
+      //   restaurantReviewModel = restaurantReviewModel.copyWith(userProfilePic: url);
+      // });
+
+      await restaurantReviewReference.set(restaurantReviewModel.toMap());
+
+      // Create restaurant firestore reference
+      // Increment reviewsCount
+      return _cloudStoreClient
+          .collection('restaurants')
+          .doc(restaurantReviewModel.restaurantId)
+          .update({'restaurantReviewsCount': FieldValue.increment(1)});
+    } on FirebaseException catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw AddRestaurantException(
+        message: e.message ?? 'Unknown error occurred',
+        statusCode: e.code,
+      );
+    } on AddRestaurantException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw AddRestaurantException(message: e.toString(), statusCode: '505');
+    }
+  }
+
+  @override
+  Future<List<RestaurantReviewModel>> getRestaurantReviews(String postId) async {
+    try {
+      final user = _authClient.currentUser;
+      if (user == null) {
+        throw const AddRestaurantException(
+          message: 'User is not authenticated',
+          statusCode: '401',
+        );
+      }
+
+      return _cloudStoreClient.collection('restaurantReviews').get().then((value) => value.docs
+          .map(
+            (doc) => RestaurantReviewModel.fromMap(
+              doc.data(),
+            ),
+          )
+          .toList());
+    } on FirebaseException catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw AddRestaurantException(
+        message: e.message ?? 'Unknown error occurred',
+        statusCode: e.code,
+      );
+    } on AddRestaurantException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw AddRestaurantException(message: e.toString(), statusCode: '505');
     }
   }
 

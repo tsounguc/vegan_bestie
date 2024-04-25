@@ -7,6 +7,7 @@ import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_rem
 import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
 
@@ -100,6 +101,26 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
       return Right(result);
     } on SaveRestaurantException catch (e) {
       return Left(SaveRestaurantFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid addRestaurantReview({required RestaurantReview restaurantReview}) async {
+    try {
+      final result = await _remoteDataSource.addRestaurantReview(restaurantReview);
+      return Right(result);
+    } on AddRestaurantException catch (e) {
+      return Left(AddRestaurantFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<List<RestaurantReview>> getRestaurantReviews(String postId) async {
+    try {
+      final result = await _remoteDataSource.getRestaurantReviews(postId);
+      return Right(result);
+    } on AddRestaurantException catch (e) {
+      return Left(AddRestaurantFailure.fromException(e));
     }
   }
 }
