@@ -9,7 +9,9 @@ import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_reviews.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
@@ -29,6 +31,10 @@ class MockGetSavedRestaurantsList extends Mock implements GetSavedRestaurantsLis
 class MockSaveRestaurant extends Mock implements SaveRestaurant {}
 
 class MockRemoveRestaurant extends Mock implements RemoveRestaurant {}
+
+class MockAddRestaurantReview extends Mock implements AddRestaurantReview {}
+
+class MockGetRestaurantReviews extends Mock implements GetRestaurantReviews {}
 
 void main() {
   late GetRestaurantsNearMe getRestaurantsNearMe;
@@ -58,6 +64,8 @@ void main() {
       getSavedRestaurantsList: MockGetSavedRestaurantsList(),
       saveRestaurant: MockSaveRestaurant(),
       removeRestaurant: MockRemoveRestaurant(),
+      addRestaurantReview: MockAddRestaurantReview(),
+      getRestaurantReviews: MockGetRestaurantReviews(),
     );
     testGetRestaurantsParams = GetRestaurantsNearMeParams.empty();
     testGetRestaurantDetailsParams = const GetRestaurantDetailsParams.empty();

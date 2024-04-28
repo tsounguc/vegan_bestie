@@ -6,7 +6,7 @@ abstract class Failure extends Equatable {
     required this.statusCode,
     required this.message,
   }) : assert(
-          statusCode is! String || statusCode is int,
+          statusCode is String || statusCode is int,
           'StatusCode cannot be a ${statusCode.runtimeType}',
         );
 
@@ -14,8 +14,8 @@ abstract class Failure extends Equatable {
   final dynamic statusCode;
 
   String get errorMessage {
-    final showErrorText = statusCode! is String || int.tryParse(statusCode as String) != null;
-    return '$statusCode ${showErrorText ? 'Error' : ''}'
+    final showErrorText = statusCode! is! String || int.tryParse(statusCode as String) != null;
+    return '$statusCode ${showErrorText ? '' : 'Error'}'
         ': $message';
   }
 

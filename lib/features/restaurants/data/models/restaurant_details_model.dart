@@ -3,9 +3,7 @@ import 'dart:convert';
 import 'package:sheveegan/core/common/entities/restaurant_entities.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
-import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 
 class RestaurantDetailsModel extends RestaurantDetails {
   const RestaurantDetailsModel({

@@ -14,7 +14,6 @@ import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
-import 'package:sheveegan/core/utils/size_config.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
@@ -50,7 +49,7 @@ class RestaurantDetailsPage extends StatelessWidget {
     6: 'Saturday',
   };
 
-  ScrollController controller = ScrollController();
+  final controller = ScrollController();
 
   final elevatedButtonStyle = ButtonStyle(
     backgroundColor: const MaterialStatePropertyAll(
@@ -149,7 +148,7 @@ class RestaurantDetailsPage extends StatelessWidget {
             return Scaffold(
               appBar: AppBar(
                 leadingWidth: 80,
-                toolbarHeight: toolbarHeight,
+                toolbarHeight: 80,
                 backgroundColor: Theme.of(context).colorScheme.background,
                 surfaceTintColor: Colors.white,
                 leading: !Navigator.of(context).canPop()
@@ -458,7 +457,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         child: RatingAndReviewsCountWidget(
                           restaurantDetails: restaurantDetails,
                           rating: totalRestaurantRating(reviews),
-                          reviewCount: reviews.length ?? 0,
+                          reviewCount: reviews.length,
                         ),
                       ),
                       const SizedBox(height: 15),

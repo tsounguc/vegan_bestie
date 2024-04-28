@@ -33,7 +33,7 @@ class ReviewCard extends StatelessWidget {
                       backgroundColor: Colors.grey,
                       backgroundImage: review.userProfilePic.isEmpty || review.userProfilePic == kDefaultAvatar
                           ? null
-                          : NetworkImage('${review.userProfilePic}'),
+                          : NetworkImage(review.userProfilePic),
                       child: review.userProfilePic.isNotEmpty && review.userProfilePic != kDefaultAvatar
                           ? null
                           : const Icon(
@@ -86,12 +86,12 @@ class ReviewCard extends StatelessWidget {
                         ),
                       ];
                     },
-                  )
+                  ),
               ],
             ),
             const SizedBox(height: 5),
             RatingBarIndicator(
-              rating: review.rating ?? 0,
+              rating: review.rating,
               itemBuilder: (BuildContext context, int index) {
                 return const Icon(
                   Icons.star,

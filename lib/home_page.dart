@@ -7,7 +7,6 @@ import 'package:sheveegan/core/common/app/providers/bottom_navigation_bar_provid
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
-import 'package:sheveegan/core/utils/size_config.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/scan_product_cubit.dart';
@@ -90,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                       ? null
                       : AppBar(
                           leadingWidth: 80,
-                          toolbarHeight: toolbarHeight,
+                          toolbarHeight: 80,
                           backgroundColor: Colors.white,
                           surfaceTintColor: Colors.white,
                           centerTitle: true,

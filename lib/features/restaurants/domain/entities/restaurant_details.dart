@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:sheveegan/core/common/entities/restaurant_entities.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 
 class RestaurantDetails extends Equatable {
   const RestaurantDetails({

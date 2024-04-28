@@ -58,6 +58,7 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
       );
 
       if (response.statusCode != 200 && response.statusCode != 201) {
+        debugPrint(response.body);
         throw FetchProductException(
           message: Strings.productNotFound,
           statusCode: response.statusCode,
@@ -77,10 +78,10 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
             : serviceLocator<VeganChecker>().nonVegetarianIngredientsInProduct,
       );
     } on FetchProductException catch (e, stackTrace) {
-      debugPrint(stackTrace.toString());
+      debugPrintStack(stackTrace: stackTrace);
       rethrow;
     } catch (e, stackTrace) {
-      debugPrint(stackTrace.toString());
+      debugPrintStack(stackTrace: stackTrace);
       throw FetchProductException(message: e.toString(), statusCode: 500);
     }
   }

@@ -50,7 +50,12 @@ class CustomImageWidget extends StatelessWidget {
                 color: Colors.grey,
               )
             : CachedNetworkImage(
-                progressIndicatorBuilder: (context, text, downloadProgress) => const LoadingPage(),
+                progressIndicatorBuilder: (
+                  context,
+                  text,
+                  downloadProgress,
+                ) =>
+                    const LoadingPage(),
                 fit: BoxFit.cover,
                 imageUrl: imageUrl!,
                 errorWidget: (context, error, value) => Container(),

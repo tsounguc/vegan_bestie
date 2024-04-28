@@ -18,7 +18,6 @@ import 'package:sheveegan/features/restaurants/data/models/restaurant_review_mod
 import 'package:sheveegan/features/restaurants/data/models/user_location_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
-import 'package:uuid/uuid.dart';
 
 abstract class RestaurantsRemoteDataSource {
   Future<List<RestaurantModel>> getRestaurantsNearMe({

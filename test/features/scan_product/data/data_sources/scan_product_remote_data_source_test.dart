@@ -94,7 +94,7 @@ void main() {
   });
 
   group('fetchProduct - ', () {
-    const testBarcode = '123456789012';
+    const testBarcode = '0025293600232';
     final testJson = fixture('food_product.json');
 
     test(

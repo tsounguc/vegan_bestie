@@ -75,7 +75,10 @@ class IField extends StatelessWidget {
           ),
         ),
         // overriding the default padding helps with that puffy look
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 15,
+        ),
         filled: filled,
         fillColor: fillColor,
         suffixIcon: suffixIcon,

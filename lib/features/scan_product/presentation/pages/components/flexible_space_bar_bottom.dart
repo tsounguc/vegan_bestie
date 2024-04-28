@@ -114,13 +114,13 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                 ),
                 child: product.isVegan == true
                     ? const Icon(
-                        VeganIcon.vegan_icon,
+                        VeganIcon.veganIcon,
                         color: Colors.green,
                         size: 25,
                       )
                     : product.isVegetarian == true
                         ? const Icon(
-                            VeganIcon.vegan_icon,
+                            VeganIcon.veganIcon,
                             color: Color(0xFFe2e360),
                             size: 25,
                           )

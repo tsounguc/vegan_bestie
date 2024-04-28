@@ -8,7 +8,6 @@ import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
-import 'package:sheveegan/core/utils/size_config.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -161,7 +160,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       backgroundColor: context.theme.colorScheme.background,
       appBar: AppBar(
         leadingWidth: 80,
-        toolbarHeight: toolbarHeight,
+        toolbarHeight: 80,
         backgroundColor: context.theme.colorScheme.background,
         leading: !Navigator.of(context).canPop()
             ? null

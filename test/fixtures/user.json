@@ -3,5 +3,7 @@
   "name": "",
   "email": "",
   "photoUrl": null,
-  "bio": null
+  "bio": null,
+  "savedProductsBarcodes": [],
+  "savedRestaurantsIds": []
 }

@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
@@ -34,6 +36,7 @@ Future<void> main() async {
   late GoogleMapPlugin googleMapPlugin;
   late RestaurantsRemoteDataSource remoteDataSource;
   late FirebaseAuth authClient;
+  late FirebaseStorage dbClient;
   late FirebaseFirestore cloudStoreClient;
   setUp(() async {
     // instantiate Firebase Auth client
@@ -44,11 +47,13 @@ Future<void> main() async {
     client = MockClient();
     locationPlugin = MockLocationPlugin();
     googleMapPlugin = MockGoogleMapPlugin();
+    dbClient = MockFirebaseStorage();
     remoteDataSource = RestaurantsRemoteDataSourceImpl(
       client,
       locationPlugin,
       googleMapPlugin,
       cloudStoreClient,
+      dbClient,
       authClient,
     );
     registerFallbackValue(Uri());
@@ -252,7 +257,8 @@ Future<void> main() async {
 
     test(
       'given RestaurantsRemoteDataSourceImpl '
-      'when [RestaurantsRemoteDataSourceImpl.getRestaurantsMarkers] call unsuccessful '
+      'when [RestaurantsRemoteDataSourceImpl.getRestaurantsMarkers] '
+      'call unsuccessful '
       'then throw [MapException]',
       () async {
         // Arrange

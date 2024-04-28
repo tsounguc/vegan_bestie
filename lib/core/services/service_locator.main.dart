@@ -111,8 +111,14 @@ Future<void> _initRestaurants() async {
     )
     // Data Sources
     ..registerLazySingleton<RestaurantsRemoteDataSource>(
-      () => RestaurantsRemoteDataSourceImpl(serviceLocator(), serviceLocator(), serviceLocator(), serviceLocator(),
-          serviceLocator(), serviceLocator()),
+      () => RestaurantsRemoteDataSourceImpl(
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
+      ),
     )
     // External dependencies
     ..registerLazySingleton(LocationPlugin.new)

@@ -7,7 +7,7 @@ class VeganIcon {
 
   // static const String _kFontPkg = null;
 
-  static const IconData vegan_icon = IconData(
+  static const IconData veganIcon = IconData(
     0xe800, fontFamily: _kFontFam,
     // fontPackage: _kFontPkg
   );

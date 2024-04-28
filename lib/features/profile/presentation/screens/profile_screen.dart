@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -215,9 +214,13 @@ class ProfileScreen extends StatelessWidget {
                                             productsProvider.savedProductsList!.isEmpty
                                         ? [
                                             Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 35),
+                                              padding: const EdgeInsets.symmetric(
+                                                vertical: 50,
+                                                horizontal: 35,
+                                              ),
                                               child: Text(
-                                                'Food Products will be here once saved',
+                                                'Food Products will be here '
+                                                'once saved',
                                                 style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.normal,
@@ -272,7 +275,10 @@ class ProfileScreen extends StatelessWidget {
                                             restaurantsProvider.savedRestaurantsList!.isEmpty
                                         ? [
                                             Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 35),
+                                              padding: const EdgeInsets.symmetric(
+                                                vertical: 50,
+                                                horizontal: 35,
+                                              ),
                                               child: Text(
                                                 'Restaurants will be here once saved',
                                                 style: TextStyle(

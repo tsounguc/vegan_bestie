@@ -7,8 +7,8 @@ class RatingAndReviewsCountWidget extends StatelessWidget {
   const RatingAndReviewsCountWidget({
     required this.rating,
     required this.reviewCount,
-    super.key,
     required this.restaurantDetails,
+    super.key,
   });
 
   final RestaurantDetails restaurantDetails;
@@ -57,7 +57,7 @@ class RatingAndReviewsCountWidget extends StatelessWidget {
               fontWeight: FontWeight.normal,
             ),
           ),
-        )
+        ),
       ],
     );
   }

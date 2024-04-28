@@ -17,6 +17,8 @@ class UserModel extends UserEntity {
           uid: '',
           name: '',
           email: '',
+          savedRestaurantsIds: const [],
+          savedProductsBarcodes: const [],
         );
 
   UserModel.fromMap(DataMap dataMap)
