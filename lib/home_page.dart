@@ -51,7 +51,6 @@ class _HomePageState extends State<HomePage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             context.userProvider.user = snapshot.data;
-            print('Saved ${context.userProvider.user!.savedProductsBarcodes}');
             final savedBarcodesList = context.userProvider.user!.savedProductsBarcodes;
 
             if (savedBarcodesList?.length != context.savedProductsProvider.savedProductsList?.length) {
@@ -95,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                           centerTitle: true,
                           title: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.5,
-                            child: VeganBestieLogoWidget(size: 25, fontSize: 35),
+                            child: const VeganBestieLogoWidget(size: 25, fontSize: 35),
                           ),
                         ),
                   body: controller.screens[controller.currentIndex],

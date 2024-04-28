@@ -236,3 +236,31 @@ class SearchProductFailure extends Failure {
     required super.statusCode,
   });
 }
+
+class DeleteRestaurantReviewFailure extends Failure {
+  DeleteRestaurantReviewFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  DeleteRestaurantReviewFailure.fromException(
+    DeleteRestaurantReviewException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
+class EditRestaurantReviewFailure extends Failure {
+  EditRestaurantReviewFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  EditRestaurantReviewFailure.fromException(
+    DeleteRestaurantReviewFailure exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}

@@ -67,3 +67,9 @@ class GetRestaurantReviewsEvent extends RestaurantsEvent {
 
   final String restaurantId;
 }
+
+class DeleteRestaurantReviewEvent extends RestaurantsEvent {
+  const DeleteRestaurantReviewEvent({required this.review});
+
+  final RestaurantReview review;
+}

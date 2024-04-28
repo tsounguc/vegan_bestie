@@ -9,6 +9,7 @@ class RestaurantReview extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     required this.restaurantId,
+    required this.userId,
     required this.username,
     required this.userProfilePic,
   });
@@ -23,6 +24,7 @@ class RestaurantReview extends Equatable {
           updatedAt: DateTime.now(),
           restaurantId: '_empty.restaurantId',
           username: '_empty.username',
+          userId: '_empty.userId',
           userProfilePic: '_empty.userProfilePic',
         );
 
@@ -34,6 +36,7 @@ class RestaurantReview extends Equatable {
   final DateTime updatedAt;
   final String restaurantId;
   final String username;
+  final String userId;
   final String userProfilePic;
 
   @override
@@ -46,6 +49,7 @@ class RestaurantReview extends Equatable {
         updatedAt,
         restaurantId,
         username,
+        userId,
         userProfilePic,
       ];
 }

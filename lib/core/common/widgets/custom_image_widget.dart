@@ -17,7 +17,6 @@ class CustomImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('image Url: $imageUrl');
     return Container(
       height: height ?? MediaQuery.of(context).size.height * 0.43,
       width: width ?? MediaQuery.of(context).size.width * 0.80,

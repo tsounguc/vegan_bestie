@@ -73,6 +73,14 @@ class LoadingRestaurantReviews extends RestaurantsState {
   const LoadingRestaurantReviews();
 }
 
+class DeletingRestaurantReview extends RestaurantsState {
+  const DeletingRestaurantReview();
+}
+
+class RestaurantReviewDeleted extends RestaurantsState {
+  const RestaurantReviewDeleted();
+}
+
 class RestaurantReviewAdded extends RestaurantsState {
   const RestaurantReviewAdded();
 }

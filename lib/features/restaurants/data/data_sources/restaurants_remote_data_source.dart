@@ -49,6 +49,8 @@ abstract class RestaurantsRemoteDataSource {
   Future<void> addRestaurantReview(RestaurantReview restaurantReview);
 
   Future<List<RestaurantReviewModel>> getRestaurantReviews(String postId);
+
+  Future<void> deleteRestaurantReview(RestaurantReview restaurantReview);
 }
 
 const kGetRestaurantsEndPoint = 'nearbysearch/';
@@ -252,7 +254,9 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       //   restaurantReviewModel = restaurantReviewModel.copyWith(userProfilePic: url);
       // });
 
-      await restaurantReviewReference.set(restaurantReviewModel.toMap());
+      await restaurantReviewReference.set(
+        restaurantReviewModel.toMap(),
+      );
 
       // Create restaurant firestore reference
       // Increment reviewsCount
@@ -312,6 +316,32 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw AddRestaurantException(message: e.toString(), statusCode: '505');
+    }
+  }
+
+  @override
+  Future<void> deleteRestaurantReview(RestaurantReview restaurantReview) {
+    try {
+      final user = _authClient.currentUser;
+      if (user == null) {
+        throw const AddRestaurantException(
+          message: 'User is not authenticated',
+          statusCode: '401',
+        );
+      }
+
+      return _restaurantReviews.doc(restaurantReview.id).delete();
+    } on FirebaseException catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw DeleteRestaurantReviewException(
+        message: e.message ?? 'Unknown error occurred',
+        statusCode: e.code,
+      );
+    } on DeleteRestaurantReviewException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw DeleteRestaurantReviewException(message: e.toString(), statusCode: '505');
     }
   }
 

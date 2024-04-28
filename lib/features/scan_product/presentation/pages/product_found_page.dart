@@ -16,7 +16,8 @@ import 'package:sheveegan/features/scan_product/presentation/scan_product_cubit/
 
 class ProductFoundPage extends StatefulWidget {
   const ProductFoundPage({
-    required this.product, super.key,
+    required this.product,
+    super.key,
   });
 
   final FoodProduct product;
@@ -108,7 +109,6 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
           context.userProvider.user = snapshot.data;
         }
         final user = context.userProvider.user;
-        print(snapshot.data?.savedProductsBarcodes);
         return Scaffold(
           backgroundColor: Colors.white,
           body: CustomScrollView(

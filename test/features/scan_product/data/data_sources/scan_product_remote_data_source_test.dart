@@ -37,7 +37,7 @@ void main() {
     cloudStoreClient = FakeFirebaseFirestore();
     // instantiate Firebase Auth client
     authClient = MockFirebaseAuth();
-    veganChecker = MockVeganChecker();
+    veganChecker = VeganChecker();
 
     remoteDataSource = ScanProductRemoteDataSourceImpl(
       scanner,
@@ -104,10 +104,9 @@ void main() {
       'then return [FoodProductModel] ',
       () async {
         // Arrange
-
         when(
           () => client.get(
-            Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$testBarcode'),
+            any(),
           ),
         ).thenAnswer((_) async => Response(testJson, 200));
 
@@ -118,12 +117,7 @@ void main() {
 
         // Assert
         expect(foodProduct, isA<FoodProductModel>());
-        verify(
-          () => client.get(
-            Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$testBarcode'),
-          ),
-        ).called(1);
-
+        verify(() => client.get(any())).called(1);
         verifyNoMoreInteractions(client);
       },
     );

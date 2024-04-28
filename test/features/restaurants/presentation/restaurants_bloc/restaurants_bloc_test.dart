@@ -10,6 +10,7 @@ import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant_review.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_reviews.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
@@ -36,11 +37,14 @@ class MockAddRestaurantReview extends Mock implements AddRestaurantReview {}
 
 class MockGetRestaurantReviews extends Mock implements GetRestaurantReviews {}
 
+class MockDeleteRestaurantReview extends Mock implements DeleteRestaurantReview {}
+
 void main() {
   late GetRestaurantsNearMe getRestaurantsNearMe;
   late GetRestaurantDetails getRestaurantDetails;
   late GetUserLocation getUserLocation;
   late GetRestaurantsMarkers getRestaurantsMarkers;
+  // late DeleteRestaurantReview deleteRestaurantReview;
   late RestaurantsBloc bloc;
   late GetRestaurantsNearMeParams testGetRestaurantsParams;
   late GetRestaurantDetailsParams testGetRestaurantDetailsParams;
@@ -56,6 +60,7 @@ void main() {
     getRestaurantDetails = MockGetRestaurantDetails();
     getUserLocation = MockGetUserLocation();
     getRestaurantsMarkers = MockGetRestaurantsMarkers();
+    // deleteRestaurantReview = MockDeleteRestaurantReview();
     bloc = RestaurantsBloc(
       getRestaurantsNearMe: getRestaurantsNearMe,
       getRestaurantDetails: getRestaurantDetails,
@@ -66,6 +71,7 @@ void main() {
       removeRestaurant: MockRemoveRestaurant(),
       addRestaurantReview: MockAddRestaurantReview(),
       getRestaurantReviews: MockGetRestaurantReviews(),
+      deleteRestaurantReview: MockDeleteRestaurantReview(),
     );
     testGetRestaurantsParams = GetRestaurantsNearMeParams.empty();
     testGetRestaurantDetailsParams = const GetRestaurantDetailsParams.empty();

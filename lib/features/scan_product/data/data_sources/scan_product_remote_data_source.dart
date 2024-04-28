@@ -7,7 +7,6 @@ import 'package:http/http.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/restaurants_services/barcode_scanner_plugin.dart';
-import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/services/vegan_checker.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/firebase_constants.dart';
@@ -58,7 +57,7 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
       );
 
       if (response.statusCode != 200 && response.statusCode != 201) {
-        debugPrint(response.body);
+        debugPrint('${response.statusCode}');
         throw FetchProductException(
           message: Strings.productNotFound,
           statusCode: response.statusCode,
@@ -67,15 +66,18 @@ class ScanProductRemoteDataSourceImpl implements ScanProductRemoteDataSource {
 
       final data = jsonDecode(response.body);
 
-      var foodProduct = FoodProductModel.fromMap(data['product'] as DataMap);
+      final foodProduct = FoodProductModel.fromMap(data['product'] as DataMap);
+      debugPrint(foodProduct.id);
       final isVegan = _veganChecker.veganCheck(foodProduct);
-      final isVegetarian = _veganChecker.vegetarianCheck(foodProduct);
-      return foodProduct = foodProduct.copyWith(
+      debugPrint('Vegan checker: is Vegan $isVegan');
+      var isVegetarian = false;
+      if (!isVegan) isVegetarian = _veganChecker.vegetarianCheck(foodProduct);
+      return foodProduct.copyWith(
         isVegan: isVegan,
-        isVegetarian: !isVegan && isVegetarian,
+        isVegetarian: isVegetarian,
         nonVeganIngredients: isVegetarian
-            ? serviceLocator<VeganChecker>().nonVeganIngredientsInProduct
-            : serviceLocator<VeganChecker>().nonVegetarianIngredientsInProduct,
+            ? _veganChecker.nonVeganIngredientsInProduct
+            : _veganChecker.nonVegetarianIngredientsInProduct,
       );
     } on FetchProductException catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);

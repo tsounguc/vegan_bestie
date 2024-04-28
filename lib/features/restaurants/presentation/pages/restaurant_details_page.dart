@@ -192,7 +192,7 @@ class RestaurantDetailsPage extends StatelessWidget {
               body: SingleChildScrollView(
                 controller: controller,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -210,10 +210,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.55,
                                 padding: const EdgeInsets.only(
-                                  left: 10,
+                                  left: 8,
                                   bottom: 5,
                                 ),
-                                // height: 35,
                                 child: Text(
                                   restaurantDetails.name,
                                   style: Theme.of(
@@ -246,7 +245,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.015,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 3),
+                        padding: const EdgeInsets.only(left: 8),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -444,16 +443,19 @@ class RestaurantDetailsPage extends StatelessWidget {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.035,
                       ),
-                      Text(
-                        'Reviews',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.sp,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Text(
+                          'Reviews',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14.sp,
+                          ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 5),
+                        padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 5),
                         child: RatingAndReviewsCountWidget(
                           restaurantDetails: restaurantDetails,
                           rating: totalRestaurantRating(reviews),
@@ -463,7 +465,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                       const SizedBox(height: 15),
                       if (reviews.isEmpty)
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 35),
+                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 35),
                           child: SizedBox(
                             height: 150,
                             width: context.width * 0.75,
@@ -480,6 +482,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         )
                       else
                         ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                           shrinkWrap: true,
                           controller: controller,
                           itemCount: reviews.length,

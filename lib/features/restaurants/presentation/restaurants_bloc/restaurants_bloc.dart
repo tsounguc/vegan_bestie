@@ -10,6 +10,7 @@ import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant_review.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_reviews.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
@@ -32,6 +33,7 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
     required RemoveRestaurant removeRestaurant,
     required AddRestaurantReview addRestaurantReview,
     required GetRestaurantReviews getRestaurantReviews,
+    required DeleteRestaurantReview deleteRestaurantReview,
   })  : _getUserLocation = getUserLocation,
         _getRestaurantsNearMe = getRestaurantsNearMe,
         _getRestaurantDetails = getRestaurantDetails,
@@ -41,6 +43,7 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
         _removeRestaurant = removeRestaurant,
         _addRestaurantReview = addRestaurantReview,
         _getRestaurantReviews = getRestaurantReviews,
+        _deleteRestaurantReview = deleteRestaurantReview,
         super(const RestaurantsInitial()) {
     on<LoadGeolocationEvent>(_geoLocationHandler);
     on<GetRestaurantsEvent>(_getRestaurantsHandler);
@@ -51,6 +54,7 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
     on<RemoveRestaurantEvent>(_removeRestaurantHandler);
     on<AddRestaurantReviewEvent>(_addRestaurantReviewHandler);
     on<GetRestaurantReviewsEvent>(_getRestaurantReviewsHandler);
+    on<DeleteRestaurantReviewEvent>(_deleteRestaurantReviewHandler);
   }
 
   GoogleMapController? controller;
@@ -67,6 +71,7 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
   final RemoveRestaurant _removeRestaurant;
   final AddRestaurantReview _addRestaurantReview;
   final GetRestaurantReviews _getRestaurantReviews;
+  final DeleteRestaurantReview _deleteRestaurantReview;
 
   Future<void> _getRestaurantsHandler(
     GetRestaurantsEvent event,
@@ -207,6 +212,18 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
           restaurantReviews: restaurantReviews,
         ),
       ),
+    );
+  }
+
+  Future<void> _deleteRestaurantReviewHandler(
+    DeleteRestaurantReviewEvent event,
+    Emitter<RestaurantsState> emit,
+  ) async {
+    emit(const DeletingRestaurantReview());
+    final result = await _deleteRestaurantReview(event.review);
+    result.fold(
+      (failure) => emit(RestaurantsError(message: failure.message)),
+      (success) => emit(const RestaurantReviewDeleted()),
     );
   }
 }

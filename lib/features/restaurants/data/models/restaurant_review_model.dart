@@ -12,6 +12,7 @@ class RestaurantReviewModel extends RestaurantReview {
     required super.updatedAt,
     required super.restaurantId,
     required super.username,
+    required super.userId,
     required super.userProfilePic,
   });
 
@@ -25,6 +26,7 @@ class RestaurantReviewModel extends RestaurantReview {
           updatedAt: DateTime.now(),
           restaurantId: '_empty.restaurantId',
           username: '_empty.username',
+          userId: '_empty.userId',
           userProfilePic: '_empty.userProfilePic',
         );
 
@@ -37,6 +39,7 @@ class RestaurantReviewModel extends RestaurantReview {
           createdAt: (map['createdAt'] as Timestamp).toDate(),
           updatedAt: (map['updatedAt'] as Timestamp).toDate(),
           restaurantId: map['restaurantId'] as String,
+          userId: map['userId'] as String,
           username: map['username'] as String,
           userProfilePic: map['userProfilePic'] as String,
         );
@@ -49,6 +52,7 @@ class RestaurantReviewModel extends RestaurantReview {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? username,
+    String? userId,
     String? userProfilePic,
     String? restaurantId,
   }) {
@@ -61,6 +65,7 @@ class RestaurantReviewModel extends RestaurantReview {
       updatedAt: updatedAt ?? this.updatedAt,
       restaurantId: restaurantId ?? this.restaurantId,
       username: username ?? this.username,
+      userId: userId ?? this.userId,
       userProfilePic: userProfilePic ?? this.userProfilePic,
     );
   }
@@ -74,6 +79,7 @@ class RestaurantReviewModel extends RestaurantReview {
         'updatedAt': FieldValue.serverTimestamp(),
         'restaurantId': restaurantId,
         'username': username,
+        'userId': userId,
         'userProfilePic': userProfilePic,
       };
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/popup_item.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class ReviewCard extends StatelessWidget {
   const ReviewCard({
@@ -13,6 +15,12 @@ class ReviewCard extends StatelessWidget {
   });
 
   final RestaurantReview review;
+
+  void deleteReview(BuildContext context, RestaurantReview review) {
+    BlocProvider.of<RestaurantsBloc>(
+      context,
+    ).add(DeleteRestaurantReviewEvent(review: review));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +60,7 @@ class ReviewCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                if (context.currentUser?.name == review.username)
+                if (context.currentUser?.uid == review.userId)
                   PopupMenuButton(
                     elevation: 1,
                     padding: EdgeInsets.zero,
@@ -75,7 +83,7 @@ class ReviewCard extends StatelessWidget {
                           ),
                         ),
                         PopupMenuItem<void>(
-                          onTap: () {},
+                          onTap: () => deleteReview(context, review),
                           child: const PopupItem(
                             title: 'Delete Review',
                             icon: Icon(

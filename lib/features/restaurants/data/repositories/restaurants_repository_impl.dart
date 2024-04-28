@@ -123,4 +123,14 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
       return Left(AddRestaurantFailure.fromException(e));
     }
   }
+
+  @override
+  ResultVoid deleteRestaurantReview({required RestaurantReview restaurantReview}) async {
+    try {
+      final result = await _remoteDataSource.deleteRestaurantReview(restaurantReview);
+      return Right(result);
+    } on DeleteRestaurantReviewException catch (e) {
+      return Left(DeleteRestaurantReviewFailure.fromException(e));
+    }
+  }
 }

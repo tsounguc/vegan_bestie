@@ -122,6 +122,7 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
                                 rating: rating,
                                 restaurantId: widget.restaurantDetails.id,
                                 username: context.currentUser?.name,
+                                userId: context.currentUser != null ? context.currentUser!.uid : 'Anonymous',
                                 userProfilePic: context.currentUser?.photoUrl ?? kDefaultAvatar,
                               );
                               BlocProvider.of<RestaurantsBloc>(context).add(

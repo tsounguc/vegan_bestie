@@ -33,5 +33,11 @@ abstract class RestaurantsRepository {
     required RestaurantReview restaurantReview,
   });
 
-  ResultFuture<List<RestaurantReview>> getRestaurantReviews(String postId);
+  ResultFuture<List<RestaurantReview>> getRestaurantReviews(
+    String postId,
+  );
+
+  ResultVoid deleteRestaurantReview({
+    required RestaurantReview restaurantReview,
+  });
 }

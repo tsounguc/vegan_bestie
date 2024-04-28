@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
+import 'package:sheveegan/features/scan_product/data/models/food_product_model.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 
 class VeganChecker {
@@ -223,7 +224,7 @@ class VeganChecker {
 
   String get nonVegetarianIngredientsInProduct => _nonVegetarianIngredientsInProduct;
 
-  bool veganCheck(FoodProduct product) {
+  bool veganCheck(FoodProductModel product) {
     try {
       var isVegan = true;
       _nonVeganIngredientsInProduct = '';
@@ -318,19 +319,19 @@ class VeganChecker {
           }
         }
       }
-      if (_nonVeganIngredientsInProduct.contains(', ')) {
-        final lastCommaIndex = _nonVeganIngredientsInProduct.lastIndexOf(', ');
-        _nonVeganIngredientsInProduct = _nonVeganIngredientsInProduct.substring(
-          0,
-          lastCommaIndex,
-        );
-      }
+      // if (_nonVeganIngredientsInProduct.contains(', ')) {
+      //   final lastCommaIndex = _nonVeganIngredientsInProduct.lastIndexOf(', ');
+      //   _nonVeganIngredientsInProduct = _nonVeganIngredientsInProduct.substring(
+      //     0,
+      //     lastCommaIndex,
+      //   );
+      // }
       debugPrint('Non Vegan ingredients: $_nonVeganIngredientsInProduct');
       return isVegan;
     } catch (e, stackTrace) {
-      debugPrint(stackTrace.toString());
-      // throw ScanException(message: e.toString(), statusCode: 502);
-      rethrow;
+      debugPrintStack(stackTrace: stackTrace);
+      throw ScanException(message: e.toString(), statusCode: 502);
+      // rethrow;
     }
   }
 
