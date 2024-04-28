@@ -8,16 +8,31 @@ import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class HorizontalRestaurantCard extends StatelessWidget {
   const HorizontalRestaurantCard({
     required this.restaurant,
+    required this.reviews,
     super.key,
   });
 
   final Restaurant restaurant;
+  final List<RestaurantReview> reviews;
+
+  double totalRestaurantRating() {
+    var count = 0;
+    var rating = 0.0;
+
+    for (final review in reviews) {
+      count += 1;
+      rating += (review.rating - rating) / count;
+    }
+
+    return rating;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +40,11 @@ class HorizontalRestaurantCard extends StatelessWidget {
         ? restaurant.icon
         : '$kImageBaseUrl${restaurant.photos[0].photoReference}'
             '&key=$kGoogleApiKey';
-    final position = context.read<RestaurantsBloc>().currentLocation!;
+    final position = context.read<RestaurantsBloc>().currentLocation;
 
     final distance = Geolocator.distanceBetween(
-      position.latitude,
-      position.longitude,
+      position?.latitude ?? 0,
+      position?.longitude ?? 0,
       restaurant.geometry.location.lat,
       restaurant.geometry.location.lng,
     );
@@ -147,7 +162,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                     Row(
                       children: [
                         RatingBarIndicator(
-                          rating: restaurant.rating,
+                          rating: totalRestaurantRating(),
                           itemBuilder: (BuildContext context, int index) {
                             return const Icon(
                               Icons.star,
@@ -161,7 +176,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.025,
                         ),
                         Text(
-                          '${restaurant.reviewCount} ${Strings.reviewsText}',
+                          '${reviews.length} ${Strings.reviewsText}',
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 12,

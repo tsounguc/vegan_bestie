@@ -65,6 +65,26 @@ class RemovingRestaurant extends RestaurantsState {
   const RemovingRestaurant();
 }
 
+class AddingRestaurantReview extends RestaurantsState {
+  const AddingRestaurantReview();
+}
+
+class LoadingRestaurantReviews extends RestaurantsState {
+  const LoadingRestaurantReviews();
+}
+
+class RestaurantReviewAdded extends RestaurantsState {
+  const RestaurantReviewAdded();
+}
+
+class RestaurantReviewsLoaded extends RestaurantsState {
+  const RestaurantReviewsLoaded({
+    required this.restaurantReviews,
+  });
+
+  final List<RestaurantReview> restaurantReviews;
+}
+
 class UserLocationLoaded extends RestaurantsState {
   const UserLocationLoaded({required this.position});
 

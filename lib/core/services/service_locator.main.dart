@@ -91,6 +91,8 @@ Future<void> _initRestaurants() async {
         getSavedRestaurantsList: serviceLocator(),
         saveRestaurant: serviceLocator(),
         removeRestaurant: serviceLocator(),
+        addRestaurantReview: serviceLocator(),
+        getRestaurantReviews: serviceLocator(),
       ),
     )
     // Use cases
@@ -101,19 +103,16 @@ Future<void> _initRestaurants() async {
     ..registerLazySingleton(() => GetSavedRestaurantsList(serviceLocator()))
     ..registerLazySingleton(() => SaveRestaurant(serviceLocator()))
     ..registerLazySingleton(() => RemoveRestaurant(serviceLocator()))
+    ..registerLazySingleton(() => AddRestaurantReview(serviceLocator()))
+    ..registerLazySingleton(() => GetRestaurantReviews(serviceLocator()))
     // Repositories
     ..registerLazySingleton<RestaurantsRepository>(
       () => RestaurantsRepositoryImpl(serviceLocator()),
     )
     // Data Sources
     ..registerLazySingleton<RestaurantsRemoteDataSource>(
-      () => RestaurantsRemoteDataSourceImpl(
-        serviceLocator(),
-        serviceLocator(),
-        serviceLocator(),
-        serviceLocator(),
-        serviceLocator(),
-      ),
+      () => RestaurantsRemoteDataSourceImpl(serviceLocator(), serviceLocator(), serviceLocator(), serviceLocator(),
+          serviceLocator(), serviceLocator()),
     )
     // External dependencies
     ..registerLazySingleton(LocationPlugin.new)

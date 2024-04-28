@@ -5,6 +5,7 @@ import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review
 class RestaurantReviewModel extends RestaurantReview {
   const RestaurantReviewModel({
     required super.id,
+    required super.title,
     required super.review,
     required super.rating,
     required super.createdAt,
@@ -17,6 +18,7 @@ class RestaurantReviewModel extends RestaurantReview {
   RestaurantReviewModel.empty()
       : this(
           id: '_empty.id',
+          title: '_empty.title',
           review: '_empty.review',
           rating: 0,
           createdAt: DateTime.now(),
@@ -29,6 +31,7 @@ class RestaurantReviewModel extends RestaurantReview {
   RestaurantReviewModel.fromMap(DataMap map)
       : this(
           id: map['id'] as String,
+          title: map['title'] as String,
           review: map['review'] as String,
           rating: (map['rating'] as num).toDouble(),
           createdAt: (map['createdAt'] as Timestamp).toDate(),
@@ -40,6 +43,7 @@ class RestaurantReviewModel extends RestaurantReview {
 
   RestaurantReviewModel copyWith({
     String? id,
+    String? title,
     String? review,
     double? rating,
     DateTime? createdAt,
@@ -50,6 +54,7 @@ class RestaurantReviewModel extends RestaurantReview {
   }) {
     return RestaurantReviewModel(
       id: id ?? this.id,
+      title: title ?? this.title,
       review: review ?? this.review,
       rating: rating ?? this.rating,
       createdAt: createdAt ?? this.createdAt,
@@ -62,6 +67,7 @@ class RestaurantReviewModel extends RestaurantReview {
 
   DataMap toMap() => {
         'id': id,
+        'title': title,
         'review': review,
         'rating': rating,
         'createdAt': FieldValue.serverTimestamp(),

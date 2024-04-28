@@ -10,16 +10,21 @@ import 'package:sheveegan/core/common/screens/webview/web_view_screen.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/core/utils/size_config.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/custom_page_view.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/dine_in_takeout_delivery.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/rating_and_reviews_count.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/componets/review_card.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_review_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -44,6 +49,8 @@ class RestaurantDetailsPage extends StatelessWidget {
     5: 'Friday',
     6: 'Saturday',
   };
+
+  ScrollController controller = ScrollController();
 
   final elevatedButtonStyle = ButtonStyle(
     backgroundColor: const MaterialStatePropertyAll(
@@ -93,6 +100,18 @@ class RestaurantDetailsPage extends StatelessWidget {
     );
   }
 
+  double totalRestaurantRating(List<RestaurantReview> reviews) {
+    var count = 0;
+    var rating = 0.0;
+
+    for (final review in reviews) {
+      count += 1;
+      rating += (review.rating - rating) / count;
+    }
+
+    return rating;
+  }
+
   @override
   Widget build(BuildContext context) {
     final appleUrl = 'https://maps.apple.com/?q=${restaurantDetails.name}'
@@ -113,62 +132,76 @@ class RestaurantDetailsPage extends StatelessWidget {
         }
         final user = context.userProvider.user;
 
-        return Scaffold(
-          appBar: AppBar(
-            leadingWidth: 80,
-            toolbarHeight: toolbarHeight,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            surfaceTintColor: Colors.white,
-            leading: !Navigator.of(context).canPop()
-                ? null
-                : const CustomBackButton(
-                    color: Colors.black,
+        return StreamBuilder<List<RestaurantReview>>(
+          stream: serviceLocator<FirebaseFirestore>()
+              .collection('restaurantReviews')
+              .where('restaurantId', isEqualTo: restaurantDetails.id)
+              .snapshots()
+              .map(
+                (event) => event.docs
+                    .map(
+                      (e) => RestaurantReviewModel.fromMap(e.data()),
+                    )
+                    .toList(),
+              ),
+          builder: (context, snapshot) {
+            final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
+            return Scaffold(
+              appBar: AppBar(
+                leadingWidth: 80,
+                toolbarHeight: toolbarHeight,
+                backgroundColor: Theme.of(context).colorScheme.background,
+                surfaceTintColor: Colors.white,
+                leading: !Navigator.of(context).canPop()
+                    ? null
+                    : const CustomBackButton(
+                        color: Colors.black,
+                      ),
+                centerTitle: true,
+                title: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: const VeganBestieLogoWidget(
+                    size: 25,
+                    fontSize: 35,
                   ),
-            centerTitle: true,
-            title: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: const VeganBestieLogoWidget(
-                size: 25,
-                fontSize: 35,
-              ),
-            ),
-            actions: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 2,
-                  shape: const CircleBorder(),
-                  backgroundColor: Colors.white.withOpacity(0.7),
                 ),
-                child: Icon(
-                  Icons.bookmark,
-                  color: user!.savedRestaurantsIds!.contains(
-                    restaurantDetails.id,
-                  )
-                      ? Colors.amberAccent
-                      : Colors.white,
-                  // size: 30,
-                ),
-                onPressed: () => user.savedRestaurantsIds!.contains(
-                  restaurantDetails.id,
-                )
-                    ? removeRestaurant(restaurantDetails, context)
-                    : saveRestaurant(restaurantDetails, context),
+                actions: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 2,
+                      shape: const CircleBorder(),
+                      backgroundColor: Colors.white.withOpacity(0.7),
+                    ),
+                    child: Icon(
+                      Icons.bookmark,
+                      color: user!.savedRestaurantsIds!.contains(
+                        restaurantDetails.id,
+                      )
+                          ? Colors.amberAccent
+                          : Colors.white,
+                      // size: 30,
+                    ),
+                    onPressed: () => user.savedRestaurantsIds!.contains(
+                      restaurantDetails.id,
+                    )
+                        ? removeRestaurant(restaurantDetails, context)
+                        : saveRestaurant(restaurantDetails, context),
+                  ),
+                ],
               ),
-            ],
-          ),
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: Stack(
-            children: [
-              Positioned(
-                bottom: 0,
+              backgroundColor: Theme.of(context).colorScheme.background,
+              body: SingleChildScrollView(
+                controller: controller,
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.50,
-                  width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 10),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.30,
+                        child: CustomPageView(restaurantDetails: restaurantDetails),
+                      ),
+                      const SizedBox(height: 30),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -211,7 +244,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.025,
+                        height: MediaQuery.of(context).size.height * 0.015,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 3),
@@ -227,7 +260,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                               width: context.width * 0.005,
                             ),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.65,
+                              width: MediaQuery.of(context).size.width * 0.80,
                               child: Text(
                                 restaurantDetails.formattedAddress,
                                 style: TextStyle(
@@ -242,17 +275,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.005,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 3),
-                        child: RatingAndReviewsCountWidget(
-                          rating: restaurantDetails.rating,
-                          reviewCount: restaurantDetails.userRatingsTotal,
-                        ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.035,
+                        height: MediaQuery.of(context).size.height * 0.015,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 5, right: 5),
@@ -387,7 +410,13 @@ class RestaurantDetailsPage extends StatelessWidget {
                               children: [
                                 ElevatedButton(
                                   style: elevatedButtonStyle,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RestaurantReviewScreen.id,
+                                      arguments: restaurantDetails,
+                                    );
+                                  },
                                   child: const Icon(
                                     Icons.edit,
                                     color: Colors.black,
@@ -414,23 +443,58 @@ class RestaurantDetailsPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.03,
+                        height: MediaQuery.of(context).size.height * 0.035,
                       ),
+                      Text(
+                        'Reviews',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: RatingAndReviewsCountWidget(
+                          restaurantDetails: restaurantDetails,
+                          rating: totalRestaurantRating(reviews),
+                          reviewCount: reviews.length ?? 0,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      if (reviews.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 35),
+                          child: SizedBox(
+                            height: 150,
+                            width: context.width * 0.75,
+                            child: Text(
+                              'No reviews for ${restaurantDetails.name.capitalize()}'
+                              '\nBe the first to leave a review!',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        )
+                      else
+                        ListView.builder(
+                          shrinkWrap: true,
+                          controller: controller,
+                          itemCount: reviews.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ReviewCard(review: reviews[index]);
+                          },
+                        ),
+                      const SizedBox(height: 75),
                     ],
                   ),
                 ),
               ),
-              Positioned(
-                width: MediaQuery.of(context).size.width,
-                top: MediaQuery.of(context).size.height * 0.0,
-                left: MediaQuery.of(context).size.width * 0.0,
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.35,
-                  child: CustomPageView(restaurantDetails: restaurantDetails),
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

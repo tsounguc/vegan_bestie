@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,7 +20,7 @@ import 'package:sheveegan/features/profile/presentation/screens/all_saved_restau
 import 'package:sheveegan/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:sheveegan/features/profile/presentation/widgets/product_card.dart';
 import 'package:sheveegan/features/profile/presentation/widgets/restaurant_card.dart';
-import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_details_page.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/product_found_page.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -69,82 +70,88 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                           actions: [
-                            PopupMenuButton(
-                              icon: const Icon(
-                                Icons.more_vert_outlined,
-                                color: Colors.white,
-                              ),
-                              surfaceTintColor: Colors.white,
-                              offset: const Offset(0, 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              itemBuilder: (_) {
-                                return [
-                                  PopupMenuItem<void>(
-                                    onTap: () => Navigator.of(context).pushNamed(
-                                      EditProfileScreen.id,
-                                      arguments: context.read<AuthBloc>(),
-                                    ),
-                                    child: const PopupItem(
-                                      title: 'Edit Profile',
-                                      icon: Icon(
-                                        Icons.edit_outlined,
-                                        color: Color(0xFF757C8E),
-                                      ),
-                                    ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                child: PopupMenuButton(
+                                  icon: const Icon(
+                                    Icons.more_vert_outlined,
+                                    color: Colors.black,
                                   ),
-                                  const PopupMenuItem<void>(
-                                    // onTap: () => context.push(const Placeholder()),
-                                    child: PopupItem(
-                                      title: 'Notifications',
-                                      icon: Icon(
-                                        Icons.notifications,
-                                        color: Color(0xFF757C8E),
-                                      ),
-                                    ),
+                                  surfaceTintColor: Colors.white,
+                                  offset: const Offset(0, 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
-                                  const PopupMenuItem<void>(
-                                    // onTap: () => context.push(const Placeholder()),
-                                    child: PopupItem(
-                                      title: 'Help',
-                                      icon: Icon(
-                                        Icons.help_outline_outlined,
-                                        color: Color(0xFF757C8E),
-                                      ),
-                                    ),
-                                  ),
-                                  PopupMenuItem<void>(
-                                    height: 1,
-                                    padding: EdgeInsets.zero,
-                                    child: Divider(
-                                      height: 1,
-                                      color: Colors.grey.shade300,
-                                      endIndent: 10,
-                                      indent: 10,
-                                    ),
-                                  ),
-                                  PopupMenuItem<void>(
-                                    onTap: () async {
-                                      final navigator = Navigator.of(context);
-                                      await serviceLocator<FirebaseAuth>().signOut();
-                                      unawaited(
-                                        navigator.pushNamedAndRemoveUntil(
-                                          '/',
-                                          (route) => false,
+                                  itemBuilder: (_) {
+                                    return [
+                                      PopupMenuItem<void>(
+                                        onTap: () => Navigator.of(context).pushNamed(
+                                          EditProfileScreen.id,
+                                          arguments: context.read<AuthBloc>(),
                                         ),
-                                      );
-                                    },
-                                    child: const PopupItem(
-                                      title: 'Logout',
-                                      icon: Icon(
-                                        Icons.logout,
-                                        color: Colors.black,
+                                        child: const PopupItem(
+                                          title: 'Edit Profile',
+                                          icon: Icon(
+                                            Icons.edit_outlined,
+                                            color: Color(0xFF757C8E),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ];
-                              },
+                                      const PopupMenuItem<void>(
+                                        // onTap: () => context.push(const Placeholder()),
+                                        child: PopupItem(
+                                          title: 'Notifications',
+                                          icon: Icon(
+                                            Icons.notifications,
+                                            color: Color(0xFF757C8E),
+                                          ),
+                                        ),
+                                      ),
+                                      const PopupMenuItem<void>(
+                                        // onTap: () => context.push(const Placeholder()),
+                                        child: PopupItem(
+                                          title: 'Help',
+                                          icon: Icon(
+                                            Icons.help_outline_outlined,
+                                            color: Color(0xFF757C8E),
+                                          ),
+                                        ),
+                                      ),
+                                      PopupMenuItem<void>(
+                                        height: 1,
+                                        padding: EdgeInsets.zero,
+                                        child: Divider(
+                                          height: 1,
+                                          color: Colors.grey.shade300,
+                                          endIndent: 10,
+                                          indent: 10,
+                                        ),
+                                      ),
+                                      PopupMenuItem<void>(
+                                        onTap: () async {
+                                          final navigator = Navigator.of(context);
+                                          await serviceLocator<FirebaseAuth>().signOut();
+                                          unawaited(
+                                            navigator.pushNamedAndRemoveUntil(
+                                              '/',
+                                              (route) => false,
+                                            ),
+                                          );
+                                        },
+                                        child: const PopupItem(
+                                          title: 'Logout',
+                                          icon: Icon(
+                                            Icons.logout,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ];
+                                  },
+                                ),
+                              ),
                             ),
                           ],
                           bottom: PreferredSize(
@@ -156,9 +163,10 @@ class ProfileScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.95),
                                 border: const Border(
-                                    right: BorderSide(color: Colors.black12),
-                                    left: BorderSide(color: Colors.black12),
-                                    top: BorderSide(color: Colors.black12),),
+                                  right: BorderSide(color: Colors.black12),
+                                  left: BorderSide(color: Colors.black12),
+                                  top: BorderSide(color: Colors.black12),
+                                ),
                                 borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(25.r),
                                   topLeft: Radius.circular(25.r),
@@ -203,8 +211,22 @@ class ProfileScreen extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: productsProvider.savedProductsList == null
-                                        ? []
+                                    children: productsProvider.savedProductsList == null ||
+                                            productsProvider.savedProductsList!.isEmpty
+                                        ? [
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 35),
+                                              child: Text(
+                                                'Food Products will be here once saved',
+                                                style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.grey.shade500,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ),
+                                          ]
                                         : productsProvider.savedProductsList!
                                             .take(4)
                                             .map(
@@ -246,8 +268,22 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: restaurantsProvider.savedRestaurantsList == null
-                                        ? []
+                                    children: restaurantsProvider.savedRestaurantsList == null ||
+                                            restaurantsProvider.savedRestaurantsList!.isEmpty
+                                        ? [
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 35),
+                                              child: Text(
+                                                'Restaurants will be here once saved',
+                                                style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.grey.shade500,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ),
+                                          ]
                                         : restaurantsProvider.savedRestaurantsList!
                                             .take(4)
                                             .map(

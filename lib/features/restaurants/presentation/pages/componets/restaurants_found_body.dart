@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/horizontal_restaurant_card.dart';
-import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_details_page.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/map_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
@@ -79,8 +83,27 @@ class RestaurantsFoundBody extends StatelessWidget {
                         shrinkWrap: true,
                         itemCount: restaurants.length,
                         itemBuilder: (context, restaurantIndex) {
-                          return HorizontalRestaurantCard(
-                            restaurant: restaurants[restaurantIndex],
+                          return StreamBuilder<List<RestaurantReview>>(
+                            stream: serviceLocator<FirebaseFirestore>()
+                                .collection('restaurantReviews')
+                                .where('restaurantId', isEqualTo: restaurants[restaurantIndex].id)
+                                .snapshots()
+                                .map(
+                                  (event) => event.docs
+                                      .map(
+                                        (e) => RestaurantReviewModel.fromMap(
+                                          e.data(),
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                            builder: (context, snapshot) {
+                              final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
+                              return HorizontalRestaurantCard(
+                                reviews: reviews,
+                                restaurant: restaurants[restaurantIndex],
+                              );
+                            },
                           );
                         },
                       ),

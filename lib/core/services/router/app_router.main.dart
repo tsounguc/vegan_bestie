@@ -132,6 +132,17 @@ class AppRouter {
           settings: settings,
         );
 
+      case RestaurantReviewScreen.id:
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<RestaurantsBloc>(),
+            child: RestaurantReviewScreen(
+              restaurantDetails: settings.arguments! as RestaurantDetails,
+            ),
+          ),
+          settings: settings,
+        );
+
       case AllSavedProductsPage.id:
         return _pageBuilder(
           (_) => const AllSavedProductsPage(),

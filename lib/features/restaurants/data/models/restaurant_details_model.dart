@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:sheveegan/core/common/entities/restaurant_entities.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 
 class RestaurantDetailsModel extends RestaurantDetails {
   const RestaurantDetailsModel({
@@ -29,7 +31,6 @@ class RestaurantDetailsModel extends RestaurantDetails {
     required super.rating,
     required super.reference,
     required super.reservable,
-    required super.reviews,
     required super.servesBeer,
     required super.servesDinner,
     required super.servesLunch,
@@ -43,6 +44,7 @@ class RestaurantDetailsModel extends RestaurantDetails {
     required super.vicinity,
     required super.website,
     required super.wheelchairAccessibleEntrance,
+    super.reviewCount,
   });
 
   RestaurantDetailsModel.empty()
@@ -69,7 +71,6 @@ class RestaurantDetailsModel extends RestaurantDetails {
           rating: 0,
           reference: '_empty.reference',
           reservable: false,
-          reviews: [],
           servesBeer: false,
           servesDinner: false,
           servesLunch: false,
@@ -136,13 +137,6 @@ class RestaurantDetailsModel extends RestaurantDetails {
           rating: double.tryParse(dataMap['rating'].toString()) ?? 0.0,
           reference: dataMap['reference'] == null ? '' : dataMap['reference'] as String,
           reservable: dataMap['reservable'] == null ? false : dataMap['reservable'] as bool,
-          reviews: dataMap['reviews'] == null
-              ? []
-              : List<Review>.from(
-                  (dataMap['reviews'] as List).map(
-                    (review) => ReviewModel.fromMap(review as DataMap),
-                  ),
-                ),
           servesBeer: dataMap['serves_beer'] == null ? false : dataMap['serves_beer'] as bool,
           servesDinner: dataMap['serves_dinner'] == null ? false : dataMap['serves_dinner'] as bool,
           servesLunch: dataMap['serves_lunch'] == null ? false : dataMap['serves_lunch'] as bool,
@@ -163,9 +157,88 @@ class RestaurantDetailsModel extends RestaurantDetails {
           wheelchairAccessibleEntrance: dataMap['wheelchair_accessible_entrance'] == null
               ? false
               : dataMap['wheelchair_accessible_entrance'] as bool,
+          reviewCount: int.tryParse(dataMap['restaurantReviewsCount'].toString()) ?? 0,
         );
 
   String toJson() => jsonEncode(toMap());
+
+  RestaurantDetailsModel copyWith({
+    List<AddressComponent>? addressComponents,
+    String? adrAddress,
+    String? businessStatus,
+    CurrentOpeningHours? currentOpeningHours,
+    bool? delivery,
+    bool? dineIn,
+    String? formattedAddress,
+    String? formattedPhoneNumber,
+    Geometry? geometry,
+    String? imageUrl,
+    String? icon,
+    String? iconBackgroundColor,
+    String? iconMaskBaseUri,
+    String? internationalPhoneNumber,
+    String? name,
+    OpeningHours? openingHours,
+    List<Photo>? photos,
+    String? id,
+    PlusCode? plusCode,
+    double? rating,
+    String? reference,
+    bool? reservable,
+    int? reviewCount,
+    bool? servesBeer,
+    bool? servesDinner,
+    bool? servesLunch,
+    bool? servesVegetarianFood,
+    bool? servesWine,
+    bool? takeout,
+    List<String>? types,
+    String? url,
+    int? userRatingsTotal,
+    int? utcOffset,
+    String? vicinity,
+    String? website,
+    bool? wheelchairAccessibleEntrance,
+  }) {
+    return RestaurantDetailsModel(
+      addressComponents: addressComponents ?? this.addressComponents,
+      adrAddress: adrAddress ?? this.adrAddress,
+      businessStatus: businessStatus ?? this.businessStatus,
+      currentOpeningHours: currentOpeningHours ?? this.currentOpeningHours,
+      delivery: delivery ?? this.delivery,
+      dineIn: dineIn ?? this.dineIn,
+      formattedAddress: formattedAddress ?? this.formattedAddress,
+      formattedPhoneNumber: formattedPhoneNumber ?? this.formattedPhoneNumber,
+      geometry: geometry ?? this.geometry,
+      imageUrl: imageUrl ?? this.imageUrl,
+      icon: icon ?? this.icon,
+      iconBackgroundColor: iconBackgroundColor ?? this.iconBackgroundColor,
+      iconMaskBaseUri: iconMaskBaseUri ?? this.iconMaskBaseUri,
+      internationalPhoneNumber: internationalPhoneNumber ?? this.internationalPhoneNumber,
+      name: name ?? this.name,
+      openingHours: openingHours ?? this.openingHours,
+      photos: photos ?? this.photos,
+      id: id ?? this.id,
+      plusCode: plusCode ?? this.plusCode,
+      rating: rating ?? this.rating,
+      reference: reference ?? this.reference,
+      reservable: reservable ?? this.reservable,
+      servesBeer: servesBeer ?? this.servesBeer,
+      servesDinner: servesDinner ?? this.servesDinner,
+      servesLunch: servesLunch ?? this.servesLunch,
+      servesVegetarianFood: servesVegetarianFood ?? this.servesVegetarianFood,
+      servesWine: servesWine ?? this.servesWine,
+      takeout: takeout ?? this.takeout,
+      types: types ?? this.types,
+      url: url ?? this.url,
+      userRatingsTotal: userRatingsTotal ?? this.userRatingsTotal,
+      utcOffset: utcOffset ?? this.utcOffset,
+      vicinity: vicinity ?? this.vicinity,
+      website: website ?? this.website,
+      wheelchairAccessibleEntrance: wheelchairAccessibleEntrance ?? this.wheelchairAccessibleEntrance,
+      reviewCount: reviewCount ?? this.reviewCount,
+    );
+  }
 
   Map<String, dynamic> toMap() => {
         'address_components': List<dynamic>.from(
@@ -197,11 +270,6 @@ class RestaurantDetailsModel extends RestaurantDetails {
         'rating': rating,
         'reference': reference,
         'reservable': reservable,
-        'reviews': List<dynamic>.from(
-          reviews.map(
-            (review) => (review as ReviewModel).toMap(),
-          ),
-        ),
         'serves_beer': servesBeer,
         'serves_dinner': servesDinner,
         'serves_lunch': servesLunch,
@@ -405,52 +473,52 @@ class FluffyCloseModel extends FluffyClose {
       };
 }
 
-class ReviewModel extends Review {
-  const ReviewModel({
-    required super.authorName,
-    required super.authorUrl,
-    required super.language,
-    required super.originalLanguage,
-    required super.profilePhotoUrl,
-    required super.rating,
-    required super.relativeTimeDescription,
-    required super.text,
-    required super.time,
-    required super.translated,
-  });
-
-  factory ReviewModel.fromJson(String source) => ReviewModel.fromMap(
-        jsonDecode(source) as DataMap,
-      );
-
-  ReviewModel.fromMap(DataMap dataMap)
-      : this(
-          authorName: dataMap['author_name'] == null ? '' : dataMap['author_name'] as String,
-          authorUrl: dataMap['author_url'] == null ? '' : dataMap['author_url'] as String,
-          language: dataMap['language'] == null ? '' : dataMap['language'] as String,
-          originalLanguage: dataMap['original_language'] == null ? '' : dataMap['original_language'] as String,
-          profilePhotoUrl: dataMap['author_name'] == null ? '' : dataMap['author_name'] as String,
-          rating: int.tryParse(dataMap['rating'].toString()) ?? 0,
-          relativeTimeDescription:
-              dataMap['relative_time_description'] == null ? '' : dataMap['relative_time_description'] as String,
-          text: dataMap['text'] == null ? '' : dataMap['text'] as String,
-          time: int.tryParse(dataMap['time'].toString()) ?? 0,
-          translated: dataMap['translated'] == null ? false : dataMap['translated'] as bool,
-        );
-
-  DataMap toMap() => {
-        'author_name': authorName,
-        'author_url': authorUrl,
-        'language': language,
-        'original_language': originalLanguage,
-        'profile_photo_url': profilePhotoUrl,
-        'rating': rating,
-        'relative_time_description': relativeTimeDescription,
-        'text': text,
-        'time': time,
-        'translated': translated,
-      };
-}
+// class ReviewModel extends Review {
+//   const ReviewModel({
+//     required super.authorName,
+//     required super.authorUrl,
+//     required super.language,
+//     required super.originalLanguage,
+//     required super.profilePhotoUrl,
+//     required super.rating,
+//     required super.relativeTimeDescription,
+//     required super.text,
+//     required super.time,
+//     required super.translated,
+//   });
+//
+//   factory ReviewModel.fromJson(String source) => ReviewModel.fromMap(
+//         jsonDecode(source) as DataMap,
+//       );
+//
+//   ReviewModel.fromMap(DataMap dataMap)
+//       : this(
+//           authorName: dataMap['author_name'] == null ? '' : dataMap['author_name'] as String,
+//           authorUrl: dataMap['author_url'] == null ? '' : dataMap['author_url'] as String,
+//           language: dataMap['language'] == null ? '' : dataMap['language'] as String,
+//           originalLanguage: dataMap['original_language'] == null ? '' : dataMap['original_language'] as String,
+//           profilePhotoUrl: dataMap['author_name'] == null ? '' : dataMap['author_name'] as String,
+//           rating: int.tryParse(dataMap['rating'].toString()) ?? 0,
+//           relativeTimeDescription:
+//               dataMap['relative_time_description'] == null ? '' : dataMap['relative_time_description'] as String,
+//           text: dataMap['text'] == null ? '' : dataMap['text'] as String,
+//           time: int.tryParse(dataMap['time'].toString()) ?? 0,
+//           translated: dataMap['translated'] == null ? false : dataMap['translated'] as bool,
+//         );
+//
+//   DataMap toMap() => {
+//         'author_name': authorName,
+//         'author_url': authorUrl,
+//         'language': language,
+//         'original_language': originalLanguage,
+//         'profile_photo_url': profilePhotoUrl,
+//         'rating': rating,
+//         'relative_time_description': relativeTimeDescription,
+//         'text': text,
+//         'time': time,
+//         'translated': translated,
+//       };
+// }
 
 class PlusCodeModel extends PlusCode {
   const PlusCodeModel({

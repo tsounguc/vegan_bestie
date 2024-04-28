@@ -14,7 +14,8 @@ import 'package:sheveegan/features/profile/presentation/screens/all_saved_produc
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_restaurants_pages.dart';
 import 'package:sheveegan/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
-import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_details_page.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_review_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/product_found_page.dart';

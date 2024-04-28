@@ -55,3 +55,15 @@ class SaveRestaurantEvent extends RestaurantsEvent {
 
   final RestaurantDetails restaurant;
 }
+
+class AddRestaurantReviewEvent extends RestaurantsEvent {
+  const AddRestaurantReviewEvent({required this.restaurantReview});
+
+  final RestaurantReview restaurantReview;
+}
+
+class GetRestaurantReviewsEvent extends RestaurantsEvent {
+  const GetRestaurantReviewsEvent({required this.restaurantId});
+
+  final String restaurantId;
+}

@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 class RestaurantReview extends Equatable {
   const RestaurantReview({
     required this.id,
+    required this.title,
     required this.review,
     required this.rating,
     required this.createdAt,
@@ -15,6 +16,7 @@ class RestaurantReview extends Equatable {
   RestaurantReview.empty()
       : this(
           id: '_empty.id',
+          title: '_empty.title',
           review: '_empty.id',
           rating: 0,
           createdAt: DateTime.now(),
@@ -25,6 +27,7 @@ class RestaurantReview extends Equatable {
         );
 
   final String id;
+  final String title;
   final String review;
   final double rating;
   final DateTime createdAt;
@@ -36,6 +39,7 @@ class RestaurantReview extends Equatable {
   @override
   List<Object?> get props => [
         id,
+        title,
         review,
         rating,
         createdAt,

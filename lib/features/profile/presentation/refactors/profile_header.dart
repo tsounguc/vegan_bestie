@@ -16,36 +16,43 @@ class ProfileHeader extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.7),
             border: const Border(
-                right: BorderSide(color: Colors.black12),
-                left: BorderSide(color: Colors.black12),
-                bottom: BorderSide(color: Colors.black12),),
+              right: BorderSide(color: Colors.black12),
+              left: BorderSide(color: Colors.black12),
+              bottom: BorderSide(color: Colors.black12),
+            ),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(25.r),
               bottomRight: Radius.circular(25.r),
             ),
-            // boxShadow: const [
-            //   BoxShadow(
-            //     offset: Offset(0, 2),
-            //     blurRadius: 1,
-            //     color: Colors.black12,
-            //   ),
-            // ],
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10.h),
                 Row(
                   children: [
-                    Text(
-                      user?.bio ?? '',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.black,
+                    if (user?.bio != null && user!.bio!.isNotEmpty)
+                      Text(
+                        user.bio!,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.black,
+                        ),
+                      )
+                    else
+                      Center(
+                        child: Text(
+                          'Say something about yourself',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.normal,
+                            color: Colors.grey.shade500,
+                          ),
+                        ),
                       ),
-                    ),
                   ],
                 ),
                 const SizedBox(height: 30),

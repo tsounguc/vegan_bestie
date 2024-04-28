@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:sheveegan/core/common/entities/restaurant_entities.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 
 class RestaurantDetails extends Equatable {
   const RestaurantDetails({
@@ -25,7 +26,6 @@ class RestaurantDetails extends Equatable {
     required this.rating,
     required this.reference,
     required this.reservable,
-    required this.reviews,
     required this.servesBeer,
     required this.servesDinner,
     required this.servesLunch,
@@ -39,6 +39,7 @@ class RestaurantDetails extends Equatable {
     required this.vicinity,
     required this.website,
     required this.wheelchairAccessibleEntrance,
+    this.reviewCount,
   });
 
   RestaurantDetails.empty()
@@ -65,7 +66,6 @@ class RestaurantDetails extends Equatable {
           rating: 0,
           reference: '_empty.reference',
           reservable: false,
-          reviews: [],
           servesBeer: false,
           servesDinner: false,
           servesLunch: false,
@@ -79,6 +79,7 @@ class RestaurantDetails extends Equatable {
           vicinity: '_empty.vicinity',
           website: '_empty.website',
           wheelchairAccessibleEntrance: false,
+          reviewCount: 0,
         );
 
   final List<AddressComponent> addressComponents;
@@ -103,7 +104,7 @@ class RestaurantDetails extends Equatable {
   final double rating;
   final String reference;
   final bool reservable;
-  final List<Review> reviews;
+  final int? reviewCount;
   final bool servesBeer;
   final bool servesDinner;
   final bool servesLunch;
@@ -142,7 +143,6 @@ class RestaurantDetails extends Equatable {
         rating,
         reference,
         reservable,
-        reviews,
         servesBeer,
         servesDinner,
         servesLunch,

@@ -8,7 +8,10 @@ import 'package:sheveegan/features/auth/domain/usecases/remove_restaurant.dart';
 import 'package:sheveegan/features/auth/domain/usecases/save_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_reviews..dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
@@ -27,6 +30,8 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
     required GetSavedRestaurantsList getSavedRestaurantsList,
     required SaveRestaurant saveRestaurant,
     required RemoveRestaurant removeRestaurant,
+    required AddRestaurantReview addRestaurantReview,
+    required GetRestaurantReviews getRestaurantReviews,
   })  : _getUserLocation = getUserLocation,
         _getRestaurantsNearMe = getRestaurantsNearMe,
         _getRestaurantDetails = getRestaurantDetails,
@@ -34,6 +39,8 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
         _getSavedRestaurantsList = getSavedRestaurantsList,
         _saveRestaurant = saveRestaurant,
         _removeRestaurant = removeRestaurant,
+        _addRestaurantReview = addRestaurantReview,
+        _getRestaurantReviews = getRestaurantReviews,
         super(const RestaurantsInitial()) {
     on<LoadGeolocationEvent>(_geoLocationHandler);
     on<GetRestaurantsEvent>(_getRestaurantsHandler);
@@ -42,6 +49,8 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
     on<FetchSavedRestaurantsListEvent>(_fetchRestaurantsListHandler);
     on<SaveRestaurantEvent>(_saveRestaurantHandler);
     on<RemoveRestaurantEvent>(_removeRestaurantHandler);
+    on<AddRestaurantReviewEvent>(_addRestaurantReviewHandler);
+    on<GetRestaurantReviewsEvent>(_getRestaurantReviewsHandler);
   }
 
   GoogleMapController? controller;
@@ -56,6 +65,8 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
   final GetSavedRestaurantsList _getSavedRestaurantsList;
   final SaveRestaurant _saveRestaurant;
   final RemoveRestaurant _removeRestaurant;
+  final AddRestaurantReview _addRestaurantReview;
+  final GetRestaurantReviews _getRestaurantReviews;
 
   Future<void> _getRestaurantsHandler(
     GetRestaurantsEvent event,
@@ -162,6 +173,38 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
       (success) => emit(
         RestaurantDetailsLoaded(
           restaurantDetails: event.restaurant,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _addRestaurantReviewHandler(
+    AddRestaurantReviewEvent event,
+    Emitter<RestaurantsState> emit,
+  ) async {
+    emit(const AddingRestaurantReview());
+    final result = await _addRestaurantReview(event.restaurantReview);
+    result.fold(
+      (failure) => emit(RestaurantsError(message: failure.message)),
+      (r) => emit(const RestaurantReviewAdded()),
+    );
+  }
+
+  Future<void> _getRestaurantReviewsHandler(
+    GetRestaurantReviewsEvent event,
+    Emitter<RestaurantsState> emit,
+  ) async {
+    emit(const LoadingRestaurantReviews());
+    final result = await _getRestaurantReviews(event.restaurantId);
+    result.fold(
+      (failure) => emit(
+        RestaurantsError(
+          message: failure.message,
+        ),
+      ),
+      (restaurantReviews) => emit(
+        RestaurantReviewsLoaded(
+          restaurantReviews: restaurantReviews,
         ),
       ),
     );

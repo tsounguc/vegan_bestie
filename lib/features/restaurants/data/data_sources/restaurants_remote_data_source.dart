@@ -95,6 +95,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       final restaurantDetails = RestaurantDetailsModel.fromMap(
         data['result'] as DataMap,
       );
+
       return restaurantDetails;
     } on RestaurantDetailsException catch (e, stackTrace) {
       debugPrint(stackTrace.toString());
@@ -233,10 +234,10 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
         );
       }
       // Create restaurantReview firestore reference
-      final restaurantReviewReference = _cloudStoreClient.collection('restaurantReviews').doc();
+      final restaurantReviewReference = _restaurantReviews.doc();
 
       // Create restaurantReview model with restaurantReview id from references
-      var restaurantReviewModel = (restaurantReview as RestaurantReviewModel).copyWith(
+      final restaurantReviewModel = (restaurantReview as RestaurantReviewModel).copyWith(
         id: restaurantReviewReference.id,
       );
 
@@ -256,10 +257,13 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
 
       // Create restaurant firestore reference
       // Increment reviewsCount
-      return _cloudStoreClient
-          .collection('restaurants')
-          .doc(restaurantReviewModel.restaurantId)
-          .update({'restaurantReviewsCount': FieldValue.increment(1)});
+      return await _restaurants.doc(restaurantReviewModel.restaurantId).set(
+        {
+          'restaurantId': restaurantReview.restaurantId,
+          'restaurantReviewsCount': FieldValue.increment(1),
+        },
+        SetOptions(merge: true),
+      );
     } on FirebaseException catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw AddRestaurantException(
@@ -275,7 +279,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   }
 
   @override
-  Future<List<RestaurantReviewModel>> getRestaurantReviews(String postId) async {
+  Future<List<RestaurantReviewModel>> getRestaurantReviews(String restaurantId) async {
     try {
       final user = _authClient.currentUser;
       if (user == null) {
@@ -285,13 +289,19 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
         );
       }
 
-      return _cloudStoreClient.collection('restaurantReviews').get().then((value) => value.docs
-          .map(
-            (doc) => RestaurantReviewModel.fromMap(
-              doc.data(),
-            ),
+      return _restaurantReviews
+          .where(
+            'restaurantId',
+            isEqualTo: restaurantId,
           )
-          .toList());
+          .get()
+          .then(
+            (value) => value.docs
+                .map(
+                  (doc) => RestaurantReviewModel.fromMap(doc.data()),
+                )
+                .toList(),
+          );
     } on FirebaseException catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw AddRestaurantException(
@@ -308,5 +318,13 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
 
   CollectionReference<Map<String, dynamic>> get _users => _cloudStoreClient.collection(
         FirebaseConstants.usersCollection,
+      );
+
+  CollectionReference<Map<String, dynamic>> get _restaurants => _cloudStoreClient.collection(
+        FirebaseConstants.restaurantsCollection,
+      );
+
+  CollectionReference<Map<String, dynamic>> get _restaurantReviews => _cloudStoreClient.collection(
+        FirebaseConstants.restaurantReviewsCollection,
       );
 }
