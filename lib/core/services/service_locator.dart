@@ -24,6 +24,7 @@ import 'package:sheveegan/features/restaurants/data/repositories/restaurants_rep
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant_review.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/edit_restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_reviews.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';

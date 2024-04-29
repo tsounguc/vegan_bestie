@@ -40,4 +40,8 @@ abstract class RestaurantsRepository {
   ResultVoid deleteRestaurantReview({
     required RestaurantReview restaurantReview,
   });
+
+  ResultVoid editRestaurantReview({
+    required RestaurantReview restaurantReview,
+  });
 }

@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:sheveegan/core/common/widgets/popup_item.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/utils/constants.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/edit_restaurant_review_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class ReviewCard extends StatelessWidget {
   const ReviewCard({
     required this.review,
+    required this.restaurant,
     super.key,
   });
 
   final RestaurantReview review;
+  final RestaurantDetails restaurant;
 
   void deleteReview(BuildContext context, RestaurantReview review) {
     BlocProvider.of<RestaurantsBloc>(
@@ -22,13 +28,26 @@ class ReviewCard extends StatelessWidget {
     ).add(DeleteRestaurantReviewEvent(review: review));
   }
 
+  void editReview(BuildContext context, RestaurantReview review) {
+    Navigator.pushNamed(
+      context,
+      EditRestaurantReviewScreen.id,
+      arguments: EditRestaurantScreenArguments(review, restaurant),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    var timestamp = '${DateFormat('MMM d, yyyy').format(review.createdAt.toLocal())}';
+    if (review.updatedAt.toLocal().isAfter(review.createdAt.toLocal())) {
+      timestamp = 'Edited ${DateFormat('MMM d, yyyy').format(review.updatedAt.toLocal())}';
+      debugPrint('Updated $timestamp');
+    }
     return Card(
       surfaceTintColor: Colors.white,
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -55,7 +74,7 @@ class ReviewCard extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 12.sp,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -73,7 +92,10 @@ class ReviewCard extends StatelessWidget {
                     itemBuilder: (BuildContext context) {
                       return [
                         PopupMenuItem<void>(
-                          onTap: () {},
+                          onTap: () => editReview(
+                            context,
+                            review,
+                          ),
                           child: const PopupItem(
                             title: 'Edit Review',
                             icon: Icon(
@@ -98,6 +120,29 @@ class ReviewCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  review.title,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  timestamp,
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 5),
             RatingBarIndicator(
               rating: review.rating,
               itemBuilder: (BuildContext context, int index) {
@@ -108,15 +153,6 @@ class ReviewCard extends StatelessWidget {
               },
               unratedColor: Colors.grey.shade400,
               itemSize: 16,
-            ),
-            const SizedBox(height: 5),
-            Text(
-              review.title,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
-              ),
             ),
             const SizedBox(height: 5),
             Text(

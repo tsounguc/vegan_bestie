@@ -93,7 +93,6 @@ class AppRouter {
           ),
           settings: settings,
         );
-
       case EditProfileScreen.id:
         return _pageBuilder(
           (_) => BlocProvider<AuthBloc>.value(
@@ -102,7 +101,6 @@ class AppRouter {
           ),
           settings: settings,
         );
-
       case ScanResultsPage.id:
         return _pageBuilder(
           (_) => BlocProvider<ScanProductCubit>.value(
@@ -131,7 +129,6 @@ class AppRouter {
           ),
           settings: settings,
         );
-
       case RestaurantReviewScreen.id:
         return _pageBuilder(
           (_) => BlocProvider(
@@ -142,26 +139,29 @@ class AppRouter {
           ),
           settings: settings,
         );
-
       case AllSavedProductsPage.id:
         return _pageBuilder(
           (_) => const AllSavedProductsPage(),
           settings: settings,
         );
-
       case AllSavedRestaurantsPage.id:
         return _pageBuilder(
           (_) => const AllSavedRestaurantsPage(),
           settings: settings,
         );
-      // return MaterialPageRoute(
-      //   builder: (context) => const ProductFoundPageTwo(),
-      // );
-      // case ProductFoundPageTwo.id:
-      //   return MaterialPageRoute(
-      //     builder: (context) => const ProductFoundPageTwo(),
-      //   );
 
+      case EditRestaurantReviewScreen.id:
+        final args = settings.arguments! as EditRestaurantScreenArguments;
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<RestaurantsBloc>(),
+            child: EditRestaurantReviewScreen(
+              review: args.review,
+              restaurant: args.restaurant,
+            ),
+          ),
+          settings: settings,
+        );
       default:
         throw Exception('Route not found!');
     }
@@ -186,4 +186,11 @@ class AppRouter {
       pageBuilder: (context, _, __) => page(context),
     );
   }
+}
+
+class EditRestaurantScreenArguments {
+  const EditRestaurantScreenArguments(this.review, this.restaurant);
+
+  final RestaurantReview review;
+  final RestaurantDetails restaurant;
 }

@@ -192,7 +192,7 @@ class RestaurantDetailsPage extends StatelessWidget {
               body: SingleChildScrollView(
                 controller: controller,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -262,7 +262,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                               child: Text(
                                 restaurantDetails.formattedAddress,
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.grey.shade500,
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.normal,
                                   // overflow: TextOverflow.ellipsis,
@@ -455,7 +455,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 5),
+                        padding: const EdgeInsets.symmetric(horizontal: 12).copyWith(top: 5),
                         child: RatingAndReviewsCountWidget(
                           restaurantDetails: restaurantDetails,
                           rating: totalRestaurantRating(reviews),
@@ -487,7 +487,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                           controller: controller,
                           itemCount: reviews.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return ReviewCard(review: reviews[index]);
+                            return ReviewCard(review: reviews[index], restaurant: restaurantDetails);
                           },
                         ),
                       const SizedBox(height: 75),

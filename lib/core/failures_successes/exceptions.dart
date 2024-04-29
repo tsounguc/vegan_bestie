@@ -156,8 +156,21 @@ class SaveRestaurantException extends Equatable implements Exception {
   List<Object?> get props => [message, statusCode];
 }
 
-class AddRestaurantException extends Equatable implements Exception {
-  const AddRestaurantException({
+class AddRestaurantReviewException extends Equatable implements Exception {
+  const AddRestaurantReviewException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final String statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
+}
+
+class GetRestaurantReviewsException extends Equatable implements Exception {
+  const GetRestaurantReviewsException({
     required this.message,
     required this.statusCode,
   });

@@ -188,14 +188,28 @@ class SaveRestaurantFailure extends Failure {
         );
 }
 
-class AddRestaurantFailure extends Failure {
-  AddRestaurantFailure({
+class AddRestaurantReviewFailure extends Failure {
+  AddRestaurantReviewFailure({
     required super.message,
     required super.statusCode,
   });
 
-  AddRestaurantFailure.fromException(
-    AddRestaurantException exception,
+  AddRestaurantReviewFailure.fromException(
+    AddRestaurantReviewException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
+class GetRestaurantReviewsFailure extends Failure {
+  GetRestaurantReviewsFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  GetRestaurantReviewsFailure.fromException(
+    GetRestaurantReviewsException exception,
   ) : this(
           message: exception.message,
           statusCode: exception.statusCode,
@@ -258,7 +272,7 @@ class EditRestaurantReviewFailure extends Failure {
   });
 
   EditRestaurantReviewFailure.fromException(
-    DeleteRestaurantReviewFailure exception,
+    EditRestaurantReviewException exception,
   ) : this(
           message: exception.message,
           statusCode: exception.statusCode,

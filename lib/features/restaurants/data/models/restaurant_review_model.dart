@@ -18,31 +18,31 @@ class RestaurantReviewModel extends RestaurantReview {
 
   RestaurantReviewModel.empty()
       : this(
-          id: '_empty.id',
-          title: '_empty.title',
-          review: '_empty.review',
-          rating: 0,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          restaurantId: '_empty.restaurantId',
-          username: '_empty.username',
-          userId: '_empty.userId',
-          userProfilePic: '_empty.userProfilePic',
-        );
+    id: '_empty.id',
+    title: '_empty.title',
+    review: '_empty.review',
+    rating: 0,
+    createdAt: DateTime.timestamp(),
+    updatedAt: DateTime.timestamp(),
+    restaurantId: '_empty.restaurantId',
+    username: '_empty.username',
+    userId: '_empty.userId',
+    userProfilePic: '_empty.userProfilePic',
+  );
 
   RestaurantReviewModel.fromMap(DataMap map)
       : this(
-          id: map['id'] as String,
-          title: map['title'] as String,
-          review: map['review'] as String,
-          rating: (map['rating'] as num).toDouble(),
-          createdAt: (map['createdAt'] as Timestamp).toDate(),
-          updatedAt: (map['updatedAt'] as Timestamp).toDate(),
-          restaurantId: map['restaurantId'] as String,
-          userId: map['userId'] as String,
-          username: map['username'] as String,
-          userProfilePic: map['userProfilePic'] as String,
-        );
+    id: map['id'] as String,
+    title: map['title'] as String,
+    review: map['review'] as String,
+    rating: (map['rating'] as num).toDouble(),
+    createdAt: (map['createdAt'] as Timestamp).toDate(),
+    updatedAt: (map['updatedAt'] as Timestamp).toDate(),
+    restaurantId: map['restaurantId'] as String,
+    userId: map['userId'] as String,
+    username: map['username'] as String,
+    userProfilePic: map['userProfilePic'] as String,
+  );
 
   RestaurantReviewModel copyWith({
     String? id,
@@ -70,13 +70,14 @@ class RestaurantReviewModel extends RestaurantReview {
     );
   }
 
-  DataMap toMap() => {
+  DataMap toMap() =>
+      {
         'id': id,
         'title': title,
         'review': review,
         'rating': rating,
-        'createdAt': FieldValue.serverTimestamp(),
-        'updatedAt': FieldValue.serverTimestamp(),
+        'createdAt': createdAt,
+        'updatedAt': updatedAt,
         'restaurantId': restaurantId,
         'username': username,
         'userId': userId,

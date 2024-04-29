@@ -73,3 +73,9 @@ class DeleteRestaurantReviewEvent extends RestaurantsEvent {
 
   final RestaurantReview review;
 }
+
+class EditRestaurantReviewEvent extends RestaurantsEvent {
+  const EditRestaurantReviewEvent({required this.review});
+
+  final RestaurantReview review;
+}

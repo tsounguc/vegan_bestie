@@ -93,6 +93,14 @@ class RestaurantReviewsLoaded extends RestaurantsState {
   final List<RestaurantReview> restaurantReviews;
 }
 
+class EditingRestaurantReview extends RestaurantsState {
+  const EditingRestaurantReview();
+}
+
+class RestaurantReviewEdited extends RestaurantsState {
+  const RestaurantReviewEdited();
+}
+
 class UserLocationLoaded extends RestaurantsState {
   const UserLocationLoaded({required this.position});
 

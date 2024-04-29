@@ -51,6 +51,8 @@ abstract class RestaurantsRemoteDataSource {
   Future<List<RestaurantReviewModel>> getRestaurantReviews(String postId);
 
   Future<void> deleteRestaurantReview(RestaurantReview restaurantReview);
+
+  Future<void> editRestaurantReview(RestaurantReview restaurantReview);
 }
 
 const kGetRestaurantsEndPoint = 'nearbysearch/';
@@ -229,7 +231,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
     try {
       final user = _authClient.currentUser;
       if (user == null) {
-        throw const AddRestaurantException(
+        throw const AddRestaurantReviewException(
           message: 'User is not authenticated',
           statusCode: '401',
         );
@@ -269,15 +271,15 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       );
     } on FirebaseException catch (e, s) {
       debugPrintStack(stackTrace: s);
-      throw AddRestaurantException(
+      throw AddRestaurantReviewException(
         message: e.message ?? 'Unknown error occurred',
         statusCode: e.code,
       );
-    } on AddRestaurantException {
+    } on AddRestaurantReviewException {
       rethrow;
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
-      throw AddRestaurantException(message: e.toString(), statusCode: '505');
+      throw AddRestaurantReviewException(message: e.toString(), statusCode: '505');
     }
   }
 
@@ -286,7 +288,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
     try {
       final user = _authClient.currentUser;
       if (user == null) {
-        throw const AddRestaurantException(
+        throw const GetRestaurantReviewsException(
           message: 'User is not authenticated',
           statusCode: '401',
         );
@@ -307,15 +309,15 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
           );
     } on FirebaseException catch (e, s) {
       debugPrintStack(stackTrace: s);
-      throw AddRestaurantException(
+      throw GetRestaurantReviewsException(
         message: e.message ?? 'Unknown error occurred',
         statusCode: e.code,
       );
-    } on AddRestaurantException {
+    } on GetRestaurantReviewsException {
       rethrow;
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
-      throw AddRestaurantException(message: e.toString(), statusCode: '505');
+      throw GetRestaurantReviewsException(message: e.toString(), statusCode: '505');
     }
   }
 
@@ -324,7 +326,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
     try {
       final user = _authClient.currentUser;
       if (user == null) {
-        throw const AddRestaurantException(
+        throw const AddRestaurantReviewException(
           message: 'User is not authenticated',
           statusCode: '401',
         );
@@ -342,6 +344,34 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw DeleteRestaurantReviewException(message: e.toString(), statusCode: '505');
+    }
+  }
+
+  @override
+  Future<void> editRestaurantReview(RestaurantReview restaurantReview) {
+    try {
+      final user = _authClient.currentUser;
+      if (user == null) {
+        throw const AddRestaurantReviewException(
+          message: 'User is not authenticated',
+          statusCode: '401',
+        );
+      }
+
+      return _restaurantReviews
+          .doc(restaurantReview.id)
+          .update((restaurantReview as RestaurantReviewModel).copyWith(updatedAt: DateTime.timestamp()).toMap());
+    } on FirebaseException catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw EditRestaurantReviewException(
+        message: e.message ?? 'Unknown error occurred',
+        statusCode: e.code,
+      );
+    } on EditRestaurantReviewException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw EditRestaurantReviewException(message: e.toString(), statusCode: '505');
     }
   }
 

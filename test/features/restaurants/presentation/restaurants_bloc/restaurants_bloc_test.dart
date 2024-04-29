@@ -11,6 +11,7 @@ import 'package:sheveegan/features/restaurants/domain/entities/restaurant_detail
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant_review.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/edit_restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_reviews.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
@@ -38,6 +39,8 @@ class MockAddRestaurantReview extends Mock implements AddRestaurantReview {}
 class MockGetRestaurantReviews extends Mock implements GetRestaurantReviews {}
 
 class MockDeleteRestaurantReview extends Mock implements DeleteRestaurantReview {}
+
+class MockEditRestaurantReview extends Mock implements EditRestaurantReview {}
 
 void main() {
   late GetRestaurantsNearMe getRestaurantsNearMe;
@@ -72,6 +75,7 @@ void main() {
       addRestaurantReview: MockAddRestaurantReview(),
       getRestaurantReviews: MockGetRestaurantReviews(),
       deleteRestaurantReview: MockDeleteRestaurantReview(),
+      editRestaurantReview: MockEditRestaurantReview(),
     );
     testGetRestaurantsParams = GetRestaurantsNearMeParams.empty();
     testGetRestaurantDetailsParams = const GetRestaurantDetailsParams.empty();

@@ -109,8 +109,8 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
     try {
       final result = await _remoteDataSource.addRestaurantReview(restaurantReview);
       return Right(result);
-    } on AddRestaurantException catch (e) {
-      return Left(AddRestaurantFailure.fromException(e));
+    } on AddRestaurantReviewException catch (e) {
+      return Left(AddRestaurantReviewFailure.fromException(e));
     }
   }
 
@@ -119,8 +119,8 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
     try {
       final result = await _remoteDataSource.getRestaurantReviews(postId);
       return Right(result);
-    } on AddRestaurantException catch (e) {
-      return Left(AddRestaurantFailure.fromException(e));
+    } on GetRestaurantReviewsException catch (e) {
+      return Left(GetRestaurantReviewsFailure.fromException(e));
     }
   }
 
@@ -131,6 +131,16 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
       return Right(result);
     } on DeleteRestaurantReviewException catch (e) {
       return Left(DeleteRestaurantReviewFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid editRestaurantReview({required RestaurantReview restaurantReview}) async {
+    try {
+      final result = await _remoteDataSource.editRestaurantReview(restaurantReview);
+      return Right(result);
+    } on EditRestaurantReviewException catch (e) {
+      return Left(EditRestaurantReviewFailure.fromException(e));
     }
   }
 }

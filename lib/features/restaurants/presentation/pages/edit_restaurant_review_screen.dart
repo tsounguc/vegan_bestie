@@ -8,25 +8,42 @@ import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_review_form_field.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
-class RestaurantReviewScreen extends StatefulWidget {
-  const RestaurantReviewScreen({required this.restaurantDetails, super.key});
+class EditRestaurantReviewScreen extends StatefulWidget {
+  const EditRestaurantReviewScreen({
+    // required this.argument,
+    required this.review,
+    required this.restaurant,
+    super.key,
+  });
 
-  final RestaurantDetails restaurantDetails;
+  // final EditRestaurantScreenArguments argument;
 
-  static const String id = '/restaurantReviewScreen';
+  final RestaurantReview review;
+  final RestaurantDetails restaurant;
+
+  static const String id = '/editRestaurantReviewScreen';
 
   @override
-  State<RestaurantReviewScreen> createState() => _RestaurantReviewScreenState();
+  State<EditRestaurantReviewScreen> createState() => _EditRestaurantReviewScreenState();
 }
 
-class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
+class _EditRestaurantReviewScreenState extends State<EditRestaurantReviewScreen> {
   final titleController = TextEditingController();
   final reviewController = TextEditingController();
 
   double rating = 0;
+
+  @override
+  void initState() {
+    rating = widget.review.rating;
+    titleController.text = widget.review.title;
+    reviewController.text = widget.review.review;
+    super.initState();
+  }
 
   final textStyle = TextStyle(
     color: Colors.black,
@@ -34,8 +51,8 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
     fontWeight: FontWeight.w600,
   );
 
-  void submitReview(BuildContext context) {
-    final restaurantReview = RestaurantReviewModel.empty().copyWith(
+  void submitChanges(BuildContext context) {
+    final restaurantReview = (widget.review as RestaurantReviewModel).copyWith(
       title: titleController.text.trim().isNotEmpty
           ? titleController.text.trim()
           : context.currentUser == null
@@ -43,14 +60,12 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
               : context.currentUser!.name,
       review: reviewController.text.trim(),
       rating: rating,
-      restaurantId: widget.restaurantDetails.id,
       username: context.currentUser?.name,
-      userId: context.currentUser != null ? context.currentUser!.uid : 'Anonymous',
       userProfilePic: context.currentUser?.photoUrl ?? kDefaultAvatar,
     );
     BlocProvider.of<RestaurantsBloc>(context).add(
-      AddRestaurantReviewEvent(
-        restaurantReview: restaurantReview,
+      EditRestaurantReviewEvent(
+        review: restaurantReview,
       ),
     );
   }
@@ -59,7 +74,7 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<RestaurantsBloc, RestaurantsState>(
       listener: (context, state) {
-        if (state is RestaurantReviewAdded) {
+        if (state is RestaurantReviewEdited) {
           debugPrint('RestaurantReviewAdded');
           Navigator.of(context).pop();
           CoreUtils.showSnackBar(
@@ -74,7 +89,7 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: Text(widget.restaurantDetails.name),
+            title: Text(widget.restaurant.name),
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -86,7 +101,7 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
                   child: Row(
                     children: [
                       Text(
-                        'How would you rate ${widget.restaurantDetails.name}',
+                        'How would you rate ${widget.restaurant.name}',
                         style: textStyle,
                       ),
                     ],
@@ -94,6 +109,7 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
                 ),
                 const SizedBox(height: 10),
                 RatingBar.builder(
+                  initialRating: rating,
                   allowHalfRating: true,
                   itemBuilder: (context, rating) {
                     return const Icon(
@@ -128,11 +144,11 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
                     titleController.addListener(() => refresh(() {}));
                     reviewController.addListener(() => refresh(() {}));
                     final canSave = titleController.text.trim().isEmpty || reviewController.text.trim().isEmpty;
-                    return state is AddingRestaurantReview
+                    return state is EditingRestaurantReview
                         ? const Center(child: CircularProgressIndicator())
                         : LongButton(
                             onPressed: () {
-                              submitReview(context);
+                              submitChanges(context);
                             },
                             label: 'Submit',
                             backgroundColor:
