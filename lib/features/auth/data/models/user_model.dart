@@ -24,7 +24,7 @@ class UserModel extends UserEntity {
   UserModel.fromMap(DataMap dataMap)
       : this(
           uid: dataMap['uid'] as String,
-          name: dataMap['name'] as String,
+          name: dataMap['fullName'] as String,
           email: dataMap['email'] as String,
           photoUrl: dataMap['photoUrl'] as String?,
           bio: dataMap['bio'] as String?,
@@ -46,7 +46,7 @@ class UserModel extends UserEntity {
 
   DataMap toMap() => {
         'uid': uid,
-        'name': name,
+        'fullName': name,
         'email': email,
         'photoUrl': photoUrl,
         'bio': bio,

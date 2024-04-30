@@ -50,11 +50,17 @@ class MacroNutrientWidget extends StatelessWidget {
                 children: [
                   Text(
                     '$title (${percentage.toStringAsFixed(1)}%)',
-                    style: TextStyle(color: Colors.black, fontSize: 12.sp),
+                    style: TextStyle(
+                      color: Colors.grey.shade800,
+                      fontSize: 12.sp,
+                    ),
                   ),
                   Text(
                     " ${value?.toStringAsFixed(1) ?? "0.0"} g",
-                    style: TextStyle(color: Colors.black, fontSize: 13.sp),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12.sp,
+                    ),
                   ),
                 ],
               ),

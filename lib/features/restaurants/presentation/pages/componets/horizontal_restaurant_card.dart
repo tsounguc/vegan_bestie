@@ -99,8 +99,8 @@ class HorizontalRestaurantCard extends StatelessWidget {
                             child: Text(
                               restaurant.name.capitalize(),
                               style: TextStyle(
-                                fontSize: 14.sp,
-                                color: Colors.black,
+                                fontSize: 12.sp,
+                                color: Colors.grey.shade800,
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -112,8 +112,9 @@ class HorizontalRestaurantCard extends StatelessWidget {
                           '${Strings.distanceUnitText}',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
+                            color: Colors.grey.shade800,
+                            fontWeight: FontWeight.w500,
                             fontSize: 10.sp,
-                            color: Colors.black,
                           ),
                         ),
                       ],
@@ -139,7 +140,8 @@ class HorizontalRestaurantCard extends StatelessWidget {
                                 child: Text(
                                   restaurant.vicinity,
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.grey.shade800,
+                                    fontWeight: FontWeight.w500,
                                     fontSize: 10.sp,
                                   ),
                                 ),
@@ -150,7 +152,8 @@ class HorizontalRestaurantCard extends StatelessWidget {
                         Text(
                           restaurant.price,
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.grey.shade800,
+                            fontWeight: FontWeight.w500,
                             fontSize: 10.sp,
                           ),
                         ),
@@ -177,9 +180,10 @@ class HorizontalRestaurantCard extends StatelessWidget {
                         ),
                         Text(
                           '${reviews.length} ${Strings.reviewsText}',
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
+                          style: TextStyle(
+                            color: Colors.grey.shade800,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 10.sp,
                           ),
                         ),
                       ],

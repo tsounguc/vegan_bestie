@@ -25,4 +25,6 @@ class Strings {
   static const websiteText = 'Website';
 
   static const reportIssueText = 'Report Issue';
+
+  static String addReview = 'Add review';
 }

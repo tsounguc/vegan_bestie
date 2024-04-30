@@ -104,6 +104,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.8.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+    implementation "com.google.firebase:firebase-appcheck-debug"
 }
 
 configurations.all {

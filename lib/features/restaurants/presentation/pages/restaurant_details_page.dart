@@ -50,7 +50,11 @@ class RestaurantDetailsPage extends StatelessWidget {
   };
 
   final controller = ScrollController();
-
+  final baseTextStyle = TextStyle(
+    color: Colors.grey.shade700,
+    fontSize: 10.sp,
+    fontWeight: FontWeight.w500,
+  );
   final elevatedButtonStyle = ButtonStyle(
     backgroundColor: const MaterialStatePropertyAll(
       Colors.white,
@@ -196,9 +200,12 @@ class RestaurantDetailsPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.30,
-                        child: CustomPageView(restaurantDetails: restaurantDetails),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.30,
+                          child: CustomPageView(restaurantDetails: restaurantDetails),
+                        ),
                       ),
                       const SizedBox(height: 30),
                       Row(
@@ -215,17 +222,15 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 ),
                                 child: Text(
                                   restaurantDetails.name,
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.bodyMedium?.copyWith(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.sp,
-                                      ),
+                                  style: baseTextStyle.copyWith(
+                                    color: Colors.grey.shade800,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.sp,
+                                  ),
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.65,
+                                width: MediaQuery.of(context).size.width * 0.6,
                                 child: DineInTakeoutDeliveryWidget(
                                   dineIn: restaurantDetails.dineIn,
                                   takeout: restaurantDetails.takeout,
@@ -242,7 +247,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.015,
+                        height: MediaQuery.of(context).size.height * 0.010,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 8),
@@ -259,15 +264,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                             ),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.80,
-                              child: Text(
-                                restaurantDetails.formattedAddress,
-                                style: TextStyle(
-                                  color: Colors.grey.shade500,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.normal,
-                                  // overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
+                              child: Text(restaurantDetails.formattedAddress, style: baseTextStyle),
                             ),
                           ],
                         ),
@@ -276,7 +273,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.015,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 5, right: 5),
+                        padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -292,9 +289,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       ),
                                     );
                                   },
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.call,
-                                    color: Colors.black,
+                                    color: Colors.grey.shade800,
                                     size: 20,
                                   ),
                                 ),
@@ -306,11 +303,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 ),
                                 Text(
                                   Strings.callText,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.normal,
-                                  ),
+                                  style: baseTextStyle,
                                 ),
                               ],
                             ),
@@ -334,9 +327,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       );
                                     }
                                   },
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.directions,
-                                    color: Colors.black,
+                                    color: Colors.grey.shade800,
                                     size: 20,
                                   ),
                                 ),
@@ -348,11 +341,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 ),
                                 Text(
                                   Strings.directionsText,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.normal,
-                                  ),
+                                  style: baseTextStyle,
                                 ),
                               ],
                             ),
@@ -379,9 +368,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       );
                                     }
                                   },
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.launch,
-                                    color: Colors.black,
+                                    color: Colors.grey.shade800,
                                     size: 20,
                                   ),
                                 ),
@@ -393,11 +382,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 ),
                                 Text(
                                   Strings.websiteText,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.normal,
-                                  ),
+                                  style: baseTextStyle,
                                 ),
                               ],
                             ),
@@ -415,9 +400,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       arguments: restaurantDetails,
                                     );
                                   },
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.edit,
-                                    color: Colors.black,
+                                    color: Colors.grey.shade800,
                                     size: 20,
                                   ),
                                 ),
@@ -428,12 +413,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       0.01,
                                 ),
                                 Text(
-                                  'Add review',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.normal,
-                                  ),
+                                  Strings.addReview,
+                                  style: baseTextStyle,
                                 ),
                               ],
                             ),
@@ -447,8 +428,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
                           'Reviews',
-                          style: TextStyle(
-                            color: Colors.black,
+                          style: baseTextStyle.copyWith(
+                            color: Colors.grey.shade800,
                             fontWeight: FontWeight.bold,
                             fontSize: 14.sp,
                           ),
@@ -472,10 +453,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                             child: Text(
                               'No reviews for ${restaurantDetails.name.capitalize()}'
                               '\nBe the first to leave a review!',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.normal,
+                              style: baseTextStyle.copyWith(
+                                color: Colors.grey.shade500,
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),

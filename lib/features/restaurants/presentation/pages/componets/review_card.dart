@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:sheveegan/core/common/widgets/popup_item.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
@@ -47,7 +48,7 @@ class ReviewCard extends StatelessWidget {
       surfaceTintColor: Colors.white,
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -72,7 +73,7 @@ class ReviewCard extends StatelessWidget {
                     Text(
                       review.username,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.grey.shade800,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
                       ),
@@ -119,14 +120,14 @@ class ReviewCard extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 5),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  review.title,
+                  review.title.capitalize(),
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.grey.shade800,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                   ),
@@ -136,8 +137,8 @@ class ReviewCard extends StatelessWidget {
                   timestamp,
                   style: TextStyle(
                     color: Colors.grey,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.normal,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
@@ -158,7 +159,7 @@ class ReviewCard extends StatelessWidget {
             Text(
               review.review,
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.grey.shade800,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.normal,
               ),

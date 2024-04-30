@@ -34,8 +34,8 @@ class ProductFoundBody extends StatelessWidget {
               Text(
                 Strings.macrosText,
                 style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14.sp,
+                  color: Colors.grey.shade800,
+                  fontSize: 12.sp,
                 ),
               ),
             ],
@@ -96,7 +96,7 @@ class ProductFoundBody extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: context.height * 0.02,
+          height: context.height * 0.03,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 45),
@@ -106,8 +106,8 @@ class ProductFoundBody extends StatelessWidget {
               Text(
                 Strings.ingredientsText,
                 style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14.sp,
+                  color: Colors.grey.shade800,
+                  fontSize: 12.sp,
                 ),
               ),
             ],
@@ -129,14 +129,53 @@ class ProductFoundBody extends StatelessWidget {
                   horizontal: 55,
                   vertical: context.height * 0.0025,
                 ),
-                child: Text(
-                  product.ingredientsText.isNotEmpty ? product.ingredientsText : Strings.ingredientsNotFoundText,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
+                child: product.ingredientsText.isNotEmpty
+                    ? Text(
+                        product.ingredientsText,
+                        style: TextStyle(
+                          color: Colors.grey.shade800,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      )
+                    : Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20.w),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                Strings.ingredientsNotFoundText,
+                                style: TextStyle(
+                                  color: Colors.grey.shade800,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 2,
+                                  surfaceTintColor: Colors.white,
+                                ),
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.warning_amber,
+                                  color: Colors.amber,
+                                ),
+                                label: Text(
+                                  'Report',
+                                  style: TextStyle(
+                                    color: Colors.grey.shade800,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
               ),
             ),
           ),

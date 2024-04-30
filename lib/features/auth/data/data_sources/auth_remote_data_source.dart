@@ -249,6 +249,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             photoUrl: user.photoURL ?? '',
             bio: '',
             savedProductsBarcodes: const [],
+            savedRestaurantsIds: const [],
           ).toMap(),
         );
   }

@@ -24,25 +24,25 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.04,
+                  height: 15.w,
                   child: VerticalDivider(
-                    color: Colors.grey.shade800,
+                    color: Colors.grey.shade700,
                     width: 20,
                   ),
                 ),
                 Icon(
                   Icons.restaurant,
-                  color: Colors.grey.shade800,
+                  color: Colors.grey.shade700,
                   size: 14,
                 ),
-                const SizedBox(width: 5),
+                SizedBox(width: 3.w),
                 Flexible(
                   child: Text(
                     'Dine-in',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.grey.shade700,
                       fontSize: 10.sp,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.w500,
                       // overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -58,24 +58,24 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.04,
+                  height: 15.w,
                   child: VerticalDivider(
-                    color: Colors.grey.shade800,
+                    color: Colors.grey.shade700,
                     width: 20,
                   ),
                 ),
                 Icon(
                   Icons.takeout_dining,
-                  color: Colors.grey.shade800,
+                  color: Colors.grey.shade700,
                   size: 14,
                 ),
                 const SizedBox(width: 5),
                 Text(
                   'Takeout',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.grey.shade700,
                     fontSize: 10.sp,
-                    fontWeight: FontWeight.normal,
+                    fontWeight: FontWeight.w500,
                     // overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -90,24 +90,24 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.width * 0.04,
+                  height: 15.w,
                   child: VerticalDivider(
-                    color: Colors.grey.shade800,
+                    color: Colors.grey.shade700,
                     width: 20,
                   ),
                 ),
                 Icon(
                   Icons.delivery_dining,
-                  color: Colors.grey.shade800,
+                  color: Colors.grey.shade700,
                   size: 16,
                 ),
                 const SizedBox(width: 5),
                 Text(
                   'Delivery',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.grey.shade700,
                     fontSize: 10.sp,
-                    fontWeight: FontWeight.normal,
+                    fontWeight: FontWeight.w500,
                     // overflow: TextOverflow.ellipsis,
                   ),
                 ),

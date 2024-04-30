@@ -28,6 +28,7 @@ dependencies:
   dartz:
   device_preview: ^1.1.0
   equatable:
+  firebase_app_check: ^0.2.2+4
   firebase_auth: ^4.19.4
   firebase_core: ^2.25.4
   firebase_storage: ^11.7.4
