@@ -6,11 +6,13 @@ class SignInForm extends StatefulWidget {
     required this.emailController,
     required this.passwordController,
     required this.formKey,
+    this.onPasswordFieldSubmitted,
     super.key,
   });
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final void Function(String)? onPasswordFieldSubmitted;
   final GlobalKey<FormState> formKey;
 
   @override
@@ -37,6 +39,8 @@ class _SignInFormState extends State<SignInForm> {
             hintText: 'Password',
             obscureText: obscurePassword,
             keyboardType: TextInputType.visiblePassword,
+            textInputAction: TextInputAction.send,
+            onFieldSubmitted: widget.onPasswordFieldSubmitted,
             suffixIcon: IconButton(
               onPressed: () => setState(() {
                 obscurePassword = !obscurePassword;

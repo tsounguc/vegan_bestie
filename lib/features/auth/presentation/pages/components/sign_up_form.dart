@@ -8,6 +8,7 @@ class SignUpForm extends StatefulWidget {
     required this.passwordController,
     required this.confirmPasswordController,
     required this.formKey,
+    this.onConfirePasswordFieldSubmitted,
     super.key,
   });
 
@@ -15,6 +16,7 @@ class SignUpForm extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
+  final void Function(String)? onConfirePasswordFieldSubmitted;
   final GlobalKey<FormState> formKey;
 
   @override
@@ -48,6 +50,7 @@ class _SignUpFormState extends State<SignUpForm> {
             hintText: 'Password',
             obscureText: obscurePassword,
             keyboardType: TextInputType.visiblePassword,
+            textInputAction: TextInputAction.next,
             suffixIcon: IconButton(
               onPressed: () => setState(() {
                 obscurePassword = !obscurePassword;
@@ -64,6 +67,8 @@ class _SignUpFormState extends State<SignUpForm> {
             hintText: 'Confirm Password',
             obscureText: obscureConfirmPassword,
             keyboardType: TextInputType.visiblePassword,
+            textInputAction: TextInputAction.send,
+            onFieldSubmitted: widget.onConfirePasswordFieldSubmitted,
             suffixIcon: IconButton(
               onPressed: () => setState(() {
                 obscureConfirmPassword = !obscureConfirmPassword;

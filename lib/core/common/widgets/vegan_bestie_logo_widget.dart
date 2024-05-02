@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 
 class VeganBestieLogoWidget extends StatelessWidget {
-  const VeganBestieLogoWidget({super.key, this.size = 35, this.fontSize = 52});
+  const VeganBestieLogoWidget({super.key, this.size = 35, this.fontSize = 52, this.showText = true});
 
   final double size;
   final double fontSize;
+  final bool showText;
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +36,18 @@ class VeganBestieLogoWidget extends StatelessWidget {
             ),
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              Strings.appTitle,
-              style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                    fontSize: fontSize,
-                  ),
-            ),
-          ],
-        ),
+        if (showText)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                Strings.appTitle,
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      fontSize: fontSize,
+                    ),
+              ),
+            ],
+          ),
       ],
     );
   }

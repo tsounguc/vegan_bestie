@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
+import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
@@ -37,6 +39,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
+  void signUp(BuildContext context) {
+    FocusManager.instance.primaryFocus?.unfocus();
+    FirebaseAuth.instance.currentUser?.reload();
+    if (formKey.currentState!.validate()) {
+      context.read<AuthBloc>().add(
+            CreateUserAccountEvent(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim(),
+              fullName: fullNameController.text.trim(),
+            ),
+          );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,9 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 );
           } else if (state is SignedIn) {
-            context.read<UserProvider>().initUser(
-                  state.user as UserModel,
-                );
+            context.read<UserProvider>().initUser(state.user as UserModel);
             Navigator.pushReplacementNamed(context, HomePage.id);
           }
         },
@@ -65,71 +79,86 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Center(
               child: ListView(
                 shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 35).copyWith(
+                  top: 0,
+                ),
                 children: [
-                  Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 28.r,
-                      color: Colors.black,
-                    ),
+                  const VeganBestieLogoWidget(
+                    size: 50,
+                    showText: false,
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Sign up for an account',
-                    style: TextStyle(
-                      fontSize: 14.r,
-                      color: Colors.black,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(
-                          context,
-                          SignInScreen.id,
-                        );
-                      },
-                      child: Text(
-                        'Already have an account?',
-                        style: TextStyle(fontSize: 14.r),
+                  const SizedBox(height: 100),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 32.sp,
+                        color: context.theme.primaryColor,
                       ),
                     ),
                   ),
                   const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      'Sign up for an account',
+                      style: TextStyle(
+                        fontSize: 14.r,
+                        color: Colors.grey.shade800,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   SignUpForm(
                     fullNameController: fullNameController,
                     emailController: emailController,
                     passwordController: passwordController,
                     confirmPasswordController: confirmPasswordController,
                     formKey: formKey,
+                    onConfirePasswordFieldSubmitted: (_) => signUp(context),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 50),
                   if (state is AuthLoading)
                     const Center(
                       child: CircularProgressIndicator(),
                     )
                   else
                     LongButton(
-                      onPressed: () {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        FirebaseAuth.instance.currentUser?.reload();
-                        if (formKey.currentState!.validate()) {
-                          context.read<AuthBloc>().add(
-                                CreateUserAccountEvent(
-                                  email: emailController.text.trim(),
-                                  password: passwordController.text.trim(),
-                                  fullName: fullNameController.text.trim(),
-                                ),
-                              );
-                        }
-                      },
+                      onPressed: () => signUp(context),
                       label: 'Sign Up',
                     ),
+                  const SizedBox(height: 30),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        SignInScreen.id,
+                      );
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Already have an account? ',
+                        style: TextStyle(
+                          fontSize: 14.r,
+                          color: Colors.grey.shade800,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Login',
+                            style: TextStyle(
+                              fontSize: 14.r,
+                              fontWeight: FontWeight.w600,
+                              color: context.theme.primaryColor,
+                              decoration: TextDecoration.underline,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

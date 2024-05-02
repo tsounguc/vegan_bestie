@@ -17,14 +17,20 @@ class IField extends StatelessWidget {
     this.maxLines = 1,
     this.minLines,
     this.borderRadius,
+    this.textInputAction = TextInputAction.next,
+    this.onEditingComplete,
+    this.onFieldSubmitted,
     super.key,
   });
 
   final String? Function(String?)? validator;
+  final void Function()? onEditingComplete;
+  final void Function(String)? onFieldSubmitted;
   final TextEditingController controller;
   final bool filled;
   final Color? fillColor;
   final bool obscureText;
+  final TextInputAction? textInputAction;
   final bool readOnly;
   final Widget? suffixIcon;
   final String? hintText;
@@ -59,7 +65,10 @@ class IField extends StatelessWidget {
       ),
       keyboardType: keyboardType,
       obscureText: obscureText,
+      textInputAction: textInputAction,
       readOnly: readOnly,
+      onEditingComplete: onEditingComplete,
+      onFieldSubmitted: onFieldSubmitted,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: borderRadius ?? BorderRadius.circular(90),

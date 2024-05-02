@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
+import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
@@ -33,6 +36,19 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
+  void signIn(BuildContext context) {
+    FocusManager.instance.primaryFocus?.unfocus();
+    FirebaseAuth.instance.currentUser?.reload();
+    if (formKey.currentState!.validate()) {
+      context.read<AuthBloc>().add(
+            SignInWithEmailAndPasswordEvent(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim(),
+            ),
+          );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,55 +67,51 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Center(
               child: ListView(
                 shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 35).copyWith(
+                  top: 0,
+                ),
                 children: [
-                  Text(
-                    'Login',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 28.r,
-                      color: Colors.black,
+                  const VeganBestieLogoWidget(
+                    size: 50,
+                    showText: false,
+                  ),
+                  const SizedBox(height: 100),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 32.sp,
+                        color: context.theme.primaryColor,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Sign in to your account',
-                        style: TextStyle(
-                          fontSize: 14.r,
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      Baseline(
-                        baseline: 100,
-                        baselineType: TextBaseline.alphabetic,
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(
-                              context,
-                              SignUpScreen.id,
-                            );
-                          },
-                          child: Text(
-                            'Register account?',
-                            style: TextStyle(fontSize: 14.r),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Sign in to your account',
+                          style: TextStyle(
+                            fontSize: 14.r,
+                            color: Colors.grey.shade800,
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   SignInForm(
                     emailController: emailController,
                     passwordController: passwordController,
                     formKey: formKey,
+                    onPasswordFieldSubmitted: (_) => signIn(context),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 10),
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
@@ -116,7 +128,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 30,
+                    height: 50,
                   ),
                   if (state is AuthLoading)
                     const Center(
@@ -124,20 +136,38 @@ class _SignInScreenState extends State<SignInScreen> {
                     )
                   else
                     LongButton(
-                      onPressed: () {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        FirebaseAuth.instance.currentUser?.reload();
-                        if (formKey.currentState!.validate()) {
-                          context.read<AuthBloc>().add(
-                                SignInWithEmailAndPasswordEvent(
-                                  email: emailController.text.trim(),
-                                  password: passwordController.text.trim(),
-                                ),
-                              );
-                        }
-                      },
+                      onPressed: () => signIn(context),
                       label: 'Sign In',
                     ),
+                  const SizedBox(height: 30),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        SignUpScreen.id,
+                      );
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: "Don't have an account? ",
+                        style: TextStyle(
+                          fontSize: 14.r,
+                          color: Colors.grey.shade800,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Register account',
+                            style: TextStyle(
+                              fontSize: 14.r,
+                              fontWeight: FontWeight.w600,
+                              color: context.theme.primaryColor,
+                              decoration: TextDecoration.underline,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

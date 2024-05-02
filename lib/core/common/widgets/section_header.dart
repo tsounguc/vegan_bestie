@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 
 class SectionHeader extends StatelessWidget {
@@ -20,10 +21,10 @@ class SectionHeader extends StatelessWidget {
       children: [
         Text(
           sectionTitle,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
+          style: TextStyle(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey.shade800,
           ),
         ),
         if (seeAll)
@@ -38,6 +39,7 @@ class SectionHeader extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 color: context.theme.primaryColor,
+                fontSize: 12.sp,
               ),
             ),
           ),
