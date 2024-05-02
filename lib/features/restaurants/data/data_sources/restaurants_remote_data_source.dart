@@ -80,13 +80,21 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
     required String id,
   }) async {
     try {
-      final response = await _client.get(
-        Uri.parse(
-          '$kGooglePlaceBaseUrl$kGetRestaurantDetails'
-          'json?key=$kGoogleApiKey&place_id=$id&fields=all',
-        ),
-      );
+      final url = '$kGooglePlaceBaseUrl$kGetRestaurantDetails'
+          'json?key=$kGoogleApiKey&place_id=$id&fields=all';
+      final parsedUri = Uri.parse(url);
 
+      final request = Request('GET', parsedUri);
+
+      // final response = await _client.get(
+      //   Uri.parse(
+      //     '$kGooglePlaceBaseUrl$kGetRestaurantDetails'
+      //     'json?key=$kGoogleApiKey&place_id=$id&fields=all',
+      //   ),
+      // );
+
+      final streamResponse = await request.send();
+      final response = await Response.fromStream(streamResponse);
       if (response.statusCode != 200) {
         throw RestaurantDetailsException(
           message: response.body,
@@ -114,14 +122,15 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
     required Position position,
   }) async {
     try {
-      final response = await _client.get(
-        Uri.parse(
-          '$kGooglePlaceBaseUrl$kGetRestaurantsEndPoint'
+      final url = '$kGooglePlaceBaseUrl$kGetRestaurantsEndPoint'
           'json?key=$kGoogleApiKey&keyword=vegan'
           '&type=restaurant&location=${position.latitude},${position.longitude}'
-          '&radius=12500',
-        ),
-      );
+          '&radius=12500';
+      final parsedUri = Uri.parse(url);
+      final request = Request('GET', parsedUri);
+
+      final streamResponse = await request.send();
+      final response = await Response.fromStream(streamResponse);
       if (response.statusCode != 200) {
         throw RestaurantsException(
           message: response.body,
