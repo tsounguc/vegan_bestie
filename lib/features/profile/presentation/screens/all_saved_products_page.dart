@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_products_provider.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/profile/presentation/widgets/horizontal_product_card.dart';
-import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 
 class AllSavedProductsPage extends StatelessWidget {
   const AllSavedProductsPage({super.key});

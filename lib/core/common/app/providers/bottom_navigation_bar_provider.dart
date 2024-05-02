@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/tab_navigator.dart';
 import 'package:sheveegan/core/common/screens/persistent_screen/persistent_screen.dart';
+import 'package:sheveegan/features/food_product/presentation/pages/scan_product_home_page.dart';
 import 'package:sheveegan/features/profile/presentation/screens/profile_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurants_home_page.dart';
-import 'package:sheveegan/features/scan_product/presentation/pages/scan_product_home_page.dart';
 
 class BottomNavigationBarProvider extends ChangeNotifier {
   List<int> _indexHistory = [0];

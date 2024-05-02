@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
-import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
+import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({

@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/auth/domain/usecases/remove_restaurant.dart';
 import 'package:sheveegan/features/auth/domain/usecases/save_restaurant.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/get_saved_restaurants_list.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
@@ -18,7 +19,6 @@ import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_m
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
-import 'package:sheveegan/features/scan_product/domain/use_cases/get_saved_restaurants_list.dart';
 
 class MockGetRestaurantsNearMe extends Mock implements GetRestaurantsNearMe {}
 

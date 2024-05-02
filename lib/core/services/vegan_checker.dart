@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
-import 'package:sheveegan/features/scan_product/data/models/food_product_model.dart';
-import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
+import 'package:sheveegan/features/food_product/data/models/food_product_model.dart';
+import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 
 class VeganChecker {
   List<String> nonVeganIngredients = [

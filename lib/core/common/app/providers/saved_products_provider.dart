@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
+import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 
 class SavedProductsProvider extends ChangeNotifier {
   List<FoodProduct>? _savedProductsList;

@@ -13,6 +13,7 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:sheveegan/features/food_product/presentation/pages/product_found_page.dart';
 import 'package:sheveegan/features/profile/presentation/refactors/profile_header.dart';
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_products_page.dart';
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_restaurants_pages.dart';
@@ -20,7 +21,6 @@ import 'package:sheveegan/features/profile/presentation/screens/edit_profile_scr
 import 'package:sheveegan/features/profile/presentation/widgets/product_card.dart';
 import 'package:sheveegan/features/profile/presentation/widgets/restaurant_card.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
-import 'package:sheveegan/features/scan_product/presentation/pages/product_found_page.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({
@@ -237,7 +237,9 @@ class ProfileScreen extends StatelessWidget {
                                                 padding: const EdgeInsets.only(right: 16),
                                                 child: ProductCard(
                                                   product: product,
-                                                  onTap: () => Navigator.of(context).pushNamed(
+                                                  onTap: () => Navigator.of(
+                                                    context,
+                                                  ).pushNamed(
                                                     ProductFoundPage.id,
                                                     arguments: product,
                                                   ),

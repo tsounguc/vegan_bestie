@@ -1,12 +1,13 @@
 import 'package:sheveegan/core/use_case/use_case.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
+import 'package:sheveegan/features/food_product/domain/entities/barcode.dart';
 import 'package:sheveegan/features/food_product/domain/repositories/scan_product_repository.dart';
 
-class RemoveFoodProduct extends UseCaseWithParams<void, String> {
-  const RemoveFoodProduct(this._repository);
+class ScanBarcode extends UseCase<Barcode> {
+  const ScanBarcode(this._repository);
 
   final ScanProductRepository _repository;
 
   @override
-  ResultVoid call(String params) async => _repository.removeFoodProduct(barcode: params);
+  ResultFuture<Barcode> call() async => _repository.scanBarcode();
 }
