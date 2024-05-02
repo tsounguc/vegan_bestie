@@ -76,7 +76,7 @@ class ProductCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    color: Colors.grey.shade800,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -96,8 +96,8 @@ class ProductCard extends StatelessWidget {
                       : product.isVegetarian
                           ? const Color(0xFFe2e360)
                           : Colors.blue.shade300,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

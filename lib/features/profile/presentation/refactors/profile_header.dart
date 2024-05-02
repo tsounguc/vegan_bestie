@@ -26,7 +26,7 @@ class ProfileHeader extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 35),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -37,9 +37,9 @@ class ProfileHeader extends StatelessWidget {
                       Text(
                         user.bio!,
                         style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey.shade800,
                         ),
                       )
                     else

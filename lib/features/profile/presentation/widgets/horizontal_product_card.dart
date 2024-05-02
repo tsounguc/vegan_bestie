@@ -25,7 +25,7 @@ class HorizontalProductCard extends StatelessWidget {
         color: Colors.white,
         clipBehavior: Clip.antiAlias,
         surfaceTintColor: Colors.white,
-        elevation: 5,
+        elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,9 +84,10 @@ class HorizontalProductCard extends StatelessWidget {
                             child: Text(
                               product.productName.capitalize(),
                               style: TextStyle(
-                                fontSize: 16.sp,
-                                color: Colors.black,
+                                fontSize: 14.sp,
+                                color: Colors.grey.shade800,
                                 fontWeight: FontWeight.bold,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
@@ -111,7 +112,7 @@ class HorizontalProductCard extends StatelessWidget {
                                     ? const Color(0xFFe2e360)
                                     : Colors.blue.shade300,
                             fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],

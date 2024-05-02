@@ -74,12 +74,20 @@ class SavedProductsListFetched extends ScanProductState {
   final List<FoodProduct> savedProductsList;
 }
 
+class ProductUploaded extends ScanProductState {
+  const ProductUploaded();
+}
+
+class UploadingProduct extends ScanProductState {
+  const UploadingProduct();
+}
+
 class ProductNotFound extends ScanProductState {
   const ProductNotFound();
 }
 
-class ScanProductError extends ScanProductState {
-  const ScanProductError({required this.message});
+class FoodProductError extends ScanProductState {
+  const FoodProductError({required this.message});
 
   final String message;
 

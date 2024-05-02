@@ -175,9 +175,9 @@ class ProfileScreen extends StatelessWidget {
                                 child: Text(
                                   context.currentUser!.name,
                                   style: TextStyle(
-                                    fontSize: 18.sp,
+                                    fontSize: 16.sp,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.black,
+                                    color: Colors.grey.shade800,
                                   ),
                                 ),
                               ),
@@ -223,7 +223,7 @@ class ProfileScreen extends StatelessWidget {
                                                 'once saved',
                                                 style: TextStyle(
                                                   fontSize: 12.sp,
-                                                  fontWeight: FontWeight.normal,
+                                                  fontWeight: FontWeight.w500,
                                                   color: Colors.grey.shade500,
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
@@ -283,7 +283,7 @@ class ProfileScreen extends StatelessWidget {
                                                 'Restaurants will be here once saved',
                                                 style: TextStyle(
                                                   fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w600,
+                                                  fontWeight: FontWeight.w500,
                                                   color: Colors.grey.shade500,
                                                   overflow: TextOverflow.ellipsis,
                                                 ),

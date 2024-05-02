@@ -33,7 +33,7 @@ class ScanProductCubit extends Cubit<ScanProductState> {
     emit(const ScanningBarcode());
     final result = await _scanBarcode();
     result.fold(
-      (failure) => emit(ScanProductError(message: failure.message)),
+      (failure) => emit(FoodProductError(message: failure.message)),
       (success) => emit(BarcodeFound(barcode: success.barcode)),
     );
   }
@@ -47,7 +47,7 @@ class ScanProductCubit extends Cubit<ScanProductState> {
         if (failure.message == Strings.productNotFound) {
           emit(const ProductNotFound());
         } else {
-          emit(ScanProductError(message: failure.message));
+          emit(FoodProductError(message: failure.message));
         }
       },
       (product) {
@@ -69,7 +69,7 @@ class ScanProductCubit extends Cubit<ScanProductState> {
 
     final result = await _saveFoodProduct(product.code);
 
-    result.fold((failure) => emit(ScanProductError(message: failure.message)), (success) {
+    result.fold((failure) => emit(FoodProductError(message: failure.message)), (success) {
       if (product.productName.isEmpty) {
         emit(const ProductNotFound());
       } else {
@@ -88,7 +88,7 @@ class ScanProductCubit extends Cubit<ScanProductState> {
     final result = await _removeFoodProduct(product.code);
 
     result.fold(
-      (failure) => emit(ScanProductError(message: failure.message)),
+      (failure) => emit(FoodProductError(message: failure.message)),
       (success) {
         if (product.productName.isEmpty) {
           emit(const ProductNotFound());
@@ -104,7 +104,7 @@ class ScanProductCubit extends Cubit<ScanProductState> {
     final result = await _fetchSavedProductsList(savedBarcodesList);
     result.fold(
       (failure) => emit(
-        ScanProductError(message: failure.message),
+        FoodProductError(message: failure.message),
       ),
       (savedProductsList) {
         emit(SavedProductsListFetched(savedProductsList: savedProductsList));

@@ -18,7 +18,7 @@ class ScanResultsPage extends StatelessWidget {
       builder: (context, state) {
         if (state is FetchingProduct) {
           page = const LoadingPage();
-        } else if (state is ScanProductError) {
+        } else if (state is FoodProductError) {
           page = ErrorPage(error: state.message);
         } else if (state is ProductNotFound) {
           page = const ProductNotFoundPage();

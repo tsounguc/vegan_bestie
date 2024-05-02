@@ -23,8 +23,8 @@ class ScanProductHomePage extends StatelessWidget {
           BlocProvider.of<ScanProductCubit>(
             context,
           ).fetchProduct(barcode: state.barcode);
-        } else if (state is ScanProductError) {
-          print(state.message);
+        } else if (state is FoodProductError) {
+          debugPrint(state.message);
           CoreUtils.showSnackBar(
             context,
             state.message,
@@ -45,12 +45,13 @@ class ScanProductHomePage extends StatelessWidget {
             left: 16.w,
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 // height: 100 - toolbarHeight,
-                height: MediaQuery.of(context).size.height * 0.06,
+                height: MediaQuery.of(context).size.height * 0.15,
               ),
-              VeganBestieLogoWidget(size: 45),
+              const VeganBestieLogoWidget(size: 45),
               SizedBox(
                 // height: 100,
                 height: MediaQuery.of(context).size.height * 0.15,
@@ -63,6 +64,7 @@ class ScanProductHomePage extends StatelessWidget {
                       context,
                     ).textTheme.titleMedium?.copyWith(
                           color: AppTheme.lightPrimaryColor,
+                          fontWeight: FontWeight.w500,
                         ),
                   ),
                   SizedBox(
@@ -100,14 +102,12 @@ class ScanProductHomePage extends StatelessWidget {
                         elevation: MaterialStateProperty.all(6),
                         shadowColor: MaterialStateProperty.all(Colors.black),
                         fixedSize: MaterialStateProperty.all(
-                          Size.fromRadius(105.r),
+                          Size.fromRadius(90.r),
                         ),
                         backgroundColor: MaterialStateProperty.all(
                           Colors.white,
                         ),
-                        surfaceTintColor: MaterialStateProperty.all(
-                          Theme.of(context).primaryColor,
-                        ),
+                        surfaceTintColor: MaterialStateProperty.all(Colors.white),
                         shape: MaterialStateProperty.all(const CircleBorder()),
                       ),
                       child: Center(
@@ -123,6 +123,10 @@ class ScanProductHomePage extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              SizedBox(
+                // height: 100 - toolbarHeight,
+                height: MediaQuery.of(context).size.height * 0.15,
               ),
             ],
           ),

@@ -39,16 +39,18 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var timestamp = '${DateFormat('MMM d, yyyy').format(review.createdAt.toLocal())}';
+    var timestamp = DateFormat('MMM d, yyyy').format(review.createdAt.toLocal());
     if (review.updatedAt.toLocal().isAfter(review.createdAt.toLocal())) {
       timestamp = 'Edited ${DateFormat('MMM d, yyyy').format(review.updatedAt.toLocal())}';
-      debugPrint('Updated $timestamp');
     }
     return Card(
       surfaceTintColor: Colors.white,
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
+        ).copyWith(top: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

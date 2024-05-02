@@ -75,7 +75,7 @@ class RestaurantCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    color: Colors.grey.shade800,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

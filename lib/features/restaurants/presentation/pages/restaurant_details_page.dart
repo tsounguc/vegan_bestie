@@ -139,6 +139,7 @@ class RestaurantDetailsPage extends StatelessWidget {
           stream: serviceLocator<FirebaseFirestore>()
               .collection('restaurantReviews')
               .where('restaurantId', isEqualTo: restaurantDetails.id)
+              // .orderBy('createdAt')
               .snapshots()
               .map(
                 (event) => event.docs
@@ -264,7 +265,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                             ),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.80,
-                              child: Text(restaurantDetails.formattedAddress, style: baseTextStyle),
+                              child: Text(
+                                restaurantDetails.formattedAddress,
+                                style: baseTextStyle,
+                              ),
                             ),
                           ],
                         ),

@@ -154,14 +154,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               color: Colors.black,
               // color: Theme.of(context).primaryColor,
             ),
-            title: const Text(
-              'Edit Profile',
-              style: TextStyle(
-                // color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.w600,
-                // fontSize: 24,
-              ),
-            ),
+            title: Text('Edit Profile'),
           ),
           body: Container(
             constraints: const BoxConstraints.expand(),
@@ -216,8 +209,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       );
                     },
                   ),
-                  const SizedBox(height: 10),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 40),
                   EditProfileForm(
                     fullNameController: fullNameController,
                     emailController: emailController,

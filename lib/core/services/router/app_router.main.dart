@@ -146,7 +146,10 @@ class AppRouter {
         );
       case AllSavedRestaurantsPage.id:
         return _pageBuilder(
-          (_) => const AllSavedRestaurantsPage(),
+          (_) => BlocProvider<RestaurantsBloc>.value(
+            value: serviceLocator<RestaurantsBloc>(),
+            child: const AllSavedRestaurantsPage(),
+          ),
           settings: settings,
         );
 
@@ -158,6 +161,19 @@ class AppRouter {
             child: EditRestaurantReviewScreen(
               review: args.review,
               restaurant: args.restaurant,
+            ),
+          ),
+          settings: settings,
+        );
+
+      case AddProductScreen.id:
+        final args = settings.arguments! as AddProductPageArguments;
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<ScanProductCubit>(),
+            child: AddProductScreen(
+              title: args.title,
+              product: args.product,
             ),
           ),
           settings: settings,

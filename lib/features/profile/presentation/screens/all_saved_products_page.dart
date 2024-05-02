@@ -25,7 +25,14 @@ class AllSavedProductsPage extends StatelessWidget {
             leading: const CustomBackButton(
               color: Colors.black,
             ),
-            title: const Text('Saved Food Products'),
+            title: Text(
+              'Saved Food Products',
+              style: TextStyle(
+                color: Colors.grey.shade800,
+                fontWeight: FontWeight.w500,
+                // fontSize: 24,
+              ),
+            ),
           ),
           body: SingleChildScrollView(
             controller: scrollController,

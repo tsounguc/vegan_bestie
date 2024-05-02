@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
+import 'package:sheveegan/features/add_product/add_product_screen.dart';
 import 'package:sheveegan/features/scan_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/scan_product/presentation/pages/components/macronutrient_widget.dart';
 
@@ -21,8 +22,19 @@ class ProductFoundBody extends StatelessWidget {
   final FoodProduct product;
   final ScrollController scrollController;
 
+  void goToAddProductPage(BuildContext context) {
+    Navigator.pushNamed(
+      context,
+      AddProductScreen.id,
+      arguments: AddProductPageArguments('Edit Product', product),
+    );
+  }
+
+  void goToReportIssue(BuildContext context) {}
+
   @override
   Widget build(BuildContext context) {
+    final user = context.currentUser;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -113,15 +125,17 @@ class ProductFoundBody extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: context.height * 0.005),
+        SizedBox(height: context.height * 0.0075),
         Scrollbar(
           controller: scrollController,
           thumbVisibility: true,
           trackVisibility: true,
+          interactive: true,
           radius: const Radius.circular(10),
           thickness: 10,
           child: SizedBox(
-            height: context.height * 0.15,
+            height: context.height * 0.18,
+            width: context.width * 0.9,
             child: SingleChildScrollView(
               controller: scrollController,
               child: Padding(
@@ -152,26 +166,6 @@ class ProductFoundBody extends StatelessWidget {
                                   fontWeight: FontWeight.normal,
                                 ),
                               ),
-                              const SizedBox(height: 5),
-                              ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 2,
-                                  surfaceTintColor: Colors.white,
-                                ),
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.warning_amber,
-                                  color: Colors.amber,
-                                ),
-                                label: Text(
-                                  'Report',
-                                  style: TextStyle(
-                                    color: Colors.grey.shade800,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),
@@ -180,6 +174,29 @@ class ProductFoundBody extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(height: 20),
+        Center(
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              elevation: 2,
+              surfaceTintColor: Colors.white,
+            ),
+            onPressed: () => user != null && user.isAdmin ? goToAddProductPage(context) : goToReportIssue(context),
+            icon: const Icon(
+              Icons.warning_amber,
+              color: Colors.amber,
+            ),
+            label: Text(
+              context.currentUser!.isAdmin ? 'Fix Issue' : 'Report Issue',
+              style: TextStyle(
+                color: Colors.grey.shade800,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 50),
       ],
     );
   }

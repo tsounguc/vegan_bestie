@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/custom_image_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
@@ -115,16 +117,14 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
             shrinkWrap: true,
             slivers: [
               SliverAppBar(
-                expandedHeight: context.height * 0.50,
-                snap: true,
+                expandedHeight: context.height * 0.48,
                 pinned: true,
-                floating: true,
                 backgroundColor: Colors.white,
                 leading: const CustomBackButton(),
                 actions: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      elevation: 2,
+                      elevation: 5,
                       shape: const CircleBorder(),
                       backgroundColor: Colors.white.withOpacity(0.7),
                     ),

@@ -4,23 +4,43 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sheveegan/core/common/entities/restaurant_entities.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class HorizontalRestaurantCard extends StatelessWidget {
   const HorizontalRestaurantCard({
-    required this.restaurant,
     required this.reviews,
+    required this.weekdayText,
+    required this.userPosition,
+    required this.imageUrl,
+    required this.geometry,
+    required this.restaurantId,
+    required this.restaurantName,
+    required this.restaurantAddress,
+    required this.restaurantPrice,
+    required this.isOpenNow,
+    required this.fromSavedRestaurants,
     super.key,
   });
 
-  final Restaurant restaurant;
+  final bool fromSavedRestaurants;
   final List<RestaurantReview> reviews;
+  final String imageUrl;
+  final Geometry geometry;
+  final String restaurantId;
+  final String restaurantName;
+  final String restaurantAddress;
+  final String restaurantPrice;
+  final bool isOpenNow;
+  final List<String> weekdayText;
+  final Position? userPosition;
 
   double totalRestaurantRating() {
     var count = 0;
@@ -36,30 +56,26 @@ class HorizontalRestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = restaurant.photos.isEmpty
-        ? restaurant.icon
-        : '$kImageBaseUrl${restaurant.photos[0].photoReference}'
-            '&key=$kGoogleApiKey';
-    final position = context.read<RestaurantsBloc>().currentLocation;
-
     final distance = Geolocator.distanceBetween(
-      position?.latitude ?? 0,
-      position?.longitude ?? 0,
-      restaurant.geometry.location.lat,
-      restaurant.geometry.location.lng,
+      userPosition?.latitude ?? 0,
+      userPosition?.longitude ?? 0,
+      geometry.location.lat,
+      geometry.location.lng,
     );
     return GestureDetector(
-      onTap: () {
-        debugPrint(restaurant.id);
-        BlocProvider.of<RestaurantsBloc>(
-          context,
-        ).add(GetRestaurantDetailsEvent(id: restaurant.id));
-      },
+      onTap: fromSavedRestaurants
+          ? null
+          : () {
+              debugPrint(restaurantId);
+              BlocProvider.of<RestaurantsBloc>(
+                context,
+              ).add(GetRestaurantDetailsEvent(id: restaurantId));
+            },
       child: Card(
         color: Colors.white,
         clipBehavior: Clip.antiAlias,
         surfaceTintColor: Colors.white,
-        elevation: 5,
+        elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Row(
           children: [
@@ -97,7 +113,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.30,
                             child: Text(
-                              restaurant.name.capitalize(),
+                              restaurantName,
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 color: Colors.grey.shade800,
@@ -108,8 +124,10 @@ class HorizontalRestaurantCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${(distance / 1609.344).round()} '
-                          '${Strings.distanceUnitText}',
+                          fromSavedRestaurants
+                              ? ''
+                              : '${(distance / 1609.344).round()} '
+                                  '${Strings.distanceUnitText}',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: Colors.grey.shade800,
@@ -138,7 +156,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                               ),
                               Flexible(
                                 child: Text(
-                                  restaurant.vicinity,
+                                  restaurantAddress,
                                   style: TextStyle(
                                     color: Colors.grey.shade800,
                                     fontWeight: FontWeight.w500,
@@ -150,7 +168,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          restaurant.price,
+                          restaurantPrice,
                           style: TextStyle(
                             color: Colors.grey.shade800,
                             fontWeight: FontWeight.w500,
@@ -189,8 +207,8 @@ class HorizontalRestaurantCard extends StatelessWidget {
                       ],
                     ),
                     IsOpenNowWidget(
-                      isOpenNow: restaurant.openingHours.openNow,
-                      weekdayText: restaurant.openingHours.weekdayText,
+                      isOpenNow: isOpenNow,
+                      weekdayText: weekdayText,
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.007,
