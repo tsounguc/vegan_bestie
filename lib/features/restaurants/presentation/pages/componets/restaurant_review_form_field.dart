@@ -34,7 +34,7 @@ class RestaurantReviewFormField extends StatelessWidget {
             style: TextStyle(
               color: Colors.black,
               fontSize: 12.sp,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),

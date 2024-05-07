@@ -47,9 +47,17 @@ class _EditRestaurantReviewScreenState extends State<EditRestaurantReviewScreen>
 
   final textStyle = TextStyle(
     color: Colors.black,
-    fontSize: 12.sp,
-    fontWeight: FontWeight.w600,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
   );
+
+  bool get ratingChanged => rating != widget.review.rating;
+
+  bool get titleChanged => titleController.text.trim() != widget.review.title;
+
+  bool get reviewChanged => reviewController.text.trim() != widget.review.review;
+
+  bool get nothingChanged => !ratingChanged && !titleChanged && !reviewChanged;
 
   void submitChanges(BuildContext context) {
     final restaurantReview = (widget.review as RestaurantReviewModel).copyWith(
@@ -89,16 +97,19 @@ class _EditRestaurantReviewScreenState extends State<EditRestaurantReviewScreen>
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: Text(widget.restaurant.name),
+            title: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(widget.restaurant.name),
+            ),
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
+                  child: Wrap(
                     children: [
                       Text(
                         'How would you rate ${widget.restaurant.name}',
@@ -143,16 +154,18 @@ class _EditRestaurantReviewScreenState extends State<EditRestaurantReviewScreen>
                   builder: (context, refresh) {
                     titleController.addListener(() => refresh(() {}));
                     reviewController.addListener(() => refresh(() {}));
-                    final canSave = titleController.text.trim().isEmpty || reviewController.text.trim().isEmpty;
+
                     return state is EditingRestaurantReview
                         ? const Center(child: CircularProgressIndicator())
                         : LongButton(
-                            onPressed: () {
-                              submitChanges(context);
-                            },
+                            onPressed: nothingChanged
+                                ? null
+                                : () {
+                                    submitChanges(context);
+                                  },
                             label: 'Submit',
                             backgroundColor:
-                                canSave ? Colors.grey : Theme.of(context).buttonTheme.colorScheme?.primary,
+                                nothingChanged ? Colors.grey : Theme.of(context).buttonTheme.colorScheme?.primary,
                             textColor: Colors.white,
                           );
                   },

@@ -30,8 +30,8 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
 
   final textStyle = TextStyle(
     color: Colors.black,
-    fontSize: 12.sp,
-    fontWeight: FontWeight.w600,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
   );
 
   void submitReview(BuildContext context) {
@@ -74,16 +74,19 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: Text(widget.restaurantDetails.name),
+            title: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(widget.restaurantDetails.name),
+            ),
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
+                  child: Wrap(
                     children: [
                       Text(
                         'How would you rate ${widget.restaurantDetails.name}',

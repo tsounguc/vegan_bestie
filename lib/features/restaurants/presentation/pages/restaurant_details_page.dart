@@ -197,7 +197,7 @@ class RestaurantDetailsPage extends StatelessWidget {
               body: SingleChildScrollView(
                 controller: controller,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
