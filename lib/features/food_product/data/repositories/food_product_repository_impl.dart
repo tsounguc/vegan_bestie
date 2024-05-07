@@ -1,16 +1,19 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
+import 'package:sheveegan/core/enums/update_food_product.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
-import 'package:sheveegan/features/food_product/data/data_sources/scan_product_remote_data_source.dart';
+import 'package:sheveegan/features/food_product/data/data_sources/food_product_remote_data_source.dart';
 import 'package:sheveegan/features/food_product/domain/entities/barcode.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
-import 'package:sheveegan/features/food_product/domain/repositories/scan_product_repository.dart';
+import 'package:sheveegan/features/food_product/domain/repositories/food_product_repository.dart';
 
-class ScanProductRepositoryImpl implements ScanProductRepository {
-  const ScanProductRepositoryImpl(this._remoteDataSource);
+class FoodProductRepositoryImpl implements FoodProductRepository {
+  const FoodProductRepositoryImpl(this._remoteDataSource);
 
-  final ScanProductRemoteDataSource _remoteDataSource;
+  final FoodProductRemoteDataSource _remoteDataSource;
 
   @override
   ResultFuture<FoodProduct> fetchProduct({required String barcode}) async {
@@ -19,6 +22,34 @@ class ScanProductRepositoryImpl implements ScanProductRepository {
       return Right(result);
     } on FetchProductException catch (e) {
       return Left(FetchProductFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid addNewFoodProduct({required FoodProduct foodProduct}) async {
+    try {
+      final result = await _remoteDataSource.addNewFoodProduct(foodProduct: foodProduct);
+      return Right(result);
+    } on AddFoodProductException catch (e) {
+      return Left(AddFoodProductFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid updateFoodProduct({
+    required UpdateFoodAction action,
+    required dynamic foodData,
+    required FoodProduct foodProduct,
+  }) async {
+    try {
+      final result = await _remoteDataSource.updateFoodProduct(
+        action: action,
+        foodData: foodData,
+        foodProduct: foodProduct,
+      );
+      return Right(result);
+    } on UpdateFoodProductException catch (e) {
+      return Left(UpdateFoodProductFailure.fromException(e));
     }
   }
 
@@ -63,6 +94,16 @@ class ScanProductRepositoryImpl implements ScanProductRepository {
       return Right(result);
     } on FetchProductException catch (e) {
       return Left(FetchProductFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<String> readIngredientsFromImage({required File image}) async {
+    try {
+      final result = await _remoteDataSource.readIngredientsFromImage(image: image);
+      return Right(result);
+    } on ReadIngredientsFromImageException catch (e) {
+      return Left(ReadIngredientsFromImageFailure.fromException(e));
     }
   }
 }

@@ -8,13 +8,13 @@ import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
-import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/scan_product_cubit.dart';
+import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-  static const String id = '/homePage';
+  static const String id = '/';
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext buildContext) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<ScanProductCubit, ScanProductState>(
+        BlocListener<FoodProductCubit, FoodProductState>(
           listener: (context, state) {
             if (state is SavedProductsListFetched) {
               context.savedProductsProvider.savedProductsList = state.savedProductsList;
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
             final savedBarcodesList = context.userProvider.user!.savedProductsBarcodes;
 
             if (savedBarcodesList?.length != context.savedProductsProvider.savedProductsList?.length) {
-              BlocProvider.of<ScanProductCubit>(
+              BlocProvider.of<FoodProductCubit>(
                 context,
               ).fetchProductsList(savedBarcodesList!);
             }

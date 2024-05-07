@@ -9,7 +9,7 @@ import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/restaurants_services/barcode_scanner_plugin.dart';
 import 'package:sheveegan/core/services/vegan_checker.dart';
 import 'package:sheveegan/core/utils/constants.dart';
-import 'package:sheveegan/features/food_product/data/data_sources/scan_product_remote_data_source.dart';
+import 'package:sheveegan/features/food_product/data/data_sources/food_product_remote_data_source.dart';
 import 'package:sheveegan/features/food_product/data/models/barcode_model.dart';
 import 'package:sheveegan/features/food_product/data/models/food_product_model.dart';
 
@@ -27,7 +27,7 @@ void main() {
   late BarcodeScannerPlugin scanner;
   late Client client;
   late FirebaseFirestore cloudStoreClient;
-  late ScanProductRemoteDataSource remoteDataSource;
+  late FoodProductRemoteDataSource remoteDataSource;
   late FirebaseAuth authClient;
   late VeganChecker veganChecker;
   setUp(() {
@@ -39,7 +39,7 @@ void main() {
     authClient = MockFirebaseAuth();
     veganChecker = VeganChecker();
 
-    remoteDataSource = ScanProductRemoteDataSourceImpl(
+    remoteDataSource = FoodProductRemoteDataSourceImpl(
       scanner,
       client,
       cloudStoreClient,
@@ -131,7 +131,7 @@ void main() {
         // Arrange
         when(
           () => client.get(
-            Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$testBarcode'),
+            Uri.parse('$kFoodFactBaseUrl$kFetchFoodProductEndPoint$testBarcode'),
           ),
         ).thenAnswer((_) async => Response(Strings.productNotFound, 500));
 
@@ -150,7 +150,7 @@ void main() {
         );
         verify(
           () => client.get(
-            Uri.parse('$kFoodFactBaseUrl$kFetchProductEndPoint$testBarcode'),
+            Uri.parse('$kFoodFactBaseUrl$kFetchFoodProductEndPoint$testBarcode'),
           ),
         ).called(1);
         verifyNoMoreInteractions(client);

@@ -127,7 +127,7 @@ class ReviewCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  review.title.capitalize(),
+                  review.title.capitalizeFirstLetter(),
                   style: TextStyle(
                     color: Colors.grey.shade800,
                     fontSize: 12.sp,

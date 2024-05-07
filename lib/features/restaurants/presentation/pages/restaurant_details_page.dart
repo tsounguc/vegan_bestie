@@ -455,7 +455,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                             height: 150,
                             width: context.width * 0.75,
                             child: Text(
-                              'No reviews for ${restaurantDetails.name.capitalize()}'
+                              'No reviews for ${restaurantDetails.name.capitalizeFirstLetter()}'
                               '\nBe the first to leave a review!',
                               style: baseTextStyle.copyWith(
                                 color: Colors.grey.shade500,

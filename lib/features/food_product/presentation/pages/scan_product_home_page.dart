@@ -6,7 +6,7 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/scan_results_page.dart';
-import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/scan_product_cubit.dart';
+import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 import 'package:simple_animations/simple_animations.dart';
 
@@ -17,10 +17,10 @@ class ScanProductHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ScanProductCubit, ScanProductState>(
+    return BlocListener<FoodProductCubit, FoodProductState>(
       listener: (blocContext, state) {
         if (state is BarcodeFound) {
-          BlocProvider.of<ScanProductCubit>(
+          BlocProvider.of<FoodProductCubit>(
             context,
           ).fetchProduct(barcode: state.barcode);
         } else if (state is FoodProductError) {
@@ -32,7 +32,7 @@ class ScanProductHomePage extends StatelessWidget {
         } else if (state is FetchingProduct) {
           Navigator.of(context).pushNamed(
             ScanResultsPage.id,
-            arguments: context.read<ScanProductCubit>(),
+            arguments: context.read<FoodProductCubit>(),
           );
         }
       },
@@ -94,7 +94,7 @@ class ScanProductHomePage extends StatelessWidget {
                     },
                     child: ElevatedButton(
                       onPressed: () async {
-                        await BlocProvider.of<ScanProductCubit>(
+                        await BlocProvider.of<FoodProductCubit>(
                           context,
                         ).scanBarcode();
                       },

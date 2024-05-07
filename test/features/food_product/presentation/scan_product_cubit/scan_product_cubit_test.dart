@@ -9,8 +9,9 @@ import 'package:sheveegan/features/food_product/domain/entities/barcode.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_product.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_saved_products_list.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/read_ingredients_from_image.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/scan_barcode.dart';
-import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/scan_product_cubit.dart';
+import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 
 class MockScanProduct extends Mock implements ScanBarcode {}
 
@@ -22,26 +23,31 @@ class MockRemoveFoodProduct extends Mock implements RemoveFoodProduct {}
 
 class MockFetchSavedProductsList extends Mock implements FetchSavedProductsList {}
 
+class MockReadIngredientsFromImage extends Mock implements ReadIngredientsFromImage {}
+
 void main() {
   late ScanBarcode scanBarcode;
   late FetchProduct fetchProduct;
   late SaveFoodProduct saveFoodProduct;
   late RemoveFoodProduct removeFoodProduct;
   late FetchSavedProductsList fetchSavedProductsList;
-  late ScanProductCubit cubit;
+  late FoodProductCubit cubit;
   late FetchProductParams testFetchProductParams;
+  late ReadIngredientsFromImage readIngredientsFromImage;
   setUp(() {
     scanBarcode = MockScanProduct();
     fetchProduct = MockFetchProduct();
     saveFoodProduct = MockSaveFoodProduct();
     removeFoodProduct = MockRemoveFoodProduct();
     fetchSavedProductsList = MockFetchSavedProductsList();
-    cubit = ScanProductCubit(
+    readIngredientsFromImage = MockReadIngredientsFromImage();
+    cubit = FoodProductCubit(
       scanBarcode: scanBarcode,
       fetchProduct: fetchProduct,
       saveFoodProduct: saveFoodProduct,
       removeFoodProduct: removeFoodProduct,
       fetchSavedProductsList: fetchSavedProductsList,
+      readIngredientsFromImage: readIngredientsFromImage,
     );
     testFetchProductParams = const FetchProductParams.empty();
     registerFallbackValue(testFetchProductParams);
@@ -62,7 +68,7 @@ void main() {
   group('scanBarcode - ', () {
     const testBarcode = Barcode.empty();
     final testScanFailure = ScanFailure(message: 'message', statusCode: 400);
-    blocTest<ScanProductCubit, ScanProductState>(
+    blocTest<FoodProductCubit, FoodProductState>(
       'given ScanProductCubit '
       'when [ScanProductCubit.scanBarcode] call completed successfully '
       'then emit [ScanningBarcode, BarcodeFound] ',
@@ -82,7 +88,7 @@ void main() {
         verifyNoMoreInteractions(scanBarcode);
       },
     );
-    blocTest<ScanProductCubit, ScanProductState>(
+    blocTest<FoodProductCubit, FoodProductState>(
       'given ScanProductCubit '
       'when [ScanProductCubit.scanBarcode] call unsuccessful '
       'then emit [ScanningBarcode, ScanProductError] ',
@@ -108,7 +114,7 @@ void main() {
     final testFoodProduct = FoodProduct.empty();
     final testScanFailure = ScanFailure(message: 'message', statusCode: 400);
 
-    blocTest<ScanProductCubit, ScanProductState>(
+    blocTest<FoodProductCubit, FoodProductState>(
       'given ScanProductCubit '
       'when [ScanProductCubit.scanBarcode] call completed successfully '
       'then emit [FetchingProduct, ProductFound] ',
@@ -132,7 +138,7 @@ void main() {
         verifyNoMoreInteractions(fetchProduct);
       },
     );
-    blocTest<ScanProductCubit, ScanProductState>(
+    blocTest<FoodProductCubit, FoodProductState>(
       'given ScanProductCubit '
       'when [ScanProductCubit.fetchProduct] call unsuccessful '
       'then emit [FetchingProduct, ScanProductError] ',

@@ -829,6 +829,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.6+2"
+  google_mlkit_commons:
+    dependency: transitive
+    description:
+      name: google_mlkit_commons
+      sha256: "27d626c66a181351a953eba5b6ff1ff123aadb891b4dab085b292118f039d6ac"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.1"
+  google_mlkit_text_recognition:
+    dependency: "direct main"
+    description:
+      name: google_mlkit_text_recognition
+      sha256: "89c848329355f165ff17ca8645cab5998770e9e25e431fe6dd8261ed9cf7bdc4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.13.0"
   google_sign_in:
     dependency: "direct main"
     description:
@@ -929,10 +945,10 @@ packages:
     dependency: "direct main"
     description:
       name: image_picker
-      sha256: fe9ee64ccb8d599a5dfb0e21cc6652232c610bcf667af4e79b9eb175cc30a7a5
+      sha256: "33974eca2e87e8b4e3727f1b94fa3abcb25afe80b6bc2c4d449a0e150aedf720"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   image_picker_android:
     dependency: transitive
     description:

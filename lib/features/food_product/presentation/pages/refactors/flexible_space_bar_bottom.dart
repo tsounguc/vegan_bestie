@@ -45,7 +45,7 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
               SizedBox(
                 width: context.width * 0.65,
                 child: Text(
-                  product.productName.capitalize(),
+                  product.productName.capitalizeFirstLetter(),
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w500,

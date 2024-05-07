@@ -210,43 +210,52 @@ class ProfileScreen extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: productsProvider.savedProductsList == null ||
-                                            productsProvider.savedProductsList!.isEmpty
+                                    children: productsProvider.savedProductsList == null
                                         ? [
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                vertical: 50,
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 45,
                                                 horizontal: 35,
                                               ),
-                                              child: Text(
-                                                'Food Products will be here '
-                                                'once saved',
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.grey.shade500,
-                                                  overflow: TextOverflow.ellipsis,
-                                                ),
-                                              ),
+                                              child: CircularProgressIndicator(),
                                             ),
                                           ]
-                                        : productsProvider.savedProductsList!
-                                            .take(4)
-                                            .map(
-                                              (product) => Padding(
-                                                padding: const EdgeInsets.only(right: 16),
-                                                child: ProductCard(
-                                                  product: product,
-                                                  onTap: () => Navigator.of(
-                                                    context,
-                                                  ).pushNamed(
-                                                    ProductFoundPage.id,
-                                                    arguments: product,
+                                        : productsProvider.savedProductsList!.isEmpty
+                                            ? [
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(
+                                                    vertical: 45,
+                                                    horizontal: 35,
+                                                  ),
+                                                  child: Text(
+                                                    'Food Products will be here '
+                                                    'once saved',
+                                                    style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: Colors.grey.shade500,
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            )
-                                            .toList(),
+                                              ]
+                                            : productsProvider.savedProductsList!
+                                                .take(4)
+                                                .map(
+                                                  (product) => Padding(
+                                                    padding: const EdgeInsets.only(right: 16),
+                                                    child: ProductCard(
+                                                      product: product,
+                                                      onTap: () => Navigator.of(
+                                                        context,
+                                                      ).pushNamed(
+                                                        ProductFoundPage.id,
+                                                        arguments: product,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                                .toList(),
                                   ),
                                 ),
                               ),
@@ -273,42 +282,51 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: restaurantsProvider.savedRestaurantsList == null ||
-                                            restaurantsProvider.savedRestaurantsList!.isEmpty
+                                    children: restaurantsProvider.savedRestaurantsList == null
                                         ? [
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                vertical: 50,
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 45,
                                                 horizontal: 35,
                                               ),
-                                              child: Text(
-                                                'Restaurants will be here once saved',
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.grey.shade500,
-                                                  overflow: TextOverflow.ellipsis,
-                                                ),
-                                              ),
+                                              child: CircularProgressIndicator(),
                                             ),
                                           ]
-                                        : restaurantsProvider.savedRestaurantsList!
-                                            .take(4)
-                                            .map(
-                                              (restaurant) => Padding(
-                                                padding: const EdgeInsets.only(
-                                                  right: 16,
-                                                ),
-                                                child: RestaurantCard(
-                                                  restaurant: restaurant,
-                                                  onTap: () => Navigator.of(context).pushNamed(
-                                                    RestaurantDetailsPage.id,
-                                                    arguments: restaurant,
+                                        : restaurantsProvider.savedRestaurantsList!.isEmpty
+                                            ? [
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(
+                                                    vertical: 50,
+                                                    horizontal: 35,
+                                                  ),
+                                                  child: Text(
+                                                    'Restaurants will be here once saved',
+                                                    style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: Colors.grey.shade500,
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            )
-                                            .toList(),
+                                              ]
+                                            : restaurantsProvider.savedRestaurantsList!
+                                                .take(4)
+                                                .map(
+                                                  (restaurant) => Padding(
+                                                    padding: const EdgeInsets.only(
+                                                      right: 16,
+                                                    ),
+                                                    child: RestaurantCard(
+                                                      restaurant: restaurant,
+                                                      onTap: () => Navigator.of(context).pushNamed(
+                                                        RestaurantDetailsPage.id,
+                                                        arguments: restaurant,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                                .toList(),
                                   ),
                                 ),
                               ),

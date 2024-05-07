@@ -1,33 +1,44 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:sheveegan/core/enums/update_food_product.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/features/auth/domain/usecases/remove_food_product.dart';
 import 'package:sheveegan/features/auth/domain/usecases/save_food_product.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/update_food_product.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_product.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_saved_products_list.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/read_ingredients_from_image.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/scan_barcode.dart';
 
-part 'scan_product_state.dart';
+part 'food_product_state.dart';
 
-class ScanProductCubit extends Cubit<ScanProductState> {
-  ScanProductCubit({
+class FoodProductCubit extends Cubit<FoodProductState> {
+  FoodProductCubit({
     required ScanBarcode scanBarcode,
     required FetchProduct fetchProduct,
     required SaveFoodProduct saveFoodProduct,
     required RemoveFoodProduct removeFoodProduct,
     required FetchSavedProductsList fetchSavedProductsList,
+    required ReadIngredientsFromImage readIngredientsFromImage,
+    required UpdateFoodProduct updateFoodProduct,
   })  : _scanBarcode = scanBarcode,
         _fetchProduct = fetchProduct,
         _saveFoodProduct = saveFoodProduct,
         _removeFoodProduct = removeFoodProduct,
         _fetchSavedProductsList = fetchSavedProductsList,
+        _readIngredientsFromImage = readIngredientsFromImage,
+        _updateFoodProduct = updateFoodProduct,
         super(const ScanProductInitial());
   final ScanBarcode _scanBarcode;
   final FetchProduct _fetchProduct;
   final SaveFoodProduct _saveFoodProduct;
   final RemoveFoodProduct _removeFoodProduct;
   final FetchSavedProductsList _fetchSavedProductsList;
+  final ReadIngredientsFromImage _readIngredientsFromImage;
+  final UpdateFoodProduct _updateFoodProduct;
 
   Future<void> scanBarcode() async {
     emit(const ScanningBarcode());
@@ -61,6 +72,26 @@ class ScanProductCubit extends Cubit<ScanProductState> {
           );
         }
       },
+    );
+  }
+
+  Future<void> updateFoodProduct({
+    required UpdateFoodAction action,
+    required FoodProduct foodProduct,
+    dynamic foodData,
+  }) async {
+    emit(const UploadingFoodProduct());
+    final result = await _updateFoodProduct(
+      UpdateFoodProductParams(
+        action: action,
+        foodData: foodData,
+        foodProduct: foodProduct,
+      ),
+    );
+
+    result.fold(
+      (failure) => emit(FoodProductError(message: failure.message)),
+      (product) => emit(const FoodProductUploaded()),
     );
   }
 
@@ -109,6 +140,15 @@ class ScanProductCubit extends Cubit<ScanProductState> {
       (savedProductsList) {
         emit(SavedProductsListFetched(savedProductsList: savedProductsList));
       },
+    );
+  }
+
+  Future<void> readIngredientsFromImage(File pickedIngredientsImage) async {
+    emit(const ReadingIngredients());
+    final result = await _readIngredientsFromImage(pickedIngredientsImage);
+    result.fold(
+      (failure) => emit(FoodProductError(message: failure.message)),
+      (ingredients) => emit(IngredientsRead(ingredients: ingredients)),
     );
   }
 }

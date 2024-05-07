@@ -23,7 +23,7 @@ class AppRouter {
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
-                    create: (_) => serviceLocator<ScanProductCubit>(),
+                    create: (_) => serviceLocator<FoodProductCubit>(),
                   ),
                   BlocProvider(
                     create: (_) => serviceLocator<RestaurantsBloc>(),
@@ -48,7 +48,7 @@ class AppRouter {
           (_) => MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (_) => serviceLocator<ScanProductCubit>(),
+                create: (_) => serviceLocator<FoodProductCubit>(),
               ),
               BlocProvider(
                 create: (_) => serviceLocator<RestaurantsBloc>(),
@@ -103,8 +103,8 @@ class AppRouter {
         );
       case ScanResultsPage.id:
         return _pageBuilder(
-          (_) => BlocProvider<ScanProductCubit>.value(
-            value: settings.arguments! as ScanProductCubit,
+          (_) => BlocProvider<FoodProductCubit>.value(
+            value: settings.arguments! as FoodProductCubit,
             child: const ScanResultsPage(),
           ),
           settings: settings,
@@ -122,7 +122,7 @@ class AppRouter {
       case ProductFoundPage.id:
         return _pageBuilder(
           (_) => BlocProvider(
-            create: (_) => serviceLocator<ScanProductCubit>(),
+            create: (_) => serviceLocator<FoodProductCubit>(),
             child: ProductFoundPage(
               product: settings.arguments! as FoodProduct,
             ),
@@ -166,12 +166,12 @@ class AppRouter {
           settings: settings,
         );
 
-      case AddProductScreen.id:
-        final args = settings.arguments! as AddProductPageArguments;
+      case UpdateFoodProductScreen.id:
+        final args = settings.arguments! as UpdateFoodProductPageArguments;
         return _pageBuilder(
-          (_) => BlocProvider(
-            create: (_) => serviceLocator<ScanProductCubit>(),
-            child: AddProductScreen(
+          (_) => BlocProvider.value(
+            value: serviceLocator<FoodProductCubit>(),
+            child: UpdateFoodProductScreen(
               title: args.title,
               product: args.product,
             ),
@@ -209,4 +209,11 @@ class EditRestaurantScreenArguments {
 
   final RestaurantReview review;
   final RestaurantDetails restaurant;
+}
+
+class UpdateFoodProductPageArguments {
+  const UpdateFoodProductPageArguments(this.title, this.product);
+
+  final String title;
+  final FoodProduct? product;
 }

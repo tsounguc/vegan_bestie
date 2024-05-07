@@ -71,7 +71,7 @@ class ProductCard extends StatelessWidget {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.30,
                 child: Text(
-                  product.productName.capitalize(),
+                  product.productName.capitalizeFirstLetter(),
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     fontSize: 12.sp,

@@ -82,7 +82,7 @@ class HorizontalProductCard extends StatelessWidget {
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.75,
                             child: Text(
-                              product.productName.capitalize(),
+                              product.productName.capitalizeFirstLetter(),
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: Colors.grey.shade800,

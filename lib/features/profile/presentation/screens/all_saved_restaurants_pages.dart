@@ -107,7 +107,7 @@ class AllSavedRestaurantsPage extends StatelessWidget {
                                     '&key=$kGoogleApiKey',
                             geometry: restaurant.geometry,
                             restaurantId: restaurant.id,
-                            restaurantName: restaurant.name.capitalize(),
+                            restaurantName: restaurant.name.capitalizeFirstLetter(),
                             restaurantAddress: restaurant.vicinity,
                             restaurantPrice: '',
                             isOpenNow: restaurant.openingHours.openNow,

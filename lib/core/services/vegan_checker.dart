@@ -238,7 +238,7 @@ class VeganChecker {
       if (product.labels.isEmpty) {
         debugPrint('Labels is empty or null');
         for (final ingredient in product.ingredients) {
-          debugPrint('is ${ingredient.text} vegan: ${ingredient.vegan}');
+          // debugPrint('is ${ingredient.text} vegan: ${ingredient.vegan}');
           // ingredient vegan status unsure
           if (ingredient.vegan.isEmpty || ingredient.vegan == 'maybe') {
             for (final nonVeganIngredient in nonVeganIngredients) {
@@ -256,23 +256,23 @@ class VeganChecker {
           // set isVegan to false and
           // add it to string of nonVegan ingredients found in product
           if (ingredient.vegan == 'no') {
-            debugPrint(
-              'is ${ingredient.text} vegan: ${ingredient.vegan.toUpperCase()}',
-            );
+            // debugPrint(
+            //   'is ${ingredient.text} vegan: ${ingredient.vegan.toUpperCase()}',
+            // );
             _nonVeganIngredientsInProduct = '$_nonVeganIngredientsInProduct'
                 '${ingredient.text.toLowerCase()}, ';
             isVegan = false;
           }
         }
-        debugPrint('Ingredients from text');
+        // debugPrint('Ingredients from text');
         for (final nonVeganIngredient in nonVeganIngredients) {
           for (final ingredient in ingredientListFromText) {
             if (ingredient.toLowerCase().trim() == nonVeganIngredient.toLowerCase().trim() &&
                 !_nonVeganIngredientsInProduct.contains('$nonVeganIngredient, ')) {
-              debugPrint(
-                '$ingredient is text and '
-                '$nonVeganIngredient is from non vegan list',
-              );
+              // debugPrint(
+              //   '$ingredient is text and '
+              //   '$nonVeganIngredient is from non vegan list',
+              // );
               _nonVeganIngredientsInProduct = '$_nonVeganIngredientsInProduct'
                   '$nonVeganIngredient, ';
               isVegan = false;
@@ -283,10 +283,10 @@ class VeganChecker {
       // Labels list doesn't include Vegan or Contains no animal ingredients
       else if (!(product.labels.toLowerCase().contains('vegan') ||
           product.labels.toLowerCase().contains('contains no animal ingredients'))) {
-        debugPrint("Labels list doesn't include Vegan "
-            'or Contains no animal ingredients');
+        // debugPrint("Labels list doesn't include Vegan "
+        //     'or Contains no animal ingredients');
         for (final ingredient in product.ingredients) {
-          debugPrint('is ${ingredient.text} vegan: ${ingredient.vegan}');
+          // debugPrint('is ${ingredient.text} vegan: ${ingredient.vegan}');
           // ingredient vegan status unsure
           if (ingredient.vegan.isEmpty || ingredient.vegan == 'maybe') {
             for (final nonVeganIngredient in nonVeganIngredients) {
@@ -300,7 +300,7 @@ class VeganChecker {
           // ingredient vegan status is no
           // set isVegan to false and add it to string of nonVegan ingredients found in product
           if (ingredient.vegan == 'no') {
-            debugPrint('is ${ingredient.text} vegan: ${ingredient.vegan}');
+            // debugPrint('is ${ingredient.text} vegan: ${ingredient.vegan}');
             _nonVeganIngredientsInProduct = '$_nonVeganIngredientsInProduct'
                 '${ingredient.text.toLowerCase()}, ';
             isVegan = false;
@@ -310,8 +310,8 @@ class VeganChecker {
           for (final ingredient in ingredientListFromText) {
             if (ingredient.toLowerCase().trim() == nonVeganIngredient.toLowerCase().trim() &&
                 !_nonVeganIngredientsInProduct.contains('$nonVeganIngredient, ')) {
-              debugPrint('$ingredient is text and '
-                  '$nonVeganIngredient is from non vegan list');
+              // debugPrint('$ingredient is text and '
+              //     '$nonVeganIngredient is from non vegan list');
               _nonVeganIngredientsInProduct = '$_nonVeganIngredientsInProduct'
                   '$nonVeganIngredient, ';
               isVegan = false;
@@ -326,7 +326,7 @@ class VeganChecker {
       //     lastCommaIndex,
       //   );
       // }
-      debugPrint('Non Vegan ingredients: $_nonVeganIngredientsInProduct');
+      // debugPrint('Non Vegan ingredients: $_nonVeganIngredientsInProduct');
       return isVegan;
     } catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
@@ -349,7 +349,7 @@ class VeganChecker {
       if (product.labels.isEmpty) {
         debugPrint('Labels is empty or null');
         for (final ingredient in product.ingredients) {
-          debugPrint('is ${ingredient.text} vegetarian: ${ingredient.vegetarian}');
+          // debugPrint('is ${ingredient.text} vegetarian: ${ingredient.vegetarian}');
           // ingredient vegetarian status unsure
           if (ingredient.vegetarian.isEmpty || ingredient.vegetarian == 'maybe') {
             for (final nonVegetarianIngredient in nonVegetarianIngredients) {
@@ -367,23 +367,23 @@ class VeganChecker {
           // set isVegetarian to false and
           // add it to string of nonVegetarian ingredients found in product
           if (ingredient.vegetarian == 'no') {
-            debugPrint(
-              'is ${ingredient.text} vegetarian: ${ingredient.vegetarian.toUpperCase()}',
-            );
+            // debugPrint(
+            //   'is ${ingredient.text} vegetarian: ${ingredient.vegetarian.toUpperCase()}',
+            // );
             _nonVegetarianIngredientsInProduct = '$_nonVegetarianIngredientsInProduct'
                 '${ingredient.text.toLowerCase()}, ';
             isVegetarian = false;
           }
         }
-        debugPrint('Ingredients from text');
+        // debugPrint('Ingredients from text');
         for (final nonVegetarianIngredient in nonVegetarianIngredients) {
           for (final ingredient in ingredientListFromText) {
             if (ingredient.toLowerCase().trim() == nonVegetarianIngredient.toLowerCase().trim() &&
                 !_nonVegetarianIngredientsInProduct.contains('$nonVegetarianIngredient, ')) {
-              debugPrint(
-                '$ingredient is text and '
-                '$nonVegetarianIngredient is from non vegetarian list',
-              );
+              // debugPrint(
+              //   '$ingredient is text and '
+              //   '$nonVegetarianIngredient is from non vegetarian list',
+              // );
               _nonVegetarianIngredientsInProduct = '$_nonVegetarianIngredientsInProduct'
                   '$nonVegetarianIngredient, ';
               isVegetarian = false;

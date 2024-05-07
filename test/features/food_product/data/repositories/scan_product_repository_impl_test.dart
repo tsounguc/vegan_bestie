@@ -3,23 +3,23 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
-import 'package:sheveegan/features/food_product/data/data_sources/scan_product_remote_data_source.dart';
+import 'package:sheveegan/features/food_product/data/data_sources/food_product_remote_data_source.dart';
 import 'package:sheveegan/features/food_product/data/models/barcode_model.dart';
 import 'package:sheveegan/features/food_product/data/models/food_product_model.dart';
-import 'package:sheveegan/features/food_product/data/repositories/scan_product_repository_impl.dart';
+import 'package:sheveegan/features/food_product/data/repositories/food_product_repository_impl.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
-import 'package:sheveegan/features/food_product/domain/repositories/scan_product_repository.dart';
+import 'package:sheveegan/features/food_product/domain/repositories/food_product_repository.dart';
 
-class MockScanProductRemoteDataSource extends Mock implements ScanProductRemoteDataSource {}
+class MockScanProductRemoteDataSource extends Mock implements FoodProductRemoteDataSource {}
 
 void main() {
-  late ScanProductRemoteDataSource remoteDataSource;
-  late ScanProductRepositoryImpl repositoryImpl;
+  late FoodProductRemoteDataSource remoteDataSource;
+  late FoodProductRepositoryImpl repositoryImpl;
   late ScanException testScanException;
   late FetchProductException testFetchProductException;
   setUp(() {
     remoteDataSource = MockScanProductRemoteDataSource();
-    repositoryImpl = ScanProductRepositoryImpl(remoteDataSource);
+    repositoryImpl = FoodProductRepositoryImpl(remoteDataSource);
     testScanException = const ScanException(message: 'Invalid Barcode');
     testFetchProductException = const FetchProductException(
       message: 'Product Not Found',
@@ -31,7 +31,7 @@ void main() {
     'when instantiated '
     'then instance should be a subclass of [ScanProductRepository]',
     () {
-      expect(repositoryImpl, isA<ScanProductRepository>());
+      expect(repositoryImpl, isA<FoodProductRepository>());
     },
   );
   group('scanBarcode - ', () {

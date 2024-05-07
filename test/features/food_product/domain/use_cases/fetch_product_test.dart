@@ -3,12 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
-import 'package:sheveegan/features/food_product/domain/repositories/scan_product_repository.dart';
+import 'package:sheveegan/features/food_product/domain/repositories/food_product_repository.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_product.dart';
 import 'scan_product_repository.mock.dart';
 
 void main() {
-  late ScanProductRepository repository;
+  late FoodProductRepository repository;
   late FetchProduct useCase;
   setUp(() {
     repository = MockScanProductRepository();

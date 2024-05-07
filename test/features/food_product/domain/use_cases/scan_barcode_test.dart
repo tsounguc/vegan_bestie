@@ -3,13 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/food_product/domain/entities/barcode.dart';
-import 'package:sheveegan/features/food_product/domain/repositories/scan_product_repository.dart';
+import 'package:sheveegan/features/food_product/domain/repositories/food_product_repository.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/scan_barcode.dart';
 
 import 'scan_product_repository.mock.dart';
 
 void main() {
-  late ScanProductRepository repository;
+  late FoodProductRepository repository;
   late ScanBarcode useCase;
   late Failure testFailure;
   late Barcode testResponse;

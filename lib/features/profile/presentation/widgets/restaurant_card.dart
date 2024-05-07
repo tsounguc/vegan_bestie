@@ -70,7 +70,7 @@ class RestaurantCard extends StatelessWidget {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.30,
                 child: Text(
-                  restaurant.name.capitalize(),
+                  restaurant.name.capitalizeFirstLetter(),
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     fontSize: 12.sp,

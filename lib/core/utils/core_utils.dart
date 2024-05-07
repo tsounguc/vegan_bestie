@@ -36,11 +36,22 @@ class CoreUtils {
     );
   }
 
-  static Future<File?> pickImage() async {
+  static Future<File?> pickImageFromGallery() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
       return File(image.path);
     }
     return null;
+  }
+
+  static Future<File?> getImageFromCamera() async {
+    final picker = ImagePicker();
+    if (picker.supportsImageSource(ImageSource.camera)) {
+      final image = await picker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        return File(image.path);
+      }
+      return null;
+    }
   }
 }

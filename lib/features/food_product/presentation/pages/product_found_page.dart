@@ -12,7 +12,7 @@ import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/refactors/flexible_space_bar_bottom.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/refactors/product_found_body.dart';
-import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/scan_product_cubit.dart';
+import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 
 class ProductFoundPage extends StatefulWidget {
   const ProductFoundPage({
@@ -45,7 +45,7 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
   }
 
   void removeFoodProduct(FoodProduct product) {
-    BlocProvider.of<ScanProductCubit>(
+    BlocProvider.of<FoodProductCubit>(
       context,
     ).removeFoodProductHandler(product: product);
     CoreUtils.showSnackBar(
@@ -55,7 +55,7 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
   }
 
   void saveFoodProduct(FoodProduct product) {
-    BlocProvider.of<ScanProductCubit>(
+    BlocProvider.of<FoodProductCubit>(
       context,
     ).saveFoodProductHandler(product: product);
     CoreUtils.showSnackBar(

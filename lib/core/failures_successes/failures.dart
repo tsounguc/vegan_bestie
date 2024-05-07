@@ -36,6 +36,32 @@ class FetchProductFailure extends Failure {
         );
 }
 
+class AddFoodProductFailure extends Failure {
+  AddFoodProductFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  AddFoodProductFailure.fromException(AddFoodProductException exception)
+      : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
+class UpdateFoodProductFailure extends Failure {
+  UpdateFoodProductFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  UpdateFoodProductFailure.fromException(UpdateFoodProductException exception)
+      : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
 class ScanFailure extends Failure {
   ScanFailure({
     required super.message,
@@ -273,6 +299,20 @@ class EditRestaurantReviewFailure extends Failure {
 
   EditRestaurantReviewFailure.fromException(
     EditRestaurantReviewException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
+class ReadIngredientsFromImageFailure extends Failure {
+  ReadIngredientsFromImageFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  ReadIngredientsFromImageFailure.fromException(
+    ReadIngredientsFromImageException exception,
   ) : this(
           message: exception.message,
           statusCode: exception.statusCode,

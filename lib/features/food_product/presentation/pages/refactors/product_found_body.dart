@@ -3,8 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
+import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
-import 'package:sheveegan/features/food_product/presentation/pages/add_product_screen.dart';
+import 'package:sheveegan/features/food_product/presentation/pages/update_food_product_screen.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/widgets/macronutrient_widget.dart';
 
 class ProductFoundBody extends StatelessWidget {
@@ -23,11 +24,11 @@ class ProductFoundBody extends StatelessWidget {
   final FoodProduct product;
   final ScrollController scrollController;
 
-  void goToAddProductPage(BuildContext context) {
+  void gotoUpdateFoodProductPage(BuildContext context) {
     Navigator.pushNamed(
       context,
-      AddProductScreen.id,
-      arguments: AddProductPageArguments('Edit Product', product),
+      UpdateFoodProductScreen.id,
+      arguments: UpdateFoodProductPageArguments('Edit Product', product),
     );
   }
 
@@ -146,7 +147,7 @@ class ProductFoundBody extends StatelessWidget {
                 ).copyWith(bottom: 0),
                 child: product.ingredientsText.isNotEmpty
                     ? Text(
-                        product.ingredientsText.toLowerCase().capitalize(),
+                        product.ingredientsText.toLowerCase().capitalizeEveryWord(', ').capitalizeEveryWord(' ('),
                         style: TextStyle(
                           color: Colors.grey.shade800,
                           fontSize: 12.sp,
@@ -174,7 +175,8 @@ class ProductFoundBody extends StatelessWidget {
               elevation: 2,
               surfaceTintColor: Colors.white,
             ),
-            onPressed: () => user != null && user.isAdmin ? goToAddProductPage(context) : goToReportIssue(context),
+            onPressed: () =>
+                user != null && user.isAdmin ? gotoUpdateFoodProductPage(context) : goToReportIssue(context),
             icon: const Icon(
               Icons.warning_amber,
               color: Colors.amber,

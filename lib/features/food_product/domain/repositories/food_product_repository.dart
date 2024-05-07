@@ -1,8 +1,11 @@
+import 'dart:io';
+
+import 'package:sheveegan/core/enums/update_food_product.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/food_product/domain/entities/barcode.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 
-abstract class ScanProductRepository {
+abstract class FoodProductRepository {
   ResultFuture<Barcode> scanBarcode();
 
   ResultFuture<FoodProduct> fetchProduct({required String barcode});
@@ -12,4 +15,14 @@ abstract class ScanProductRepository {
   ResultVoid removeFoodProduct({required String barcode});
 
   ResultFuture<List<FoodProduct>> fetchSavedProductsList({required List<String> productsList});
+
+  ResultFuture<String> readIngredientsFromImage({required File image});
+
+  ResultVoid addNewFoodProduct({required FoodProduct foodProduct});
+
+  ResultVoid updateFoodProduct({
+    required FoodProduct foodProduct,
+    required dynamic foodData,
+    required UpdateFoodAction action,
+  });
 }

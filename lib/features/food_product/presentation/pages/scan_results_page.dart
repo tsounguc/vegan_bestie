@@ -4,7 +4,7 @@ import 'package:sheveegan/core/common/screens/error/error.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/common/screens/product_screens/product_not_found.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/product_found_page.dart';
-import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/scan_product_cubit.dart';
+import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 
 class ScanResultsPage extends StatelessWidget {
   const ScanResultsPage({super.key});
@@ -14,7 +14,7 @@ class ScanResultsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget page = Container();
-    return BlocBuilder<ScanProductCubit, ScanProductState>(
+    return BlocBuilder<FoodProductCubit, FoodProductState>(
       builder: (context, state) {
         if (state is FetchingProduct) {
           page = const LoadingPage();

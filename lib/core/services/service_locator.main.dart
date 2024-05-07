@@ -46,12 +46,14 @@ Future<void> _initScan() async {
   serviceLocator
     // App Logic
     ..registerFactory(
-      () => ScanProductCubit(
+      () => FoodProductCubit(
         scanBarcode: serviceLocator(),
         fetchProduct: serviceLocator(),
         saveFoodProduct: serviceLocator(),
         removeFoodProduct: serviceLocator(),
         fetchSavedProductsList: serviceLocator(),
+        readIngredientsFromImage: serviceLocator(),
+        updateFoodProduct: serviceLocator(),
       ),
     )
     // Use cases
@@ -60,13 +62,15 @@ Future<void> _initScan() async {
     ..registerLazySingleton(() => SaveFoodProduct(serviceLocator()))
     ..registerLazySingleton(() => RemoveFoodProduct(serviceLocator()))
     ..registerLazySingleton(() => FetchSavedProductsList(serviceLocator()))
+    ..registerLazySingleton(() => ReadIngredientsFromImage(serviceLocator()))
+    ..registerLazySingleton(() => UpdateFoodProduct(serviceLocator()))
     // Repositories
-    ..registerLazySingleton<ScanProductRepository>(
-      () => ScanProductRepositoryImpl(serviceLocator()),
+    ..registerLazySingleton<FoodProductRepository>(
+      () => FoodProductRepositoryImpl(serviceLocator()),
     )
     // Data Sources
-    ..registerLazySingleton<ScanProductRemoteDataSource>(
-      () => ScanProductRemoteDataSourceImpl(
+    ..registerLazySingleton<FoodProductRemoteDataSource>(
+      () => FoodProductRemoteDataSourceImpl(
         serviceLocator(),
         serviceLocator(),
         serviceLocator(),

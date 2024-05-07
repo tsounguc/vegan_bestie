@@ -113,7 +113,7 @@ class RestaurantsFoundBody extends StatelessWidget {
                                         '&key=$kGoogleApiKey',
                                 geometry: restaurant.geometry,
                                 restaurantId: restaurant.id,
-                                restaurantName: restaurant.name.capitalize(),
+                                restaurantName: restaurant.name.capitalizeFirstLetter(),
                                 restaurantAddress: restaurant.vicinity,
                                 restaurantPrice: restaurant.price,
                                 isOpenNow: restaurant.openingHours.openNow,
