@@ -54,6 +54,7 @@ Future<void> _initScan() async {
         fetchSavedProductsList: serviceLocator(),
         readIngredientsFromImage: serviceLocator(),
         updateFoodProduct: serviceLocator(),
+        addFoodProduct: serviceLocator(),
       ),
     )
     // Use cases
@@ -64,6 +65,7 @@ Future<void> _initScan() async {
     ..registerLazySingleton(() => FetchSavedProductsList(serviceLocator()))
     ..registerLazySingleton(() => ReadIngredientsFromImage(serviceLocator()))
     ..registerLazySingleton(() => UpdateFoodProduct(serviceLocator()))
+    ..registerLazySingleton(() => AddFoodProduct(serviceLocator()))
     // Repositories
     ..registerLazySingleton<FoodProductRepository>(
       () => FoodProductRepositoryImpl(serviceLocator()),

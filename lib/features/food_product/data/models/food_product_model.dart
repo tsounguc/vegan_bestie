@@ -241,6 +241,36 @@ class NutrimentsModel extends Nutriments {
     required super.fatValue,
   });
 
+  NutrimentsModel copyWith({
+    double? proteins,
+    double? proteins100G,
+    String? proteinsUnit,
+    double? proteinsValue,
+    double? carbohydrates,
+    double? carbohydrates100G,
+    String? carbohydratesUnit,
+    double? carbohydratesValue,
+    double? fat,
+    double? fat100G,
+    String? fatUnit,
+    double? fatValue,
+  }) {
+    return NutrimentsModel(
+      proteins: proteins ?? this.proteins,
+      proteins100G: proteins100G ?? this.proteins100G,
+      proteinsUnit: proteinsUnit ?? this.proteinsUnit,
+      proteinsValue: proteinsValue ?? this.proteinsValue,
+      carbohydrates: carbohydrates ?? this.carbohydrates,
+      carbohydrates100G: carbohydrates100G ?? this.carbohydrates100G,
+      carbohydratesUnit: carbohydratesUnit ?? this.carbohydratesUnit,
+      carbohydratesValue: carbohydratesValue ?? this.carbohydratesValue,
+      fat: fat ?? this.fat,
+      fat100G: fat100G ?? this.fat100G,
+      fatUnit: fatUnit ?? this.fatUnit,
+      fatValue: fatValue ?? this.fatValue,
+    );
+  }
+
   const NutrimentsModel.empty()
       : this(
           proteins: 0,

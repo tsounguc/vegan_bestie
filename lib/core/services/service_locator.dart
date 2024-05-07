@@ -22,6 +22,7 @@ import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/food_product/data/data_sources/food_product_remote_data_source.dart';
 import 'package:sheveegan/features/food_product/data/repositories/food_product_repository_impl.dart';
 import 'package:sheveegan/features/food_product/domain/repositories/food_product_repository.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/add_food_product.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/update_food_product.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_product.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_saved_products_list.dart';

@@ -13,7 +13,9 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:sheveegan/features/food_product/presentation/pages/add_food_product_screen.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/product_found_page.dart';
+import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 import 'package:sheveegan/features/profile/presentation/refactors/profile_header.dart';
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_products_page.dart';
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_restaurants_pages.dart';
@@ -98,6 +100,20 @@ class ProfileScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+                                      if (context.userProvider.user?.isAdmin ?? false)
+                                        PopupMenuItem<void>(
+                                          onTap: () => Navigator.of(context).pushNamed(
+                                            AddFoodProductScreen.id,
+                                            arguments: context.read<FoodProductCubit>(),
+                                          ),
+                                          child: const PopupItem(
+                                            title: 'Add New Product',
+                                            icon: Icon(
+                                              Icons.edit_outlined,
+                                              color: Color(0xFF757C8E),
+                                            ),
+                                          ),
+                                        ),
                                       const PopupMenuItem<void>(
                                         // onTap: () => context.push(const Placeholder()),
                                         child: PopupItem(

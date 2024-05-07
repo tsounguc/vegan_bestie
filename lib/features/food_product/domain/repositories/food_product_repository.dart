@@ -18,7 +18,7 @@ abstract class FoodProductRepository {
 
   ResultFuture<String> readIngredientsFromImage({required File image});
 
-  ResultVoid addNewFoodProduct({required FoodProduct foodProduct});
+  ResultVoid addFoodProduct({required FoodProduct foodProduct, required File productImage});
 
   ResultVoid updateFoodProduct({
     required FoodProduct foodProduct,

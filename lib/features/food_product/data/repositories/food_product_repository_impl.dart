@@ -26,9 +26,9 @@ class FoodProductRepositoryImpl implements FoodProductRepository {
   }
 
   @override
-  ResultVoid addNewFoodProduct({required FoodProduct foodProduct}) async {
+  ResultVoid addFoodProduct({required FoodProduct foodProduct, required File productImage}) async {
     try {
-      final result = await _remoteDataSource.addNewFoodProduct(foodProduct: foodProduct);
+      final result = await _remoteDataSource.addFoodProduct(foodProduct: foodProduct, productImage: productImage);
       return Right(result);
     } on AddFoodProductException catch (e) {
       return Left(AddFoodProductFailure.fromException(e));

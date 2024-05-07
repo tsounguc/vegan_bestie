@@ -25,8 +25,9 @@ abstract class FoodProductRemoteDataSource {
 
   Future<FoodProductModel> fetchProduct({required String barcode});
 
-  Future<void> addNewFoodProduct({
+  Future<void> addFoodProduct({
     required FoodProduct foodProduct,
+    required File productImage,
   });
 
   Future<void> saveFoodProduct({
@@ -112,23 +113,94 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
   }
 
   @override
-  Future<void> addNewFoodProduct({required FoodProduct foodProduct}) async {
+  Future<void> addFoodProduct({
+    required FoodProduct foodProduct,
+    required File productImage,
+  }) async {
     try {
       final userId = dotenv.env['OpenFoodFactUserId'];
       debugPrint(userId);
       final password = dotenv.env['OpenFoodFactPassword'];
       debugPrint(password);
 
-      // final header = {'user_id': userId, 'password': password};
-      // final url = '$kFoodFactBaseUrl$kAddFoodProductEndPoint'
-      //     'code=${foodProduct.code}ingredients=';
-      // final parsedUri = Uri.parse(url);
-      //
-      // final request = Request('POST', parsedUri);
-      //
-      // final streamResponse = await request.send();
-      //
-      // final response = await Response.fromStream(streamResponse);
+      final headers = {'user_id': userId!, 'password': password!};
+
+      var infoUrl = '$kFoodFactBaseUrl$kAddFoodProductEndPoint'
+          'code=${foodProduct.code}&user_id=$userId&password=$password';
+      final queryComponent = '&product_name=${foodProduct.productName}'
+              '&ingredients_text=${foodProduct.ingredientsText}'
+              '&nutrition_data_per=100g'
+              '&nutriment_proteins=${foodProduct.nutriments.proteins100G}'
+              '&nutriment_carbohydrates=${foodProduct.nutriments.carbohydrates100G}'
+              '&nutriment_fats=${foodProduct.nutriments.fat100G}'
+          .replaceAll(',', '%2C')
+          .replaceAll(' ', '%20')
+          .replaceAll('(', '%28')
+          .replaceAll(')', '%29')
+          .replaceAll('.', '%2E')
+          .replaceAll('and/or', '')
+          .replaceAll('and', '');
+      infoUrl += queryComponent;
+
+      final infoRequest = Request('GET', Uri.parse(infoUrl));
+      infoRequest.headers.addAll(headers);
+      final infoStreamResponse = await infoRequest.send();
+
+      final infoResponse = await Response.fromStream(infoStreamResponse);
+
+      final infoResponseData = jsonDecode(infoResponse.body) as DataMap;
+
+      if (infoResponseData['status'] == 0) {
+        debugPrint(
+          '${infoResponseData['status']}: ${infoResponseData['status_verbose']}',
+        );
+
+        throw UpdateFoodProductException(
+          message: infoResponseData['status_verbose'].toString(),
+          statusCode: infoResponseData['status'] as int,
+        );
+      } else {
+        debugPrint(
+          'Product Info Request Successful: '
+          '${infoResponseData['status']}: ${infoResponseData['status_verbose']}',
+        );
+
+        final imageUrl = '$kFoodFactBaseUrl/cgi/product_image_upload.pl'
+            'code=${foodProduct.code}&user_id=$userId&password=$password';
+
+        final imageRequest = MultipartRequest('POST', Uri.parse(imageUrl))
+          ..headers.addAll({
+            'Content-Type': 'multipart/form-data',
+            'user_id': userId,
+            'password': password,
+          })
+          ..fields.addAll({
+            'code': foodProduct.code,
+            'imagefield': 'front',
+          })
+          ..files.add(
+            await MultipartFile.fromPath(
+              'imgupload_front',
+              productImage.path,
+            ),
+          );
+        final imageStreamResponse = await imageRequest.send();
+
+        final imageResponse = await Response.fromStream(imageStreamResponse);
+
+        final data = jsonDecode(imageResponse.body) as DataMap;
+
+        if (data['status'] == 0) {
+          debugPrint('${data['status']}: ${data['status_verbose']}');
+          throw UpdateFoodProductException(
+            message: data['status_verbose'].toString(),
+            statusCode: data['status'] as int,
+          );
+        } else {
+          debugPrint('Product Image Request Successful: '
+              '${data['status']}: ${data['status_verbose']}');
+        }
+      }
     } on AddFoodProductException catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
       rethrow;

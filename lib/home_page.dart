@@ -14,7 +14,7 @@ import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/res
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-  static const String id = '/';
+  static const String id = '/homePage';
 
   @override
   State<HomePage> createState() => _HomePageState();
