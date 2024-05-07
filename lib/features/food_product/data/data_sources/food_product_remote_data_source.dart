@@ -228,8 +228,6 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
 
       switch (action) {
         case UpdateFoodAction.imageFrontUrl:
-          // queryComponent +=
-          //     '&product_image_upload.pl/imgupload_front=${foodProduct.productName.toLowerCase().replaceAll(' ', '')}front.png';
           await updateFoodProductInfo(
             requestMethod: 'POST',
             endPoint: '/cgi/product_image_upload.pl',
@@ -280,35 +278,12 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
             password: password ?? '',
             action: action,
           );
-        case UpdateFoodAction.protein:
+        case UpdateFoodAction.nutriments:
+          final nutriments = foodData as Nutriments;
           queryComponent += '&nutrition_data_per=100g'
-              '&nutriment_proteins=$foodData';
-          debugPrint(queryComponent);
-          await updateFoodProductInfo(
-            requestMethod: 'GET',
-            endPoint: kAddFoodProductEndPoint,
-            queryComponent: queryComponent,
-            barcode: foodProduct.code,
-            userId: userId ?? '',
-            password: password ?? '',
-            action: action,
-          );
-        case UpdateFoodAction.carbs:
-          queryComponent += '&nutrition_data_per=100g'
-              '&nutriment_carbohydrates=$foodData';
-          debugPrint(queryComponent);
-          await updateFoodProductInfo(
-            requestMethod: 'GET',
-            endPoint: kAddFoodProductEndPoint,
-            queryComponent: queryComponent,
-            barcode: foodProduct.code,
-            userId: userId ?? '',
-            password: password ?? '',
-            action: action,
-          );
-        case UpdateFoodAction.fats:
-          queryComponent += '&nutrition_data_per=100g'
-              '&nutriment_fat=$foodData';
+              '&nutriment_proteins=${nutriments.proteins100G}'
+              '&nutriment_carbohydrates=${nutriments.carbohydrates100G}'
+              '&nutriment_fat=${nutriments.fat100G}';
           debugPrint(queryComponent);
           await updateFoodProductInfo(
             requestMethod: 'GET',

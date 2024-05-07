@@ -8,6 +8,7 @@ import 'package:sheveegan/core/enums/update_food_product.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
+import 'package:sheveegan/features/food_product/data/models/food_product_model.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/refactors/add_product_form.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
@@ -50,25 +51,23 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
       widget.product!.productName.capitalizeFirstLetter() != productNameController.text.trim();
 
   bool get ingredientsChanged =>
-      widget.product!.ingredientsText.toLowerCase().capitalizeEveryWord(', ').capitalizeEveryWord(' (') !=
+      widget.product!.ingredientsText
+          .toLowerCase()
+          .capitalizeEveryWord(
+            ', ',
+          )
+          .capitalizeEveryWord(' (') !=
       ingredientsController.text.trim();
 
-  bool get proteinChanged => widget.product!.nutriments.proteins100G.toString() != proteinController.text.trim();
-
-  bool get carbsChanged => widget.product!.nutriments.carbohydrates100G.toString() != carbsController.text.trim();
-
-  bool get fatsChanged => widget.product!.nutriments.fat100G.toString() != fatsController.text.trim();
+  bool get nutrimentsChanged =>
+      widget.product!.nutriments.proteins100G.toString() != proteinController.text.trim() ||
+      widget.product!.nutriments.carbohydrates100G.toString() != carbsController.text.trim() ||
+      widget.product!.nutriments.fat100G.toString() != fatsController.text.trim();
 
   bool get imageChanged => pickedImage != null;
 
   bool get nothingChanged =>
-      !barcodeChanged &&
-      !productNameChanged &&
-      !ingredientsChanged &&
-      !proteinChanged &&
-      !carbsChanged &&
-      !fatsChanged &&
-      !imageChanged;
+      !barcodeChanged && !productNameChanged && !ingredientsChanged && !nutrimentsChanged && !imageChanged;
 
   void submitChanges(BuildContext context) {
     final bloc = BlocProvider.of<FoodProductCubit>(context);
@@ -93,24 +92,15 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
         foodProduct: widget.product!,
       );
     }
-    if (proteinChanged) {
-      bloc.updateFoodProduct(
-        action: UpdateFoodAction.protein,
-        foodData: proteinController.text,
-        foodProduct: widget.product!,
+    if (nutrimentsChanged) {
+      final nutriments = const NutrimentsModel.empty().copyWith(
+        proteins100G: double.parse(proteinController.text),
+        carbohydrates100G: double.tryParse(carbsController.text),
+        fat100G: double.tryParse(fatsController.text),
       );
-    }
-    if (carbsChanged) {
       bloc.updateFoodProduct(
-        action: UpdateFoodAction.carbs,
-        foodData: carbsController.text,
-        foodProduct: widget.product!,
-      );
-    }
-    if (fatsChanged) {
-      bloc.updateFoodProduct(
-        action: UpdateFoodAction.fats,
-        foodData: fatsController.text,
+        action: UpdateFoodAction.nutriments,
+        foodData: nutriments,
         foodProduct: widget.product!,
       );
     }
@@ -118,13 +108,17 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
 
   @override
   void initState() {
-    barcodeController.text = widget.product!.code ?? '';
-    productNameController.text = widget.product!.productName.capitalizeFirstLetter() ?? '';
-    ingredientsController.text =
-        widget.product!.ingredientsText.toLowerCase().capitalizeEveryWord(', ').capitalizeEveryWord(' (') ?? '';
-    proteinController.text = widget.product?.nutriments.proteins100G.toString() ?? '';
-    carbsController.text = widget.product?.nutriments.carbohydrates100G.toString() ?? '';
-    fatsController.text = widget.product?.nutriments.fat100G.toString() ?? '';
+    barcodeController.text = widget.product!.code;
+    productNameController.text = widget.product!.productName.capitalizeFirstLetter();
+    ingredientsController.text = widget.product!.ingredientsText
+        .toLowerCase()
+        .capitalizeEveryWord(
+          ', ',
+        )
+        .capitalizeEveryWord(' (');
+    proteinController.text = widget.product!.nutriments.proteins100G.toString();
+    carbsController.text = widget.product!.nutriments.carbohydrates100G.toString();
+    fatsController.text = widget.product!.nutriments.fat100G.toString();
     super.initState();
   }
 
@@ -133,6 +127,9 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
     barcodeController.dispose();
     productNameController.dispose();
     ingredientsController.dispose();
+    proteinController.dispose();
+    carbsController.dispose();
+    fatsController.dispose();
     super.dispose();
   }
 
@@ -176,7 +173,10 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
               ),
               title: Text(
                 'Gallery',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               onTap: () async {
                 Navigator.of(context).pop();
@@ -208,7 +208,10 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
               leading: const Icon(Icons.camera_alt_outlined),
               title: Text(
                 'Camera',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               onTap: () async {
                 pickedIngredientsImage = await CoreUtils.getImageFromCamera();
@@ -226,7 +229,10 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
               ),
             ),
             ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 35,
+                vertical: 10,
+              ),
               leading: const Icon(
                 Icons.image_outlined,
               ),
@@ -256,7 +262,9 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
       listener: (context, state) {
         if (state is FoodProductUploaded) {
           if (context.userProvider.user != null &&
-              context.userProvider.user!.savedProductsBarcodes!.contains(widget.product!.code)) {
+              context.userProvider.user!.savedProductsBarcodes!.contains(
+                widget.product!.code,
+              )) {
             final savedBarcodes = context.userProvider.user!.savedProductsBarcodes!;
 
             context.savedProductsProvider.savedProductsList = null;
@@ -265,7 +273,10 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
             ).fetchProductsList(savedBarcodes);
           }
         } else if (state is FoodProductError) {
-          CoreUtils.showSnackBar(context, state.message);
+          CoreUtils.showSnackBar(
+            context,
+            state.message,
+          );
         }
 
         if (state is IngredientsRead) {
@@ -278,7 +289,7 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
           CoreUtils.showSnackBar(context, 'Product uploaded');
           Navigator.popUntil(
             context,
-            ModalRoute.withName(HomePage.id),
+            ModalRoute.withName('/'),
           );
         }
       },

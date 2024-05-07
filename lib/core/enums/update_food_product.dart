@@ -1,1 +1,1 @@
-enum UpdateFoodAction { imageFrontUrl, productName, ingredients, protein, carbs, fats }
+enum UpdateFoodAction { imageFrontUrl, productName, ingredients, nutriments }

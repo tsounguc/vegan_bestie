@@ -226,7 +226,7 @@ class _AddFoodProductScreenState extends State<AddFoodProductScreen> {
           CoreUtils.showSnackBar(context, 'Product uploaded');
           Navigator.popUntil(
             context,
-            ModalRoute.withName(HomePage.id),
+            ModalRoute.withName('/'),
           );
         } else if (state is FoodProductError) {
           CoreUtils.showSnackBar(context, state.message);
