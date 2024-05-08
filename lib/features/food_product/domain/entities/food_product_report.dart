@@ -10,6 +10,7 @@ class FoodProductReport extends Equatable {
     required this.incorrectIngredient,
     required this.incorrectLabel,
     required this.isWrongProduct,
+    required this.doesNotExist,
     required this.other,
     this.comment,
   });
@@ -22,6 +23,7 @@ class FoodProductReport extends Equatable {
   final bool incorrectIngredient;
   final bool incorrectLabel;
   final bool isWrongProduct;
+  final bool doesNotExist;
   final bool other;
   final String? comment;
 
@@ -35,6 +37,7 @@ class FoodProductReport extends Equatable {
         incorrectIngredient,
         incorrectLabel,
         isWrongProduct,
+        doesNotExist,
         other,
         comment,
       ];

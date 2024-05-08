@@ -13,6 +13,7 @@ class FoodProductReportModel extends FoodProductReport {
     required super.incorrectIngredient,
     required super.incorrectLabel,
     required super.isWrongProduct,
+    required super.doesNotExist,
     required super.other,
     super.comment,
   });
@@ -27,6 +28,7 @@ class FoodProductReportModel extends FoodProductReport {
           incorrectIngredient: false,
           incorrectLabel: false,
           isWrongProduct: false,
+          doesNotExist: false,
           other: false,
           comment: '_empty.comment',
         );
@@ -45,6 +47,7 @@ class FoodProductReportModel extends FoodProductReport {
           incorrectIngredient: bool.tryParse(dataMap['incorrectIngredient'] as String) ?? false,
           incorrectLabel: bool.tryParse(dataMap['incorrectLabel'] as String) ?? false,
           isWrongProduct: bool.tryParse(dataMap['isWrongProduct'] as String) ?? false,
+          doesNotExist: bool.tryParse(dataMap['doesNotExist'] as String) ?? false,
           other: bool.tryParse(dataMap['other'] as String) ?? false,
           comment: dataMap['comment'] == null ? '' : dataMap['comment'] as String,
         );
@@ -58,6 +61,7 @@ class FoodProductReportModel extends FoodProductReport {
     bool? incorrectIngredient,
     bool? incorrectLabel,
     bool? isWrongProduct,
+    bool? doesNotExist,
     bool? other,
     String? comment,
   }) {
@@ -70,7 +74,9 @@ class FoodProductReportModel extends FoodProductReport {
       incorrectIngredient: incorrectIngredient ?? this.incorrectIngredient,
       incorrectLabel: incorrectLabel ?? this.incorrectLabel,
       isWrongProduct: isWrongProduct ?? this.isWrongProduct,
+      doesNotExist: doesNotExist ?? this.doesNotExist,
       other: other ?? this.other,
+      comment: comment ?? this.comment,
     );
   }
 
@@ -85,6 +91,8 @@ class FoodProductReportModel extends FoodProductReport {
         'incorrectIngredient': incorrectIngredient,
         'incorrectLabel': incorrectLabel,
         'isWrongProduct': isWrongProduct,
+        'doesNotExist': doesNotExist,
         'other': other,
+        'comment': comment,
       };
 }
