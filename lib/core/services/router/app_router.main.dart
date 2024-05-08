@@ -188,6 +188,16 @@ class AppRouter {
           ),
           settings: settings,
         );
+
+      case FoodProductReportScreen.id:
+        return _pageBuilder(
+          (_) => BlocProvider.value(
+            value: serviceLocator<FoodProductCubit>(),
+            child: const FoodProductReportScreen(),
+          ),
+          settings: settings,
+        );
+
       default:
         throw Exception('Route not found!');
     }

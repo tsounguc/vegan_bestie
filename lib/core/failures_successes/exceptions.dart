@@ -130,6 +130,19 @@ class UpdateUserDataException extends Equatable implements Exception {
   List<Object?> get props => [message, statusCode];
 }
 
+class ReportIssueException extends Equatable implements Exception {
+  const ReportIssueException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final String statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
+}
+
 class SaveFoodProductException extends Equatable implements Exception {
   const SaveFoodProductException({
     required this.message,

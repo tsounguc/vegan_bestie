@@ -8,6 +8,7 @@ import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/food_product/data/data_sources/food_product_remote_data_source.dart';
 import 'package:sheveegan/features/food_product/domain/entities/barcode.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
+import 'package:sheveegan/features/food_product/domain/entities/food_product_report.dart';
 import 'package:sheveegan/features/food_product/domain/repositories/food_product_repository.dart';
 
 class FoodProductRepositoryImpl implements FoodProductRepository {
@@ -104,6 +105,16 @@ class FoodProductRepositoryImpl implements FoodProductRepository {
       return Right(result);
     } on ReadIngredientsFromImageException catch (e) {
       return Left(ReadIngredientsFromImageFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid reportIssue(FoodProductReport report) async {
+    try {
+      final result = await _remoteDataSource.reportIssue(report);
+      return Right(result);
+    } on ReportIssueException catch (e) {
+      return Left(ReportIssueFailure.fromException(e));
     }
   }
 }

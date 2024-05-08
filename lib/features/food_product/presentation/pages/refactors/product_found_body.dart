@@ -5,6 +5,7 @@ import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
+import 'package:sheveegan/features/food_product/presentation/pages/food_product_report_screen.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/update_food_product_screen.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/widgets/macronutrient_widget.dart';
 
@@ -32,7 +33,13 @@ class ProductFoundBody extends StatelessWidget {
     );
   }
 
-  void goToReportIssue(BuildContext context) {}
+  void goToReportIssue(BuildContext context) {
+    Navigator.pushNamed(
+      context,
+      FoodProductReportScreen.id,
+      arguments: UpdateFoodProductPageArguments('Edit Product', product),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -18,7 +18,9 @@ import 'package:sheveegan/core/utils/firebase_constants.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/food_product/data/models/barcode_model.dart';
 import 'package:sheveegan/features/food_product/data/models/food_product_model.dart';
+import 'package:sheveegan/features/food_product/data/models/food_product_report_model.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
+import 'package:sheveegan/features/food_product/domain/entities/food_product_report.dart';
 
 abstract class FoodProductRemoteDataSource {
   Future<BarcodeModel> scanBarcode();
@@ -49,6 +51,8 @@ abstract class FoodProductRemoteDataSource {
     required dynamic foodData,
     required FoodProduct foodProduct,
   });
+
+  Future<void> reportIssue(FoodProductReport report);
 }
 
 const kFetchFoodProductEndPoint = '/api/v2/product/';
@@ -482,7 +486,23 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
     }
   }
 
+  @override
+  Future<void> reportIssue(FoodProductReport report) async {
+    try {
+      final reportModel = report as FoodProductReportModel;
+      await _foodProductReport.doc(report.barcode).set(
+            reportModel.toMap(),
+          );
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+    }
+  }
+
   CollectionReference<Map<String, dynamic>> get _users => _cloudStoreClient.collection(
         FirebaseConstants.usersCollection,
+      );
+
+  CollectionReference<Map<String, dynamic>> get _foodProductReport => _cloudStoreClient.collection(
+        FirebaseConstants.foodProductReportCollection,
       );
 }

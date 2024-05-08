@@ -60,14 +60,14 @@ class FoodProductCubit extends Cubit<FoodProductState> {
     result.fold(
       (failure) {
         if (failure.message == Strings.productNotFound) {
-          emit(const ProductNotFound());
+          emit(ProductNotFound(barcode: barcode));
         } else {
           emit(FoodProductError(message: failure.message));
         }
       },
       (product) {
         if (product.productName.isEmpty) {
-          emit(const ProductNotFound());
+          emit(ProductNotFound(barcode: product.code));
         } else {
           emit(
             ProductFound(
@@ -124,7 +124,7 @@ class FoodProductCubit extends Cubit<FoodProductState> {
 
     result.fold((failure) => emit(FoodProductError(message: failure.message)), (success) {
       if (product.productName.isEmpty) {
-        emit(const ProductNotFound());
+        emit(ProductNotFound(barcode: product.code));
       } else {
         emit(
           ProductFound(
@@ -144,7 +144,7 @@ class FoodProductCubit extends Cubit<FoodProductState> {
       (failure) => emit(FoodProductError(message: failure.message)),
       (success) {
         if (product.productName.isEmpty) {
-          emit(const ProductNotFound());
+          emit(ProductNotFound(barcode: product.code));
         } else {
           emit(ProductFound(product: product));
         }

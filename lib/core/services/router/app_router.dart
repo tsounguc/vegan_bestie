@@ -13,6 +13,7 @@ import 'package:sheveegan/features/auth/presentation/pages/welcome_page.dart';
 import 'package:sheveegan/features/food_product//presentation/pages/update_food_product_screen.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/add_food_product_screen.dart';
+import 'package:sheveegan/features/food_product/presentation/pages/food_product_report_screen.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/product_found_page.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/scan_results_page.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';

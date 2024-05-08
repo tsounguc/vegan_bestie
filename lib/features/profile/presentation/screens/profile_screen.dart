@@ -148,6 +148,9 @@ class ProfileScreen extends StatelessWidget {
                                         onTap: () async {
                                           final navigator = Navigator.of(context);
                                           await serviceLocator<FirebaseAuth>().signOut();
+                                          context.savedProductsProvider.savedProductsList = null;
+                                          context.savedRestaurantsProvider.savedRestaurantsList = null;
+
                                           unawaited(
                                             navigator.pushNamedAndRemoveUntil(
                                               '/',
@@ -207,7 +210,9 @@ class ProfileScreen extends StatelessWidget {
                               const ProfileHeader(),
                               SizedBox(height: 10.h),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 25).copyWith(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 25,
+                                ).copyWith(
                                   top: 5.h,
                                   bottom: 5.h,
                                 ),
@@ -223,7 +228,9 @@ class ProfileScreen extends StatelessWidget {
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 15,
+                                  ),
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: productsProvider.savedProductsList == null

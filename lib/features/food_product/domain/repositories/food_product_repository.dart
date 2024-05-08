@@ -4,6 +4,7 @@ import 'package:sheveegan/core/enums/update_food_product.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/food_product/domain/entities/barcode.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
+import 'package:sheveegan/features/food_product/domain/entities/food_product_report.dart';
 
 abstract class FoodProductRepository {
   ResultFuture<Barcode> scanBarcode();
@@ -25,4 +26,6 @@ abstract class FoodProductRepository {
     required dynamic foodData,
     required UpdateFoodAction action,
   });
+
+  ResultVoid reportIssue(FoodProductReport report);
 }

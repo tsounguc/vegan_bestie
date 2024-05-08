@@ -172,6 +172,20 @@ class CreateWithEmailAndPasswordFailure extends Failure {
         );
 }
 
+class ReportIssueFailure extends Failure {
+  ReportIssueFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  ReportIssueFailure.fromException(
+    ReportIssueException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
 class UpdateUserDataFailure extends Failure {
   UpdateUserDataFailure({
     required super.message,

@@ -95,7 +95,9 @@ class IngredientsRead extends FoodProductState {
 }
 
 class ProductNotFound extends FoodProductState {
-  const ProductNotFound();
+  const ProductNotFound({required this.barcode});
+
+  final String barcode;
 }
 
 class FoodProductError extends FoodProductState {

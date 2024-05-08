@@ -21,7 +21,7 @@ class ScanResultsPage extends StatelessWidget {
         } else if (state is FoodProductError) {
           page = ErrorPage(error: state.message);
         } else if (state is ProductNotFound) {
-          page = const ProductNotFoundPage();
+          page = ProductNotFoundPage(barcode: state.barcode);
         } else if (state is ProductFound) {
           page = ProductFoundPage(
             product: state.product,
