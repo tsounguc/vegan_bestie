@@ -52,6 +52,9 @@ class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
       other: listOfIssues[6].isSelected,
       comment: commentController.text.trim(),
     );
+    BlocProvider.of<FoodProductCubit>(
+      context,
+    ).reportIusse(report);
   }
 
   @override
@@ -110,14 +113,17 @@ class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
                         value: issue.isSelected,
                         title: Text(
                           issue.title,
-                          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.normal),
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                         onChanged: (value) {
                           itemSelected = false;
                           setState(() {
                             listOfIssues[index].isSelected = value;
                           });
-                          print(listOfIssues[index].isSelected);
+                          debugPrint('${listOfIssues[index].isSelected}');
                         },
                       );
                     },
