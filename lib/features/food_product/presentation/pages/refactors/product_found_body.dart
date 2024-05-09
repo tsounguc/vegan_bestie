@@ -33,11 +33,11 @@ class ProductFoundBody extends StatelessWidget {
     );
   }
 
-  void goToReportIssue(BuildContext context) {
+  void goToReportIssue(BuildContext context, FoodProduct product) {
     Navigator.pushNamed(
       context,
       FoodProductReportScreen.id,
-      arguments: UpdateFoodProductPageArguments('Edit Product', product),
+      arguments: product,
     );
   }
 
@@ -182,11 +182,12 @@ class ProductFoundBody extends StatelessWidget {
               elevation: 2,
               surfaceTintColor: Colors.white,
             ),
-            onPressed: () =>
-                user != null && user.isAdmin ? gotoUpdateFoodProductPage(context) : goToReportIssue(context),
+            onPressed: () => user != null && user.isAdmin
+                ? gotoUpdateFoodProductPage(context)
+                : goToReportIssue(context, product),
             icon: const Icon(
-              Icons.warning_amber,
-              color: Colors.amber,
+              Icons.report,
+              color: Colors.red,
             ),
             label: Text(
               context.currentUser!.isAdmin ? 'Fix Issue' : 'Report Issue',

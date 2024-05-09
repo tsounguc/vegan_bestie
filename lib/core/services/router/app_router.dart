@@ -11,6 +11,7 @@ import 'package:sheveegan/features/auth/presentation/pages/sign_in_screen.dart';
 import 'package:sheveegan/features/auth/presentation/pages/sign_up_screen.dart';
 import 'package:sheveegan/features/auth/presentation/pages/welcome_page.dart';
 import 'package:sheveegan/features/food_product//presentation/pages/update_food_product_screen.dart';
+import 'package:sheveegan/features/food_product/data/models/food_product_model.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/add_food_product_screen.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/food_product_report_screen.dart';

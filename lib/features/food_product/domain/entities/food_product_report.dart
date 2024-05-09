@@ -4,10 +4,11 @@ class FoodProductReport extends Equatable {
   const FoodProductReport({
     required this.barcode,
     required this.userId,
+    required this.userName,
     required this.incorrectImage,
     required this.incorrectProductName,
     required this.incorrectMacros,
-    required this.incorrectIngredient,
+    required this.incorrectIngredients,
     required this.incorrectLabel,
     required this.isWrongProduct,
     required this.doesNotExist,
@@ -15,12 +16,29 @@ class FoodProductReport extends Equatable {
     this.comment,
   });
 
+  const FoodProductReport.empty()
+      : this(
+          barcode: '_empty.barcode',
+          userId: '_empty.userId',
+          userName: '_empty.userName',
+          incorrectImage: false,
+          incorrectProductName: false,
+          incorrectMacros: false,
+          incorrectIngredients: false,
+          incorrectLabel: false,
+          isWrongProduct: false,
+          doesNotExist: false,
+          other: false,
+          comment: '_empty.comment',
+        );
+
   final String barcode;
   final String userId;
+  final String userName;
   final bool incorrectImage;
   final bool incorrectProductName;
   final bool incorrectMacros;
-  final bool incorrectIngredient;
+  final bool incorrectIngredients;
   final bool incorrectLabel;
   final bool isWrongProduct;
   final bool doesNotExist;
@@ -31,10 +49,11 @@ class FoodProductReport extends Equatable {
   List<Object?> get props => [
         barcode,
         userId,
+        userName,
         incorrectImage,
         incorrectProductName,
         incorrectMacros,
-        incorrectIngredient,
+        incorrectIngredients,
         incorrectLabel,
         isWrongProduct,
         doesNotExist,

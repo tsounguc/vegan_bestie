@@ -190,10 +190,11 @@ class AppRouter {
         );
 
       case FoodProductReportScreen.id:
+        final args = settings.arguments! as FoodProductModel?;
         return _pageBuilder(
           (_) => BlocProvider.value(
             value: serviceLocator<FoodProductCubit>(),
-            child: const FoodProductReportScreen(),
+            child: FoodProductReportScreen(product: args),
           ),
           settings: settings,
         );

@@ -125,7 +125,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       final url = '$kGooglePlaceBaseUrl$kGetRestaurantsEndPoint'
           'json?key=$kGoogleApiKey&keyword=vegan'
           '&type=restaurant&location=${position.latitude},${position.longitude}'
-          '&radius=12500';
+          '&radius=1609'; // 12500
       final parsedUri = Uri.parse(url);
       final request = Request('GET', parsedUri);
 

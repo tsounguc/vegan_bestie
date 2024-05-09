@@ -100,6 +100,28 @@ class ProductNotFound extends FoodProductState {
   final String barcode;
 }
 
+class ReportingIssue extends FoodProductState {
+  const ReportingIssue();
+}
+
+class IssueReported extends FoodProductState {
+  const IssueReported({required this.message});
+
+  final String message;
+
+  @override
+  List<Object> get props => [message];
+}
+
+class FoodProductReportError extends FoodProductState {
+  const FoodProductReportError({required this.message});
+
+  final String message;
+
+  @override
+  List<Object> get props => [message];
+}
+
 class FoodProductError extends FoodProductState {
   const FoodProductError({required this.message});
 

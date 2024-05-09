@@ -112,7 +112,7 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
       rethrow;
     } catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
-      throw FetchProductException(message: e.toString(), statusCode: 500);
+      throw const FetchProductException(message: 'Issue fetching product', statusCode: 500);
     }
   }
 
@@ -490,7 +490,7 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
   Future<void> reportIssue(FoodProductReport report) async {
     try {
       final reportModel = report as FoodProductReportModel;
-      await _foodProductReport.doc(report.barcode).set(
+      await _foodProductReport.doc().set(
             reportModel.toMap(),
           );
     } catch (e, s) {
