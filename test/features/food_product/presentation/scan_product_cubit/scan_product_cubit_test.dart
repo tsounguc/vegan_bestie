@@ -7,10 +7,13 @@ import 'package:sheveegan/features/auth/domain/usecases/remove_food_product.dart
 import 'package:sheveegan/features/auth/domain/usecases/save_food_product.dart';
 import 'package:sheveegan/features/food_product/domain/entities/barcode.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/add_food_product.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_product.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_saved_products_list.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/read_ingredients_from_image.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/report_issue.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/scan_barcode.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/update_food_product.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 
 class MockScanProduct extends Mock implements ScanBarcode {}
@@ -25,6 +28,12 @@ class MockFetchSavedProductsList extends Mock implements FetchSavedProductsList 
 
 class MockReadIngredientsFromImage extends Mock implements ReadIngredientsFromImage {}
 
+class MockUpdateFoodProduct extends Mock implements UpdateFoodProduct {}
+
+class MockAddFoodProduct extends Mock implements AddFoodProduct {}
+
+class MockReportIssue extends Mock implements ReportIssue {}
+
 void main() {
   late ScanBarcode scanBarcode;
   late FetchProduct fetchProduct;
@@ -34,6 +43,9 @@ void main() {
   late FoodProductCubit cubit;
   late FetchProductParams testFetchProductParams;
   late ReadIngredientsFromImage readIngredientsFromImage;
+  late UpdateFoodProduct updateFoodProduct;
+  late AddFoodProduct addFoodProduct;
+  late ReportIssue reportIssue;
   setUp(() {
     scanBarcode = MockScanProduct();
     fetchProduct = MockFetchProduct();
@@ -41,6 +53,9 @@ void main() {
     removeFoodProduct = MockRemoveFoodProduct();
     fetchSavedProductsList = MockFetchSavedProductsList();
     readIngredientsFromImage = MockReadIngredientsFromImage();
+    updateFoodProduct = MockUpdateFoodProduct();
+    addFoodProduct = MockAddFoodProduct();
+    reportIssue = MockReportIssue();
     cubit = FoodProductCubit(
       scanBarcode: scanBarcode,
       fetchProduct: fetchProduct,
@@ -48,6 +63,9 @@ void main() {
       removeFoodProduct: removeFoodProduct,
       fetchSavedProductsList: fetchSavedProductsList,
       readIngredientsFromImage: readIngredientsFromImage,
+      updateFoodProduct: updateFoodProduct,
+      addFoodProduct: addFoodProduct,
+      reportIssue: reportIssue,
     );
     testFetchProductParams = const FetchProductParams.empty();
     registerFallbackValue(testFetchProductParams);

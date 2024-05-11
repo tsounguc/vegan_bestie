@@ -114,26 +114,26 @@ class ProfileScreen extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                      const PopupMenuItem<void>(
-                                        // onTap: () => context.push(const Placeholder()),
-                                        child: PopupItem(
-                                          title: 'Notifications',
-                                          icon: Icon(
-                                            Icons.notifications,
-                                            color: Color(0xFF757C8E),
-                                          ),
-                                        ),
-                                      ),
-                                      const PopupMenuItem<void>(
-                                        // onTap: () => context.push(const Placeholder()),
-                                        child: PopupItem(
-                                          title: 'Help',
-                                          icon: Icon(
-                                            Icons.help_outline_outlined,
-                                            color: Color(0xFF757C8E),
-                                          ),
-                                        ),
-                                      ),
+                                      // const PopupMenuItem<void>(
+                                      //   // onTap: () => context.push(const Placeholder()),
+                                      //   child: PopupItem(
+                                      //     title: 'Notifications',
+                                      //     icon: Icon(
+                                      //       Icons.notifications,
+                                      //       color: Color(0xFF757C8E),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      // const PopupMenuItem<void>(
+                                      //   // onTap: () => context.push(const Placeholder()),
+                                      //   child: PopupItem(
+                                      //     title: 'Help',
+                                      //     icon: Icon(
+                                      //       Icons.help_outline_outlined,
+                                      //       color: Color(0xFF757C8E),
+                                      //     ),
+                                      //   ),
+                                      // ),
                                       PopupMenuItem<void>(
                                         height: 1,
                                         padding: EdgeInsets.zero,

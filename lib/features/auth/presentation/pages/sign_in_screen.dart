@@ -67,17 +67,20 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Center(
               child: ListView(
                 shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 35).copyWith(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 35,
+                ).copyWith(
                   top: 0,
                 ),
                 children: [
-                  const VeganBestieLogoWidget(
-                    size: 50,
+                  VeganBestieLogoWidget(
+                    size: 50.r,
                     showText: false,
                   ),
                   const SizedBox(height: 100),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
+                    padding: const EdgeInsets.only(left: 10),
                     child: Text(
                       'Login',
                       style: TextStyle(
@@ -123,7 +126,14 @@ class _SignInScreenState extends State<SignInScreen> {
                       },
                       child: Text(
                         'Forgot Password?',
-                        style: TextStyle(fontSize: 14.r),
+                        style: TextStyle(
+                          fontSize: 14.r,
+                          fontWeight: FontWeight.w600,
+                          color: context.theme.primaryColor,
+                          // decoration: TextDecoration.underline,
+                          // decorationColor: context.theme.primaryColor,
+                          // decorationThickness: 2,
+                        ),
                       ),
                     ),
                   ),
@@ -156,12 +166,14 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                         children: [
                           TextSpan(
-                            text: 'Register account',
+                            text: 'Register',
                             style: TextStyle(
                               fontSize: 14.r,
                               fontWeight: FontWeight.w600,
                               color: context.theme.primaryColor,
                               decoration: TextDecoration.underline,
+                              decorationColor: context.theme.primaryColor,
+                              decorationThickness: 2,
                             ),
                           )
                         ],

@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/common/widgets/i_field.dart';
+import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 
@@ -45,37 +47,53 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             child: Center(
               child: ListView(
                 shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 35,
+                ).copyWith(
+                  top: 0,
+                ),
                 children: [
-                  Text(
-                    'Forgotten password',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 28.r,
-                      color: Colors.black,
+                  VeganBestieLogoWidget(
+                    size: 50.r,
+                    showText: false,
+                  ),
+                  const SizedBox(height: 100),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Text(
+                      'Forgot password',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 32.sp,
+                        color: context.theme.primaryColor,
+                      ),
                     ),
                   ),
-                  SizedBox(height: 50.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          state is ForgotPasswordSent
-                              ? "We've sent you an email with a link to reset "
-                                  'your password. Please check your email.'
-                              : 'Provide your email and we will send you '
-                                  'a link to reset your password',
-                          style: TextStyle(
-                            fontSize: 14.r,
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal,
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            state is ForgotPasswordSent
+                                ? "We've sent you an email with a link to reset "
+                                    'your password. Please check your email.'
+                                : 'Provide your email and we will send you '
+                                    'a link to reset your password',
+                            style: TextStyle(
+                              fontSize: 14.r,
+                              color: Colors.grey.shade800,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 50.h),
+                  const SizedBox(height: 50),
                   Visibility(
                     visible: state is! ForgotPasswordSent,
                     child: Form(
@@ -87,9 +105,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 50.h,
-                  ),
+                  const SizedBox(height: 50),
                   if (state is AuthLoading)
                     const Center(
                       child: CircularProgressIndicator(),
@@ -109,7 +125,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       },
                       label: 'Reset Password',
                     ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 30),
                   Center(
                     child: TextButton(
                       onPressed: () {

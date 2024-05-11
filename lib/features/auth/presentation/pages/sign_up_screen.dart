@@ -79,17 +79,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Center(
               child: ListView(
                 shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 35).copyWith(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 35,
+                ).copyWith(
                   top: 0,
                 ),
                 children: [
-                  const VeganBestieLogoWidget(
-                    size: 50,
+                  VeganBestieLogoWidget(
+                    size: 50.r,
                     showText: false,
                   ),
                   const SizedBox(height: 100),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
+                    padding: const EdgeInsets.only(left: 10),
                     child: Text(
                       'Sign Up',
                       style: TextStyle(
@@ -154,7 +157,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: context.theme.primaryColor,
                               decoration: TextDecoration.underline,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
