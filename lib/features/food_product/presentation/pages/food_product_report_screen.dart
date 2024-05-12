@@ -6,9 +6,11 @@ import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/i_field.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/food_product/data/models/food_product_model.dart';
 import 'package:sheveegan/features/food_product/data/models/food_product_report_model.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
+import 'package:sheveegan/home_page.dart';
 
 class FoodProductReportScreen extends StatefulWidget {
   const FoodProductReportScreen({super.key, this.product});
@@ -67,7 +69,16 @@ class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
       }
     }
     return BlocConsumer<FoodProductCubit, FoodProductState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is IssueReported) {
+          CoreUtils.showSnackBar(context, 'Issue reported');
+          // Navigator.pop(context);
+          Navigator.popUntil(
+            context,
+            ModalRoute.withName('/'),
+          );
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           extendBodyBehindAppBar: true,

@@ -28,4 +28,8 @@ abstract class FoodProductRepository {
   });
 
   ResultVoid reportIssue(FoodProductReport report);
+
+  ResultFuture<List<FoodProductReport>> fetchFoodProductReports();
+
+  ResultVoid deleteReport(FoodProductReport report);
 }

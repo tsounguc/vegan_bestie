@@ -101,6 +101,16 @@ class AppRouter {
           ),
           settings: settings,
         );
+
+      case ReportsScreen.id:
+        return _pageBuilder(
+          (_) => BlocProvider<FoodProductCubit>.value(
+            value: settings.arguments! as FoodProductCubit,
+            child: const ReportsScreen(),
+          ),
+          settings: settings,
+        );
+
       case ScanResultsPage.id:
         return _pageBuilder(
           (_) => BlocProvider<FoodProductCubit>.value(

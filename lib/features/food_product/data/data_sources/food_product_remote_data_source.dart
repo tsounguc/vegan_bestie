@@ -53,6 +53,10 @@ abstract class FoodProductRemoteDataSource {
   });
 
   Future<void> reportIssue(FoodProductReport report);
+
+  Future<List<FoodProductReportModel>> fetchFoodProductReports();
+
+  Future<void> deleteReport(FoodProductReport report);
 }
 
 const kFetchFoodProductEndPoint = '/api/v2/product/';
@@ -284,10 +288,10 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
           );
         case UpdateFoodAction.nutriments:
           final nutriments = foodData as Nutriments;
-          queryComponent += '&nutrition_data_per=100g'
-              '&nutriment_proteins=${nutriments.proteins100G}'
-              '&nutriment_carbohydrates=${nutriments.carbohydrates100G}'
-              '&nutriment_fat=${nutriments.fat100G}';
+          queryComponent += '&nutrition_data_per=serving'
+              '&nutriment_proteins=${nutriments.proteinsServing}'
+              '&nutriment_carbohydrates=${nutriments.carbohydratesServing}'
+              '&nutriment_fat=${nutriments.fatServing}';
           debugPrint(queryComponent);
           await updateFoodProductInfo(
             requestMethod: 'GET',
@@ -456,6 +460,45 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
   }
 
   @override
+  Future<List<FoodProductReportModel>> fetchFoodProductReports() async {
+    final reports = <FoodProductReportModel>[];
+    await _foodProductReport.get().then((snapshot) {
+      debugPrint('${snapshot.docs.length}');
+      final reportsData = snapshot.docs.map((doc) => doc.data());
+      for (final reportData in reportsData) {
+        final report = FoodProductReportModel.fromMap(
+          reportData,
+        );
+        reports.add(report);
+      }
+    });
+
+    return reports;
+  }
+
+  @override
+  Future<void> deleteReport(FoodProductReport report) async {
+    try {
+      final user = _authClient.currentUser;
+      if (user == null) {
+        throw const DeleteReportException(
+          message: 'User is not authenticated',
+          statusCode: '401',
+        );
+      }
+
+      return _foodProductReport.doc(report.id).delete();
+    } on FirebaseException catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    } on DeleteReportException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+    }
+  }
+
+  @override
   Future<String> readIngredientsFromImage({required File image}) async {
     try {
       var ingredients = '';
@@ -489,10 +532,13 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
   @override
   Future<void> reportIssue(FoodProductReport report) async {
     try {
-      final reportModel = report as FoodProductReportModel;
-      await _foodProductReport.doc().set(
-            reportModel.toMap(),
-          );
+      final reportReference = _foodProductReport.doc();
+
+      final reportModel = (report as FoodProductReportModel).copyWith(id: reportReference.id);
+
+      reportReference.set(
+        reportModel.toMap(),
+      );
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
     }

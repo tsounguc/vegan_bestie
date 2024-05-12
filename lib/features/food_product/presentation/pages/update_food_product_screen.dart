@@ -60,33 +60,33 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
       ingredientsController.text.trim();
 
   bool get nutrimentsChanged =>
-      widget.product!.nutriments.proteins100G.toString() != proteinController.text.trim() ||
-      widget.product!.nutriments.carbohydrates100G.toString() != carbsController.text.trim() ||
-      widget.product!.nutriments.fat100G.toString() != fatsController.text.trim();
+      widget.product!.nutriments.proteinsServing.toString() != proteinController.text.trim() ||
+      widget.product!.nutriments.carbohydratesServing.toString() != carbsController.text.trim() ||
+      widget.product!.nutriments.fatServing.toString() != fatsController.text.trim();
 
   bool get imageChanged => pickedImage != null;
 
   bool get nothingChanged =>
       !barcodeChanged && !productNameChanged && !ingredientsChanged && !nutrimentsChanged && !imageChanged;
 
-  void submitChanges(BuildContext context) {
+  Future<void> submitChanges(BuildContext context) async {
     final bloc = BlocProvider.of<FoodProductCubit>(context);
     if (imageChanged) {
-      bloc.updateFoodProduct(
+      await bloc.updateFoodProduct(
         action: UpdateFoodAction.imageFrontUrl,
         foodData: pickedImage,
         foodProduct: widget.product!,
       );
     }
     if (productNameChanged) {
-      bloc.updateFoodProduct(
+      await bloc.updateFoodProduct(
         action: UpdateFoodAction.productName,
         foodData: productNameController.text,
         foodProduct: widget.product!,
       );
     }
     if (ingredientsChanged) {
-      bloc.updateFoodProduct(
+      await bloc.updateFoodProduct(
         action: UpdateFoodAction.ingredients,
         foodData: ingredientsController.text,
         foodProduct: widget.product!,
@@ -94,11 +94,11 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
     }
     if (nutrimentsChanged) {
       final nutriments = const NutrimentsModel.empty().copyWith(
-        proteins100G: double.parse(proteinController.text),
-        carbohydrates100G: double.tryParse(carbsController.text),
-        fat100G: double.tryParse(fatsController.text),
+        proteinsServing: double.parse(proteinController.text),
+        carbohydratesServing: double.tryParse(carbsController.text),
+        fatServing: double.tryParse(fatsController.text),
       );
-      bloc.updateFoodProduct(
+      await bloc.updateFoodProduct(
         action: UpdateFoodAction.nutriments,
         foodData: nutriments,
         foodProduct: widget.product!,
@@ -116,9 +116,9 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
           ', ',
         )
         .capitalizeEveryWord(' (');
-    proteinController.text = widget.product!.nutriments.proteins100G.toString();
-    carbsController.text = widget.product!.nutriments.carbohydrates100G.toString();
-    fatsController.text = widget.product!.nutriments.fat100G.toString();
+    proteinController.text = widget.product!.nutriments.proteinsServing.toString();
+    carbsController.text = widget.product!.nutriments.carbohydratesServing.toString();
+    fatsController.text = widget.product!.nutriments.fatServing.toString();
     super.initState();
   }
 

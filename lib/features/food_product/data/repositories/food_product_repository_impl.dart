@@ -117,4 +117,24 @@ class FoodProductRepositoryImpl implements FoodProductRepository {
       return Left(ReportIssueFailure.fromException(e));
     }
   }
+
+  @override
+  ResultFuture<List<FoodProductReport>> fetchFoodProductReports() async {
+    try {
+      final result = await _remoteDataSource.fetchFoodProductReports();
+      return Right(result);
+    } on ReportIssueException catch (e) {
+      return Left(ReportIssueFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid deleteReport(FoodProductReport report) async {
+    try {
+      final result = await _remoteDataSource.deleteReport(report);
+      return Right(result);
+    } on DeleteReportException catch (e) {
+      return Left(DeleteReportFailure.fromException(e));
+    }
+  }
 }

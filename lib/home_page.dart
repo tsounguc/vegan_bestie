@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +30,9 @@ class _HomePageState extends State<HomePage> {
           listener: (context, state) {
             if (state is SavedProductsListFetched) {
               context.savedProductsProvider.savedProductsList = state.savedProductsList;
+            }
+            if (state is ReportsFetched) {
+              context.reportsProvider.reports = state.reports;
             }
           },
         ),
@@ -68,10 +72,12 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             }
-            // context.savedProductsProvider.initSavedProductList(
-            //   context.userProvider.user!.savedFoodProducts ?? [],
-            //   context,
-            // );
+
+            if (snapshot.data?.isAdmin ?? false) {
+              BlocProvider.of<FoodProductCubit>(
+                context,
+              ).fetchReports();
+            }
           }
 
           return Consumer<BottomNavigationBarProvider>(

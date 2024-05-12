@@ -229,60 +229,36 @@ class NutrimentsModel extends Nutriments {
   const NutrimentsModel({
     required super.proteins,
     required super.proteins100G,
+    required super.proteinsServing,
     required super.proteinsUnit,
     required super.proteinsValue,
     required super.carbohydrates,
     required super.carbohydrates100G,
+    required super.carbohydratesServing,
     required super.carbohydratesUnit,
     required super.carbohydratesValue,
     required super.fat,
     required super.fat100G,
+    required super.fatServing,
     required super.fatUnit,
     required super.fatValue,
   });
-
-  NutrimentsModel copyWith({
-    double? proteins,
-    double? proteins100G,
-    String? proteinsUnit,
-    double? proteinsValue,
-    double? carbohydrates,
-    double? carbohydrates100G,
-    String? carbohydratesUnit,
-    double? carbohydratesValue,
-    double? fat,
-    double? fat100G,
-    String? fatUnit,
-    double? fatValue,
-  }) {
-    return NutrimentsModel(
-      proteins: proteins ?? this.proteins,
-      proteins100G: proteins100G ?? this.proteins100G,
-      proteinsUnit: proteinsUnit ?? this.proteinsUnit,
-      proteinsValue: proteinsValue ?? this.proteinsValue,
-      carbohydrates: carbohydrates ?? this.carbohydrates,
-      carbohydrates100G: carbohydrates100G ?? this.carbohydrates100G,
-      carbohydratesUnit: carbohydratesUnit ?? this.carbohydratesUnit,
-      carbohydratesValue: carbohydratesValue ?? this.carbohydratesValue,
-      fat: fat ?? this.fat,
-      fat100G: fat100G ?? this.fat100G,
-      fatUnit: fatUnit ?? this.fatUnit,
-      fatValue: fatValue ?? this.fatValue,
-    );
-  }
 
   const NutrimentsModel.empty()
       : this(
           proteins: 0,
           proteins100G: 0,
+          proteinsServing: 0,
           proteinsUnit: '_empty.proteinsUnit',
           proteinsValue: 0,
           carbohydrates: 0,
           carbohydrates100G: 0,
+          carbohydratesServing: 0,
           carbohydratesUnit: '_empty.carbohydratesUnit',
           carbohydratesValue: 0,
           fat: 0,
           fat100G: 0,
+          fatServing: 0,
           fatUnit: '_empty.fatUnit',
           fatValue: 0,
         );
@@ -298,6 +274,10 @@ class NutrimentsModel extends Nutriments {
                 dataMap['proteins_100g'].toString(),
               ) ??
               0,
+          proteinsServing: double.tryParse(
+                dataMap['proteins_serving'].toString(),
+              ) ??
+              0,
           proteinsUnit: dataMap['proteins_unit'] == null ? '' : dataMap['proteins_unit'] as String,
           proteinsValue: double.tryParse(dataMap['proteins_value'].toString()) ?? 0.0,
           carbohydrates: double.tryParse(
@@ -308,6 +288,10 @@ class NutrimentsModel extends Nutriments {
                 dataMap['carbohydrates_100g'].toString(),
               ) ??
               0.0,
+          carbohydratesServing: double.tryParse(
+                dataMap['carbohydrates_serving'].toString(),
+              ) ??
+              0.0,
           carbohydratesUnit: dataMap['carbohydrates_unit'] == null ? '' : dataMap['carbohydrates_unit'] as String,
           carbohydratesValue: double.tryParse(
                 dataMap['carbohydrates_value'].toString(),
@@ -315,23 +299,63 @@ class NutrimentsModel extends Nutriments {
               0.0,
           fat: double.tryParse(dataMap['fat'].toString()) ?? 0.0,
           fat100G: double.tryParse(dataMap['fat_100g'].toString()) ?? 0.0,
+          fatServing: double.tryParse(dataMap['fat_serving'].toString()) ?? 0.0,
           fatUnit: dataMap['fat_unit'] == null ? '' : dataMap['fat_unit'] as String,
           fatValue: double.tryParse(dataMap['fat_value'].toString()) ?? 0.0,
         );
+
+  NutrimentsModel copyWith({
+    double? proteins,
+    double? proteins100G,
+    double? proteinsServing,
+    String? proteinsUnit,
+    double? proteinsValue,
+    double? carbohydrates,
+    double? carbohydrates100G,
+    double? carbohydratesServing,
+    String? carbohydratesUnit,
+    double? carbohydratesValue,
+    double? fat,
+    double? fat100G,
+    double? fatServing,
+    String? fatUnit,
+    double? fatValue,
+  }) {
+    return NutrimentsModel(
+      proteins: proteins ?? this.proteins,
+      proteins100G: proteins100G ?? this.proteins100G,
+      proteinsServing: proteinsServing ?? this.proteinsServing,
+      proteinsUnit: proteinsUnit ?? this.proteinsUnit,
+      proteinsValue: proteinsValue ?? this.proteinsValue,
+      carbohydrates: carbohydrates ?? this.carbohydrates,
+      carbohydrates100G: carbohydrates100G ?? this.carbohydrates100G,
+      carbohydratesServing: carbohydratesServing ?? this.carbohydratesServing,
+      carbohydratesUnit: carbohydratesUnit ?? this.carbohydratesUnit,
+      carbohydratesValue: carbohydratesValue ?? this.carbohydratesValue,
+      fat: fat ?? this.fat,
+      fat100G: fat100G ?? this.fat100G,
+      fatServing: fatServing ?? this.fatServing,
+      fatUnit: fatUnit ?? this.fatUnit,
+      fatValue: fatValue ?? this.fatValue,
+    );
+  }
 
   String toJson() => jsonEncode(toMap());
 
   DataMap toMap() => {
         'proteins': proteins,
         'proteins_100g': proteins100G,
+        'proteins_serving': proteinsServing,
         'proteins_unit': proteinsUnit,
         'proteins_value': proteinsValue,
         'carbohydrates': carbohydrates,
         'carbohydrates_100g': carbohydrates100G,
+        'carbohydrates_serving': carbohydratesServing,
         'carbohydrates_unit': carbohydratesUnit,
         'carbohydrates_value': carbohydratesValue,
         'fat': fat,
         'fat_100g': fat100G,
+        'fat_serving': fatServing,
         'fat_unit': fatUnit,
         'fat_value': fatValue,
       };

@@ -9,7 +9,9 @@ import 'package:sheveegan/features/auth/domain/usecases/save_food_product.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product_report.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/add_food_product.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/delete_report.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_product.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/fetch_reports.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_saved_products_list.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/read_ingredients_from_image.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/report_issue.dart';
@@ -29,6 +31,8 @@ class FoodProductCubit extends Cubit<FoodProductState> {
     required UpdateFoodProduct updateFoodProduct,
     required AddFoodProduct addFoodProduct,
     required ReportIssue reportIssue,
+    required FetchReports fetchReports,
+    required DeleteReport deleteReport,
   })  : _scanBarcode = scanBarcode,
         _fetchProduct = fetchProduct,
         _saveFoodProduct = saveFoodProduct,
@@ -38,6 +42,8 @@ class FoodProductCubit extends Cubit<FoodProductState> {
         _updateFoodProduct = updateFoodProduct,
         _addFoodProduct = addFoodProduct,
         _reportIssue = reportIssue,
+        _fetchReports = fetchReports,
+        _deleteReport = deleteReport,
         super(const ScanProductInitial());
   final ScanBarcode _scanBarcode;
   final FetchProduct _fetchProduct;
@@ -48,6 +54,8 @@ class FoodProductCubit extends Cubit<FoodProductState> {
   final UpdateFoodProduct _updateFoodProduct;
   final AddFoodProduct _addFoodProduct;
   final ReportIssue _reportIssue;
+  final FetchReports _fetchReports;
+  final DeleteReport _deleteReport;
 
   Future<void> scanBarcode() async {
     emit(const ScanningBarcode());
@@ -184,7 +192,25 @@ class FoodProductCubit extends Cubit<FoodProductState> {
     final result = await _reportIssue(report);
     result.fold(
       (failure) => emit(FoodProductReportError(message: failure.message)),
-      (success) => emit(IssueReported(message: 'Issue Reported')),
+      (success) => emit(const IssueReported(message: 'Issue Reported')),
+    );
+  }
+
+  Future<void> fetchReports() async {
+    emit(const FetchingReports());
+    final result = await _fetchReports();
+    result.fold(
+      (failure) => emit(FoodProductReportError(message: failure.message)),
+      (reports) => emit(ReportsFetched(reports: reports)),
+    );
+  }
+
+  Future<void> deleteReports(FoodProductReport report) async {
+    emit(const DeletingReport());
+    final result = await _deleteReport(report);
+    result.fold(
+      (failure) => emit(FoodProductReportError(message: failure.message)),
+      (success) => emit(const ReportDeleted()),
     );
   }
 }

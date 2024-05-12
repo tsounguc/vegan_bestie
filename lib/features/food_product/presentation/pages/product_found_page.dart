@@ -79,9 +79,9 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
 
   @override
   Widget build(BuildContext context) {
-    final proteinsAmount = widget.product.nutriments.proteins100G;
-    final carbsAmount = widget.product.nutriments.carbohydrates100G;
-    final fatAmount = widget.product.nutriments.fat100G;
+    final proteinsAmount = widget.product.nutriments.proteinsServing;
+    final carbsAmount = widget.product.nutriments.carbohydratesServing;
+    final fatAmount = widget.product.nutriments.fatServing;
     final total = proteinsAmount + carbsAmount + fatAmount;
     var proteinsPct = (proteinsAmount / total) * 100;
     if (proteinsPct.isNaN || proteinsPct.isInfinite || proteinsPct.isNegative) {
@@ -115,7 +115,7 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
             shrinkWrap: true,
             slivers: [
               SliverAppBar(
-                expandedHeight: context.height * 0.47,
+                expandedHeight: context.height * 0.46,
                 pinned: true,
                 backgroundColor: Colors.white,
                 leading: const CustomBackButton(),

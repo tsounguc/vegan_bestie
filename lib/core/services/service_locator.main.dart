@@ -56,6 +56,8 @@ Future<void> _initScan() async {
         updateFoodProduct: serviceLocator(),
         addFoodProduct: serviceLocator(),
         reportIssue: serviceLocator(),
+        fetchReports: serviceLocator(),
+        deleteReport: serviceLocator(),
       ),
     )
     // Use cases
@@ -68,6 +70,9 @@ Future<void> _initScan() async {
     ..registerLazySingleton(() => UpdateFoodProduct(serviceLocator()))
     ..registerLazySingleton(() => AddFoodProduct(serviceLocator()))
     ..registerLazySingleton(() => ReportIssue(serviceLocator()))
+    ..registerLazySingleton(() => FetchReports(serviceLocator()))
+    ..registerLazySingleton(() => DeleteReport(serviceLocator()))
+
     // Repositories
     ..registerLazySingleton<FoodProductRepository>(
       () => FoodProductRepositoryImpl(serviceLocator()),

@@ -5,6 +5,7 @@ import 'package:sheveegan/features/food_product/domain/entities/food_product_rep
 
 class FoodProductReportModel extends FoodProductReport {
   const FoodProductReportModel({
+    required super.id,
     required super.barcode,
     required super.userId,
     required super.userName,
@@ -21,6 +22,7 @@ class FoodProductReportModel extends FoodProductReport {
 
   const FoodProductReportModel.empty()
       : this(
+          id: '_empty.id',
           barcode: '_empty.barcode',
           userId: '_empty.userId',
           userName: '_empty.userName',
@@ -41,21 +43,23 @@ class FoodProductReportModel extends FoodProductReport {
 
   FoodProductReportModel.fromMap(DataMap dataMap)
       : this(
+          id: dataMap['id'] == null ? '' : dataMap['id'] as String,
           barcode: dataMap['barcode'] == null ? '' : dataMap['barcode'] as String,
           userId: dataMap['userId'] == null ? '' : dataMap['userId'] as String,
           userName: dataMap['userName'] == null ? '' : dataMap['userName'] as String,
-          incorrectImage: bool.tryParse(dataMap['incorrectImage'] as String) ?? false,
-          incorrectProductName: bool.tryParse(dataMap['incorrectProductName'] as String) ?? false,
-          incorrectMacros: bool.tryParse(dataMap['incorrectMacros'] as String) ?? false,
-          incorrectIngredients: bool.tryParse(dataMap['incorrectIngredients'] as String) ?? false,
-          incorrectLabel: bool.tryParse(dataMap['incorrectLabel'] as String) ?? false,
-          isWrongProduct: bool.tryParse(dataMap['isWrongProduct'] as String) ?? false,
-          doesNotExist: bool.tryParse(dataMap['doesNotExist'] as String) ?? false,
-          other: bool.tryParse(dataMap['other'] as String) ?? false,
+          incorrectImage: dataMap['incorrectImage'] as bool,
+          incorrectProductName: dataMap['incorrectProductName'] as bool,
+          incorrectMacros: dataMap['incorrectMacros'] as bool,
+          incorrectIngredients: dataMap['incorrectIngredients'] as bool,
+          incorrectLabel: dataMap['incorrectLabel'] as bool,
+          isWrongProduct: dataMap['isWrongProduct'] as bool,
+          doesNotExist: dataMap['doesNotExist'] as bool,
+          other: dataMap['other'] as bool,
           comment: dataMap['comment'] == null ? '' : dataMap['comment'] as String,
         );
 
   FoodProductReportModel copyWith({
+    String? id,
     String? barcode,
     String? userId,
     String? userName,
@@ -70,6 +74,7 @@ class FoodProductReportModel extends FoodProductReport {
     String? comment,
   }) {
     return FoodProductReportModel(
+      id: id ?? this.id,
       barcode: barcode ?? this.barcode,
       userId: userId ?? this.userId,
       userName: userName ?? this.userName,
@@ -88,6 +93,7 @@ class FoodProductReportModel extends FoodProductReport {
   String toJson() => jsonEncode(toMap());
 
   DataMap toMap() => {
+        'id': id,
         'barcode': barcode,
         'userId': userId,
         'userName': userName,

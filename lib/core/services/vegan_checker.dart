@@ -236,7 +236,7 @@ class VeganChecker {
       isVegan = product.ingredients.isNotEmpty;
       // Labels is empty or null
       if (product.labels.isEmpty) {
-        debugPrint('Labels is empty or null');
+        // debugPrint('Labels is empty or null');
         for (final ingredient in product.ingredients) {
           // debugPrint('is ${ingredient.text} vegan: ${ingredient.vegan}');
           // ingredient vegan status unsure
@@ -347,7 +347,7 @@ class VeganChecker {
       isVegetarian = product.ingredients.isNotEmpty;
       // Labels is empty or null
       if (product.labels.isEmpty) {
-        debugPrint('Labels is empty or null');
+        // debugPrint('Labels is empty or null');
         for (final ingredient in product.ingredients) {
           // debugPrint('is ${ingredient.text} vegetarian: ${ingredient.vegetarian}');
           // ingredient vegetarian status unsure
@@ -393,9 +393,9 @@ class VeganChecker {
       }
       // Labels list doesn't include Vegan or Contains no animal ingredients
       else if (!product.labels.toLowerCase().contains('vegetarian')) {
-        debugPrint("Labels list doesn't include Vegetarian");
+        // debugPrint("Labels list doesn't include Vegetarian");
         for (final ingredient in product.ingredients) {
-          debugPrint('is ${ingredient.text} vegetarian: ${ingredient.vegetarian}');
+          // debugPrint('is ${ingredient.text} vegetarian: ${ingredient.vegetarian}');
           // ingredient vegetarian status unsure
           if (ingredient.vegetarian.isEmpty || ingredient.vegetarian == 'maybe') {
             for (final nonVegetarianIngredient in nonVegetarianIngredients) {
@@ -410,7 +410,7 @@ class VeganChecker {
           // set isVegetarian to false and add it to string of nonVegetarian
           // ingredients found in product
           if (ingredient.vegetarian == 'no') {
-            debugPrint('is ${ingredient.text} vegetarian: ${ingredient.vegetarian}');
+            // debugPrint('is ${ingredient.text} vegetarian: ${ingredient.vegetarian}');
             _nonVegetarianIngredientsInProduct = '$_nonVegetarianIngredientsInProduct'
                 '${ingredient.text.toLowerCase()}, ';
             isVegetarian = false;
@@ -420,8 +420,8 @@ class VeganChecker {
           for (final ingredient in ingredientListFromText) {
             if (ingredient.toLowerCase().trim() == nonVegetarianIngredient.toLowerCase().trim() &&
                 !_nonVegetarianIngredientsInProduct.contains('$nonVegetarianIngredient, ')) {
-              debugPrint('$ingredient is text and '
-                  '$nonVegetarianIngredient is from non vegan list');
+              // debugPrint('$ingredient is text and '
+              //     '$nonVegetarianIngredient is from non vegan list');
               _nonVegetarianIngredientsInProduct = '$_nonVegetarianIngredientsInProduct'
                   '$nonVegetarianIngredient, ';
               isVegetarian = false;
@@ -436,10 +436,10 @@ class VeganChecker {
           lastCommaIndex,
         );
       }
-      debugPrint('Non Vegetarian ingredients: $_nonVegetarianIngredientsInProduct');
+      // debugPrint('Non Vegetarian ingredients: $_nonVegetarianIngredientsInProduct');
       return isVegetarian;
     } catch (e, stackTrace) {
-      debugPrint(stackTrace.toString());
+      // debugPrint(stackTrace.toString());
       // throw ScanException(message: e.toString(), statusCode: 502);
       rethrow;
     }

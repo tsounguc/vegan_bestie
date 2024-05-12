@@ -20,6 +20,7 @@ import 'package:sheveegan/features/profile/presentation/refactors/profile_header
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_products_page.dart';
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_restaurants_pages.dart';
 import 'package:sheveegan/features/profile/presentation/screens/edit_profile_screen.dart';
+import 'package:sheveegan/features/profile/presentation/screens/reports_screen.dart';
 import 'package:sheveegan/features/profile/presentation/widgets/product_card.dart';
 import 'package:sheveegan/features/profile/presentation/widgets/restaurant_card.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
@@ -110,6 +111,20 @@ class ProfileScreen extends StatelessWidget {
                                             title: 'Add New Product',
                                             icon: Icon(
                                               Icons.edit_outlined,
+                                              color: Color(0xFF757C8E),
+                                            ),
+                                          ),
+                                        ),
+                                      if (context.userProvider.user?.isAdmin ?? false)
+                                        PopupMenuItem<void>(
+                                          onTap: () => Navigator.of(context).pushNamed(
+                                            ReportsScreen.id,
+                                            arguments: context.read<FoodProductCubit>(),
+                                          ),
+                                          child: const PopupItem(
+                                            title: 'Reports',
+                                            icon: Icon(
+                                              Icons.report_outlined,
                                               color: Color(0xFF757C8E),
                                             ),
                                           ),

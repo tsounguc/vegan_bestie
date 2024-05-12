@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class FoodProductReport extends Equatable {
   const FoodProductReport({
+    required this.id,
     required this.barcode,
     required this.userId,
     required this.userName,
@@ -18,6 +19,7 @@ class FoodProductReport extends Equatable {
 
   const FoodProductReport.empty()
       : this(
+          id: '_empty.id',
           barcode: '_empty.barcode',
           userId: '_empty.userId',
           userName: '_empty.userName',
@@ -31,7 +33,7 @@ class FoodProductReport extends Equatable {
           other: false,
           comment: '_empty.comment',
         );
-
+  final String id;
   final String barcode;
   final String userId;
   final String userName;
@@ -47,6 +49,7 @@ class FoodProductReport extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
         barcode,
         userId,
         userName,

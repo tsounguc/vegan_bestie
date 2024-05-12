@@ -1,17 +1,18 @@
 import 'package:equatable/equatable.dart';
 
 class FoodProduct extends Equatable {
-  const FoodProduct(
-      {required this.code,
-      required this.productName,
-      required this.ingredients,
-      required this.ingredientsText,
-      required this.labels,
-      required this.imageFrontUrl,
-      required this.nutriments,
-      required this.isVegan,
-      required this.isVegetarian,
-      required this.nonVeganIngredients,});
+  const FoodProduct({
+    required this.code,
+    required this.productName,
+    required this.ingredients,
+    required this.ingredientsText,
+    required this.labels,
+    required this.imageFrontUrl,
+    required this.nutriments,
+    required this.isVegan,
+    required this.isVegetarian,
+    required this.nonVeganIngredients,
+  });
 
   FoodProduct.empty()
       : this(
@@ -57,14 +58,17 @@ class Nutriments extends Equatable {
   const Nutriments({
     required this.proteins,
     required this.proteins100G,
+    required this.proteinsServing,
     required this.proteinsUnit,
     required this.proteinsValue,
     required this.carbohydrates,
     required this.carbohydrates100G,
+    required this.carbohydratesServing,
     required this.carbohydratesUnit,
     required this.carbohydratesValue,
     required this.fat,
     required this.fat100G,
+    required this.fatServing,
     required this.fatUnit,
     required this.fatValue,
   });
@@ -73,28 +77,34 @@ class Nutriments extends Equatable {
       : this(
           proteins: 0,
           proteins100G: 0,
+          proteinsServing: 0,
           proteinsUnit: '_empty.',
           proteinsValue: 0,
           carbohydrates: 0,
           carbohydrates100G: 0,
+          carbohydratesServing: 0,
           carbohydratesUnit: '_empty.carbohydratesUnit',
           carbohydratesValue: 0,
           fat: 0,
           fat100G: 0,
+          fatServing: 0,
           fatUnit: '_empty.',
           fatValue: 0,
         );
 
   final double proteins;
   final double proteins100G;
+  final double proteinsServing;
   final String proteinsUnit;
   final double proteinsValue;
   final double carbohydrates;
   final double carbohydrates100G;
+  final double carbohydratesServing;
   final String carbohydratesUnit;
   final double carbohydratesValue;
   final double fat;
   final double fat100G;
+  final double fatServing;
   final String fatUnit;
   final double fatValue;
 
@@ -102,14 +112,17 @@ class Nutriments extends Equatable {
   List<Object?> get props => [
         proteins,
         proteins100G,
+        proteinsServing,
         proteinsUnit,
         proteinsValue,
         carbohydrates,
         carbohydrates100G,
+        carbohydratesServing,
         carbohydratesUnit,
         carbohydratesValue,
         fat,
         fat100G,
+        fatServing,
         fatUnit,
         fatValue,
       ];

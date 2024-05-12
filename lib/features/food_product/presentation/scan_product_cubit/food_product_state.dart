@@ -113,6 +113,27 @@ class IssueReported extends FoodProductState {
   List<Object> get props => [message];
 }
 
+class FetchingReports extends FoodProductState {
+  const FetchingReports();
+}
+
+class ReportsFetched extends FoodProductState {
+  const ReportsFetched({required this.reports});
+
+  final List<FoodProductReport> reports;
+
+  @override
+  List<Object> get props => [reports];
+}
+
+class ReportDeleted extends FoodProductState {
+  const ReportDeleted();
+}
+
+class DeletingReport extends FoodProductState {
+  const DeletingReport();
+}
+
 class FoodProductReportError extends FoodProductState {
   const FoodProductReportError({required this.message});
 

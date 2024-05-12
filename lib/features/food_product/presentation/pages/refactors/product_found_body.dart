@@ -48,7 +48,9 @@ class ProductFoundBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 45),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 45,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -83,7 +85,7 @@ class ProductFoundBody extends StatelessWidget {
                   width: 10,
                 ),
                 color: Colors.green.shade800,
-                value: product.nutriments.proteinsValue,
+                value: product.nutriments.proteinsServing,
               ),
               SizedBox(height: context.height * 0.0075),
               MacroNutrientWidget(
@@ -96,7 +98,7 @@ class ProductFoundBody extends StatelessWidget {
                   width: 10,
                 ),
                 color: Colors.amberAccent.shade100,
-                value: product.nutriments.carbohydratesValue,
+                value: product.nutriments.carbohydratesServing,
               ),
               SizedBox(
                 height: context.height * 0.0075,
@@ -111,7 +113,7 @@ class ProductFoundBody extends StatelessWidget {
                   width: 10,
                 ),
                 color: Colors.deepPurpleAccent.shade100,
-                value: product.nutriments.fatValue,
+                value: product.nutriments.fatServing,
               ),
             ],
           ),

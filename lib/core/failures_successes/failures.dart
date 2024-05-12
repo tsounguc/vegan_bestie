@@ -186,6 +186,20 @@ class ReportIssueFailure extends Failure {
         );
 }
 
+class DeleteReportFailure extends Failure {
+  DeleteReportFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  DeleteReportFailure.fromException(
+    DeleteReportException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
 class UpdateUserDataFailure extends Failure {
   UpdateUserDataFailure({
     required super.message,

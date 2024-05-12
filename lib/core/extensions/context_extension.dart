@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sheveegan/core/common/app/providers/food_product_reports_provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_products_provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_restaurants_provider.dart';
 import 'package:sheveegan/core/common/app/providers/tab_navigator.dart';
@@ -24,6 +25,8 @@ extension ContextExtension on BuildContext {
   SavedProductsProvider get savedProductsProvider => read<SavedProductsProvider>();
 
   SavedRestaurantsProvider get savedRestaurantsProvider => read<SavedRestaurantsProvider>();
+
+  FoodProductReportsProvider get reportsProvider => read<FoodProductReportsProvider>();
 
   TabNavigator get tabNavigator => read<TabNavigator>();
 
