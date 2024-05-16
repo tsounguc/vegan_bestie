@@ -3,19 +3,19 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>85897164152-kp29u8itltmnao3rtc4pdt5evpepauls.apps.googleusercontent.com</string>
+	<string>85897164152-nu0pis0pbfqokt2rdkp1ettsf6ni8g1o.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.85897164152-kp29u8itltmnao3rtc4pdt5evpepauls</string>
+	<string>com.googleusercontent.apps.85897164152-nu0pis0pbfqokt2rdkp1ettsf6ni8g1o</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>85897164152-s87335kpm7mn7d3led26nmnk0kh3nf77.apps.googleusercontent.com</string>
+	<string>85897164152-arod1uurv828tpfvhqiis4sd5t5bfiu7.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>$(GOOGLE_SERVICE_INFO_PLIST_API_KEY)</string>
+	<string>AIzaSyDECAKFjHO7ZAdCgTfLO320Gwbzt6p4jH8</string>
 	<key>GCM_SENDER_ID</key>
 	<string>85897164152</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.veganbestie</string>
+	<string>com.christiantsoungui.veganbestie</string>
 	<key>PROJECT_ID</key>
 	<string>veganbestie-e7fcb</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:85897164152:ios:4671d23a935da9d921c48d</string>
+	<string>1:85897164152:ios:968247e63ecb934021c48d</string>
 </dict>
 </plist>
