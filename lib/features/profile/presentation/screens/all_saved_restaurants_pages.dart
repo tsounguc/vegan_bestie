@@ -41,7 +41,8 @@ class AllSavedRestaurantsPage extends StatelessWidget {
     final scrollController = ScrollController();
     return Consumer<SavedRestaurantsProvider>(
       builder: (_, restaurantsProvider, __) {
-        final restaurantsList = restaurantsProvider.savedRestaurantsList ?? <RestaurantDetails>[];
+        final restaurantsList =
+            restaurantsProvider.savedRestaurantsList ?? <RestaurantDetails>[];
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
@@ -54,7 +55,6 @@ class AllSavedRestaurantsPage extends StatelessWidget {
               'Saved Restaurants',
               style: TextStyle(
                 color: Colors.grey.shade800,
-                fontWeight: FontWeight.w500,
                 // fontSize: 24,
               ),
             ),
@@ -86,8 +86,11 @@ class AllSavedRestaurantsPage extends StatelessWidget {
                                 .toList(),
                           ),
                       builder: (context, snapshot) {
-                        final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
-                        final userPosition = context.read<RestaurantsBloc>().currentLocation;
+                        final reviews = snapshot.hasData
+                            ? snapshot.data!
+                            : <RestaurantReview>[];
+                        final userPosition =
+                            context.read<RestaurantsBloc>().currentLocation;
                         return GestureDetector(
                           onTap: () {
                             Navigator.of(context).pushNamed(
@@ -106,7 +109,8 @@ class AllSavedRestaurantsPage extends StatelessWidget {
                                     '&key=$kGoogleApiKey',
                             geometry: restaurant.geometry,
                             restaurantId: restaurant.id,
-                            restaurantName: restaurant.name.capitalizeFirstLetter(),
+                            restaurantName:
+                                restaurant.name.capitalizeFirstLetter(),
                             restaurantAddress: restaurant.vicinity,
                             restaurantPrice: '',
                             isOpenNow: restaurant.openingHours.openNow,

@@ -88,7 +88,8 @@ class RestaurantsFoundBody extends StatelessWidget {
                           return StreamBuilder<List<RestaurantReview>>(
                             stream: serviceLocator<FirebaseFirestore>()
                                 .collection('restaurantReviews')
-                                .where('restaurantId', isEqualTo: restaurants[restaurantIndex].id)
+                                .where('restaurantId',
+                                    isEqualTo: restaurants[restaurantIndex].id)
                                 .snapshots()
                                 .map(
                                   (event) => event.docs
@@ -100,9 +101,13 @@ class RestaurantsFoundBody extends StatelessWidget {
                                       .toList(),
                                 ),
                             builder: (context, snapshot) {
-                              final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
+                              final reviews = snapshot.hasData
+                                  ? snapshot.data!
+                                  : <RestaurantReview>[];
                               final restaurant = restaurants[restaurantIndex];
-                              final userPosition = context.read<RestaurantsBloc>().currentLocation;
+                              final userPosition = context
+                                  .read<RestaurantsBloc>()
+                                  .currentLocation;
                               return HorizontalRestaurantCard(
                                 reviews: reviews,
                                 weekdayText: [],
@@ -113,9 +118,10 @@ class RestaurantsFoundBody extends StatelessWidget {
                                         '&key=$kGoogleApiKey',
                                 geometry: restaurant.geometry,
                                 restaurantId: restaurant.id,
-                                restaurantName: restaurant.name.capitalizeFirstLetter(),
+                                restaurantName:
+                                    restaurant.name.capitalizeFirstLetter(),
                                 restaurantAddress: restaurant.vicinity,
-                                restaurantPrice: restaurant.price,
+                                restaurantPrice: '\$' * restaurant.price,
                                 isOpenNow: restaurant.openingHours.openNow,
                                 fromSavedRestaurants: false,
                               );

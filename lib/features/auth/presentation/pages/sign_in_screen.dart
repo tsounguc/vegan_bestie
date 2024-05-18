@@ -71,7 +71,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   horizontal: 20,
                   vertical: 35,
                 ).copyWith(
-                  top: 0,
+                  top: 15,
                 ),
                 children: [
                   VeganBestieLogoWidget(

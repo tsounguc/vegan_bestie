@@ -119,7 +119,8 @@ class RestaurantDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final appleUrl = 'https://maps.apple.com/?q=${restaurantDetails.name}'
         ' ${restaurantDetails.formattedAddress}';
-    final googleUrl = 'https://www.google.com/maps/search/?api=1&query=${restaurantDetails.name}'
+    final googleUrl =
+        'https://www.google.com/maps/search/?api=1&query=${restaurantDetails.name}'
         ' ${restaurantDetails.formattedAddress}';
     return StreamBuilder<UserModel>(
       stream: serviceLocator<FirebaseFirestore>()
@@ -149,7 +150,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                     .toList(),
               ),
           builder: (context, snapshot) {
-            final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
+            final reviews =
+                snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
             return Scaffold(
               appBar: AppBar(
                 leadingWidth: 80,
@@ -205,7 +207,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 30),
                         child: SizedBox(
                           height: MediaQuery.of(context).size.height * 0.30,
-                          child: CustomPageView(restaurantDetails: restaurantDetails),
+                          child: CustomPageView(
+                              restaurantDetails: restaurantDetails),
                         ),
                       ),
                       const SizedBox(height: 30),
@@ -231,7 +234,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.6,
+                                width: MediaQuery.of(context).size.width * 0.65,
                                 child: DineInTakeoutDeliveryWidget(
                                   dineIn: restaurantDetails.dineIn,
                                   takeout: restaurantDetails.takeout,
@@ -241,7 +244,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                             ],
                           ),
                           IsOpenNowWidget(
-                            weekdayText: restaurantDetails.openingHours.weekdayText,
+                            weekdayText:
+                                restaurantDetails.openingHours.weekdayText,
                             isOpenNow: restaurantDetails.openingHours.openNow,
                             fontSize: 10.sp,
                           ),
@@ -277,7 +281,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.015,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                        padding:
+                            const EdgeInsets.only(left: 5, right: 5, top: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -289,7 +294,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     launchUrl(
                                       Uri(
                                         scheme: 'tel',
-                                        path: restaurantDetails.formattedPhoneNumber,
+                                        path: restaurantDetails
+                                            .formattedPhoneNumber,
                                       ),
                                     );
                                   },
@@ -322,12 +328,14 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     if (Platform.isIOS) {
                                       launchUrl(
                                         Uri.parse(appleUrl),
-                                        mode: LaunchMode.externalNonBrowserApplication,
+                                        mode: LaunchMode
+                                            .externalNonBrowserApplication,
                                       );
                                     } else {
                                       launchUrl(
                                         Uri.parse(googleUrl),
-                                        mode: LaunchMode.externalNonBrowserApplication,
+                                        mode: LaunchMode
+                                            .externalNonBrowserApplication,
                                       );
                                     }
                                   },
@@ -434,13 +442,14 @@ class RestaurantDetailsPage extends StatelessWidget {
                           'Reviews',
                           style: baseTextStyle.copyWith(
                             color: Colors.grey.shade800,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                             fontSize: 14.sp,
                           ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12).copyWith(top: 5),
+                        padding: const EdgeInsets.symmetric(horizontal: 12)
+                            .copyWith(top: 5),
                         child: RatingAndReviewsCountWidget(
                           restaurantDetails: restaurantDetails,
                           rating: totalRestaurantRating(reviews),
@@ -450,7 +459,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                       const SizedBox(height: 15),
                       if (reviews.isEmpty)
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 35),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 35),
                           child: SizedBox(
                             height: 150,
                             width: context.width * 0.75,
@@ -472,7 +482,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                           controller: controller,
                           itemCount: reviews.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return ReviewCard(review: reviews[index], restaurant: restaurantDetails);
+                            return ReviewCard(
+                                review: reviews[index],
+                                restaurant: restaurantDetails);
                           },
                         ),
                       const SizedBox(height: 75),
