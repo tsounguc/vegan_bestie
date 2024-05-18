@@ -44,7 +44,7 @@ class IsOpenNowWidget extends StatelessWidget {
                   0,
                 )
               : const MaterialStatePropertyAll(
-                  3,
+                  2,
                 ),
         ),
         onPressed: weekdayText.isEmpty

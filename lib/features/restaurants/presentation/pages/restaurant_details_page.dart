@@ -76,7 +76,7 @@ class RestaurantDetailsPage extends StatelessWidget {
       ),
     ),
     elevation: const MaterialStatePropertyAll(
-      3,
+      2,
     ),
   );
 
