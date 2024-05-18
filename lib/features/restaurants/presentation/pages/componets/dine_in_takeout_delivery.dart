@@ -20,14 +20,14 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
         Visibility(
           visible: dineIn ?? false,
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.21,
+            width: 77.w,
             child: Row(
               children: [
                 SizedBox(
                   height: 15,
                   child: VerticalDivider(
                     color: Colors.grey.shade700,
-                    width: 20,
+                    width: 15,
                   ),
                 ),
                 Icon(
@@ -54,14 +54,14 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
         Visibility(
           visible: takeout ?? false,
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.21,
+            width: 77.w,
             child: Row(
               children: [
                 SizedBox(
                   height: 15,
                   child: VerticalDivider(
                     color: Colors.grey.shade700,
-                    width: 20,
+                    width: 15,
                   ),
                 ),
                 Icon(
@@ -86,14 +86,14 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
         Visibility(
           visible: delivery ?? false,
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.21,
+            width: 77.w,
             child: Row(
               children: [
                 SizedBox(
                   height: 15,
                   child: VerticalDivider(
                     color: Colors.grey.shade700,
-                    width: 20,
+                    width: 15,
                   ),
                 ),
                 Icon(
