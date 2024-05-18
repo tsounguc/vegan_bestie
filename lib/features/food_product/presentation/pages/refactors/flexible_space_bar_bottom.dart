@@ -48,8 +48,8 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                   product.productName.capitalizeEveryWord(' '),
                   style: TextStyle(
                     fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.grey.shade800,
                   ),
                 ),
               ),
@@ -83,7 +83,8 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                         : product.isVegetarian == true
                             ? '${Strings.toolTipVegetarianMessage}'
                                 '${product.nonVeganIngredients}'
-                            : product.isVegan == false && product.isVegetarian == false
+                            : product.isVegan == false &&
+                                    product.isVegetarian == false
                                 ? '${Strings.toolTipNonVeganMessage}'
                                     '${product.nonVeganIngredients}'
                                 : null,
@@ -96,7 +97,8 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                       color: product.isVegan == true
                           ? Colors.green
                           : product.isVegetarian == true
-                              ? const Color(0xFFe2e360)
+                              ? Colors.purple.shade200
+                              // ? const Color(0xFFe2e360)
                               : Colors.blue,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
@@ -122,9 +124,10 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                             size: 25,
                           )
                         : product.isVegetarian == true
-                            ? const Icon(
+                            ? Icon(
                                 VeganIcon.veganIcon,
-                                color: Color(0xFFe2e360),
+                                color: Colors.purple.shade200,
+                                // Color(0xFFe2e360),
                                 size: 25,
                               )
                             : Center(

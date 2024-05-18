@@ -94,7 +94,7 @@ class ProductCard extends StatelessWidget {
                   color: product.isVegan
                       ? context.theme.primaryColor
                       : product.isVegetarian
-                          ? const Color(0xFFe2e360)
+                          ? Colors.purple.shade200
                           : Colors.blue.shade300,
                   fontSize: 10.sp,
                   fontWeight: FontWeight.w500,
