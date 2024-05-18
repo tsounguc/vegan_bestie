@@ -143,10 +143,12 @@ class HorizontalRestaurantCard extends StatelessWidget {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: context.width * 0.45,
+                          width: context.width * 0.5,
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Icon(
                                 Icons.location_on,
@@ -154,7 +156,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                                 size: 12.r,
                               ),
                               SizedBox(
-                                width: 5.w,
+                                width: 3.w,
                               ),
                               Flexible(
                                 child: Text(
@@ -211,6 +213,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                     IsOpenNowWidget(
                       isOpenNow: isOpenNow,
                       weekdayText: weekdayText,
+                      fontSize: 10.sp,
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.007,

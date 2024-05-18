@@ -29,15 +29,15 @@ class IsOpenNowWidget extends StatelessWidget {
               ? null
               : MaterialStatePropertyAll(
                   RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
           padding: weekdayText.isEmpty
               ? const MaterialStatePropertyAll(
                   EdgeInsets.zero,
                 )
-              : const MaterialStatePropertyAll(
-                  EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+              : MaterialStatePropertyAll(
+                  EdgeInsets.symmetric(vertical: 12.r, horizontal: 12.r),
                 ),
           elevation: weekdayText.isEmpty
               ? const MaterialStatePropertyAll(
@@ -61,7 +61,7 @@ class IsOpenNowWidget extends StatelessWidget {
           isOpenNow ? 'Open Now' : 'Closed',
           style: TextStyle(
             color: isOpenNow ? Colors.green : Colors.red,
-            fontSize: fontSize,
+            fontSize: fontSize?.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -83,7 +83,7 @@ class IsOpenNowWidget extends StatelessWidget {
             'Hours',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Colors.black,
-                  fontSize: 18.sp,
+                  fontSize: 16.sp,
                 ),
           ),
           content: IntrinsicHeight(

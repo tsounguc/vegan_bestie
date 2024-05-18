@@ -214,6 +214,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                       const SizedBox(height: 30),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,7 +226,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   bottom: 5,
                                 ),
                                 child: Text(
-                                  restaurantDetails.name,
+                                  restaurantDetails.name
+                                      .capitalizeFirstLetter(),
                                   style: baseTextStyle.copyWith(
                                     color: Colors.grey.shade800,
                                     fontWeight: FontWeight.bold,
@@ -255,20 +257,20 @@ class RestaurantDetailsPage extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.010,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 8),
+                        padding: const EdgeInsets.only(left: 4.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Icon(
                               Icons.location_on,
                               color: Colors.redAccent,
-                              size: 16,
+                              size: 12,
                             ),
                             SizedBox(
-                              width: context.width * 0.005,
+                              width: 3.w,
                             ),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.80,
+                              width: MediaQuery.of(context).size.width * 0.55,
                               child: Text(
                                 restaurantDetails.formattedAddress,
                                 style: baseTextStyle,
@@ -469,7 +471,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                               '\nBe the first to leave a review!',
                               style: baseTextStyle.copyWith(
                                 color: Colors.grey.shade500,
-                                fontSize: 11.sp,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),

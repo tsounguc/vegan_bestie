@@ -20,7 +20,7 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
         Visibility(
           visible: dineIn ?? false,
           child: SizedBox(
-            width: 77.w,
+            width: 72.w,
             child: Row(
               children: [
                 SizedBox(
@@ -33,7 +33,7 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
                 Icon(
                   Icons.restaurant,
                   color: Colors.grey.shade700,
-                  size: 14,
+                  size: 12,
                 ),
                 SizedBox(width: 3.w),
                 Flexible(
@@ -54,7 +54,7 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
         Visibility(
           visible: takeout ?? false,
           child: SizedBox(
-            width: 77.w,
+            width: 72.w,
             child: Row(
               children: [
                 SizedBox(
@@ -67,7 +67,7 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
                 Icon(
                   Icons.takeout_dining,
                   color: Colors.grey.shade700,
-                  size: 14,
+                  size: 12,
                 ),
                 const SizedBox(width: 5),
                 Text(
@@ -86,7 +86,7 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
         Visibility(
           visible: delivery ?? false,
           child: SizedBox(
-            width: 77.w,
+            width: 74.w,
             child: Row(
               children: [
                 SizedBox(
@@ -99,7 +99,7 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
                 Icon(
                   Icons.delivery_dining,
                   color: Colors.grey.shade700,
-                  size: 16,
+                  size: 14,
                 ),
                 const SizedBox(width: 5),
                 Text(
