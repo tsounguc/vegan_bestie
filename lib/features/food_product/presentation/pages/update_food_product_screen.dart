@@ -271,6 +271,12 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
             BlocProvider.of<FoodProductCubit>(
               context,
             ).fetchProductsList(savedBarcodes);
+          } else {
+            CoreUtils.showSnackBar(context, 'Product uploaded');
+            Navigator.popUntil(
+              context,
+              ModalRoute.withName('/'),
+            );
           }
         } else if (state is FoodProductError) {
           CoreUtils.showSnackBar(

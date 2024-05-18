@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sheveegan/core/common/entities/restaurant_entities.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/constants.dart';
@@ -143,7 +144,8 @@ class HorizontalRestaurantCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
+                        SizedBox(
+                          width: context.width * 0.45,
                           child: Row(
                             children: [
                               Icon(
@@ -158,7 +160,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                                 child: Text(
                                   restaurantAddress,
                                   style: TextStyle(
-                                    color: Colors.grey.shade800,
+                                    color: Colors.grey.shade600,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 10.sp,
                                   ),

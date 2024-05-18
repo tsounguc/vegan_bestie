@@ -56,7 +56,7 @@ class RestaurantModel extends Restaurant {
                     ),
                   ),
                 ),
-          price: int.tryParse(dataMap['price_level'] as String) ?? 0,
+          price: dataMap['price_level'] as int? ?? 0,
           rating: double.tryParse(dataMap['rating'].toString()) ?? 0.0,
           reviewCount: int.tryParse(
                 dataMap['user_ratings_total'].toString(),
@@ -67,14 +67,12 @@ class RestaurantModel extends Restaurant {
               : OpeningHoursModel.fromMap(
                   dataMap['opening_hours'] as DataMap,
                 ),
-          vicinity:
-              dataMap['vicinity'] == null ? '' : dataMap['vicinity'] as String,
+          vicinity: dataMap['vicinity'] == null ? '' : dataMap['vicinity'] as String,
           geometry: dataMap['geometry'] == null
               ? const GeometryModel.empty()
               : GeometryModel.fromMap(dataMap['geometry'] as DataMap),
-          servesVegetarianFood: dataMap['serves_vegetarian_food'] == null
-              ? false
-              : dataMap['serves_vegetarian_food'] as bool,
+          servesVegetarianFood:
+              dataMap['serves_vegetarian_food'] == null ? false : dataMap['serves_vegetarian_food'] as bool,
         );
 
   String toJson() => jsonEncode(toMap());
