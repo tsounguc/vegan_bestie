@@ -63,8 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             CoreUtils.showSnackBar(context, state.message);
           } else if (state is SignedUp) {
             context.read<AuthBloc>().add(
-                  CreateUserAccountEvent(
-                    fullName: fullNameController.text.trim(),
+                  SignInWithEmailAndPasswordEvent(
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
                   ),
