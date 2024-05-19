@@ -28,43 +28,39 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).size.width * 0.030,
-              ),
-              width: MediaQuery.of(context).size.width * 0.35,
-              child: Center(
-                child: product.imageFrontUrl.isEmpty
-                    ? Container(
-                        decoration: BoxDecoration(
-                          color: product.isVegan
-                              ? Colors.green.shade50
-                              : product.isVegetarian
-                                  ? const Color(0xFFe2e360)
-                                  : Colors.blue.shade50,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          Icons.image_outlined,
-                          size: MediaQuery.of(context).size.width * 0.35,
-                          color: Colors.white,
-                        ),
-                      )
-                    : Ink(
-                        height: MediaQuery.of(context).size.width * 0.35,
-                        width: MediaQuery.of(context).size.width * 0.35,
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade50,
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: CachedNetworkImageProvider(
-                              product.imageFrontUrl,
-                            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 8)
+                  .copyWith(top: 3),
+              child: product.imageFrontUrl.isEmpty
+                  ? Container(
+                      decoration: BoxDecoration(
+                        color: product.isVegan
+                            ? Colors.green.shade50
+                            : product.isVegetarian
+                                ? const Color(0xFFe2e360)
+                                : Colors.blue.shade50,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                        Icons.image_outlined,
+                        size: MediaQuery.of(context).size.width * 0.35,
+                        color: Colors.white,
+                      ),
+                    )
+                  : Ink(
+                      height: MediaQuery.of(context).size.width * 0.35,
+                      width: MediaQuery.of(context).size.width * 0.35,
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade50,
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(
+                            product.imageFrontUrl,
                           ),
                         ),
                       ),
-              ),
+                    ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),

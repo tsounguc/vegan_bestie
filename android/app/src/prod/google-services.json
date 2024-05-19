@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "440360543022",
+    "project_id": "veganbestieprod",
+    "storage_bucket": "veganbestieprod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440360543022:android:42a0e0399d3cc94b8790bf",
+        "android_client_info": {
+          "package_name": "com.christiantsoungui.veganbestie"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk6_zje26YOqbzlprmaCr9PAeaS42hGCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

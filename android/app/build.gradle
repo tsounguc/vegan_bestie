@@ -92,6 +92,21 @@ android {
         }
     }
 
+    flavorDimensions "app"
+
+    productFlavors {
+        dev {
+            dimension "app"
+            resValue "string", "app_name", "Dev Vegan Bestie"
+            applicationId "com.christiantsoungui.veganbestie.dev"
+            versionNanmeSuffix "-dev"
+        }
+        prod {
+            dimension "app"
+            resValue "string", "app_name", "Vegan Bestie"
+//            applicationId "com.christiantsoungui.veganbestie"
+        }
+    }
 }
 
 flutter {
@@ -101,8 +116,8 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22"
     implementation 'com.android.support:multidex:1.0.3'
-    implementation platform('com.google.firebase:firebase-bom:32.8.1')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation platform('com.google.firebase:firebase-bom:33.0.0')
+    implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
     implementation "com.google.firebase:firebase-appcheck-debug"
 }

@@ -204,7 +204,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 30),
+                        padding: const EdgeInsets.only(top: 15),
                         child: SizedBox(
                           height: MediaQuery.of(context).size.height * 0.30,
                           child: CustomPageView(
