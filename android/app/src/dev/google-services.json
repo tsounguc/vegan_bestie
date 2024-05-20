@@ -51,17 +51,17 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:85897164152:android:ed99e5db6e16fd0821c48d",
+        "mobilesdk_app_id": "1:85897164152:android:67865de33dfbd5bf21c48d",
         "android_client_info": {
-          "package_name": "com.example.veganbestie"
+          "package_name": "com.christiantsoungui.veganbestie.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "85897164152-s87335kpm7mn7d3led26nmnk0kh3nf77.apps.googleusercontent.com",
+          "client_id": "85897164152-arfbnp62h0m05dmdlfmpbhlvk9mmhash.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.veganbestie",
+            "package_name": "com.christiantsoungui.veganbestie.dev",
             "certificate_hash": "b8b0a82923aead4e3c2f14885944d177387f25a6"
           }
         },
