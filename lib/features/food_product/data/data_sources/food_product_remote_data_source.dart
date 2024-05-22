@@ -303,6 +303,11 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
             action: action,
           );
       }
+    } on ClientException catch (e) {
+      throw const UpdateFoodProductException(
+        message: 'Error: Connection Failed try again',
+        statusCode: 500,
+      );
     } on UpdateFoodProductException catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
       debugPrint(e.toString());

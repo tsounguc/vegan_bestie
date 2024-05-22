@@ -22,6 +22,7 @@ import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review
 abstract class RestaurantsRemoteDataSource {
   Future<List<RestaurantModel>> getRestaurantsNearMe({
     required Position position,
+    required double radius,
   });
 
   Future<RestaurantDetailsModel> getRestaurantDetails({
@@ -120,12 +121,13 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   @override
   Future<List<RestaurantModel>> getRestaurantsNearMe({
     required Position position,
+    required double radius,
   }) async {
     try {
       final url = '$kGooglePlaceBaseUrl$kGetRestaurantsEndPoint'
           'json?key=$kGoogleApiKey&keyword=vegan'
           '&type=restaurant&location=${position.latitude},${position.longitude}'
-          '&radius=1609'; // 12500
+          '&radius=$radius'; // 12500
       final parsedUri = Uri.parse(url);
       final request = Request('GET', parsedUri);
 
@@ -139,14 +141,40 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       }
 
       final data = jsonDecode(response.body) as DataMap;
+      debugPrint('Number of restaurants :  ${(data['results'] as List).length}');
 
-      final restaurants = List<RestaurantModel>.from(
+      final restaurants = Set<RestaurantModel>.from(
         (data['results'] as List).map(
           (e) => RestaurantModel.fromMap(e as DataMap),
         ),
       );
+      if (data['next_page_token'] != null) {
+        final nextPageUrl = '${url}pagetoken=${data['next_page_token'] as String}';
+        final parsedUri = Uri.parse(nextPageUrl);
+        final request = Request('GET', parsedUri);
 
-      return restaurants;
+        final streamResponse = await request.send();
+        final response = await Response.fromStream(streamResponse);
+        if (response.statusCode != 200) {
+          throw RestaurantsException(
+            message: response.body,
+            statusCode: response.statusCode,
+          );
+        }
+
+        final nextData = jsonDecode(response.body) as DataMap;
+        debugPrint('Number of next restaurants :  ${(nextData['results'] as List).length}');
+
+        final nextRestaurants = Set<RestaurantModel>.from(
+          (nextData['results'] as List).map(
+            (e) => RestaurantModel.fromMap(e as DataMap),
+          ),
+        );
+
+        restaurants.addAll(nextRestaurants);
+      }
+
+      return restaurants.toList();
     } on RestaurantsException catch (e, stackTrace) {
       debugPrint(stackTrace.toString());
       rethrow;

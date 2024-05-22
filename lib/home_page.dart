@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/bottom_navigation_bar_provider.dart';
+import 'package:sheveegan/core/common/app/providers/restaurants_near_me_provider.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
+import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
@@ -22,6 +24,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    context.read<RestaurantsNearMeProvider>().radius = 3.0 * kOneMile;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext buildContext) {
     return MultiBlocListener(
@@ -88,6 +96,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Scaffold(
                   // key: scaffoldKey,
+                  // extendBodyBehindAppBar: true,
                   backgroundColor: Colors.transparent,
                   resizeToAvoidBottomInset: true,
                   appBar: controller.currentIndex == 0 || controller.currentIndex == 2

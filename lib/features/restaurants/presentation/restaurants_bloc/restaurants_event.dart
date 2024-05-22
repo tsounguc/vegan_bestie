@@ -12,12 +12,16 @@ class LoadGeolocationEvent extends RestaurantsEvent {
 }
 
 class GetRestaurantsEvent extends RestaurantsEvent {
-  const GetRestaurantsEvent({required this.position});
+  const GetRestaurantsEvent({
+    required this.position,
+    required this.radius,
+  });
 
   final Position position;
+  final double radius;
 
   @override
-  List<Object> get props => [position];
+  List<Object> get props => [position, radius];
 }
 
 class GetRestaurantDetailsEvent extends RestaurantsEvent {

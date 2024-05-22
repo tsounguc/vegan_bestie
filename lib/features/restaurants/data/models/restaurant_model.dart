@@ -10,7 +10,7 @@ class RestaurantModel extends Restaurant {
     required super.id,
     required super.icon,
     required super.name,
-    required super.distance,
+    // required super.distance,
     required super.photos,
     required super.price,
     required super.rating,
@@ -26,7 +26,7 @@ class RestaurantModel extends Restaurant {
           id: '_empty.id',
           icon: '_empty.icon',
           name: '_empty.name',
-          distance: 0,
+          // distance: 0,
           photos: [],
           price: 0,
           rating: 0,
@@ -46,7 +46,7 @@ class RestaurantModel extends Restaurant {
           id: dataMap['place_id'] == null ? '' : dataMap['place_id'] as String,
           icon: dataMap['icon'] == null ? '' : dataMap['icon'] as String,
           name: dataMap['name'] == null ? '' : dataMap['name'] as String,
-          distance: double.tryParse(dataMap['distance'].toString()) ?? 0.0,
+          // distance: double.tryParse(dataMap['distance'].toString()) ?? 0.0,
           photos: dataMap['photos'] == null
               ? []
               : List<PhotoModel>.from(
@@ -81,7 +81,7 @@ class RestaurantModel extends Restaurant {
         'place_id': id,
         'icon': icon,
         'name': name,
-        'distance': distance,
+        // 'distance': distance,
         'photos': List<dynamic>.from(
           photos.map(
             (photo) => (photo as PhotoModel).toMap(),
@@ -100,7 +100,7 @@ class RestaurantModel extends Restaurant {
     String? id,
     String? icon,
     String? name,
-    double? distance,
+    // double? distance,
     List<Photo>? photos,
     int? price,
     double? rating,
@@ -114,7 +114,7 @@ class RestaurantModel extends Restaurant {
       id: id ?? this.id,
       icon: icon ?? this.icon,
       name: name ?? this.name,
-      distance: distance ?? this.distance,
+      // distance: distance ?? this.distance,
       photos: photos ?? this.photos,
       price: price ?? this.price,
       rating: rating ?? this.rating,

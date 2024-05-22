@@ -43,7 +43,7 @@ class HorizontalProductCard extends StatelessWidget {
                           color: product.isVegan
                               ? Colors.green.shade50
                               : product.isVegetarian
-                                  ? const Color(0xFFe2e360)
+                                  ? Colors.purple.shade50
                                   : Colors.blue.shade50,
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -109,7 +109,7 @@ class HorizontalProductCard extends StatelessWidget {
                             color: product.isVegan
                                 ? context.theme.primaryColor
                                 : product.isVegetarian
-                                    ? const Color(0xFFe2e360)
+                                    ? Colors.purple.shade200
                                     : Colors.blue.shade300,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w500,

@@ -47,9 +47,7 @@ class ProfileScreen extends StatelessWidget {
                   builder: (_, userProvider, __) {
                     final user = userProvider.user;
                     final image =
-                        user?.photoUrl == null || user!.photoUrl!.isEmpty
-                            ? null
-                            : userProvider.user!.photoUrl!;
+                        user?.photoUrl == null || user!.photoUrl!.isEmpty ? null : userProvider.user!.photoUrl!;
                     return CustomScrollView(
                       controller: scrollController,
                       shrinkWrap: true,
@@ -91,8 +89,7 @@ class ProfileScreen extends StatelessWidget {
                                   itemBuilder: (_) {
                                     return [
                                       PopupMenuItem<void>(
-                                        onTap: () =>
-                                            Navigator.of(context).pushNamed(
+                                        onTap: () => Navigator.of(context).pushNamed(
                                           EditProfileScreen.id,
                                           arguments: context.read<AuthBloc>(),
                                         ),
@@ -104,14 +101,11 @@ class ProfileScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      if (context.userProvider.user?.isAdmin ??
-                                          false)
+                                      if (context.userProvider.user?.isAdmin ?? false)
                                         PopupMenuItem<void>(
-                                          onTap: () =>
-                                              Navigator.of(context).pushNamed(
+                                          onTap: () => Navigator.of(context).pushNamed(
                                             AddFoodProductScreen.id,
-                                            arguments: context
-                                                .read<FoodProductCubit>(),
+                                            arguments: context.read<FoodProductCubit>(),
                                           ),
                                           child: const PopupItem(
                                             title: 'Add New Product',
@@ -121,14 +115,11 @@ class ProfileScreen extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                      if (context.userProvider.user?.isAdmin ??
-                                          false)
+                                      if (context.userProvider.user?.isAdmin ?? false)
                                         PopupMenuItem<void>(
-                                          onTap: () =>
-                                              Navigator.of(context).pushNamed(
+                                          onTap: () => Navigator.of(context).pushNamed(
                                             ReportsScreen.id,
-                                            arguments: context
-                                                .read<FoodProductCubit>(),
+                                            arguments: context.read<FoodProductCubit>(),
                                           ),
                                           child: const PopupItem(
                                             title: 'Reports',
@@ -170,14 +161,10 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                       PopupMenuItem<void>(
                                         onTap: () async {
-                                          final navigator =
-                                              Navigator.of(context);
-                                          await serviceLocator<FirebaseAuth>()
-                                              .signOut();
-                                          context.savedProductsProvider
-                                              .savedProductsList = null;
-                                          context.savedRestaurantsProvider
-                                              .savedRestaurantsList = null;
+                                          final navigator = Navigator.of(context);
+                                          await serviceLocator<FirebaseAuth>().signOut();
+                                          context.savedProductsProvider.savedProductsList = null;
+                                          context.savedRestaurantsProvider.savedRestaurantsList = null;
 
                                           unawaited(
                                             navigator.pushNamedAndRemoveUntil(
@@ -204,19 +191,18 @@ class ProfileScreen extends StatelessWidget {
                             preferredSize: const Size.fromHeight(0),
                             child: Container(
                               width: double.maxFinite,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 25),
+                              margin: const EdgeInsets.symmetric(horizontal: 25),
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.95),
+                                color: Colors.white.withOpacity(0.93),
                                 border: const Border(
                                   right: BorderSide(color: Colors.black12),
                                   left: BorderSide(color: Colors.black12),
                                   top: BorderSide(color: Colors.black12),
                                 ),
                                 borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(25.r),
-                                  topLeft: Radius.circular(25.r),
+                                  topRight: Radius.circular(20.r),
+                                  topLeft: Radius.circular(20.r),
                                 ),
                               ),
                               child: Center(
@@ -247,13 +233,9 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                                 child: SectionHeader(
                                   sectionTitle: 'Saved Food Products',
-                                  seeAll: productsProvider.savedProductsList !=
-                                          null &&
-                                      productsProvider
-                                              .savedProductsList!.length >=
-                                          4,
-                                  onSeeAll: () =>
-                                      Navigator.of(context).pushNamed(
+                                  seeAll: productsProvider.savedProductsList != null &&
+                                      productsProvider.savedProductsList!.length >= 4,
+                                  onSeeAll: () => Navigator.of(context).pushNamed(
                                     AllSavedProductsPage.id,
                                   ),
                                 ),
@@ -265,27 +247,21 @@ class ProfileScreen extends StatelessWidget {
                                     horizontal: 15,
                                   ),
                                   child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: productsProvider
-                                                .savedProductsList ==
-                                            null
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: productsProvider.savedProductsList == null
                                         ? [
                                             const Padding(
                                               padding: EdgeInsets.symmetric(
                                                 vertical: 45,
                                                 horizontal: 35,
                                               ),
-                                              child:
-                                                  CircularProgressIndicator(),
+                                              child: CircularProgressIndicator(),
                                             ),
                                           ]
-                                        : productsProvider
-                                                .savedProductsList!.isEmpty
+                                        : productsProvider.savedProductsList!.isEmpty
                                             ? [
                                                 Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
+                                                  padding: const EdgeInsets.symmetric(
                                                     vertical: 45,
                                                     horizontal: 35,
                                                   ),
@@ -294,24 +270,18 @@ class ProfileScreen extends StatelessWidget {
                                                     'once saved',
                                                     style: TextStyle(
                                                       fontSize: 12.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color:
-                                                          Colors.grey.shade500,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: Colors.grey.shade500,
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                 ),
                                               ]
-                                            : productsProvider
-                                                .savedProductsList!
+                                            : productsProvider.savedProductsList!
                                                 .take(4)
                                                 .map(
                                                   (product) => Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 16),
+                                                    padding: const EdgeInsets.only(right: 16),
                                                     child: ProductCard(
                                                       product: product,
                                                       onTap: () => Navigator.of(
@@ -329,22 +299,15 @@ class ProfileScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 20.h),
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 25)
-                                        .copyWith(
+                                padding: const EdgeInsets.symmetric(horizontal: 25).copyWith(
                                   top: 5.h,
                                   bottom: 5.h,
                                 ),
                                 child: SectionHeader(
                                   sectionTitle: 'Saved Restaurants',
-                                  seeAll: restaurantsProvider
-                                              .savedRestaurantsList !=
-                                          null &&
-                                      restaurantsProvider
-                                              .savedRestaurantsList!.length >=
-                                          4,
-                                  onSeeAll: () =>
-                                      Navigator.of(context).pushNamed(
+                                  seeAll: restaurantsProvider.savedRestaurantsList != null &&
+                                      restaurantsProvider.savedRestaurantsList!.length >= 4,
+                                  onSeeAll: () => Navigator.of(context).pushNamed(
                                     AllSavedRestaurantsPage.id,
                                   ),
                                 ),
@@ -356,27 +319,21 @@ class ProfileScreen extends StatelessWidget {
                                     horizontal: 15,
                                   ),
                                   child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: restaurantsProvider
-                                                .savedRestaurantsList ==
-                                            null
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: restaurantsProvider.savedRestaurantsList == null
                                         ? [
                                             const Padding(
                                               padding: EdgeInsets.symmetric(
                                                 vertical: 45,
                                                 horizontal: 35,
                                               ),
-                                              child:
-                                                  CircularProgressIndicator(),
+                                              child: CircularProgressIndicator(),
                                             ),
                                           ]
-                                        : restaurantsProvider
-                                                .savedRestaurantsList!.isEmpty
+                                        : restaurantsProvider.savedRestaurantsList!.isEmpty
                                             ? [
                                                 Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
+                                                  padding: const EdgeInsets.symmetric(
                                                     vertical: 50,
                                                     horizontal: 35,
                                                   ),
@@ -384,32 +341,24 @@ class ProfileScreen extends StatelessWidget {
                                                     'Restaurants will be here once saved',
                                                     style: TextStyle(
                                                       fontSize: 12.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color:
-                                                          Colors.grey.shade500,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: Colors.grey.shade500,
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                 ),
                                               ]
-                                            : restaurantsProvider
-                                                .savedRestaurantsList!
+                                            : restaurantsProvider.savedRestaurantsList!
                                                 .take(4)
                                                 .map(
                                                   (restaurant) => Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
+                                                    padding: const EdgeInsets.only(
                                                       right: 16,
                                                     ),
                                                     child: RestaurantCard(
                                                       restaurant: restaurant,
-                                                      onTap: () =>
-                                                          Navigator.of(context)
-                                                              .pushNamed(
-                                                        RestaurantDetailsPage
-                                                            .id,
+                                                      onTap: () => Navigator.of(context).pushNamed(
+                                                        RestaurantDetailsPage.id,
                                                         arguments: restaurant,
                                                       ),
                                                     ),

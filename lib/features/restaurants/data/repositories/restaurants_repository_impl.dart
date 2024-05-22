@@ -31,11 +31,10 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
   @override
   ResultFuture<List<Restaurant>> getRestaurantsNearMe({
     required Position position,
+    required double radius,
   }) async {
     try {
-      final result = await _remoteDataSource.getRestaurantsNearMe(
-        position: position,
-      );
+      final result = await _remoteDataSource.getRestaurantsNearMe(position: position, radius: radius);
       return Right(result);
     } on RestaurantsException catch (e) {
       return Left(RestaurantsFailure.fromException(e));

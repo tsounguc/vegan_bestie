@@ -11,12 +11,20 @@ class GetRestaurantsNearMe extends UseCaseWithParams<List<Restaurant>, GetRestau
   final RestaurantsRepository _repository;
 
   @override
-  ResultFuture<List<Restaurant>> call(GetRestaurantsNearMeParams params) async =>
-      _repository.getRestaurantsNearMe(position: params.position);
+  ResultFuture<List<Restaurant>> call(
+    GetRestaurantsNearMeParams params,
+  ) async =>
+      _repository.getRestaurantsNearMe(
+        position: params.position,
+        radius: params.radius,
+      );
 }
 
 class GetRestaurantsNearMeParams extends Equatable {
-  const GetRestaurantsNearMeParams({required this.position});
+  const GetRestaurantsNearMeParams({
+    required this.position,
+    required this.radius,
+  });
 
   GetRestaurantsNearMeParams.empty()
       : this(
@@ -32,10 +40,12 @@ class GetRestaurantsNearMeParams extends Equatable {
             speed: 0,
             speedAccuracy: 0,
           ),
+          radius: 1609,
         );
 
   final Position position;
+  final double radius;
 
   @override
-  List<Object?> get props => [position];
+  List<Object?> get props => [position, radius];
 }

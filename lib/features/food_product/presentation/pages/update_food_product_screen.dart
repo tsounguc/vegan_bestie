@@ -273,11 +273,20 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
             ).fetchProductsList(savedBarcodes);
           } else {
             CoreUtils.showSnackBar(context, 'Product uploaded');
-            Navigator.popUntil(
+            Navigator.pushNamedAndRemoveUntil(
               context,
-              ModalRoute.withName('/'),
+              HomePage.id,
+              (Route<dynamic> route) => false,
             );
           }
+        } else if (state is SavedProductsListFetched) {
+          context.savedProductsProvider.savedProductsList = state.savedProductsList;
+          CoreUtils.showSnackBar(context, 'Product uploaded');
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            HomePage.id,
+            (Route<dynamic> route) => false,
+          );
         } else if (state is FoodProductError) {
           CoreUtils.showSnackBar(
             context,
@@ -288,15 +297,6 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
         if (state is IngredientsRead) {
           ingredientsController.text = state.ingredients;
           debugPrint(state.ingredients);
-        }
-
-        if (state is SavedProductsListFetched) {
-          context.savedProductsProvider.savedProductsList = state.savedProductsList;
-          CoreUtils.showSnackBar(context, 'Product uploaded');
-          Navigator.popUntil(
-            context,
-            ModalRoute.withName('/'),
-          );
         }
       },
       builder: (context, state) {

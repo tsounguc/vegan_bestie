@@ -9,6 +9,7 @@ import 'package:sheveegan/features/restaurants/domain/entities/user_location.dar
 abstract class RestaurantsRepository {
   ResultFuture<List<Restaurant>> getRestaurantsNearMe({
     required Position position,
+    required double radius,
   });
 
   ResultFuture<RestaurantDetails> getRestaurantDetails({

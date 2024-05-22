@@ -84,7 +84,10 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
   ) async {
     emit(const LoadingRestaurants());
     final result = await _getRestaurantsNearMe(
-      GetRestaurantsNearMeParams(position: event.position),
+      GetRestaurantsNearMeParams(
+        position: event.position,
+        radius: event.radius,
+      ),
     );
 
     result.fold(

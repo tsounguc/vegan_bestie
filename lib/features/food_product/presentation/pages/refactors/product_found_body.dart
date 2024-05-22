@@ -48,9 +48,7 @@ class ProductFoundBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 45,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 12).copyWith(bottom: 0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

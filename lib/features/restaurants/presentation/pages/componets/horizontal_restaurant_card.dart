@@ -83,8 +83,8 @@ class HorizontalRestaurantCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.025,
-                top: MediaQuery.of(context).size.width * 0.030,
-                bottom: MediaQuery.of(context).size.width * 0.030,
+                top: MediaQuery.of(context).size.width * 0.025,
+                bottom: MediaQuery.of(context).size.width * 0.025,
               ),
               child: Center(
                 child: Ink(
@@ -103,7 +103,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
             ),
             Flexible(
               child: Padding(
-                padding: EdgeInsets.all(16.0.r),
+                padding: EdgeInsets.all(10.0.r),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

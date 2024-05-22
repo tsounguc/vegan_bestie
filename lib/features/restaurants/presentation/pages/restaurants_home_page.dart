@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sheveegan/core/common/app/providers/restaurants_near_me_provider.dart';
 import 'package:sheveegan/core/common/screens/error/error.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
+import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurants_found_body.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
@@ -14,6 +16,8 @@ class RestaurantsHomePage extends StatelessWidget {
   static const String id = '/restaurantsHomepage';
 
   Position? userCurrentLocation;
+
+  double setRadius = kOneMile * 3;
 
   late List<Restaurant>? restaurants;
 
@@ -42,6 +46,7 @@ class RestaurantsHomePage extends StatelessWidget {
           userCurrentLocation = context.read<RestaurantsBloc>().currentLocation;
 
           if (locationChanged(state)) {
+            setRadius = context.read<RestaurantsNearMeProvider>().radius;
             debugPrint('Getting Restaurants');
             BlocProvider.of<RestaurantsBloc>(
               context,
@@ -56,16 +61,24 @@ class RestaurantsHomePage extends StatelessWidget {
             BlocProvider.of<RestaurantsBloc>(context).add(
               GetRestaurantsEvent(
                 position: state.position,
+                radius: setRadius,
               ),
             );
           }
+        } else if (setRadius != context.read<RestaurantsNearMeProvider>().radius) {
+          setRadius = context.read<RestaurantsNearMeProvider>().radius;
+          BlocProvider.of<RestaurantsBloc>(context).add(
+            GetRestaurantsEvent(
+              position: userCurrentLocation!,
+              radius: setRadius,
+            ),
+          );
         }
-
         if (state is RestaurantsLoaded) {
           BlocProvider.of<RestaurantsBloc>(
             context,
-          ).restaurants = state.restaurants;
-          restaurants = state.restaurants;
+          ).restaurants = state.restaurants..sort(sortByDistance);
+          restaurants = state.restaurants..sort(sortByDistance);
           BlocProvider.of<RestaurantsBloc>(context).add(
             GetRestaurantsMarkersEvent(
               restaurants: state.restaurants,
@@ -112,5 +125,21 @@ class RestaurantsHomePage extends StatelessWidget {
         }
       },
     );
+  }
+
+  int sortByDistance(Restaurant a, Restaurant b) {
+    final distanceA = Geolocator.distanceBetween(
+      userCurrentLocation?.latitude ?? 0,
+      userCurrentLocation?.longitude ?? 0,
+      a.geometry.location.lat,
+      a.geometry.location.lng,
+    );
+    final distanceB = Geolocator.distanceBetween(
+      userCurrentLocation?.latitude ?? 0,
+      userCurrentLocation?.longitude ?? 0,
+      b.geometry.location.lat,
+      b.geometry.location.lng,
+    );
+    return distanceA.compareTo(distanceB);
   }
 }

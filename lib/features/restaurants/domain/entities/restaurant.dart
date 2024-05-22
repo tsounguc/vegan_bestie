@@ -7,7 +7,7 @@ class Restaurant extends Equatable {
     required this.icon,
     required this.name,
     required this.photos,
-    required this.distance,
+    // required this.distance,
     required this.price,
     required this.rating,
     required this.reviewCount,
@@ -23,7 +23,7 @@ class Restaurant extends Equatable {
           icon: '_empty.id',
           name: '_empty.name',
           photos: [],
-          distance: 0,
+          // distance: 0,
           price: 0,
           rating: 0,
           reviewCount: 0,
@@ -38,7 +38,8 @@ class Restaurant extends Equatable {
   final String name;
   final List<Photo> photos;
   final OpeningHours openingHours;
-  final double distance;
+
+  // final double distance;
   final int price;
   final double rating;
   final int reviewCount;
@@ -53,7 +54,7 @@ class Restaurant extends Equatable {
         name,
         photos,
         openingHours,
-        distance,
+        // distance,
         price,
         rating,
         reviewCount,

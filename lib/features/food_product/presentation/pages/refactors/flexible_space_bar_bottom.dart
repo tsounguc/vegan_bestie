@@ -29,14 +29,14 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
         Container(
           width: double.maxFinite,
           padding: const EdgeInsets.symmetric(
-            vertical: 20,
-            horizontal: 30,
-          ),
+            vertical: 12,
+            horizontal: 35,
+          ).copyWith(right: 25),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Colors.white.withOpacity(0.93),
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(25.r),
-              topLeft: Radius.circular(25.r),
+              topRight: Radius.circular(20.r),
+              topLeft: Radius.circular(20.r),
             ),
           ),
           child: Row(
@@ -83,8 +83,7 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                         : product.isVegetarian == true
                             ? '${Strings.toolTipVegetarianMessage}'
                                 '${product.nonVeganIngredients}'
-                            : product.isVegan == false &&
-                                    product.isVegetarian == false
+                            : product.isVegan == false && product.isVegetarian == false
                                 ? '${Strings.toolTipNonVeganMessage}'
                                     '${product.nonVeganIngredients}'
                                 : null,
