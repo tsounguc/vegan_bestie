@@ -86,7 +86,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       await userCredential.user?.updateDisplayName(fullName);
-      await userCredential.user?.updatePhotoURL(kDefaultAvatar);
+      // await userCredential.user?.updatePhotoURL(kDefaultAvatar);
 
       //
       await _setUserData(

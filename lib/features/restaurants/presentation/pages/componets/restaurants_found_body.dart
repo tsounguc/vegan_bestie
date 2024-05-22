@@ -47,179 +47,6 @@ class RestaurantsFoundBody extends StatelessWidget {
           );
         }
       },
-      // child: Scaffold(
-      //   extendBody: true,
-      //   body: CustomScrollView(
-      //     controller: scrollController,
-      //     shrinkWrap: true,
-      //     slivers: [
-      //       SliverAppBar(
-      //         expandedHeight: context.height * 0.55,
-      //         backgroundColor: Colors.white,
-      //         surfaceTintColor: Colors.white,
-      //         pinned: true,
-      //         // snap: true,
-      //         flexibleSpace: FlexibleSpaceBar(
-      //           background: Stack(
-      //             children: [
-      //               Positioned.fill(
-      //                 child: LayoutBuilder(
-      //                   builder: (
-      //                     BuildContext context,
-      //                     BoxConstraints constraints,
-      //                   ) {
-      //                     return SizedBox(
-      //                       height: constraints.maxHeight,
-      //                       child: MapPage(
-      //                         userLocation: userLocation,
-      //                         markers: markers,
-      //                       ),
-      //                     );
-      //                   },
-      //                 ),
-      //               ),
-      //             ],
-      //           ),
-      //         ),
-      //         bottom: PreferredSize(
-      //           preferredSize: const Size.fromHeight(100),
-      //           child: Container(
-      //             width: double.maxFinite,
-      //             decoration: const BoxDecoration(
-      //               color: Colors.white,
-      //             ),
-      //             child: Column(
-      //               children: [
-      //                 SizedBox(
-      //                   width: 50,
-      //                   height: 25,
-      //                   child: Divider(
-      //                     thickness: 5,
-      //                     color: Theme.of(context).primaryColor,
-      //                   ),
-      //                 ),
-      //                 Padding(
-      //                   padding: const EdgeInsets.only(left: 15),
-      //                   child: Row(
-      //                     children: [
-      //                       Text(
-      //                         'Distance',
-      //                         style: TextStyle(color: Colors.grey.shade800),
-      //                       ),
-      //                     ],
-      //                   ),
-      //                 ),
-      //                 Consumer<RestaurantsNearMeProvider>(
-      //                   builder: (context, controller, child) {
-      //                     return SizedBox(
-      //                       height: 60,
-      //                       child: ListView.builder(
-      //                         scrollDirection: Axis.horizontal,
-      //                         controller: scrollController,
-      //                         physics: const AlwaysScrollableScrollPhysics(),
-      //                         shrinkWrap: true,
-      //                         itemCount: 5,
-      //                         itemBuilder: (context, int index) {
-      //                           return Padding(
-      //                             padding: const EdgeInsets.symmetric(
-      //                               horizontal: 8,
-      //                               vertical: 10,
-      //                             ),
-      //                             child: ElevatedButton(
-      //                               style: ElevatedButton.styleFrom(
-      //                                 surfaceTintColor: Colors.white,
-      //                                 elevation: 2,
-      //                                 disabledBackgroundColor: context.theme.primaryColor,
-      //                                 disabledForegroundColor: Colors.white,
-      //                               ),
-      //                               onPressed: controller.selectedDistanceButton == index
-      //                                   ? null
-      //                                   : () {
-      //                                       controller.changeSelectedButton(index);
-      //                                       double numberOfMiles = 1.0 + index + index * index;
-      //                                       controller.setRadius(
-      //                                         numberOfMiles * kOneMile,
-      //                                       );
-      //
-      //                                       BlocProvider.of<RestaurantsBloc>(context).add(
-      //                                         GetRestaurantsEvent(
-      //                                           position: context.read<RestaurantsBloc>().currentLocation!,
-      //                                           radius: controller.radius,
-      //                                         ),
-      //                                       );
-      //                                     },
-      //                               child: Text(
-      //                                 '${1 + index + index * index} mile${index <= 1 ? '' : 's'}',
-      //                                 style: TextStyle(
-      //                                   fontSize: 10.sp,
-      //                                   fontWeight: FontWeight.w600,
-      //                                 ),
-      //                               ),
-      //                             ),
-      //                           );
-      //                         },
-      //                       ),
-      //                     );
-      //                   },
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //       SliverToBoxAdapter(
-      //         child: Column(
-      //           children: [
-      //             ListView.builder(
-      //               controller: scrollController,
-      //               physics: const ClampingScrollPhysics(),
-      //               shrinkWrap: true,
-      //               itemCount: restaurants.length,
-      //               itemBuilder: (context, restaurantIndex) {
-      //                 return StreamBuilder<List<RestaurantReview>>(
-      //                   stream: serviceLocator<FirebaseFirestore>()
-      //                       .collection('restaurantReviews')
-      //                       .where('restaurantId', isEqualTo: restaurants[restaurantIndex].id)
-      //                       .snapshots()
-      //                       .map(
-      //                         (event) => event.docs
-      //                             .map(
-      //                               (e) => RestaurantReviewModel.fromMap(
-      //                                 e.data(),
-      //                               ),
-      //                             )
-      //                             .toList(),
-      //                       ),
-      //                   builder: (context, snapshot) {
-      //                     final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
-      //                     final restaurant = restaurants[restaurantIndex];
-      //                     final userPosition = context.read<RestaurantsBloc>().currentLocation;
-      //                     return HorizontalRestaurantCard(
-      //                       reviews: reviews,
-      //                       weekdayText: [],
-      //                       userPosition: userPosition,
-      //                       imageUrl: restaurant.photos.isEmpty
-      //                           ? restaurant.icon
-      //                           : '$kImageBaseUrl${restaurant.photos[0].photoReference}'
-      //                               '&key=$kGoogleApiKey',
-      //                       geometry: restaurant.geometry,
-      //                       restaurantId: restaurant.id,
-      //                       restaurantName: restaurant.name.capitalizeFirstLetter(),
-      //                       restaurantAddress: restaurant.vicinity,
-      //                       restaurantPrice: r'$' * restaurant.price,
-      //                       isOpenNow: restaurant.openingHours.openNow,
-      //                       fromSavedRestaurants: false,
-      //                     );
-      //                   },
-      //                 );
-      //               },
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // ),
       child: Consumer<RestaurantsNearMeProvider>(
         builder: (context, controller, child) {
           return Stack(
@@ -252,9 +79,8 @@ class RestaurantsFoundBody extends StatelessWidget {
                 },
               ),
               DraggableScrollableSheet(
-                initialChildSize: 0.6,
-                minChildSize: 0.27,
-                maxChildSize: 0.95,
+                minChildSize: 0.165,
+                maxChildSize: 0.90,
                 builder: (
                   BuildContext context,
                   ScrollController scrollController,
@@ -273,53 +99,6 @@ class RestaurantsFoundBody extends StatelessWidget {
                               thickness: 5,
                               color: Theme.of(context).primaryColor,
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Radius'),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 25,
-                          ).copyWith(top: 10, left: 35),
-                          child: const SizedBox(
-                            height: 25,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [Text('1 mi'), Text('15 mi')],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: Slider(
-                            label: '${controller.sliderValue.round()}',
-                            min: 1,
-                            max: 15,
-                            value: controller.sliderValue,
-                            divisions: 15,
-                            onChanged: (value) {
-                              controller.sliderValue = value;
-                            },
-                            onChangeEnd: (value) {
-                              if (controller.sliderValue * kOneMile != controller.radius) {
-                                controller.radius = value * kOneMile;
-
-                                BlocProvider.of<RestaurantsBloc>(context).add(
-                                  GetRestaurantsEvent(
-                                    position: context.read<RestaurantsBloc>().currentLocation!,
-                                    radius: controller.radius,
-                                  ),
-                                );
-                              }
-                            },
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -347,7 +126,7 @@ class RestaurantsFoundBody extends StatelessWidget {
                                 builder: (context, snapshot) {
                                   final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
                                   final restaurant = restaurants[restaurantIndex];
-                                  final userPosition = context.read<RestaurantsBloc>().currentLocation;
+                                  final userPosition = context.read<RestaurantsNearMeProvider>().currentLocation;
                                   return HorizontalRestaurantCard(
                                     reviews: reviews,
                                     weekdayText: [],

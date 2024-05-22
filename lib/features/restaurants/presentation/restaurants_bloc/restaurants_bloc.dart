@@ -62,7 +62,6 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
   }
 
   GoogleMapController? controller;
-  Position? currentLocation;
   List<Restaurant>? restaurants;
   Set<Marker>? markers;
 

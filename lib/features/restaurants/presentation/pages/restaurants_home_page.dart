@@ -17,8 +17,6 @@ class RestaurantsHomePage extends StatelessWidget {
 
   Position? userCurrentLocation;
 
-  double setRadius = kOneMile * 3;
-
   late List<Restaurant>? restaurants;
 
   late Set<Marker>? markers;
@@ -43,15 +41,14 @@ class RestaurantsHomePage extends StatelessWidget {
     return BlocConsumer<RestaurantsBloc, RestaurantsState>(
       listener: (context, state) {
         if (state is UserLocationLoaded) {
-          userCurrentLocation = context.read<RestaurantsBloc>().currentLocation;
+          userCurrentLocation = context.read<RestaurantsNearMeProvider>().currentLocation;
 
           if (locationChanged(state)) {
-            setRadius = context.read<RestaurantsNearMeProvider>().radius;
             debugPrint('Getting Restaurants');
             BlocProvider.of<RestaurantsBloc>(
               context,
             ).add(const LoadGeolocationEvent());
-            context.read<RestaurantsBloc>().currentLocation = state.position;
+            context.read<RestaurantsNearMeProvider>().currentLocation = state.position;
             userCurrentLocation = state.position;
 
             debugPrint(
@@ -61,18 +58,10 @@ class RestaurantsHomePage extends StatelessWidget {
             BlocProvider.of<RestaurantsBloc>(context).add(
               GetRestaurantsEvent(
                 position: state.position,
-                radius: setRadius,
+                radius: context.read<RestaurantsNearMeProvider>().radius,
               ),
             );
           }
-        } else if (setRadius != context.read<RestaurantsNearMeProvider>().radius) {
-          setRadius = context.read<RestaurantsNearMeProvider>().radius;
-          BlocProvider.of<RestaurantsBloc>(context).add(
-            GetRestaurantsEvent(
-              position: userCurrentLocation!,
-              radius: setRadius,
-            ),
-          );
         }
         if (state is RestaurantsLoaded) {
           BlocProvider.of<RestaurantsBloc>(
@@ -95,9 +84,7 @@ class RestaurantsHomePage extends StatelessWidget {
           currentPage = const LoadingPage();
           return const LoadingPage();
         } else if (state is MarkersLoaded) {
-          userCurrentLocation = BlocProvider.of<RestaurantsBloc>(
-            context,
-          ).currentLocation;
+          userCurrentLocation = context.read<RestaurantsNearMeProvider>().currentLocation;
           restaurants = BlocProvider.of<RestaurantsBloc>(
             context,
           ).restaurants;

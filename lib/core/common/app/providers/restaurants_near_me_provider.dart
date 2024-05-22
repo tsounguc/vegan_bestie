@@ -1,32 +1,24 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 
 class RestaurantsNearMeProvider extends ChangeNotifier {
-  int _selectedDistanceButton = 0;
-  double _radius = kOneMile * 3.0;
-  double _sliderValue = 3;
+  double _radius = kOneMile * 5.0;
 
-  int get selectedDistanceButton => _selectedDistanceButton;
+  Position? _currentLocation;
 
   double get radius => _radius;
 
-  double get sliderValue => _sliderValue;
+  Position? get currentLocation => _currentLocation;
 
-  set sliderValue(double value) {
-    if (_sliderValue == value) return;
-    _sliderValue = value;
+  set currentLocation(Position? value) {
+    _currentLocation = value;
     notifyListeners();
   }
 
   set radius(double newRadius) {
     if (_radius == newRadius) return;
     _radius = newRadius;
-    notifyListeners();
-  }
-
-  void changeSelectedButton(int index) {
-    if (_selectedDistanceButton == index) return;
-    _selectedDistanceButton = index;
     notifyListeners();
   }
 }
