@@ -49,7 +49,7 @@ class ProfileHeader extends StatelessWidget {
                   ),
                 if (user?.bio != null && user!.bio!.isNotEmpty)
                   SizedBox(
-                    height: 30.h,
+                    height: 20.h,
                   ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

@@ -10,8 +10,10 @@ class EditProfileFormField extends StatelessWidget {
     this.readOnly = false,
     this.maxLines = 1,
     this.minLines,
+    this.textInputAction,
     super.key,
   });
+
   final String fieldTitle;
   final TextEditingController controller;
   final String? hintText;
@@ -19,6 +21,7 @@ class EditProfileFormField extends StatelessWidget {
   final BorderRadius? borderRadius;
   final int? maxLines;
   final int? minLines;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +46,7 @@ class EditProfileFormField extends StatelessWidget {
           borderRadius: borderRadius,
           maxLines: maxLines,
           minLines: minLines,
+          textInputAction: textInputAction,
         ),
         const SizedBox(height: 30),
       ],

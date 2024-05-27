@@ -59,6 +59,7 @@ class EditProfileForm extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           minLines: 4,
           maxLines: null,
+          textInputAction: TextInputAction.newline,
         ),
       ],
     );

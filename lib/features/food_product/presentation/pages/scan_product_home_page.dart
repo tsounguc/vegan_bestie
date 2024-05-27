@@ -102,15 +102,16 @@ class ScanProductHomePage extends StatelessWidget {
                           // elevation: 6,
                           // shadowColor: MaterialStateProperty.all(Colors.black),
                           // fixedSize: Size.fromRadius(90.r),
-                          // backgroundColor: Colors.white,
-                          // surfaceTintColor: Colors.white,
+                          // backgroundColor: context.theme.cardTheme.color,
+                          // surfaceTintColor: context.theme.cardTheme.color,
                           // shape: const CircleBorder(),
                           ),
                       child: Center(
                         child: Padding(
                           padding: EdgeInsets.only(right: 10.0.r),
                           child: ImageIcon(
-                            const AssetImage('assets/logo/VeganBestie_NoBackground_Fixed2.png'),
+                            const AssetImage(
+                                'assets/logo/VeganBestie_NoBackground_Fixed2.png'),
                             size: 170.0.r,
                             color: Colors.grey.shade900,
                           ),

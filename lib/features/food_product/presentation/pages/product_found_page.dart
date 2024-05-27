@@ -119,8 +119,8 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
                 pinned: true,
                 // backgroundColor: Colors.white,
                 leading: CustomBackButton(
-                  color: context.theme.iconTheme.color!,
-                ),
+                    // color: context.theme.iconTheme.color!,
+                    ),
                 actions: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
