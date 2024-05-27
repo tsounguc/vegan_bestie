@@ -73,9 +73,9 @@ class HorizontalRestaurantCard extends StatelessWidget {
               ).add(GetRestaurantDetailsEvent(id: restaurantId));
             },
       child: Card(
-        color: Colors.white,
+        // color: Colors.white,
         clipBehavior: Clip.antiAlias,
-        surfaceTintColor: Colors.white,
+        // surfaceTintColor: Colors.white,
         elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Row(
@@ -117,7 +117,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                               restaurantName,
                               style: TextStyle(
                                 fontSize: 12.sp,
-                                color: Colors.grey.shade800,
+                                // color: Colors.grey.shade800,
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -131,7 +131,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                                   '${Strings.distanceUnitText}',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: Colors.grey.shade800,
+                            // color: Colors.grey.shade800,
                             fontWeight: FontWeight.w500,
                             fontSize: 10.sp,
                           ),
@@ -162,7 +162,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                                 child: Text(
                                   restaurantAddress,
                                   style: TextStyle(
-                                    color: Colors.grey.shade600,
+                                    color: context.theme.textTheme.bodySmall?.color,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 10.sp,
                                   ),
@@ -174,7 +174,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                         Text(
                           restaurantPrice,
                           style: TextStyle(
-                            color: Colors.grey.shade800,
+                            // color: Colors.grey.shade800,
                             fontWeight: FontWeight.w500,
                             fontSize: 10.sp,
                           ),
@@ -203,7 +203,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                         Text(
                           '${reviews.length} ${Strings.reviewsText}',
                           style: TextStyle(
-                            color: Colors.grey.shade800,
+                            // color: Colors.grey.shade800,
                             fontWeight: FontWeight.w500,
                             fontSize: 10.sp,
                           ),

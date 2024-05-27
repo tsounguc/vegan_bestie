@@ -240,12 +240,10 @@ class _AddFoodProductScreenState extends State<AddFoodProductScreen> {
       builder: (context, state) {
         return Scaffold(
           extendBodyBehindAppBar: true,
-          backgroundColor: Colors.white,
+          // backgroundColor: Colors.white,
           appBar: AppBar(
-            surfaceTintColor: Colors.white,
-            leading: const CustomBackButton(
-              color: Colors.black,
-            ),
+            // surfaceTintColor: Colors.white,
+            leading: const CustomBackButton(),
             title: const Text('Add Product'),
           ),
           body: Container(
@@ -268,7 +266,7 @@ class _AddFoodProductScreenState extends State<AddFoodProductScreen> {
                             height: context.height * 0.2,
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              // color: Colors.white,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: pickedImage != null

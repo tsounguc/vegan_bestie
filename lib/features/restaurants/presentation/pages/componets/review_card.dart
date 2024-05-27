@@ -39,20 +39,18 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var timestamp =
-        DateFormat('MMM d, yyyy').format(review.createdAt.toLocal());
+    var timestamp = DateFormat('MMM d, yyyy').format(review.createdAt.toLocal());
     if (review.updatedAt.toLocal().isAfter(review.createdAt.toLocal())) {
-      timestamp =
-          'Edited ${DateFormat('MMM d, yyyy').format(review.updatedAt.toLocal())}';
+      timestamp = 'Edited ${DateFormat('MMM d, yyyy').format(review.updatedAt.toLocal())}';
     }
     return Card(
-      surfaceTintColor: Colors.white,
+      // surfaceTintColor: Colors.white,
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 20,
-        ).copyWith(top: 8),
+        ).copyWith(top: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -65,12 +63,10 @@ class ReviewCard extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.grey,
-                      backgroundImage: review.userProfilePic.isEmpty ||
-                              review.userProfilePic == kDefaultAvatar
+                      backgroundImage: review.userProfilePic.isEmpty || review.userProfilePic == kDefaultAvatar
                           ? null
                           : NetworkImage(review.userProfilePic),
-                      child: review.userProfilePic.isNotEmpty &&
-                              review.userProfilePic != kDefaultAvatar
+                      child: review.userProfilePic.isNotEmpty && review.userProfilePic != kDefaultAvatar
                           ? null
                           : const Icon(
                               Icons.person_outline,
@@ -83,7 +79,7 @@ class ReviewCard extends StatelessWidget {
                       child: Text(
                         review.username,
                         style: TextStyle(
-                          color: Colors.grey.shade800,
+                          // color: Colors.grey.shade800,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
                         ),
@@ -99,7 +95,8 @@ class ReviewCard extends StatelessWidget {
                       Icons.more_horiz_outlined,
                       size: 16.r,
                     ),
-                    surfaceTintColor: Colors.white,
+                    surfaceTintColor: context.theme.cardTheme.color,
+                    color: context.theme.cardTheme.color,
                     offset: const Offset(35, 40),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -111,21 +108,21 @@ class ReviewCard extends StatelessWidget {
                             context,
                             review,
                           ),
-                          child: const PopupItem(
+                          child: PopupItem(
                             title: 'Edit Review',
                             icon: Icon(
                               Icons.edit_outlined,
-                              color: Color(0xFF757C8E),
+                              color: context.theme.iconTheme.color,
                             ),
                           ),
                         ),
                         PopupMenuItem<void>(
                           onTap: () => deleteReview(context, review),
-                          child: const PopupItem(
+                          child: PopupItem(
                             title: 'Delete Review',
                             icon: Icon(
                               Icons.delete,
-                              color: Color(0xFF757C8E),
+                              color: context.theme.iconTheme.color,
                             ),
                           ),
                         ),
@@ -141,7 +138,7 @@ class ReviewCard extends StatelessWidget {
                 Text(
                   review.title.capitalizeFirstLetter(),
                   style: TextStyle(
-                    color: Colors.grey.shade800,
+                    // color: Colors.grey.shade800,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -150,7 +147,7 @@ class ReviewCard extends StatelessWidget {
                 Text(
                   timestamp,
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: context.theme.textTheme.bodySmall?.color,
                     fontSize: 10.sp,
                     fontWeight: FontWeight.normal,
                   ),
@@ -173,7 +170,6 @@ class ReviewCard extends StatelessWidget {
             Text(
               review.review,
               style: TextStyle(
-                color: Colors.grey.shade800,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.normal,
               ),

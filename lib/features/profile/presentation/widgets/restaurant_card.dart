@@ -23,17 +23,16 @@ class RestaurantCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        color: Colors.white,
+        // color: Colors.white,
         clipBehavior: Clip.antiAlias,
-        surfaceTintColor: Colors.white,
+        // surfaceTintColor: Colors.white,
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 8)
-                  .copyWith(top: 3),
+              padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 8).copyWith(top: 3),
               child: imageUrl.isEmpty
                   ? Container(
                       decoration: BoxDecoration(
@@ -71,7 +70,7 @@ class RestaurantCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w600,
-                    color: Colors.grey.shade800,
+                    // color: Colors.grey.shade800,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

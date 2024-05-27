@@ -100,7 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           'Sign in to your account',
                           style: TextStyle(
                             fontSize: 14.r,
-                            color: Colors.grey.shade800,
+                            // color: Colors.grey.shade800,
                             fontWeight: FontWeight.normal,
                           ),
                         ),
@@ -162,7 +162,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         text: "Don't have an account? ",
                         style: TextStyle(
                           fontSize: 14.r,
-                          color: Colors.grey.shade800,
+                          // color: Colors.grey.shade800,
                         ),
                         children: [
                           TextSpan(

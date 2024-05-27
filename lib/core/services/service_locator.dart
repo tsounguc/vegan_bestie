@@ -11,6 +11,7 @@ import 'package:sheveegan/features/auth/data/data_sources/auth_remote_data_sourc
 import 'package:sheveegan/features/auth/data/repository_impl/auth_repository_impl.dart';
 import 'package:sheveegan/features/auth/domain/repositories/auth_repository.dart';
 import 'package:sheveegan/features/auth/domain/usecases/create_with_email_and_password.dart';
+import 'package:sheveegan/features/auth/domain/usecases/delete_account.dart';
 import 'package:sheveegan/features/auth/domain/usecases/forgot_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/remove_food_product.dart';
 import 'package:sheveegan/features/auth/domain/usecases/remove_restaurant.dart';

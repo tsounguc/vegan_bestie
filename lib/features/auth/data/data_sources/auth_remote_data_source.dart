@@ -7,7 +7,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:sheveegan/core/enums/update_user.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
-import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/firebase_constants.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
@@ -40,6 +39,8 @@ abstract class AuthRemoteDataSource {
 // Future<UserModel> currentUser();
 //
 // Future<void> signOut();
+
+  Future<void> deleteAccount({required String password});
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -163,6 +164,58 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
       throw SignInWithEmailAndPasswordException(
+        message: e.toString(),
+        statusCode: '505',
+      );
+    }
+  }
+
+  @override
+  Future<void> deleteAccount({required String password}) async {
+    try {
+      await _authClient.currentUser?.reauthenticateWithCredential(
+        EmailAuthProvider.credential(
+          email: _authClient.currentUser!.email!,
+          password: password,
+        ),
+      );
+      // .then((userCredential) async {
+      await _users.doc(_authClient.currentUser?.uid).delete();
+
+      final ref = _dbClient.ref().child('profile_pics/${_authClient.currentUser?.uid}');
+      await ref.getDownloadURL().then((response) {
+        ref.delete();
+      }).catchError((error) {
+        // throw DeleteAccountException(
+        //   message: error.toString(),
+        //   statusCode: '500',
+        // );
+      });
+
+      await _authClient.currentUser?.delete();
+      // }).catchError((error) async {
+      //   // throw const DeleteAccountException(
+      //   //   message: 'Authentication Failed',
+      //   //   statusCode: '500',
+      //   // );
+      //
+      //   throw await Future.value('Wrong Password');
+      // });
+      await _authClient.currentUser?.reload();
+    } on FirebaseException catch (e) {
+      String errorMessage = 'Error Occurred';
+      if (e.code == 'user-mismatch' || e.code == 'invalid-credential' || e.code == 'wrong-password') {
+        errorMessage = 'Authentication Failed';
+      } else {
+        errorMessage = 'Authentication Failed';
+      }
+      throw DeleteAccountException(
+        message: errorMessage,
+        statusCode: e.code,
+      );
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw DeleteAccountException(
         message: e.toString(),
         statusCode: '505',
       );

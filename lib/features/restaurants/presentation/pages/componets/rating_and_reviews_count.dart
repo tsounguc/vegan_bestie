@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 
 class RatingAndReviewsCountWidget extends StatelessWidget {
@@ -39,7 +40,7 @@ class RatingAndReviewsCountWidget extends StatelessWidget {
             Text(
               '${rating.toStringAsPrecision(2)} out of 5',
               style: TextStyle(
-                color: Colors.grey.shade700,
+                color: context.theme.textTheme.bodySmall?.color,
                 fontSize: 11.sp,
                 fontWeight: FontWeight.w500,
               ),

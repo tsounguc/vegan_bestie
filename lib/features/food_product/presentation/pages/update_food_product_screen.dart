@@ -302,12 +302,9 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
       builder: (context, state) {
         return Scaffold(
           extendBodyBehindAppBar: true,
-          backgroundColor: Colors.white,
+          // backgroundColor: Colors.white,
           appBar: AppBar(
             surfaceTintColor: Colors.white,
-            leading: const CustomBackButton(
-              color: Colors.black,
-            ),
             title: Text(widget.title),
           ),
           body: Container(
@@ -330,7 +327,7 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
                             height: context.height * 0.2,
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              // color: Colors.white,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: pickedImage != null

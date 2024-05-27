@@ -20,26 +20,22 @@ class _CustomBackButtonState extends State<CustomBackButton> {
     return Row(
       children: [
         Expanded(
-          child: ElevatedButton(
-            style: ButtonStyle(
-              elevation: MaterialStatePropertyAll(0),
-              shape: const MaterialStatePropertyAll(
-                CircleBorder(),
-              ),
-              minimumSize: const MaterialStatePropertyAll(Size(45, 45)),
-              backgroundColor: MaterialStatePropertyAll(
-                  widget.color != Colors.white
-                      ? Colors.white
-                      : Colors.transparent),
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              padding: const EdgeInsets.only(left: 6),
+              shape: const CircleBorder(),
+              // minimumSize: const Size(45, 45),
+              backgroundColor: widget.color != Colors.white ? Colors.white : Colors.transparent,
             ),
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            icon: Icon(
               Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
               color: widget.color,
             ),
-            // label: Text(''),
+            label: const Text(''),
           ),
         ),
       ],

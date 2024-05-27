@@ -1,7 +1,15 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sheveegan/core/common/widgets/i_field.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
+import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:sheveegan/features/auth/presentation/pages/sign_in_screen.dart';
 
 class CoreUtils {
   const CoreUtils._();
@@ -30,9 +38,170 @@ class CoreUtils {
   static void showLoadingDialog(BuildContext context) {
     showDialog<void>(
       context: context,
-      builder: (_) => const Center(
-        child: CircularProgressIndicator(),
+      builder: (_) => Center(
+        child: CircularProgressIndicator(
+          backgroundColor: context.theme.colorScheme.background,
+        ),
       ),
+    );
+  }
+
+  static void displayDeleteAccountWarning(BuildContext context, {void Function()? onDeletePressed}) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // backgroundColor: Colors.yellow[600],
+          backgroundColor: context.theme.cardTheme.color,
+          surfaceTintColor: context.theme.cardTheme.color,
+          title: Text(
+            'WARNING',
+            style: context.theme.textTheme.titleMedium,
+          ),
+          content: Text(
+            'Are you sure you want to delete this account?',
+            style: context.theme.textTheme.bodyMedium,
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'CANCEL',
+                style: context.theme.textTheme.bodyMedium,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              onPressed: onDeletePressed,
+              child: Text(
+                'DELETE ACCOUNT',
+                style: context.theme.textTheme.bodyMedium?.copyWith(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static void showEnterPasswordDialog(BuildContext context) async {
+    final textController = TextEditingController();
+    final bloc = BlocProvider.of<AuthBloc>(context);
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // backgroundColor: Colors.yellow[600],
+          backgroundColor: context.theme.cardTheme.color,
+          surfaceTintColor: context.theme.cardTheme.color,
+          title: Text(
+            'Enter Password',
+            style: context.theme.textTheme.titleMedium,
+          ),
+          content: IField(
+            controller: textController,
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'CANCEL',
+                style: context.theme.textTheme.bodyMedium,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text(
+                'DELETE ACCOUNT',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                // final navigator = Navigator.of(context);
+                bloc.add(
+                  DeleteAccountEvent(
+                    password: textController.text.trim(),
+                  ),
+                );
+                context.savedProductsProvider.savedProductsList = null;
+                context.savedRestaurantsProvider.savedRestaurantsList = null;
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  static void displayHoursDialog(
+    BuildContext context,
+    List<String> weekdayText,
+  ) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: context.theme.cardTheme.color,
+          surfaceTintColor: context.theme.cardTheme.color,
+          title: Text(
+            'Hours',
+            style: context.theme.textTheme.bodyMedium?.copyWith(
+              // color: Colors.black,
+              fontSize: 16.sp,
+            ),
+          ),
+          content: IntrinsicHeight(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (int index = 0; index < weekdayText.length; index++)
+                  Row(
+                    children: [
+                      FittedBox(
+                        child: Text(
+                          weekdayText[index].replaceAll(
+                            ', ',
+                            '\n                     ',
+                          ),
+                          style: TextStyle(
+                            // color: Colors.black,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Ok',
+                style: TextStyle(
+                  // color: Colors.black,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+          actionsPadding: const EdgeInsets.symmetric(
+            vertical: 15,
+            horizontal: 15,
+          ),
+        );
+      },
     );
   }
 

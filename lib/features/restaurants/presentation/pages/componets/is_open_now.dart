@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/utils/core_utils.dart';
 
 class IsOpenNowWidget extends StatelessWidget {
   const IsOpenNowWidget({
@@ -22,35 +24,25 @@ class IsOpenNowWidget extends StatelessWidget {
     return Visibility(
       visible: visible == true,
       child: ElevatedButton.icon(
-        style: ButtonStyle(
-          backgroundColor: const MaterialStatePropertyAll(Colors.white),
-          surfaceTintColor: const MaterialStatePropertyAll(Colors.white),
+        style: ElevatedButton.styleFrom(
+          // backgroundColor: context.theme.cardTheme.color,
+          // surfaceTintColor: context.theme.cardTheme.color,
           shape: weekdayText.isEmpty
               ? null
-              : MaterialStatePropertyAll(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
+              : RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-          padding: weekdayText.isEmpty
-              ? const MaterialStatePropertyAll(
-                  EdgeInsets.zero,
-                )
-              : MaterialStatePropertyAll(
-                  EdgeInsets.symmetric(vertical: 12.r, horizontal: 12.r),
-                ),
-          elevation: weekdayText.isEmpty
-              ? const MaterialStatePropertyAll(
-                  0,
-                )
-              : const MaterialStatePropertyAll(
-                  2,
-                ),
+          padding: weekdayText.isEmpty ? EdgeInsets.zero : EdgeInsets.symmetric(vertical: 12.r, horizontal: 12.r),
+          elevation: weekdayText.isEmpty ? 0 : 2,
+        ).copyWith(
+          backgroundColor: MaterialStatePropertyAll(context.theme.cardTheme.color),
+          surfaceTintColor: MaterialStatePropertyAll(context.theme.cardTheme.color),
         ),
         onPressed: weekdayText.isEmpty
             ? null
-            : () => _displayHoursDialog(
+            : () => CoreUtils.displayHoursDialog(
                   context,
+                  weekdayText,
                 ),
         icon: Icon(
           Icons.access_time,
@@ -66,73 +58,6 @@ class IsOpenNowWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Future<void> _displayHoursDialog(
-    BuildContext context,
-  ) async {
-    return showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-          title: Text(
-            'Hours',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.black,
-                  fontSize: 16.sp,
-                ),
-          ),
-          content: IntrinsicHeight(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (int index = 0; index < weekdayText.length; index++)
-                  Row(
-                    children: [
-                      FittedBox(
-                        child: Text(
-                          weekdayText[index].replaceAll(
-                            ', ',
-                            '\n                     ',
-                          ),
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                'Ok',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-          actionsPadding: const EdgeInsets.symmetric(
-            vertical: 15,
-            horizontal: 15,
-          ),
-        );
-      },
     );
   }
 }

@@ -40,15 +40,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-  bool get nameChanged =>
-      context.currentUser?.name.trim() != fullNameController.text.trim();
+  bool get nameChanged => context.currentUser?.name.trim() != fullNameController.text.trim();
 
   bool get emailChanged => emailController.text.trim().isNotEmpty;
 
   // bool get passwordChanged => passwordController.text.trim().isNotEmpty;
 
-  bool get bioChanged =>
-      context.currentUser?.bio?.trim() != bioController.text.trim();
+  bool get bioChanged => context.currentUser?.bio?.trim() != bioController.text.trim();
 
   bool get imageChanged => pickedImage != null;
 
@@ -149,14 +147,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       builder: (context, state) {
         return Scaffold(
           extendBodyBehindAppBar: true,
-          backgroundColor: Colors.white,
+          // backgroundColor: Colors.white,
           appBar: AppBar(
-            surfaceTintColor: Colors.white,
-            leading: CustomBackButton(
-              color: Colors.grey.shade800,
-              // color: Theme.of(context).primaryColor,
-            ),
-            title: Text('Edit Profile'),
+            // surfaceTintColor: Colors.white,
+            title: const Text('Edit Profile'),
           ),
           body: Container(
             constraints: const BoxConstraints.expand(),
@@ -168,10 +162,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   Builder(
                     builder: (context) {
                       final user = context.currentUser!;
-                      final userImage =
-                          user.photoUrl == null || user.photoUrl!.isEmpty
-                              ? null
-                              : user.photoUrl;
+                      final userImage = user.photoUrl == null || user.photoUrl!.isEmpty ? null : user.photoUrl;
                       return Stack(
                         alignment: AlignmentDirectional.center,
                         children: [
@@ -180,7 +171,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             height: context.height * 0.2,
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              // color: Colors.white,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: pickedImage != null
@@ -189,10 +180,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     fit: BoxFit.contain,
                                   )
                                 : userImage != null
-                                    ? Image.network(userImage,
-                                        fit: BoxFit.contain)
-                                    : Image.asset(kUserIconPath,
-                                        fit: BoxFit.contain),
+                                    ? Image.network(userImage, fit: BoxFit.contain)
+                                    : Image.asset(kUserIconPath, fit: BoxFit.contain),
                           ),
                           Positioned(
                             child: Container(
@@ -208,9 +197,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           IconButton(
                             onPressed: pickImage,
                             icon: Icon(
-                              (pickedImage != null || user.photoUrl != null)
-                                  ? Icons.edit
-                                  : Icons.add_a_photo,
+                              (pickedImage != null || user.photoUrl != null) ? Icons.edit : Icons.add_a_photo,
                               color: Colors.white,
                             ),
                           ),
@@ -236,16 +223,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       return state is AuthLoading
                           ? const Center(child: CircularProgressIndicator())
                           : LongButton(
-                              onPressed: nothingChanged
-                                  ? null
-                                  : () => saveChanges(context),
+                              onPressed: nothingChanged ? null : () => saveChanges(context),
                               label: 'Save',
                               backgroundColor: nothingChanged
                                   ? Colors.grey
-                                  : Theme.of(context)
-                                      .buttonTheme
-                                      .colorScheme
-                                      ?.primary,
+                                  : Theme.of(context).buttonTheme.colorScheme?.primary,
                               textColor: Colors.white,
                             );
                     },

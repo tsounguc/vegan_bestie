@@ -28,12 +28,6 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
 
   double rating = 0;
 
-  final textStyle = TextStyle(
-    color: Colors.black,
-    fontSize: 14.sp,
-    fontWeight: FontWeight.w500,
-  );
-
   void submitReview(BuildContext context) {
     final restaurantReview = RestaurantReviewModel.empty().copyWith(
       title: titleController.text.trim().isNotEmpty
@@ -90,7 +84,11 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
                     children: [
                       Text(
                         'How would you rate ${widget.restaurantDetails.name}',
-                        style: textStyle,
+                        style: TextStyle(
+                          // color: Colors.black,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),

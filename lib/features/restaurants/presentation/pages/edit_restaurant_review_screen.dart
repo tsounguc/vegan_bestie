@@ -113,7 +113,11 @@ class _EditRestaurantReviewScreenState extends State<EditRestaurantReviewScreen>
                     children: [
                       Text(
                         'How would you rate ${widget.restaurant.name}',
-                        style: textStyle,
+                        style: TextStyle(
+                          // color: Colors.black,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),

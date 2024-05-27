@@ -16,22 +16,13 @@ class AllSavedProductsPage extends StatelessWidget {
     final scrollController = ScrollController();
     return Consumer<SavedProductsProvider>(
       builder: (_, productsProvider, __) {
-        final productsList =
-            productsProvider.savedProductsList ?? <FoodProduct>[];
+        final productsList = productsProvider.savedProductsList ?? <FoodProduct>[];
         return Scaffold(
-          backgroundColor: Colors.white,
           appBar: AppBar(
             elevation: 0,
             surfaceTintColor: Colors.white,
-            leading: const CustomBackButton(
-              color: Colors.black,
-            ),
             title: Text(
               'Saved Food Products',
-              style: TextStyle(
-                color: Colors.grey.shade800,
-                // fontSize: 24,
-              ),
             ),
           ),
           body: SingleChildScrollView(

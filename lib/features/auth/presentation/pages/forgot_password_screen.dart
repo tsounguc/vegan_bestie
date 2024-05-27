@@ -85,7 +85,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     'a link to reset your password',
                             style: TextStyle(
                               fontSize: 14.r,
-                              color: Colors.grey.shade800,
+                              // color: Colors.grey.shade800,
                               fontWeight: FontWeight.normal,
                             ),
                           ),

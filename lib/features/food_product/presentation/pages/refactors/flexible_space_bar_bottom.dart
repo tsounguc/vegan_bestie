@@ -33,7 +33,7 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
             horizontal: 35,
           ).copyWith(right: 25),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.93),
+            color: context.theme.colorScheme.background.withOpacity(0.93),
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(20.r),
               topLeft: Radius.circular(20.r),
@@ -49,7 +49,7 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w700,
-                    color: Colors.grey.shade800,
+                    // color: Colors.grey.shade800,
                   ),
                 ),
               ),
@@ -58,7 +58,7 @@ class FlexibleSpaceBarBottom extends StatelessWidget {
                   height: context.width * 0.09,
                   width: context.width * 0.12,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: context.theme.cardTheme.color,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: const [
                       BoxShadow(

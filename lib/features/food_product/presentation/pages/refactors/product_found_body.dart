@@ -55,7 +55,7 @@ class ProductFoundBody extends StatelessWidget {
               Text(
                 Strings.macrosText,
                 style: TextStyle(
-                  color: Colors.grey.shade800,
+                  // color: Colors.grey.shade800,
                   fontSize: 12.sp,
                 ),
               ),
@@ -127,7 +127,7 @@ class ProductFoundBody extends StatelessWidget {
               Text(
                 Strings.ingredientsText,
                 style: TextStyle(
-                  color: Colors.grey.shade800,
+                  // color: Colors.grey.shade800,
                   fontSize: 12.sp,
                 ),
               ),
@@ -156,7 +156,7 @@ class ProductFoundBody extends StatelessWidget {
                     ? Text(
                         product.ingredientsText.toLowerCase().capitalizeEveryWord(', ').capitalizeEveryWord(' ('),
                         style: TextStyle(
-                          color: Colors.grey.shade800,
+                          // color: Colors.grey.shade800,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.normal,
                         ),
@@ -165,7 +165,7 @@ class ProductFoundBody extends StatelessWidget {
                         child: Text(
                           Strings.ingredientsNotFoundText,
                           style: TextStyle(
-                            color: Colors.grey.shade800,
+                            // color: Colors.grey.shade800,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.normal,
                           ),
@@ -180,19 +180,20 @@ class ProductFoundBody extends StatelessWidget {
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
               elevation: 2,
-              surfaceTintColor: Colors.white,
+              surfaceTintColor: context.theme.cardTheme.color,
+              backgroundColor: context.theme.cardTheme.color,
             ),
             onPressed: () => user != null && user.isAdmin
                 ? gotoUpdateFoodProductPage(context)
                 : goToReportIssue(context, product),
             icon: const Icon(
-              Icons.report,
+              Icons.report_outlined,
               color: Colors.red,
             ),
             label: Text(
               context.currentUser!.isAdmin ? 'Fix Issue' : 'Report Issue',
               style: TextStyle(
-                color: Colors.grey.shade800,
+                color: context.theme.textTheme.titleSmall?.color,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
               ),

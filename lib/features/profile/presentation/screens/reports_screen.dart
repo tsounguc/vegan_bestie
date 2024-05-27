@@ -44,20 +44,13 @@ class ReportsScreen extends StatelessWidget {
             }
           },
           child: Scaffold(
-            backgroundColor: Colors.white,
+            // backgroundColor: Colors.white,
             appBar: AppBar(
               elevation: 0,
               surfaceTintColor: Colors.white,
-              leading: const CustomBackButton(
-                color: Colors.black,
-              ),
-              title: Text(
+              leading: const CustomBackButton(),
+              title: const Text(
                 'Reports',
-                style: TextStyle(
-                  color: Colors.grey.shade800,
-                  fontWeight: FontWeight.w500,
-                  // fontSize: 24,
-                ),
               ),
             ),
             body: SingleChildScrollView(
@@ -98,7 +91,7 @@ class ReportsScreen extends StatelessWidget {
                                   Text(
                                     'Barcode: ${report.barcode}',
                                     style: TextStyle(
-                                      color: Colors.grey.shade800,
+                                      // color: Colors.grey.shade800,
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -109,7 +102,7 @@ class ReportsScreen extends StatelessWidget {
                                         context,
                                       ).deleteReports(report);
                                     },
-                                    icon: const Icon(Icons.delete),
+                                    icon: Icon(Icons.delete, color: context.theme.iconTheme.color),
                                   )
                                 ],
                               ),
@@ -119,7 +112,7 @@ class ReportsScreen extends StatelessWidget {
                               Text(
                                 'From User: ${report.userName}',
                                 style: TextStyle(
-                                  color: Colors.grey.shade800,
+                                  // color: Colors.grey.shade800,
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -130,7 +123,7 @@ class ReportsScreen extends StatelessWidget {
                               Text(
                                 'Issues: ',
                                 style: TextStyle(
-                                  color: Colors.grey.shade800,
+                                  // color: Colors.grey.shade800,
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -144,7 +137,7 @@ class ReportsScreen extends StatelessWidget {
                                   child: Text(
                                     'Incorrect Image',
                                     style: TextStyle(
-                                      color: Colors.grey.shade800,
+                                      // color: Colors.grey.shade800,
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -159,7 +152,7 @@ class ReportsScreen extends StatelessWidget {
                                   child: Text(
                                     'Incorrect Product Name',
                                     style: TextStyle(
-                                      color: Colors.grey.shade800,
+                                      // color: Colors.grey.shade800,
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -174,7 +167,7 @@ class ReportsScreen extends StatelessWidget {
                                   child: Text(
                                     'Incorrect Macros',
                                     style: TextStyle(
-                                      color: Colors.grey.shade800,
+                                      // color: Colors.grey.shade800,
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -189,7 +182,7 @@ class ReportsScreen extends StatelessWidget {
                                   child: Text(
                                     'Incorrect Ingredients',
                                     style: TextStyle(
-                                      color: Colors.grey.shade800,
+                                      // color: Colors.grey.shade800,
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -204,7 +197,7 @@ class ReportsScreen extends StatelessWidget {
                                   child: Text(
                                     'Incorrect Label',
                                     style: TextStyle(
-                                      color: Colors.grey.shade800,
+                                      // color: Colors.grey.shade800,
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -219,7 +212,7 @@ class ReportsScreen extends StatelessWidget {
                                   child: Text(
                                     'Wrong Product',
                                     style: TextStyle(
-                                      color: Colors.grey.shade800,
+                                      // color: Colors.grey.shade800,
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -234,7 +227,7 @@ class ReportsScreen extends StatelessWidget {
                                   child: Text(
                                     "Doesn't Not Exist",
                                     style: TextStyle(
-                                      color: Colors.grey.shade800,
+                                      // color: Colors.grey.shade800,
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -249,7 +242,7 @@ class ReportsScreen extends StatelessWidget {
                                   child: Text(
                                     'Other Issues',
                                     style: TextStyle(
-                                      color: Colors.grey.shade800,
+                                      // color: Colors.grey.shade800,
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -258,7 +251,7 @@ class ReportsScreen extends StatelessWidget {
                               Text(
                                 'Comment: ${report.comment}',
                                 style: TextStyle(
-                                  color: Colors.grey.shade800,
+                                  // color: Colors.grey.shade800,
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w500,
                                 ),

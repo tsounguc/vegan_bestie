@@ -102,6 +102,15 @@ class AppRouter {
           settings: settings,
         );
 
+      case SettingsPage.id:
+        return _pageBuilder(
+          (_) => BlocProvider<AuthBloc>(
+            create: (_) => serviceLocator<AuthBloc>(),
+            child: const SettingsPage(),
+          ),
+          settings: settings,
+        );
+
       case ReportsScreen.id:
         return _pageBuilder(
           (_) => BlocProvider<FoodProductCubit>.value(

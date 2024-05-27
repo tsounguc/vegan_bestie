@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 
 class MacroNutrientWidget extends StatelessWidget {
   const MacroNutrientWidget({
@@ -26,7 +27,7 @@ class MacroNutrientWidget extends StatelessWidget {
           width: 45,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.theme.cardTheme.color,
             // border: Border.all(color: Colors.black12),
             borderRadius: BorderRadius.circular(12),
             boxShadow: const [
@@ -51,14 +52,14 @@ class MacroNutrientWidget extends StatelessWidget {
                   Text(
                     '$title (${percentage.toStringAsFixed(1)}%)',
                     style: TextStyle(
-                      color: Colors.grey.shade800,
+                      // color: Colors.grey.shade800,
                       fontSize: 12.sp,
                     ),
                   ),
                   Text(
                     " ${value?.toStringAsFixed(1) ?? "0.0"} g",
                     style: TextStyle(
-                      color: Colors.black,
+                      // color: Colors.black,
                       fontSize: 12.sp,
                     ),
                   ),
@@ -68,7 +69,7 @@ class MacroNutrientWidget extends StatelessWidget {
               LinearProgressIndicator(
                 value: percentage / 100,
                 valueColor: AlwaysStoppedAnimation<Color>(color),
-                backgroundColor: Colors.grey,
+                backgroundColor: Colors.grey.shade300,
               ),
             ],
           ),

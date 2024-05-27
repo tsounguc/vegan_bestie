@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:sheveegan/features/profile/presentation/screens/edit_profile_screen.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});
@@ -14,7 +17,7 @@ class ProfileHeader extends StatelessWidget {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 25),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.7),
+            color: context.theme.cardTheme.color?.withOpacity(0.93),
             border: const Border(
               right: BorderSide(color: Colors.black12),
               left: BorderSide(color: Colors.black12),
@@ -31,31 +34,52 @@ class ProfileHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10.h),
-                Row(
-                  children: [
-                    if (user?.bio != null && user!.bio!.isNotEmpty)
+                if (user?.bio != null && user!.bio!.isNotEmpty)
+                  Row(
+                    children: [
                       Text(
                         user.bio!,
                         style: TextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
-                          color: Colors.grey.shade800,
-                        ),
-                      )
-                    else
-                      Center(
-                        child: Text(
-                          'Say something about yourself',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.grey.shade500,
-                          ),
+                          // color: Colors.grey.shade800,
                         ),
                       ),
+                    ],
+                  ),
+                if (user?.bio != null && user!.bio!.isNotEmpty)
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    OutlinedButton(
+                      // style: OutlinedButton.styleFrom(
+                      //   surfaceTintColor: context.theme.colorScheme.background,
+                      //   // side: const BorderSide(
+                      //   //   color: Colors.black,
+                      //   //   width: 1,
+                      //   // ),
+                      //   minimumSize: const Size(130, 50),
+                      //   elevation: 2,
+                      // ),
+                      onPressed: () => Navigator.of(context).pushNamed(
+                        EditProfileScreen.id,
+                        arguments: context.read<AuthBloc>(),
+                      ),
+                      child: Text(
+                        'Edit Profile',
+                        style: context.theme.textTheme.titleSmall,
+                      ),
+                      // icon: Icon(
+                      //   Icons.edit_outlined,
+                      //   color: Colors.black,
+                      // ),
+                    ),
                   ],
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 15),
               ],
             ),
           ),

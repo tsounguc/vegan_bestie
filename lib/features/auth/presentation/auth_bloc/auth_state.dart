@@ -41,6 +41,10 @@ class UserUpdated extends AuthState {
   const UserUpdated();
 }
 
+class AccountDeleted extends AuthState {
+  const AccountDeleted();
+}
+
 class AuthError extends AuthState {
   const AuthError({required this.message});
 

@@ -56,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (_, state) {
           if (state is AuthError) {
@@ -108,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       'Sign up for an account',
                       style: TextStyle(
                         fontSize: 14.r,
-                        color: Colors.grey.shade800,
+                        // color: Colors.grey.shade800,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
@@ -145,7 +145,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         text: 'Already have an account? ',
                         style: TextStyle(
                           fontSize: 14.r,
-                          color: Colors.grey.shade800,
+                          // color: Colors.grey.shade800,
                         ),
                         children: [
                           TextSpan(

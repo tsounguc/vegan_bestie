@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/bottom_navigation_bar_provider.dart';
-import 'package:sheveegan/core/common/app/providers/restaurants_near_me_provider.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
-import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
@@ -24,12 +21,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    context.read<RestaurantsNearMeProvider>().radius = 3.0 * kOneMile;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext buildContext) {
     return MultiBlocListener(
@@ -95,8 +86,6 @@ class _HomePageState extends State<HomePage> {
                   color: Theme.of(context).colorScheme.background,
                 ),
                 child: Scaffold(
-                  // key: scaffoldKey,
-                  // extendBodyBehindAppBar: true,
                   backgroundColor: Colors.transparent,
                   resizeToAvoidBottomInset: true,
                   appBar: controller.currentIndex == 0 || controller.currentIndex == 2
@@ -104,12 +93,15 @@ class _HomePageState extends State<HomePage> {
                       : AppBar(
                           leadingWidth: 80,
                           toolbarHeight: 80,
-                          backgroundColor: Colors.white,
-                          surfaceTintColor: Colors.white,
+                          // backgroundColor: Colors.white,
+                          // surfaceTintColor: Colors.white,
                           centerTitle: true,
                           title: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.5,
-                            child: const VeganBestieLogoWidget(size: 25, fontSize: 35),
+                            child: const VeganBestieLogoWidget(
+                              size: 25,
+                              fontSize: 35,
+                            ),
                           ),
                         ),
                   body: controller.screens[controller.currentIndex],

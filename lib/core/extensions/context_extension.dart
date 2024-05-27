@@ -4,6 +4,7 @@ import 'package:sheveegan/core/common/app/providers/food_product_reports_provide
 import 'package:sheveegan/core/common/app/providers/saved_products_provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_restaurants_provider.dart';
 import 'package:sheveegan/core/common/app/providers/tab_navigator.dart';
+import 'package:sheveegan/core/common/app/providers/theme_mode_provider.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
 
@@ -27,6 +28,8 @@ extension ContextExtension on BuildContext {
   SavedRestaurantsProvider get savedRestaurantsProvider => read<SavedRestaurantsProvider>();
 
   FoodProductReportsProvider get reportsProvider => read<FoodProductReportsProvider>();
+
+  ThemeModeProvider get themeModeProvider => read<ThemeModeProvider>();
 
   TabNavigator get tabNavigator => read<TabNavigator>();
 

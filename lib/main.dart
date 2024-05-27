@@ -18,6 +18,8 @@ import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 
+import 'core/common/app/providers/theme_mode_provider.dart';
+
 void main() async {
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,17 +67,22 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => BottomNavigationBarProvider()),
         ChangeNotifierProvider(create: (_) => FoodProductReportsProvider()),
         ChangeNotifierProvider(create: (_) => RestaurantsNearMeProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeModeProvider())
       ],
       child: ScreenUtilInit(
-        builder: (context, child) => MaterialApp(
-          builder: DevicePreview.appBuilder,
-          locale: DevicePreview.locale(context),
-          debugShowCheckedModeBanner: false,
-          title: Strings.appTitle,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: ThemeMode.light,
-          onGenerateRoute: AppRouter.onGenerateRoute,
+        builder: (context, child) => Consumer<ThemeModeProvider>(
+          builder: (BuildContext context, ThemeModeProvider provider, Widget? child) {
+            return MaterialApp(
+              builder: DevicePreview.appBuilder,
+              locale: DevicePreview.locale(context),
+              debugShowCheckedModeBanner: false,
+              title: Strings.appTitle,
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: provider.themeMode,
+              onGenerateRoute: AppRouter.onGenerateRoute,
+            );
+          },
         ),
       ),
     );

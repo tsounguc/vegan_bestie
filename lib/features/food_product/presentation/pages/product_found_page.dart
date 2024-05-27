@@ -110,15 +110,17 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
         }
         final user = context.userProvider.user;
         return Scaffold(
-          backgroundColor: Colors.white,
+          // backgroundColor: Colors.white,
           body: CustomScrollView(
             shrinkWrap: true,
             slivers: [
               SliverAppBar(
                 expandedHeight: context.height * 0.46,
                 pinned: true,
-                backgroundColor: Colors.white,
-                leading: const CustomBackButton(),
+                // backgroundColor: Colors.white,
+                leading: CustomBackButton(
+                  color: context.theme.iconTheme.color!,
+                ),
                 actions: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(

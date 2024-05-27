@@ -24,7 +24,7 @@ class SectionHeader extends StatelessWidget {
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w600,
-            color: Colors.grey.shade800,
+            // color: Colors.grey.shade800,
           ),
         ),
         if (seeAll)

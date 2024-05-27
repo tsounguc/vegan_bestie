@@ -17,6 +17,7 @@ Future<void> _initAuth() async {
         createUserAccount: serviceLocator(),
         forgotPassword: serviceLocator(),
         updateUser: serviceLocator(),
+        deleteAccount: serviceLocator(),
       ),
     )
     // Use cases
@@ -24,6 +25,7 @@ Future<void> _initAuth() async {
     ..registerLazySingleton(() => CreateUserAccount(serviceLocator()))
     ..registerLazySingleton(() => ForgotPassword(serviceLocator()))
     ..registerLazySingleton(() => UpdateUser(serviceLocator()))
+    ..registerLazySingleton(() => DeleteAccount(serviceLocator()))
     // Repositories
     ..registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(serviceLocator()),

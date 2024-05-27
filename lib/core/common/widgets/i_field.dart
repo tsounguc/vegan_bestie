@@ -59,7 +59,7 @@ class IField extends StatelessWidget {
         FocusScope.of(context).unfocus();
       },
       style: TextStyle(
-        color: Colors.black,
+        // color: Colors.black,
         fontWeight: FontWeight.normal,
         fontSize: 14.r,
       ),

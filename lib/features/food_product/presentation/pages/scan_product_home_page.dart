@@ -88,7 +88,7 @@ class ScanProductHomePage extends StatelessWidget {
                       return Container(
                         width: value,
                         height: value,
-                        color: Colors.white,
+                        // color: Colors.white,
                         child: animationChild,
                       );
                     },
@@ -98,25 +98,21 @@ class ScanProductHomePage extends StatelessWidget {
                           context,
                         ).scanBarcode();
                       },
-                      style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(6),
-                        shadowColor: MaterialStateProperty.all(Colors.black),
-                        fixedSize: MaterialStateProperty.all(
-                          Size.fromRadius(90.r),
-                        ),
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.white,
-                        ),
-                        surfaceTintColor: MaterialStateProperty.all(Colors.white),
-                        shape: MaterialStateProperty.all(const CircleBorder()),
-                      ),
+                      style: ElevatedButton.styleFrom(
+                          // elevation: 6,
+                          // shadowColor: MaterialStateProperty.all(Colors.black),
+                          // fixedSize: Size.fromRadius(90.r),
+                          // backgroundColor: Colors.white,
+                          // surfaceTintColor: Colors.white,
+                          // shape: const CircleBorder(),
+                          ),
                       child: Center(
                         child: Padding(
                           padding: EdgeInsets.only(right: 10.0.r),
                           child: ImageIcon(
                             const AssetImage('assets/logo/VeganBestie_NoBackground_Fixed2.png'),
                             size: 170.0.r,
-                            color: Colors.blueGrey.shade900,
+                            color: Colors.grey.shade900,
                           ),
                         ),
                       ),

@@ -82,6 +82,16 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  @override
+  ResultVoid deleteAccount({required String password}) async {
+    try {
+      await _remoteDataSource.deleteAccount(password: password);
+      return const Right(null);
+    } on DeleteAccountException catch (e) {
+      return Left(DeleteAccountFailure.fromException(e));
+    }
+  }
+
 // @override
 // ResultFuture<UserEntity> signInWithGoogle() async {
 //   try {

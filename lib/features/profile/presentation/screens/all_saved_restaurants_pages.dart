@@ -38,19 +38,11 @@ class AllSavedRestaurantsPage extends StatelessWidget {
       builder: (_, restaurantsProvider, __) {
         final restaurantsList = restaurantsProvider.savedRestaurantsList ?? <RestaurantDetails>[];
         return Scaffold(
-          backgroundColor: Colors.white,
           appBar: AppBar(
             elevation: 0,
             surfaceTintColor: Colors.white,
-            leading: const CustomBackButton(
-              color: Colors.black,
-            ),
             title: Text(
               'Saved Restaurants',
-              style: TextStyle(
-                color: Colors.grey.shade800,
-                // fontSize: 24,
-              ),
             ),
           ),
           body: SingleChildScrollView(

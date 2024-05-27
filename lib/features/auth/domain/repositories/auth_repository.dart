@@ -23,6 +23,8 @@ abstract class AuthRepository {
     required dynamic userData,
   });
 
+  ResultVoid deleteAccount({required String password});
+
 // ResultFuture<UserEntity> signInWithGoogle();
 //
 // ResultFuture<UserEntity> signInWithFacebook();
