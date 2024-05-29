@@ -61,7 +61,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider.value(
+          value: UserProvider(),
+        ),
         ChangeNotifierProvider(create: (_) => SavedProductsProvider()),
         ChangeNotifierProvider(create: (_) => SavedRestaurantsProvider()),
         ChangeNotifierProvider(create: (_) => BottomNavigationBarProvider()),
@@ -71,7 +73,11 @@ class _MyAppState extends State<MyApp> {
       ],
       child: ScreenUtilInit(
         builder: (context, child) => Consumer<ThemeModeProvider>(
-          builder: (BuildContext context, ThemeModeProvider provider, Widget? child) {
+          builder: (
+            BuildContext context,
+            ThemeModeProvider provider,
+            Widget? child,
+          ) {
             return MaterialApp(
               builder: DevicePreview.appBuilder,
               locale: DevicePreview.locale(context),
