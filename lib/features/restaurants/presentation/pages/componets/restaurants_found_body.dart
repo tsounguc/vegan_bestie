@@ -132,7 +132,9 @@ class RestaurantsFoundBody extends StatelessWidget {
                                     weekdayText: [],
                                     userPosition: userPosition,
                                     imageUrl: restaurant.photos.isEmpty
-                                        ? restaurant.icon
+                                        ? restaurant.icon != 'empty.icon'
+                                            ? restaurant.icon
+                                            : ''
                                         : '$kImageBaseUrl${restaurant.photos[0].photoReference}'
                                             '&key=$kGoogleApiKey',
                                     geometry: restaurant.geometry,

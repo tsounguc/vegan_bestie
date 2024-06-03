@@ -94,21 +94,22 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       //   ),
       // );
 
-      final streamResponse = await request.send();
-      final response = await Response.fromStream(streamResponse);
-      if (response.statusCode != 200) {
-        throw RestaurantDetailsException(
-          message: response.body,
-          statusCode: response.statusCode,
-        );
-      }
+      // final streamResponse = await request.send();
+      // final response = await Response.fromStream(streamResponse);
+      // if (response.statusCode != 200) {
+      //   throw RestaurantDetailsException(
+      //     message: response.body,
+      //     statusCode: response.statusCode,
+      //   );
+      // }
 
-      final data = jsonDecode(response.body) as DataMap;
-      final restaurantDetails = RestaurantDetailsModel.fromMap(
-        data['result'] as DataMap,
-      );
+      // final data = jsonDecode(response.body) as DataMap;
+      // final restaurantDetails = RestaurantDetailsModel.fromMap(
+      //   data['result'] as DataMap,
+      // );
 
-      return restaurantDetails;
+      // return restaurantDetails;
+      return RestaurantDetailsModel.empty();
     } on RestaurantDetailsException catch (e, stackTrace) {
       debugPrint(stackTrace.toString());
       rethrow;
@@ -131,50 +132,51 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       final parsedUri = Uri.parse(url);
       final request = Request('GET', parsedUri);
 
-      final streamResponse = await request.send();
-      final response = await Response.fromStream(streamResponse);
-      if (response.statusCode != 200) {
-        throw RestaurantsException(
-          message: response.body,
-          statusCode: response.statusCode,
-        );
-      }
-
-      final data = jsonDecode(response.body) as DataMap;
-      debugPrint('Number of restaurants :  ${(data['results'] as List).length}');
-
-      final restaurants = Set<RestaurantModel>.from(
-        (data['results'] as List).map(
-          (e) => RestaurantModel.fromMap(e as DataMap),
-        ),
-      );
-      if (data['next_page_token'] != null) {
-        final nextPageUrl = '${url}pagetoken=${data['next_page_token'] as String}';
-        final parsedUri = Uri.parse(nextPageUrl);
-        final request = Request('GET', parsedUri);
-
-        final streamResponse = await request.send();
-        final response = await Response.fromStream(streamResponse);
-        if (response.statusCode != 200) {
-          throw RestaurantsException(
-            message: response.body,
-            statusCode: response.statusCode,
-          );
-        }
-
-        final nextData = jsonDecode(response.body) as DataMap;
-        debugPrint('Number of next restaurants :  ${(nextData['results'] as List).length}');
-
-        final nextRestaurants = Set<RestaurantModel>.from(
-          (nextData['results'] as List).map(
-            (e) => RestaurantModel.fromMap(e as DataMap),
-          ),
-        );
-
-        restaurants.addAll(nextRestaurants);
-      }
-
-      return restaurants.toList();
+      // final streamResponse = await request.send();
+      // final response = await Response.fromStream(streamResponse);
+      // if (response.statusCode != 200) {
+      //   throw RestaurantsException(
+      //     message: response.body,
+      //     statusCode: response.statusCode,
+      //   );
+      // }
+      //
+      // final data = jsonDecode(response.body) as DataMap;
+      // debugPrint('Number of restaurants :  ${(data['results'] as List).length}');
+      //
+      // final restaurants = Set<RestaurantModel>.from(
+      //   (data['results'] as List).map(
+      //     (e) => RestaurantModel.fromMap(e as DataMap),
+      //   ),
+      // );
+      // if (data['next_page_token'] != null) {
+      //   final nextPageUrl = '${url}pagetoken=${data['next_page_token'] as String}';
+      //   final parsedUri = Uri.parse(nextPageUrl);
+      //   final request = Request('GET', parsedUri);
+      //
+      //   final streamResponse = await request.send();
+      //   final response = await Response.fromStream(streamResponse);
+      //   if (response.statusCode != 200) {
+      //     throw RestaurantsException(
+      //       message: response.body,
+      //       statusCode: response.statusCode,
+      //     );
+      //   }
+      //
+      //   final nextData = jsonDecode(response.body) as DataMap;
+      //   debugPrint('Number of next restaurants :  ${(nextData['results'] as List).length}');
+      //
+      //   final nextRestaurants = Set<RestaurantModel>.from(
+      //     (nextData['results'] as List).map(
+      //       (e) => RestaurantModel.fromMap(e as DataMap),
+      //     ),
+      //   );
+      //
+      //   restaurants.addAll(nextRestaurants);
+      // }
+      //
+      // return restaurants.toList();
+      return [RestaurantModel.empty().copyWith(icon: '')];
     } on RestaurantsException catch (e, stackTrace) {
       debugPrint(stackTrace.toString());
       rethrow;

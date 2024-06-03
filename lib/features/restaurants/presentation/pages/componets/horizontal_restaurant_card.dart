@@ -87,18 +87,28 @@ class HorizontalRestaurantCard extends StatelessWidget {
                 bottom: MediaQuery.of(context).size.width * 0.025,
               ),
               child: Center(
-                child: Ink(
-                  height: MediaQuery.of(context).size.width * 0.30,
-                  width: MediaQuery.of(context).size.width * 0.30,
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade50,
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(imageUrl),
-                    ),
-                  ),
-                ),
+                child: imageUrl.isNotEmpty
+                    ? Ink(
+                        height: MediaQuery.of(context).size.width * 0.30,
+                        width: MediaQuery.of(context).size.width * 0.30,
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: CachedNetworkImageProvider(imageUrl),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        height: MediaQuery.of(context).size.width * 0.30,
+                        width: MediaQuery.of(context).size.width * 0.30,
+                        child: const Icon(Icons.restaurant),
+                      ),
               ),
             ),
             Flexible(

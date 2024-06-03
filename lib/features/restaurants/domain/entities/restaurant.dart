@@ -20,7 +20,7 @@ class Restaurant extends Equatable {
   Restaurant.empty()
       : this(
           id: '_empty.id',
-          icon: '_empty.id',
+          icon: '_empty.icon',
           name: '_empty.name',
           photos: [],
           // distance: 0,
