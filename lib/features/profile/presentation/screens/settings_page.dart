@@ -21,28 +21,30 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool useDeviceSettings = false;
-  bool isDarkMode = false;
+  // bool useDeviceSettings = false;
+  // bool isDarkMode = false;
 
   @override
   void initState() {
-    final mode = context.read<ThemeModeProvider>().themeMode;
+    final mode = context.themeModeProvider.themeMode;
     if (mode == ThemeMode.system) {
-      useDeviceSettings = true;
+      context.themeModeProvider.useDeviceSettings = true;
     } else if (mode == ThemeMode.dark) {
-      isDarkMode = true;
+      context.themeModeProvider.isDarkMode = true;
     } else {
-      isDarkMode = false;
+      context.themeModeProvider.isDarkMode = false;
     }
+    super.initState();
   }
 
   void toggleTheme() {
-    if (useDeviceSettings) {
-      context.read<ThemeModeProvider>().themeMode = ThemeMode.system;
-    } else if (!useDeviceSettings && isDarkMode) {
-      context.read<ThemeModeProvider>().themeMode = ThemeMode.dark;
+    if (context.themeModeProvider.useDeviceSettings) {
+      context.themeModeProvider.themeMode = ThemeMode.system;
+    } else if (!context.themeModeProvider.useDeviceSettings &&
+        context.themeModeProvider.isDarkMode) {
+      context.themeModeProvider.themeMode = ThemeMode.dark;
     } else {
-      context.read<ThemeModeProvider>().themeMode = ThemeMode.light;
+      context.themeModeProvider.themeMode = ThemeMode.light;
     }
     setState(() {});
   }
@@ -168,14 +170,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: context.theme.textTheme.titleMedium,
                 ),
                 trailing: Switch(
-                  value: useDeviceSettings,
+                  value: context.themeModeProvider.useDeviceSettings,
                   thumbColor:
                       MaterialStatePropertyAll(context.theme.primaryColor),
                   activeColor: Colors.green.shade400,
                   inactiveTrackColor: Colors.grey.shade300,
                   onChanged: (bool value) {
                     setState(() {
-                      useDeviceSettings = value;
+                      context.themeModeProvider.useDeviceSettings = value;
                     });
                     toggleTheme();
                   },
@@ -202,14 +204,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: context.theme.textTheme.titleMedium,
                 ),
                 trailing: Switch(
-                  value: !useDeviceSettings && isDarkMode,
+                  value: !context.themeModeProvider.useDeviceSettings &&
+                      context.themeModeProvider.isDarkMode,
                   thumbColor:
                       MaterialStatePropertyAll(context.theme.primaryColor),
                   activeColor: Colors.green.shade400,
                   inactiveTrackColor: Colors.grey.shade300,
                   onChanged: (bool value) {
                     setState(() {
-                      isDarkMode = value;
+                      context.themeModeProvider.isDarkMode = value;
                     });
                     toggleTheme();
                   },

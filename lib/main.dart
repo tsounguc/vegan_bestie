@@ -78,6 +78,7 @@ class _MyAppState extends State<MyApp> {
             ThemeModeProvider provider,
             Widget? child,
           ) {
+            provider.initThemeMode();
             return MaterialApp(
               builder: DevicePreview.appBuilder,
               locale: DevicePreview.locale(context),
