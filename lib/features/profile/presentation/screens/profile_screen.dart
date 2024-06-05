@@ -137,7 +137,7 @@ class ProfileScreen extends StatelessWidget {
                                         PopupMenuItem<void>(
                                           onTap: () => Navigator.of(context).pushNamed(
                                             SettingsPage.id,
-                                            // arguments: context.read<FoodProductCubit>(),
+                                            arguments: context.read<AuthBloc>(),
                                           ),
                                           child: PopupItem(
                                             title: 'Settings',

@@ -24,36 +24,23 @@ class _SettingsPageState extends State<SettingsPage> {
   // bool useDeviceSettings = false;
   // bool isDarkMode = false;
 
-  @override
-  void initState() {
-    final mode = context.themeModeProvider.themeMode;
-    if (mode == ThemeMode.system) {
-      context.themeModeProvider.useDeviceSettings = true;
-    } else if (mode == ThemeMode.dark) {
-      context.themeModeProvider.isDarkMode = true;
-    } else {
-      context.themeModeProvider.isDarkMode = false;
-    }
-    super.initState();
-  }
-
-  void toggleTheme() {
-    if (context.themeModeProvider.useDeviceSettings) {
-      context.themeModeProvider.themeMode = ThemeMode.system;
-    } else if (!context.themeModeProvider.useDeviceSettings &&
-        context.themeModeProvider.isDarkMode) {
-      context.themeModeProvider.themeMode = ThemeMode.dark;
-    } else {
-      context.themeModeProvider.themeMode = ThemeMode.light;
-    }
-    setState(() {});
-  }
+  // @override
+  // void initState() {
+  //   final mode = context.themeModeProvider.themeMode;
+  //   if (mode == ThemeMode.system) {
+  //     context.themeModeProvider.useDeviceSettings = true;
+  //   } else if (mode == ThemeMode.dark) {
+  //     context.themeModeProvider.isDarkMode = true;
+  //   } else {
+  //     context.themeModeProvider.isDarkMode = false;
+  //   }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     final user = context.currentUser!;
-    final userImage =
-        user.photoUrl == null || user.photoUrl!.isEmpty ? null : user.photoUrl;
+    final userImage = user.photoUrl == null || user.photoUrl!.isEmpty ? null : user.photoUrl;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -90,7 +77,7 @@ class _SettingsPageState extends State<SettingsPage> {
               surfaceTintColor: context.theme.colorScheme.background,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 15.0,
+                  horizontal: 15,
                   vertical: 25,
                 ),
                 child: Row(
@@ -117,29 +104,27 @@ class _SettingsPageState extends State<SettingsPage> {
                       //     : AssetImage(kUserIconPath),
                     ),
                     const SizedBox(width: 20),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Wrap(
                         children: [
-                          Wrap(
-                            children: [
-                              Text(
-                                user.name,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
                           Text(
-                            user.email,
+                            user.name,
                             style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.grey,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                        ]),
+                        ],
+                      ),
+                      Text(
+                        user.email,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ]),
                   ],
                 ),
               ),
@@ -171,15 +156,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 trailing: Switch(
                   value: context.themeModeProvider.useDeviceSettings,
-                  thumbColor:
-                      MaterialStatePropertyAll(context.theme.primaryColor),
+                  thumbColor: MaterialStatePropertyAll(context.theme.primaryColor),
                   activeColor: Colors.green.shade400,
                   inactiveTrackColor: Colors.grey.shade300,
                   onChanged: (bool value) {
                     setState(() {
                       context.themeModeProvider.useDeviceSettings = value;
                     });
-                    toggleTheme();
                   },
                 ),
               ),
@@ -192,29 +175,22 @@ class _SettingsPageState extends State<SettingsPage> {
                   horizontal: 10,
                 ),
                 leading: Icon(
-                  context.themeModeProvider.themeMode == ThemeMode.dark
-                      ? Icons.dark_mode
-                      : Icons.light_mode,
-                  color: context.theme.iconTheme.color,
+                  context.themeModeProvider.themeMode == ThemeMode.dark ? Icons.dark_mode : Icons.light_mode,
+                  color: context.themeModeProvider.themeMode == ThemeMode.light
+                      ? Colors.yellow
+                      : context.theme.iconTheme.color,
                 ),
                 title: Text(
-                  context.themeModeProvider.themeMode == ThemeMode.dark
-                      ? 'DarkMode'
-                      : 'LightMode',
+                  context.themeModeProvider.themeMode == ThemeMode.dark ? 'DarkMode' : 'LightMode',
                   style: context.theme.textTheme.titleMedium,
                 ),
                 trailing: Switch(
-                  value: !context.themeModeProvider.useDeviceSettings &&
-                      context.themeModeProvider.isDarkMode,
-                  thumbColor:
-                      MaterialStatePropertyAll(context.theme.primaryColor),
+                  value: !context.themeModeProvider.useDeviceSettings && context.themeModeProvider.isDarkMode,
+                  thumbColor: MaterialStatePropertyAll(context.theme.primaryColor),
                   activeColor: Colors.green.shade400,
                   inactiveTrackColor: Colors.grey.shade300,
                   onChanged: (bool value) {
-                    setState(() {
-                      context.themeModeProvider.isDarkMode = value;
-                    });
-                    toggleTheme();
+                    context.themeModeProvider.isDarkMode = value;
                   },
                 ),
               ),

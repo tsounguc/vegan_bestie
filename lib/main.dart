@@ -13,6 +13,7 @@ import 'package:sheveegan/core/common/app/providers/restaurants_near_me_provider
 import 'package:sheveegan/core/common/app/providers/saved_products_provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_restaurants_provider.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
@@ -24,6 +25,10 @@ void main() async {
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  final themeModePreference = ThemeModePreference();
+  final useDeviceSettings = await themeModePreference.getUseDeviceSettings();
+  final isDarkMode = await themeModePreference.getDarkTheme();
+
   if (!kDebugMode) {
     debugPrint('Not In Debug');
     await FirebaseAppCheck.instance.activate(
@@ -44,13 +49,23 @@ void main() async {
   runApp(
     DevicePreview(
       enabled: false,
-      builder: (BuildContext context) => const MyApp(),
+      builder: (BuildContext context) => MyApp(
+        useDeviceSettings: useDeviceSettings,
+        isDarkMode: isDarkMode,
+      ),
     ),
   );
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final bool useDeviceSettings;
+  final bool isDarkMode;
+
+  const MyApp({
+    required this.useDeviceSettings,
+    required this.isDarkMode,
+    super.key,
+  });
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -58,18 +73,28 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    // context.themeModeProvider.initThemeMode();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
           value: UserProvider(),
         ),
-        ChangeNotifierProvider(create: (_) => SavedProductsProvider()),
-        ChangeNotifierProvider(create: (_) => SavedRestaurantsProvider()),
-        ChangeNotifierProvider(create: (_) => BottomNavigationBarProvider()),
-        ChangeNotifierProvider(create: (_) => FoodProductReportsProvider()),
-        ChangeNotifierProvider(create: (_) => RestaurantsNearMeProvider()),
-        ChangeNotifierProvider(create: (_) => ThemeModeProvider())
+        ChangeNotifierProvider.value(value: SavedProductsProvider()),
+        ChangeNotifierProvider.value(value: SavedRestaurantsProvider()),
+        ChangeNotifierProvider.value(value: BottomNavigationBarProvider()),
+        ChangeNotifierProvider.value(value: FoodProductReportsProvider()),
+        ChangeNotifierProvider.value(value: RestaurantsNearMeProvider()),
+        ChangeNotifierProvider.value(
+            value: ThemeModeProvider(
+          useDeviceSettings: widget.useDeviceSettings,
+          isDarkMode: widget.isDarkMode,
+        ))
       ],
       child: ScreenUtilInit(
         builder: (context, child) => Consumer<ThemeModeProvider>(
@@ -78,7 +103,6 @@ class _MyAppState extends State<MyApp> {
             ThemeModeProvider provider,
             Widget? child,
           ) {
-            provider.initThemeMode();
             return MaterialApp(
               builder: DevicePreview.appBuilder,
               locale: DevicePreview.locale(context),

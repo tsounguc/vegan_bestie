@@ -8,9 +8,11 @@ class AppRouter {
       case '/':
         return _pageBuilder(
           (context) {
-            if (serviceLocator<FirebaseAuth>().currentUser != null) {
+            final user = serviceLocator<FirebaseAuth>().currentUser;
+            user?.reload();
+            if (user != null) {
               // get user info from firebase
-              final user = serviceLocator<FirebaseAuth>().currentUser!;
+
               // create userModel with user info
               final userModel = UserModel(
                 uid: user.uid,
@@ -104,8 +106,8 @@ class AppRouter {
 
       case SettingsPage.id:
         return _pageBuilder(
-          (_) => BlocProvider<AuthBloc>(
-            create: (_) => serviceLocator<AuthBloc>(),
+          (_) => BlocProvider<AuthBloc>.value(
+            value: settings.arguments! as AuthBloc,
             child: const SettingsPage(),
           ),
           settings: settings,

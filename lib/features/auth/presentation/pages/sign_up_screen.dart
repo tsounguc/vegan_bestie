@@ -108,6 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       'Sign up for an account',
                       style: TextStyle(
                         fontSize: 14.r,
+                        color: context.theme.textTheme.bodyMedium?.color,
                         // color: Colors.grey.shade800,
                         fontWeight: FontWeight.normal,
                       ),
@@ -144,7 +145,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       text: TextSpan(
                         text: 'Already have an account? ',
                         style: TextStyle(
-                          fontSize: 14.r,
+                          fontSize: 14.r, color: context.theme.textTheme.bodyMedium?.color,
                           // color: Colors.grey.shade800,
                         ),
                         children: [
