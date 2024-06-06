@@ -26,10 +26,6 @@ class ThemeModeProvider extends ChangeNotifier {
 
   bool get isDarkMode => _isDarkMode;
 
-  // set themeMode(ThemeMode themeMode) {
-  //   if (_themeMode != themeMode) _themeMode = themeMode;
-  // }
-
   set useDeviceSettings(bool value) {
     _useDeviceSettings = value;
     prefs.setUseDeviceSettings(value);
@@ -51,81 +47,9 @@ class ThemeModeProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-
-// ThemeModeProvider() {
-//   initThemeMode();
-// }
-//
-// late ThemeMode _themeMode;
-// late bool _useDeviceSettings;
-// late bool _isDarkMode;
-//
-// ThemeModePreference _prefs = ThemeModePreference();
-//
-// bool get useDeviceSettings => _useDeviceSettings;
-//
-// bool get isDarkMode => _isDarkMode;
-//
-// set useDeviceSettings(bool value) {
-//   _useDeviceSettings = value;
-//   // notifyListeners();
-// }
-//
-// set isDarkMode(bool value) {
-//   _isDarkMode = value;
-//
-//   // notifyListeners();
-// }
-//
-// ThemeMode get themeMode => _themeMode;
-//
-// Future<void> initThemeMode() async {
-//   final prefs = await SharedPreferences.getInstance();
-//   _useDeviceSettings = prefs.getBool('useDeviceSettings') ?? false;
-//   if (_useDeviceSettings) {
-//     _themeMode = ThemeMode.system;
-//     await prefs.setBool('useDeviceSettings', true);
-//     debugPrint('useDeviceSettings is true');
-//   } else {
-//     await prefs.setBool('useDeviceSettings', false);
-//     debugPrint('useDeviceSettings is false');
-//     _isDarkMode = prefs.getBool('isDarkMode') ?? false;
-//
-//     if (_isDarkMode) {
-//       _themeMode = ThemeMode.dark;
-//       debugPrint('isDarkMode is true');
-//       await prefs.setBool('isDarkMode', true);
-//     } else {
-//       _themeMode = ThemeMode.light;
-//       await prefs.setBool('isDarkMode', false);
-//       debugPrint('isDarkMode is false');
-//     }
-//   }
-//   notifyListeners();
-// }
-//
-// Future<void> toggleThemeMode() async {
-//   final prefs = await SharedPreferences.getInstance();
-//   if (useDeviceSettings) {
-//     _themeMode = ThemeMode.system;
-//     await prefs.setBool('useDeviceSettings', true);
-//     await prefs.setBool('isDarkMode', false);
-//   } else if (!useDeviceSettings && isDarkMode) {
-//     await prefs.setBool('useDeviceSettings', false);
-//     await prefs.setBool('isDarkMode', true);
-//     _themeMode = ThemeMode.dark;
-//   } else {
-//     await prefs.setBool('useDeviceSettings', false);
-//     await prefs.setBool('isDarkMode', false);
-//     _themeMode = ThemeMode.light;
-//   }
-//   notifyListeners();
-// }
 }
 
 class ThemeModePreference {
-  // static const THEME_STATUS = "THEMESTATUS";
-
   Future<void> setDarkTheme(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isDarkMode', value);
@@ -145,9 +69,4 @@ class ThemeModePreference {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool('useDeviceSettings') ?? false;
   }
-
-// Future<bool> getTheme() async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   return prefs.getBool(THEME_STATUS) ?? false;
-// }
 }
