@@ -33,23 +33,23 @@ class ThemeModeProvider extends ChangeNotifier {
   set useDeviceSettings(bool value) {
     _useDeviceSettings = value;
     prefs.setUseDeviceSettings(value);
-    if (value == true) {
+    if (value) {
       _themeMode = ThemeMode.system;
     }
     notifyListeners();
   }
 
   set isDarkMode(bool value) {
+    _isDarkMode = value;
+    prefs.setDarkTheme(value);
     if (!_useDeviceSettings) {
-      _isDarkMode = value;
-      prefs.setDarkTheme(value);
       if (value) {
         _themeMode = ThemeMode.dark;
       } else {
         _themeMode = ThemeMode.light;
       }
-      notifyListeners();
     }
+    notifyListeners();
   }
 
 // ThemeModeProvider() {

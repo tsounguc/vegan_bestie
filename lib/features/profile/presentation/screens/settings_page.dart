@@ -41,184 +41,193 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     final user = context.currentUser!;
     final userImage = user.photoUrl == null || user.photoUrl!.isEmpty ? null : user.photoUrl;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
-      body: SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 25,
-            vertical: 35,
-          ).copyWith(
-            top: 15,
+    return Consumer<ThemeModeProvider>(
+      builder: (
+        BuildContext context,
+        ThemeModeProvider provider,
+        Widget? child,
+      ) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Settings'),
           ),
-          children: [
-            // ListTile(
-            //   leading: const Icon(Icons.language),
-            //   title: Text(
-            //     'Language',
-            //     style: TextStyle(
-            //       fontSize: 16.sp,
-            //       fontWeight: FontWeight.normal,
-            //     ),
-            //   ),
-            //   subtitle: const Text(
-            //     'English',
-            //     style: TextStyle(fontWeight: FontWeight.normal),
-            //   ),
-            // ),
+          body: SafeArea(
+            child: ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 25,
+                vertical: 35,
+              ).copyWith(
+                top: 15,
+              ),
+              children: [
+                // ListTile(
+                //   leading: const Icon(Icons.language),
+                //   title: Text(
+                //     'Language',
+                //     style: TextStyle(
+                //       fontSize: 16.sp,
+                //       fontWeight: FontWeight.normal,
+                //     ),
+                //   ),
+                //   subtitle: const Text(
+                //     'English',
+                //     style: TextStyle(fontWeight: FontWeight.normal),
+                //   ),
+                // ),
 
-            // SizedBox(
-            //   height: 20.h,
-            // ),
-            Card(
-              surfaceTintColor: context.theme.colorScheme.background,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 25,
-                ),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      minRadius: 30,
-                      backgroundColor: Colors.grey.shade200,
-                      backgroundImage: userImage != null
-                          ? NetworkImage(
-                              userImage,
-                            )
-                          : null,
-                      child: userImage != null
-                          ? null
-                          : const Center(
-                              child: Icon(
-                                Icons.person,
-                                size: 35,
-                                color: Colors.black,
-                              ),
-                            ),
-                      // backgroundImage:  userImage != null
-                      //     ? NetworkImage(userImage!)
-                      //     : AssetImage(kUserIconPath),
+                // SizedBox(
+                //   height: 20.h,
+                // ),
+                Card(
+                  surfaceTintColor: context.theme.colorScheme.background,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 25,
                     ),
-                    const SizedBox(width: 20),
-                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Wrap(
-                        children: [
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          minRadius: 30,
+                          backgroundColor: Colors.grey.shade200,
+                          backgroundImage: userImage != null
+                              ? NetworkImage(
+                                  userImage,
+                                )
+                              : null,
+                          child: userImage != null
+                              ? null
+                              : const Center(
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 35,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                          // backgroundImage:  userImage != null
+                          //     ? NetworkImage(userImage!)
+                          //     : AssetImage(kUserIconPath),
+                        ),
+                        const SizedBox(width: 20),
+                        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Wrap(
+                            children: [
+                              Text(
+                                user.name,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
                           Text(
-                            user.name,
+                            user.email,
                             style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey,
                             ),
                           ),
-                        ],
-                      ),
-                      Text(
-                        user.email,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ]),
-                  ],
+                        ]),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 15),
-              child: Text(
-                'Display',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  // fontWeight: FontWeight.w600,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 15),
+                  child: Text(
+                    'Display',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      // fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Card(
-              surfaceTintColor: Colors.white,
-              child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 15,
-                  horizontal: 10,
+                Card(
+                  surfaceTintColor: Colors.white,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 15,
+                      horizontal: 10,
+                    ),
+                    leading: Icon(
+                      Icons.phone_android,
+                      color: context.theme.iconTheme.color,
+                    ),
+                    title: Text(
+                      'Use Device Settings',
+                      style: context.theme.textTheme.titleMedium,
+                    ),
+                    trailing: Switch(
+                      value: provider.useDeviceSettings,
+                      thumbColor: MaterialStatePropertyAll(context.theme.primaryColor),
+                      activeColor: Colors.green.shade400,
+                      inactiveTrackColor: Colors.grey.shade300,
+                      onChanged: (bool value) async {
+                        provider.useDeviceSettings = value;
+                        if (!value) {
+                          provider.isDarkMode = await provider.prefs.getDarkTheme();
+                        }
+                      },
+                    ),
+                  ),
                 ),
-                leading: Icon(
-                  Icons.phone_android,
-                  color: context.theme.iconTheme.color,
+                Card(
+                  surfaceTintColor: Colors.white,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 15,
+                      horizontal: 10,
+                    ),
+                    leading: Icon(
+                      provider.themeMode == ThemeMode.dark ? Icons.dark_mode : Icons.light_mode,
+                      color: provider.themeMode == ThemeMode.light ? Colors.yellow : context.theme.iconTheme.color,
+                    ),
+                    title: Text(
+                      provider.themeMode == ThemeMode.dark ? 'DarkMode' : 'LightMode',
+                      style: context.theme.textTheme.titleMedium,
+                    ),
+                    trailing: Switch(
+                      value: !provider.useDeviceSettings && provider.isDarkMode,
+                      thumbColor: MaterialStatePropertyAll(context.theme.primaryColor),
+                      activeColor: Colors.green.shade400,
+                      inactiveTrackColor: Colors.grey.shade300,
+                      onChanged: (bool value) {
+                        if (!provider.useDeviceSettings) {
+                          provider.isDarkMode = value;
+                        }
+                      },
+                    ),
+                  ),
                 ),
-                title: Text(
-                  'Use Device Settings',
-                  style: context.theme.textTheme.titleMedium,
+                SizedBox(
+                  height: context.height * 0.05,
                 ),
-                trailing: Switch(
-                  value: context.themeModeProvider.useDeviceSettings,
-                  thumbColor: MaterialStatePropertyAll(context.theme.primaryColor),
-                  activeColor: Colors.green.shade400,
-                  inactiveTrackColor: Colors.grey.shade300,
-                  onChanged: (bool value) {
-                    setState(() {
-                      context.themeModeProvider.useDeviceSettings = value;
-                    });
-                  },
-                ),
-              ),
-            ),
-            Card(
-              surfaceTintColor: Colors.white,
-              child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 15,
-                  horizontal: 10,
-                ),
-                leading: Icon(
-                  context.themeModeProvider.themeMode == ThemeMode.dark ? Icons.dark_mode : Icons.light_mode,
-                  color: context.themeModeProvider.themeMode == ThemeMode.light
-                      ? Colors.yellow
-                      : context.theme.iconTheme.color,
-                ),
-                title: Text(
-                  context.themeModeProvider.themeMode == ThemeMode.dark ? 'DarkMode' : 'LightMode',
-                  style: context.theme.textTheme.titleMedium,
-                ),
-                trailing: Switch(
-                  value: !context.themeModeProvider.useDeviceSettings && context.themeModeProvider.isDarkMode,
-                  thumbColor: MaterialStatePropertyAll(context.theme.primaryColor),
-                  activeColor: Colors.green.shade400,
-                  inactiveTrackColor: Colors.grey.shade300,
-                  onChanged: (bool value) {
-                    context.themeModeProvider.isDarkMode = value;
-                  },
-                ),
-              ),
-            ),
-            SizedBox(
-              height: context.height * 0.05,
-            ),
-            // const ListTile(
-            //   title: Text(
-            //     'Language',
-            //     style: TextStyle(fontWeight: FontWeight.w600),
-            //   ),
-            //   subtitle: Text('English'),
-            // ),
-            LongButton(
-                onPressed: () {
-                  CoreUtils.displayDeleteAccountWarning(
-                    context,
-                    onDeletePressed: () {
-                      Navigator.pop(context);
-                      CoreUtils.showEnterPasswordDialog(context);
+                // const ListTile(
+                //   title: Text(
+                //     'Language',
+                //     style: TextStyle(fontWeight: FontWeight.w600),
+                //   ),
+                //   subtitle: Text('English'),
+                // ),
+                LongButton(
+                    onPressed: () {
+                      CoreUtils.displayDeleteAccountWarning(
+                        context,
+                        onDeletePressed: () {
+                          Navigator.pop(context);
+                          CoreUtils.showEnterPasswordDialog(context);
+                        },
+                      );
                     },
-                  );
-                },
-                label: 'Delete Account')
-          ],
-        ),
-      ),
+                    label: 'Delete Account')
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
