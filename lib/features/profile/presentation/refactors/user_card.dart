@@ -11,7 +11,8 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.currentUser!;
-    final userImage = user.photoUrl == null || user.photoUrl!.isEmpty ? null : user.photoUrl;
+    final userImage =
+        user.photoUrl == null || user.photoUrl!.isEmpty ? null : user.photoUrl;
     return GestureDetector(
       onTap: () => Navigator.of(context).pushNamed(
         EditProfileScreen.id,
@@ -43,13 +44,10 @@ class UserCard extends StatelessWidget {
                           color: Colors.black,
                         ),
                       ),
-                // backgroundImage:  userImage != null
-                //     ? NetworkImage(userImage!)
-                //     : AssetImage(kUserIconPath),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 15),
               SizedBox(
-                width: context.width * 0.50,
+                width: 160.r,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -72,7 +70,7 @@ class UserCard extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: context.width * 0.12,
+                width: 40.r,
                 child: const Icon(Icons.edit_outlined),
               )
             ],
