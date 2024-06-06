@@ -19,7 +19,8 @@ class FoodProductReportScreen extends StatefulWidget {
   static const String id = '/foodProductReportScreen';
 
   @override
-  State<FoodProductReportScreen> createState() => _FoodProductReportScreenState();
+  State<FoodProductReportScreen> createState() =>
+      _FoodProductReportScreenState();
 }
 
 class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
@@ -82,11 +83,10 @@ class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
       builder: (context, state) {
         return Scaffold(
           extendBodyBehindAppBar: true,
-          backgroundColor: Colors.white,
           appBar: AppBar(
             surfaceTintColor: Colors.white,
-            leading: const CustomBackButton(
-              color: Colors.black,
+            leading: CustomBackButton(
+              color: context.theme.iconTheme.color!,
             ),
             title: const Text(
               'Report Issue',
@@ -109,7 +109,7 @@ class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
                   Text(
                     "What's the issue?",
                     style: TextStyle(
-                      color: Colors.black,
+                      // color: Colors.black,
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
                     ),
@@ -120,22 +120,35 @@ class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
                     itemCount: listOfIssues.length,
                     itemBuilder: (context, index) {
                       final issue = listOfIssues[index];
-                      return CheckboxListTile(
-                        value: issue.isSelected,
+                      return ListTile(
                         title: Text(
                           issue.title,
                           style: TextStyle(
+                            color: context.theme.textTheme.bodyMedium?.color,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.normal,
                           ),
                         ),
-                        onChanged: (value) {
-                          itemSelected = false;
-                          setState(() {
-                            listOfIssues[index].isSelected = value;
-                          });
-                          debugPrint('${listOfIssues[index].isSelected}');
-                        },
+                        trailing: Theme(
+                          data: ThemeData(
+                            unselectedWidgetColor:
+                                context.theme.iconTheme.color,
+                          ),
+                          child: Checkbox(
+                            value: issue.isSelected,
+                            fillColor: MaterialStatePropertyAll(
+                                issue.isSelected!
+                                    ? context.theme.primaryColor
+                                    : Colors.transparent),
+                            onChanged: (value) {
+                              itemSelected = false;
+                              setState(() {
+                                listOfIssues[index].isSelected = value;
+                              });
+                              debugPrint('${listOfIssues[index].isSelected}');
+                            },
+                          ),
+                        ),
                       );
                     },
                   ),
