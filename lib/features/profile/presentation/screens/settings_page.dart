@@ -10,6 +10,10 @@ import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
+import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:sheveegan/features/profile/presentation/refactors/user_card.dart';
+import 'package:sheveegan/features/profile/presentation/screens/change_password_screen.dart';
+import 'package:sheveegan/features/profile/presentation/screens/display_screen.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -39,195 +43,100 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.currentUser!;
-    final userImage = user.photoUrl == null || user.photoUrl!.isEmpty ? null : user.photoUrl;
-    return Consumer<ThemeModeProvider>(
-      builder: (
-        BuildContext context,
-        ThemeModeProvider provider,
-        Widget? child,
-      ) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Settings'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Settings'),
+      ),
+      body: SafeArea(
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 25,
+            vertical: 35,
+          ).copyWith(
+            top: 15,
           ),
-          body: SafeArea(
-            child: ListView(
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 25,
-                vertical: 35,
-              ).copyWith(
-                top: 15,
-              ),
-              children: [
-                // ListTile(
-                //   leading: const Icon(Icons.language),
-                //   title: Text(
-                //     'Language',
-                //     style: TextStyle(
-                //       fontSize: 16.sp,
-                //       fontWeight: FontWeight.normal,
-                //     ),
-                //   ),
-                //   subtitle: const Text(
-                //     'English',
-                //     style: TextStyle(fontWeight: FontWeight.normal),
-                //   ),
-                // ),
-
-                // SizedBox(
-                //   height: 20.h,
-                // ),
-                Card(
-                  surfaceTintColor: context.theme.colorScheme.background,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 25,
-                    ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          minRadius: 30,
-                          backgroundColor: Colors.grey.shade200,
-                          backgroundImage: userImage != null
-                              ? NetworkImage(
-                                  userImage,
-                                )
-                              : null,
-                          child: userImage != null
-                              ? null
-                              : const Center(
-                                  child: Icon(
-                                    Icons.person,
-                                    size: 35,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                          // backgroundImage:  userImage != null
-                          //     ? NetworkImage(userImage!)
-                          //     : AssetImage(kUserIconPath),
-                        ),
-                        const SizedBox(width: 20),
-                        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Wrap(
-                            children: [
-                              Text(
-                                user.name,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            user.email,
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ]),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 15),
-                  child: Text(
-                    'Display',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      // fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Card(
-                  surfaceTintColor: Colors.white,
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 10,
-                    ),
-                    leading: Icon(
-                      Icons.phone_android,
-                      color: context.theme.iconTheme.color,
-                    ),
-                    title: Text(
-                      'Use Device Settings',
-                      style: context.theme.textTheme.titleMedium,
-                    ),
-                    trailing: Switch(
-                      value: provider.useDeviceSettings,
-                      thumbColor: MaterialStatePropertyAll(context.theme.primaryColor),
-                      activeColor: Colors.green.shade400,
-                      inactiveTrackColor: Colors.grey.shade300,
-                      onChanged: (bool value) async {
-                        provider.useDeviceSettings = value;
-                        if (!value) {
-                          provider.isDarkMode = await provider.prefs.getDarkTheme();
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                Card(
-                  surfaceTintColor: Colors.white,
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 10,
-                    ),
-                    leading: Icon(
-                      provider.themeMode == ThemeMode.dark ? Icons.dark_mode : Icons.light_mode,
-                      color: provider.themeMode == ThemeMode.light ? Colors.yellow : context.theme.iconTheme.color,
-                    ),
-                    title: Text(
-                      provider.themeMode == ThemeMode.dark ? 'DarkMode' : 'LightMode',
-                      style: context.theme.textTheme.titleMedium,
-                    ),
-                    trailing: Switch(
-                      value: !provider.useDeviceSettings && provider.isDarkMode,
-                      thumbColor: MaterialStatePropertyAll(context.theme.primaryColor),
-                      activeColor: Colors.green.shade400,
-                      inactiveTrackColor: Colors.grey.shade300,
-                      onChanged: (bool value) {
-                        if (!provider.useDeviceSettings) {
-                          provider.isDarkMode = value;
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: context.height * 0.05,
-                ),
-                // const ListTile(
-                //   title: Text(
-                //     'Language',
-                //     style: TextStyle(fontWeight: FontWeight.w600),
-                //   ),
-                //   subtitle: Text('English'),
-                // ),
-                LongButton(
-                    onPressed: () {
-                      CoreUtils.displayDeleteAccountWarning(
-                        context,
-                        onDeletePressed: () {
-                          Navigator.pop(context);
-                          CoreUtils.showEnterPasswordDialog(context);
-                        },
-                      );
-                    },
-                    label: 'Delete Account')
-              ],
+          children: [
+            const UserCard(),
+            const SizedBox(
+              height: 40,
             ),
-          ),
-        );
-      },
+            Card(
+              child: ListTile(
+                // padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 15),
+                style: ListTileStyle.list,
+                leading: Icon(
+                  context.themeModeProvider.themeMode == ThemeMode.dark
+                      ? Icons.dark_mode
+                      : context.themeModeProvider.themeMode == ThemeMode.system
+                          ? Icons.phone_android
+                          : Icons.light_mode,
+                  color: context.themeModeProvider.themeMode == ThemeMode.light
+                      ? Colors.yellow
+                      : context.theme.iconTheme.color,
+                ),
+                title: Text(
+                  'Display',
+                  style: context.theme.textTheme.titleMedium,
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  color: context.theme.iconTheme.color,
+                  size: 15,
+                ),
+                onTap: () => Navigator.of(context).pushNamed(
+                  DisplayScreen.id,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Card(
+              child: ListTile(
+                // padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 15),
+                style: ListTileStyle.list,
+                leading: Icon(
+                  Icons.lock_outline,
+                  color: context.theme.iconTheme.color,
+                ),
+                title: Text(
+                  'Change Password',
+                  style: context.theme.textTheme.titleMedium,
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  color: context.theme.iconTheme.color,
+                  size: 15,
+                ),
+                onTap: () => Navigator.of(context).pushNamed(
+                  ChangePasswordScreen.id,
+                  arguments: context.read<AuthBloc>(),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: context.height * 0.07,
+            ),
+            TextButton(
+              onPressed: () {
+                CoreUtils.displayDeleteAccountWarning(
+                  context,
+                  onDeletePressed: () {
+                    Navigator.pop(context);
+                    CoreUtils.showEnterPasswordDialog(context);
+                  },
+                );
+              },
+              child: Text(
+                'Delete Account',
+                style: context.theme.textTheme.titleMedium?.copyWith(
+                    color: Colors.red, decoration: TextDecoration.underline, decorationColor: Colors.red),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

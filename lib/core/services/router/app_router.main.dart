@@ -103,6 +103,20 @@ class AppRouter {
           ),
           settings: settings,
         );
+      case DisplayScreen.id:
+        return _pageBuilder(
+          (_) => const DisplayScreen(),
+          settings: settings,
+        );
+
+      case ChangePasswordScreen.id:
+        return _pageBuilder(
+          (_) => BlocProvider<AuthBloc>.value(
+            value: settings.arguments! as AuthBloc,
+            child: const ChangePasswordScreen(),
+          ),
+          settings: settings,
+        );
 
       case SettingsPage.id:
         return _pageBuilder(
