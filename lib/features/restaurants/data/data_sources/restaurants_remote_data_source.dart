@@ -16,7 +16,7 @@ import 'package:sheveegan/features/restaurants/data/models/restaurant_details_mo
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/user_location_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 
 abstract class RestaurantsRemoteDataSource {
@@ -32,7 +32,7 @@ abstract class RestaurantsRemoteDataSource {
   Future<UserLocationModel> getUserLocation();
 
   Future<MapModel> getRestaurantsMarkers({
-    required List<Restaurant> restaurants,
+    required List<RestaurantEntity> restaurants,
   });
 
   Future<List<RestaurantDetailsModel>> getSavedRestaurantsList({
@@ -202,7 +202,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   }
 
   @override
-  Future<MapModel> getRestaurantsMarkers({required List<Restaurant> restaurants}) async {
+  Future<MapModel> getRestaurantsMarkers({required List<RestaurantEntity> restaurants}) async {
     try {
       final result = await _googleMap.getRestaurantsMarkers(restaurants);
       return result;

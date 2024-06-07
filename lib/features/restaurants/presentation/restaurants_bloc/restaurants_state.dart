@@ -30,7 +30,7 @@ class LoadingMarkers extends RestaurantsState {
 class RestaurantsLoaded extends RestaurantsState {
   const RestaurantsLoaded({required this.restaurants});
 
-  final List<Restaurant> restaurants;
+  final List<RestaurantEntity> restaurants;
 
   @override
   List<Object> get props => [restaurants];

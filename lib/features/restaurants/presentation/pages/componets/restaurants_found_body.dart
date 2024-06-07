@@ -14,7 +14,7 @@ import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/horizontal_restaurant_card.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/map_page.dart';
@@ -29,7 +29,7 @@ class RestaurantsFoundBody extends StatelessWidget {
     super.key,
   });
 
-  final List<Restaurant> restaurants;
+  final List<RestaurantEntity> restaurants;
 
   final Position userLocation;
 

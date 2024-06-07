@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sheveegan/features/auth/domain/usecases/remove_restaurant.dart';
 import 'package:sheveegan/features/auth/domain/usecases/save_restaurant.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/get_saved_restaurants_list.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant_review.dart';
@@ -62,7 +62,7 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
   }
 
   GoogleMapController? controller;
-  List<Restaurant>? restaurants;
+  List<RestaurantEntity>? restaurants;
   Set<Marker>? markers;
 
   final GetRestaurantsNearMe _getRestaurantsNearMe;

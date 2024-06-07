@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 
@@ -25,7 +25,7 @@ void main() {
       // Arrange
       // Act
       // Assert
-      expect(testModel, isA<Restaurant>());
+      expect(testModel, isA<RestaurantEntity>());
     },
   );
 

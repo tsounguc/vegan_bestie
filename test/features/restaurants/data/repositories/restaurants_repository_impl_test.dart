@@ -11,7 +11,7 @@ import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart
 import 'package:sheveegan/features/restaurants/data/models/user_location_model.dart';
 import 'package:sheveegan/features/restaurants/data/repositories/restaurants_repository_impl.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
@@ -109,7 +109,7 @@ void main() {
         expect(
           result,
           equals(
-            Right<Failure, List<Restaurant>>(
+            Right<Failure, List<RestaurantEntity>>(
               testRestaurants,
             ),
           ),
@@ -141,7 +141,7 @@ void main() {
         expect(
           result,
           equals(
-            Left<Failure, List<Restaurant>>(
+            Left<Failure, List<RestaurantEntity>>(
               RestaurantsFailure.fromException(testRestaurantsException),
             ),
           ),
@@ -283,7 +283,7 @@ void main() {
 
   group('getRestaurantsMarkers - ', () {
     final testMapModel = MapModel.empty();
-    final testRestaurants = <Restaurant>[];
+    final testRestaurants = <RestaurantEntity>[];
     test(
       'given RestaurantsRepositoryImpl, '
       'when [RestaurantsRepositoryImpl.getRestaurantsMarkers] is called '

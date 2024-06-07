@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 
@@ -17,7 +17,7 @@ void main() {
   });
   final params = GetRestaurantsNearMeParams.empty();
   final testFailure = RestaurantsFailure(message: 'message', statusCode: 500);
-  final testResponse = [Restaurant.empty()];
+  final testResponse = [RestaurantEntity.empty()];
   test(
     'given the GetRestaurantsNearMe use case '
     'when instantiated '
@@ -31,7 +31,7 @@ void main() {
       // Act
       final result = await useCase(params);
       // Assert
-      expect(result, Right<Failure, List<Restaurant>>(testResponse));
+      expect(result, Right<Failure, List<RestaurantEntity>>(testResponse));
       verify(
         () => repository.getRestaurantsNearMe(position: params.position),
       ).called(1);
@@ -54,7 +54,7 @@ void main() {
       // Assert
       expect(
         result,
-        Left<Failure, List<Restaurant>>(testFailure),
+        Left<Failure, List<RestaurantEntity>>(testFailure),
       );
       verify(
         () => repository.getRestaurantsNearMe(

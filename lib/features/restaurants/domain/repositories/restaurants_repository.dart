@@ -1,13 +1,13 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 
 abstract class RestaurantsRepository {
-  ResultFuture<List<Restaurant>> getRestaurantsNearMe({
+  ResultFuture<List<RestaurantEntity>> getRestaurantsNearMe({
     required Position position,
     required double radius,
   });
@@ -19,7 +19,7 @@ abstract class RestaurantsRepository {
   ResultFuture<UserLocation> getUserLocation();
 
   ResultFuture<MapEntity> getRestaurantsMarkers({
-    required List<Restaurant> restaurants,
+    required List<RestaurantEntity> restaurants,
   });
 
   ResultFuture<List<RestaurantDetails>> getSavedRestaurantsList({

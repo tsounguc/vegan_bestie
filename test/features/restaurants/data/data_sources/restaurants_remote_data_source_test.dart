@@ -15,7 +15,7 @@ import 'package:sheveegan/core/services/restaurants_services/location_plugin.dar
 import 'package:sheveegan/core/services/restaurants_services/map_plugin.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
 import 'package:sheveegan/features/restaurants/data/models/map_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 
@@ -95,7 +95,7 @@ Future<void> main() async {
         );
 
         // Assert
-        expect(restaurants, isA<List<Restaurant>>());
+        expect(restaurants, isA<List<RestaurantEntity>>());
         verify(() => client.get(any())).called(1);
         verifyNoMoreInteractions(client);
       },
@@ -230,7 +230,7 @@ Future<void> main() async {
   });
 
   group('getRestaurantsMarkers - ', () {
-    final testRestaurants = <Restaurant>[];
+    final testRestaurants = <RestaurantEntity>[];
     final testMapModel = MapModel.empty();
     test(
       'given RestaurantsRemoteDataSourceImpl '

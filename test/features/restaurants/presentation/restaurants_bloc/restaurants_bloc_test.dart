@@ -7,7 +7,7 @@ import 'package:sheveegan/features/auth/domain/usecases/remove_restaurant.dart';
 import 'package:sheveegan/features/auth/domain/usecases/save_restaurant.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/get_saved_restaurants_list.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant_review.dart';
@@ -115,7 +115,7 @@ void main() {
   });
 
   group('getRestaurantsNearMe -', () {
-    final testRestaurants = <Restaurant>[];
+    final testRestaurants = <RestaurantEntity>[];
     blocTest<RestaurantsBloc, RestaurantsState>(
       'given RestaurantsBloc '
       'when [RestaurantsBloc.getRestaurantsNearMe] is called'

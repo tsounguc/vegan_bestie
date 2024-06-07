@@ -36,7 +36,7 @@ class GetRestaurantDetailsEvent extends RestaurantsEvent {
 class GetRestaurantsMarkersEvent extends RestaurantsEvent {
   const GetRestaurantsMarkersEvent({required this.restaurants});
 
-  final List<Restaurant> restaurants;
+  final List<RestaurantEntity> restaurants;
 
   @override
   List<Object> get props => [restaurants];

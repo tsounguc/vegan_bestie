@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:sheveegan/core/common/entities/restaurant_entities.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_details_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 
-class RestaurantModel extends Restaurant {
+class RestaurantModel extends RestaurantEntity {
   const RestaurantModel({
     required super.id,
     required super.icon,

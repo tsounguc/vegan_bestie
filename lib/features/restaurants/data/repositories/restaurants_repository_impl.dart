@@ -5,7 +5,7 @@ import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
@@ -29,7 +29,7 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
   }
 
   @override
-  ResultFuture<List<Restaurant>> getRestaurantsNearMe({
+  ResultFuture<List<RestaurantEntity>> getRestaurantsNearMe({
     required Position position,
     required double radius,
   }) async {
@@ -53,7 +53,7 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
 
   @override
   ResultFuture<MapEntity> getRestaurantsMarkers({
-    required List<Restaurant> restaurants,
+    required List<RestaurantEntity> restaurants,
   }) async {
     try {
       final result = await _remoteDataSource.getRestaurantsMarkers(
