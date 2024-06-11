@@ -45,7 +45,9 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   flutter_screenutil: ^5.9.0
   font_awesome_flutter: ^10.7.0
+  geocoding: ^3.0.0
   geolocator: ^11.0.0
+
   get_it: ^7.7.0
   google_fonts: ^6.2.1
   google_maps_flutter: ^2.6.1

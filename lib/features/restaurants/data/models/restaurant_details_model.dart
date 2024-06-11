@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:sheveegan/core/common/entities/restaurant_entities.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
-import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_entity_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 
 class RestaurantDetailsModel extends RestaurantDetails {

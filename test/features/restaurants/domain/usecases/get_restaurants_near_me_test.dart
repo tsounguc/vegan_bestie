@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 
@@ -17,7 +17,8 @@ void main() {
   });
   final params = GetRestaurantsNearMeParams.empty();
   final testFailure = RestaurantsFailure(message: 'message', statusCode: 500);
-  final testResponse = [RestaurantEntity.empty()];
+  const testResponse = [Restaurant.empty()];
+
   test(
     'given the GetRestaurantsNearMe use case '
     'when instantiated '
@@ -26,14 +27,20 @@ void main() {
     () async {
       // Arrange
       when(
-        () => repository.getRestaurantsNearMe(position: params.position),
-      ).thenAnswer((_) async => Right(testResponse));
+        () => repository.getRestaurantsNearMe(
+          position: params.position,
+          radius: params.radius,
+        ),
+      ).thenAnswer((_) async => const Right(testResponse));
       // Act
       final result = await useCase(params);
       // Assert
-      expect(result, Right<Failure, List<RestaurantEntity>>(testResponse));
+      expect(result, const Right<Failure, List<Restaurant>>(testResponse));
       verify(
-        () => repository.getRestaurantsNearMe(position: params.position),
+        () => repository.getRestaurantsNearMe(
+          position: params.position,
+          radius: params.radius,
+        ),
       ).called(1);
       verifyNoMoreInteractions(repository);
     },
@@ -47,18 +54,19 @@ void main() {
     () async {
       // Arrange
       when(
-        () => repository.getRestaurantsNearMe(position: params.position),
+        () => repository.getRestaurantsNearMe(position: params.position, radius: params.radius),
       ).thenAnswer((_) async => Left(testFailure));
       // Act
       final result = await useCase(params);
       // Assert
       expect(
         result,
-        Left<Failure, List<RestaurantEntity>>(testFailure),
+        Left<Failure, List<Restaurant>>(testFailure),
       );
       verify(
         () => repository.getRestaurantsNearMe(
           position: params.position,
+          radius: params.radius,
         ),
       ).called(1);
       verifyNoMoreInteractions(repository);

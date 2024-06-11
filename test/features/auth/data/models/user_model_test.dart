@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
@@ -8,12 +9,10 @@ import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
 import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  late UserModel testModel;
-  late DataMap testMap;
-  setUpAll(() {
-    testModel = const UserModel.empty();
-    testMap = jsonDecode(fixture('user.json')) as DataMap;
-  });
+  final testJson = fixture('user.json');
+  final testUserModel = UserModel.fromJson(testJson);
+  final testMap = testUserModel.toMap();
+
   test(
     'given [UserModel], '
     'when instantiated '
@@ -22,7 +21,7 @@ void main() {
       // Arrange
       // Act
       // Assert
-      expect(testModel, isA<UserEntity>());
+      expect(testUserModel, isA<UserEntity>());
     },
   );
 
@@ -36,7 +35,7 @@ void main() {
       final result = UserModel.fromMap(testMap);
       // Assert
       expect(result, isA<UserModel>());
-      expect(result, equals(testModel));
+      expect(result, equals(testUserModel));
     });
   });
 
@@ -47,7 +46,7 @@ void main() {
         'then return [Map] with correct data ', () {
       // Arrange
       // Act
-      final result = testModel.toMap();
+      final result = testUserModel.toMap();
       // Assert
       expect(result, equals(testMap));
     });
@@ -62,7 +61,7 @@ void main() {
       () {
         // Arrange
         // Act
-        final result = testModel.copyWith(email: testEmail);
+        final result = testUserModel.copyWith(email: testEmail);
         // Assert
         expect(result.email, equals(testEmail));
       },

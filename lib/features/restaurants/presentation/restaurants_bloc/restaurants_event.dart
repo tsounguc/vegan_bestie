@@ -11,6 +11,14 @@ class LoadGeolocationEvent extends RestaurantsEvent {
   const LoadGeolocationEvent();
 }
 
+class AddRestaurantEvent extends RestaurantsEvent {
+  const AddRestaurantEvent({
+    required this.restaurant,
+  });
+
+  final Restaurant restaurant;
+}
+
 class GetRestaurantsEvent extends RestaurantsEvent {
   const GetRestaurantsEvent({
     required this.position,
@@ -36,7 +44,7 @@ class GetRestaurantDetailsEvent extends RestaurantsEvent {
 class GetRestaurantsMarkersEvent extends RestaurantsEvent {
   const GetRestaurantsMarkersEvent({required this.restaurants});
 
-  final List<RestaurantEntity> restaurants;
+  final List<Restaurant> restaurants;
 
   @override
   List<Object> get props => [restaurants];

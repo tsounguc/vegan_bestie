@@ -1,53 +1,21 @@
 {
-  "business_status": "OPERATIONAL",
-  "geometry": {
-    "location": {
-      "lat": 42.318052,
-      "lng": -83.22288329999999
-    },
-    "viewport": {
-      "northeast": {
-        "lat": 42.31934957989272,
-        "lng": -83.22103512010727
-      },
-      "southwest": {
-        "lat": 42.31664992010727,
-        "lng": -83.22373477989271
-      }
-    }
-  },
-  "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
-  "icon_background_color": "#FF9E67",
-  "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
-  "name": "Fit lyfe cafe",
-  "opening_hours": {
-    "open_now": true
-  },
-  "photos": [
-    {
-      "height": 3024,
-      "html_attributions": [
-        "<a href=\"https://maps.google.com/maps/contrib/108581512528360135679\">A Google User</a>"
-      ],
-      "photo_reference": "ATplDJacXZlLKQM1FcSKl8xIgtwOKEp4pknoYhDi0s0o4iqajWpu8u2xxV5j2OjmU4Sechb0XhG59Pw92BWh2gWDeqarvZpvBJG-leitBIWukLMvvVfe1RPk6Skbzk9CUz9jkehpDcq5OroAH8yY3FKYEy4RP4lo1ZKzZNzaJ8my0-EYGXKS",
-      "width": 4032
-    }
-  ],
-  "place_id": "ChIJCbOwuv01O4gRGMgugjtoqn0",
-  "plus_code": {
-    "compound_code": "8Q9G+6R Dearborn, Michigan",
-    "global_code": "86JR8Q9G+6R"
-  },
-  "price_level": 1,
-  "rating": 4.8,
-  "reference": "ChIJCbOwuv01O4gRGMgugjtoqn0",
-  "scope": "GOOGLE",
-  "types": [
-    "restaurant",
-    "point_of_interest",
-    "food",
-    "establishment"
-  ],
-  "user_ratings_total": 48,
-  "vicinity": "18900 Michigan Ave suite 301 k, Dearborn"
+  "id": "_empty.id",
+  "image": null,
+  "name": "_empty.name",
+  "contactName": "_empty.contactName",
+  "email": "_empty.email",
+  "streetAddress": "_empty.streetAddress",
+  "city": "_empty.city",
+  "state": "_empty.state",
+  "zipCode": "_empty.zipCode",
+  "county": "_empty.county",
+  "areaCode": "_empty.areaCode",
+  "phoneNumber": "_empty.phoneNumber",
+  "websiteUrl": "_empty.websiteUrl",
+  "openingHours": [],
+  "photos": [],
+  "price": "_empty.price",
+  "veganStatus": false,
+  "hasVeganOptions": false,
+  "description": null
 }

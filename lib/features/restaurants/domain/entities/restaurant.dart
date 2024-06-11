@@ -1,9 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class Restaurant extends Equatable {
-  Restaurant({
+  const Restaurant({
     required this.id,
-    required this.imageUrl,
     required this.name,
     required this.contactName,
     required this.email,
@@ -20,10 +19,36 @@ class Restaurant extends Equatable {
     required this.price,
     required this.veganStatus,
     required this.hasVeganOptions,
+    this.imageIsFile = false,
+    this.description,
+    this.image,
   });
 
+  const Restaurant.empty()
+      : this(
+          id: '_empty.id',
+          name: '_empty.name',
+          contactName: '_empty.contactName',
+          email: '_empty.email',
+          streetAddress: '_empty.streetAddress',
+          city: '_empty.city',
+          state: '_empty.state',
+          zipCode: '_empty.zipCode',
+          county: '_empty.county',
+          areaCode: '_empty.areaCode',
+          phoneNumber: '_empty.phoneNumber',
+          websiteUrl: '_empty.websiteUrl',
+          openingHours: const [],
+          photos: const [],
+          price: '_empty.price',
+          veganStatus: false,
+          hasVeganOptions: false,
+          imageIsFile: false,
+          description: null,
+          image: null,
+        );
+
   final String id;
-  final String imageUrl;
   final String name;
   final String contactName;
   final String email;
@@ -37,16 +62,18 @@ class Restaurant extends Equatable {
   final String websiteUrl;
 
   // final bool isOpenNow;
+  final String? image;
+  final String? description;
+  final bool imageIsFile;
   final List<String> openingHours;
   final List<String> photos;
-  final List<String> price;
+  final String price;
   final bool veganStatus;
   final bool hasVeganOptions;
 
   @override
   List<Object?> get props => [
         id,
-        imageUrl,
         name,
         contactName,
         email,

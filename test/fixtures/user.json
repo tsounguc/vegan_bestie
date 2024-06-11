@@ -1,7 +1,7 @@
 {
-  "uid": "",
-  "name": "",
-  "email": "",
+  "uid": "_empty.uid",
+  "name": "_empty.name",
+  "email": "_empty.email",
   "photoUrl": null,
   "bio": null,
   "savedProductsBarcodes": [],

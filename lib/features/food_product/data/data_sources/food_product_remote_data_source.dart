@@ -83,11 +83,11 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
       final url = '$kFoodFactBaseUrl$kFetchFoodProductEndPoint$barcode';
       final parsedUri = Uri.parse(url);
 
-      final request = Request('GET', parsedUri);
+      // final request = Request('GET', parsedUri);
+      //
+      // final streamResponse = await request.send();
 
-      final streamResponse = await request.send();
-
-      final response = await Response.fromStream(streamResponse);
+      final response = await _client.get(parsedUri);
 
       if (response.statusCode != 200 && response.statusCode != 201) {
         debugPrint('${response.statusCode}');

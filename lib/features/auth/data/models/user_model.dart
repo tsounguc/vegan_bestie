@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
 
@@ -14,17 +16,23 @@ class UserModel extends UserEntity {
 
   const UserModel.empty()
       : this(
-          uid: '',
-          name: '',
-          email: '',
+          uid: '_empty.uid',
+          name: '_empty.name',
+          email: '_empty.email',
+          photoUrl: null,
+          bio: null,
           savedRestaurantsIds: const [],
           savedProductsBarcodes: const [],
         );
 
+  factory UserModel.fromJson(String source) => UserModel.fromMap(
+        jsonDecode(source) as DataMap,
+      );
+
   UserModel.fromMap(DataMap dataMap)
       : this(
           uid: dataMap['uid'] as String,
-          name: dataMap['fullName'] as String,
+          name: dataMap['name'] as String? ?? "",
           email: dataMap['email'] as String,
           photoUrl: dataMap['photoUrl'] as String?,
           bio: dataMap['bio'] as String?,
@@ -44,9 +52,11 @@ class UserModel extends UserEntity {
                 ),
         );
 
+  String toJson() => jsonEncode(toMap());
+
   DataMap toMap() => {
         'uid': uid,
-        'fullName': name,
+        'name': name,
         'email': email,
         'photoUrl': photoUrl,
         'bio': bio,

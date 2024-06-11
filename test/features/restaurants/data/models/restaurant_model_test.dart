@@ -1,22 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  late String testJson;
-  late DataMap testMap;
-  late RestaurantModel testModel;
-  setUpAll(() {
-    testJson = fixture('restaurant.json');
+  final testJson = fixture('restaurant.json');
+  final testRestaurantModel = RestaurantModel.fromJson(testJson);
+  final testMap = testRestaurantModel.toMap();
 
-    testModel = RestaurantModel.fromJson(testJson);
-    testMap = testModel.toMap();
-  });
   test(
     'given [RestaurantModel], '
     'when instantiated '
@@ -25,7 +19,7 @@ void main() {
       // Arrange
       // Act
       // Assert
-      expect(testModel, isA<RestaurantEntity>());
+      expect(testRestaurantModel, isA<Restaurant>());
     },
   );
 
@@ -38,7 +32,7 @@ void main() {
       // Act
       final result = RestaurantModel.fromMap(testMap);
       // Assert
-      expect(result, equals(testModel));
+      expect(result, equals(testRestaurantModel));
     });
   });
 
@@ -51,7 +45,7 @@ void main() {
       // Act
       final result = RestaurantModel.fromJson(testJson);
       // Assert
-      expect(result, equals(testModel));
+      expect(result, equals(testRestaurantModel));
     });
   });
 
@@ -62,7 +56,7 @@ void main() {
         'then return [Map] with correct data ', () {
       // Arrange
       // Act
-      final result = testModel.toMap();
+      final result = testRestaurantModel.toMap();
       // Assert
       expect(result, equals(testMap));
     });
@@ -75,7 +69,7 @@ void main() {
         'then return [JSON] with correct data ', () {
       // Arrange
       // Act
-      final result = testModel.toJson();
+      final result = testRestaurantModel.toJson();
       // Assert
       expect(
         result,
@@ -93,7 +87,7 @@ void main() {
         'then return [RestaurantModel] with updated data ', () {
       // Arrange
       // Act
-      final result = testModel.copyWith(id: '12345678');
+      final result = testRestaurantModel.copyWith(id: '12345678');
       // Assert
       expect(result.id, equals('12345678'));
     });

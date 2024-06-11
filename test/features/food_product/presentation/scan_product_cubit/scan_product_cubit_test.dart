@@ -8,7 +8,9 @@ import 'package:sheveegan/features/auth/domain/usecases/save_food_product.dart';
 import 'package:sheveegan/features/food_product/domain/entities/barcode.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/add_food_product.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/delete_report.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_product.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/fetch_reports.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_saved_products_list.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/read_ingredients_from_image.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/report_issue.dart';
@@ -34,6 +36,10 @@ class MockAddFoodProduct extends Mock implements AddFoodProduct {}
 
 class MockReportIssue extends Mock implements ReportIssue {}
 
+class MockFetchReports extends Mock implements FetchReports {}
+
+class MockDeleteReport extends Mock implements DeleteReport {}
+
 void main() {
   late ScanBarcode scanBarcode;
   late FetchProduct fetchProduct;
@@ -46,6 +52,8 @@ void main() {
   late UpdateFoodProduct updateFoodProduct;
   late AddFoodProduct addFoodProduct;
   late ReportIssue reportIssue;
+  late FetchReports fetchReports;
+  late DeleteReport deleteReport;
   setUp(() {
     scanBarcode = MockScanProduct();
     fetchProduct = MockFetchProduct();
@@ -56,6 +64,8 @@ void main() {
     updateFoodProduct = MockUpdateFoodProduct();
     addFoodProduct = MockAddFoodProduct();
     reportIssue = MockReportIssue();
+    fetchReports = MockFetchReports();
+    deleteReport = MockDeleteReport();
     cubit = FoodProductCubit(
       scanBarcode: scanBarcode,
       fetchProduct: fetchProduct,
@@ -66,6 +76,8 @@ void main() {
       updateFoodProduct: updateFoodProduct,
       addFoodProduct: addFoodProduct,
       reportIssue: reportIssue,
+      fetchReports: fetchReports,
+      deleteReport: deleteReport,
     );
     testFetchProductParams = const FetchProductParams.empty();
     registerFallbackValue(testFetchProductParams);
