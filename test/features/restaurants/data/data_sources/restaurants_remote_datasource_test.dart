@@ -7,14 +7,20 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
+import 'package:sheveegan/core/services/restaurants_services/location_plugin.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
+import 'package:sheveegan/features/restaurants/data/models/user_location_model.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
+
+class MockLocationPlugin extends Mock implements LocationPlugin {}
 
 Future<void> main() async {
   late RestaurantsRemoteDataSource remoteDataSource;
   late FakeFirebaseFirestore firestore;
   late MockFirebaseAuth auth;
   late MockFirebaseStorage storage;
+  late LocationPlugin location;
   late RestaurantsException testRestaurantsException;
   final testPosition = Position(
     longitude: 0,
@@ -31,6 +37,7 @@ Future<void> main() async {
 
   const testRadius = 5.0;
   const testRestaurant = RestaurantModel.empty();
+  final testUserLocation = UserLocationModel.empty();
   setUp(() async {
     firestore = FakeFirebaseFirestore();
     final user = MockUser(
@@ -51,10 +58,13 @@ Future<void> main() async {
 
     storage = MockFirebaseStorage();
 
+    location = MockLocationPlugin();
+
     remoteDataSource = RestaurantsRemoteDataSourceImpl(
       firestore,
       storage,
       auth,
+      location,
     );
     testRestaurantsException = const RestaurantsException(
       message: 'message',
@@ -117,5 +127,49 @@ Future<void> main() async {
         expect(result, expectedRestaurants);
       },
     );
+  });
+
+  group('getUserLocation', () {
+    test(
+      'given RestaurantRemoteDataSourceImpl '
+      'when [RestaurantRemoteDataSourceImpl.getUserLocation] is called '
+      'then return a UserLocation ',
+      () async {
+        // Arrange
+        when(
+          () => location.getCurrentLocation(),
+        ).thenAnswer((_) async => testPosition);
+
+        // Act
+        final result = await remoteDataSource.getUserLocation();
+
+        // Assert
+        expect(result, isA<UserLocation>());
+
+        verify(() => location.getCurrentLocation()).called(1);
+        verifyNoMoreInteractions(location);
+      },
+    );
+
+    test(
+        'given RestaurantRemoteDataSourceImpl '
+        'when [RestaurantRemoteDataSourceImpl.getUserLocation] call is unsuccessful '
+        'then throw [UserLocationException] ', () async {
+      // Arrange
+      when(
+        () => location.getCurrentLocation(),
+      ).thenThrow(const UserLocationException(message: 'message'));
+      // Act
+      final methodCall = remoteDataSource.getUserLocation;
+
+      // Assert
+      expect(
+        () async => methodCall(),
+        throwsA(const UserLocationException(message: 'message')),
+      );
+
+      verify(() => location.getCurrentLocation()).called(1);
+      verifyNoMoreInteractions(location);
+    });
   });
 }

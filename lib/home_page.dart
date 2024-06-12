@@ -62,15 +62,15 @@ class _HomePageState extends State<HomePage> {
               ).fetchProductsList(savedBarcodesList!);
             }
             final savedRestaurantsIdsList = context.userProvider.user!.savedRestaurantsIds;
-            if (savedRestaurantsIdsList?.length != context.savedRestaurantsProvider.savedRestaurantsList?.length) {
-              BlocProvider.of<RestaurantsBloc>(
-                context,
-              ).add(
-                FetchSavedRestaurantsListEvent(
-                  savedRestaurantsIdsList: savedRestaurantsIdsList!,
-                ),
-              );
-            }
+            // if (savedRestaurantsIdsList?.length != context.savedRestaurantsProvider.savedRestaurantsList?.length) {
+            //   BlocProvider.of<RestaurantsBloc>(
+            //     context,
+            //   ).add(
+            //     FetchSavedRestaurantsListEvent(
+            //       savedRestaurantsIdsList: savedRestaurantsIdsList!,
+            //     ),
+            //   );
+            // }
 
             if (snapshot.data?.isAdmin ?? false) {
               BlocProvider.of<FoodProductCubit>(

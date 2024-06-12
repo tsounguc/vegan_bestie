@@ -40,11 +40,13 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
     this._firestore,
     this._storage,
     this._auth,
+    this._location,
   );
 
   final FirebaseFirestore _firestore;
   final FirebaseStorage _storage;
   final FirebaseAuth _auth;
+  final LocationPlugin _location;
 
   @override
   Future<void> addRestaurant({required Restaurant restaurant}) async {
@@ -127,9 +129,18 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   }
 
   @override
-  Future<UserLocationModel> getUserLocation() {
-    // TODO: implement getUserLocation
-    throw UnimplementedError();
+  Future<UserLocationModel> getUserLocation() async {
+    try {
+      final result = await _location.getCurrentLocation();
+      final userLocation = UserLocationModel(position: result);
+      return userLocation;
+    } on UserLocationException catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
+      rethrow;
+    } catch (e, stackTrace) {
+      debugPrint(stackTrace.toString());
+      throw UserLocationException(message: e.toString());
+    }
   }
 
   CollectionReference<Map<String, dynamic>> get _users => _firestore.collection(

@@ -64,10 +64,10 @@ class RestaurantsHomePage extends StatelessWidget {
           }
         }
         if (state is RestaurantsLoaded) {
-          BlocProvider.of<RestaurantsBloc>(
-            context,
-          ).restaurants = state.restaurants..sort(sortByDistance);
-          restaurants = state.restaurants..sort(sortByDistance);
+          // BlocProvider.of<RestaurantsBloc>(
+          //   context,
+          // ).restaurants = state.restaurants..sort(sortByDistance);
+          // restaurants = state.restaurants..sort(sortByDistance);
           BlocProvider.of<RestaurantsBloc>(context).add(
             GetRestaurantsMarkersEvent(
               restaurants: state.restaurants,
@@ -85,9 +85,9 @@ class RestaurantsHomePage extends StatelessWidget {
           return const LoadingPage();
         } else if (state is MarkersLoaded) {
           userCurrentLocation = context.read<RestaurantsNearMeProvider>().currentLocation;
-          restaurants = BlocProvider.of<RestaurantsBloc>(
-            context,
-          ).restaurants;
+          // restaurants = BlocProvider.of<RestaurantsBloc>(
+          //   context,
+          // ).restaurants;
           markers = BlocProvider.of<RestaurantsBloc>(
             context,
           ).markers;
