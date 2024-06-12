@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/services/restaurants_services/location_plugin.dart';
@@ -62,9 +63,19 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       // Create restaurant firestore reference
       final restaurantsReference = _restaurants.doc();
 
+      // Get restaurant coordinates from address
+      final fullAddress = '${restaurant.streetAddress},'
+          ' ${restaurant.city}, '
+          '${restaurant.state} ${restaurant.zipCode}';
+      List<Location> geoCoordinates = await locationFromAddress('Gronausestraat 710, Enschede');
+
       // Create course model with course id and group id from references
       var restaurantModel = (restaurant as RestaurantModel).copyWith(
         id: restaurantsReference.id,
+        // geoLocation: GeoLocationModel(
+        //   lat: geoCoordinates.latitude,
+        //   lng: geoCoordinates.longitude,
+        // ),
       );
 
       if (restaurantModel.imageIsFile) {

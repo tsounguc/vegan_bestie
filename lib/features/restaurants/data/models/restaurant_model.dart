@@ -16,6 +16,7 @@ class RestaurantModel extends Restaurant {
     required super.county,
     required super.areaCode,
     required super.phoneNumber,
+    required super.geoLocation,
     required super.websiteUrl,
     required super.openingHours,
     required super.photos,
@@ -42,6 +43,7 @@ class RestaurantModel extends Restaurant {
           areaCode: '_empty.areaCode',
           phoneNumber: '_empty.phoneNumber',
           websiteUrl: '_empty.websiteUrl',
+          geoLocation: const GeoLocationModel.empty(),
           openingHours: const [],
           photos: const [],
           price: '_empty.price',
@@ -71,6 +73,9 @@ class RestaurantModel extends Restaurant {
           areaCode: dataMap['areaCode'] as String,
           phoneNumber: dataMap['phoneNumber'] as String,
           websiteUrl: dataMap['websiteUrl'] as String,
+          geoLocation: dataMap['geoLocation'] == null
+              ? const GeoLocationModel.empty()
+              : GeoLocationModel.fromMap(dataMap['geoLocation'] as DataMap),
           openingHours: List<String>.from(
             (dataMap['openingHours'] as List).map((openingHour) => openingHour),
           ),
@@ -131,6 +136,7 @@ class RestaurantModel extends Restaurant {
     String? areaCode,
     String? phoneNumber,
     String? websiteUrl,
+    GeoLocation? geoLocation,
     List<String>? openingHours,
     List<String>? photos,
     String? price,
@@ -153,6 +159,7 @@ class RestaurantModel extends Restaurant {
       areaCode: areaCode ?? this.areaCode,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       websiteUrl: websiteUrl ?? this.websiteUrl,
+      geoLocation: geoLocation ?? this.geoLocation,
       openingHours: openingHours ?? this.openingHours,
       photos: photos ?? this.photos,
       price: price ?? this.price,
@@ -160,4 +167,31 @@ class RestaurantModel extends Restaurant {
       hasVeganOptions: hasVeganOptions ?? this.hasVeganOptions,
     );
   }
+}
+
+class GeoLocationModel extends GeoLocation {
+  const GeoLocationModel({required super.lng, required super.lat});
+
+  const GeoLocationModel.empty()
+      : this(
+          lat: 0,
+          lng: 0,
+        );
+
+  factory GeoLocationModel.fromJson(String source) => GeoLocationModel.fromMap(
+        jsonDecode(source) as DataMap,
+      );
+
+  GeoLocationModel.fromMap(DataMap dataMap)
+      : this(
+          lat: double.tryParse(dataMap['lat'].toString()) ?? 0.0,
+          lng: double.tryParse(dataMap['lng'].toString()) ?? 0.0,
+        );
+
+  String toJson() => jsonEncode(toMap());
+
+  DataMap toMap() => {
+        'lat': lat,
+        'lng': lng,
+      };
 }

@@ -90,7 +90,7 @@ class AllSavedRestaurantsPage extends StatelessWidget {
                                 ? restaurant.icon
                                 : '$kImageBaseUrl${restaurant.photos[0].photoReference}'
                                     '&key=$kGoogleApiKey',
-                            geometry: restaurant.geometry,
+                            // geometry: restaurant.geometry,
                             restaurantId: restaurant.id,
                             restaurantName: restaurant.name.capitalizeFirstLetter(),
                             restaurantAddress: restaurant.vicinity,

@@ -6,6 +6,7 @@ import 'package:sheveegan/core/common/app/providers/restaurants_near_me_provider
 import 'package:sheveegan/core/common/screens/error/error.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/utils/constants.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurants_found_body.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
@@ -17,7 +18,7 @@ class RestaurantsHomePage extends StatelessWidget {
 
   Position? userCurrentLocation;
 
-  late List<RestaurantEntity>? restaurants;
+  late List<Restaurant>? restaurants;
 
   late Set<Marker>? markers;
 
@@ -83,11 +84,11 @@ class RestaurantsHomePage extends StatelessWidget {
         if (state is LoadingMarkers) {
           currentPage = const LoadingPage();
           return const LoadingPage();
-        } else if (state is MarkersLoaded) {
+        } else if (state is RestaurantsLoaded) {
           userCurrentLocation = context.read<RestaurantsNearMeProvider>().currentLocation;
-          // restaurants = BlocProvider.of<RestaurantsBloc>(
-          //   context,
-          // ).restaurants;
+          restaurants = BlocProvider.of<RestaurantsBloc>(
+            context,
+          ).restaurants;
           markers = BlocProvider.of<RestaurantsBloc>(
             context,
           ).markers;

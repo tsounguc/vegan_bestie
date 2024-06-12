@@ -14,6 +14,7 @@ import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/horizontal_restaurant_card.dart';
@@ -29,7 +30,7 @@ class RestaurantsFoundBody extends StatelessWidget {
     super.key,
   });
 
-  final List<RestaurantEntity> restaurants;
+  final List<Restaurant> restaurants;
 
   final Position userLocation;
 
@@ -132,17 +133,19 @@ class RestaurantsFoundBody extends StatelessWidget {
                                     weekdayText: [],
                                     userPosition: userPosition,
                                     imageUrl: restaurant.photos.isEmpty
-                                        ? restaurant.icon != 'empty.icon'
-                                            ? restaurant.icon
+                                        ? restaurant.image != null &&
+                                                restaurant.image != 'empty.icon' &&
+                                                restaurant.image!.isNotEmpty
+                                            ? restaurant.image!
                                             : ''
-                                        : '$kImageBaseUrl${restaurant.photos[0].photoReference}'
-                                            '&key=$kGoogleApiKey',
-                                    geometry: restaurant.geometry,
+                                        : '$kImageBaseUrl${restaurant.photos[0]}',
+                                    // geometry: restaurant.geometry,
                                     restaurantId: restaurant.id,
                                     restaurantName: restaurant.name.capitalizeFirstLetter(),
-                                    restaurantAddress: restaurant.vicinity,
-                                    restaurantPrice: r'$' * restaurant.price,
-                                    isOpenNow: restaurant.openingHours.openNow,
+                                    restaurantAddress: 'restaurant.vicinity',
+                                    restaurantPrice: r'$' * 3,
+                                    isOpenNow: true,
+                                    //restaurant.openingHours.openNow,
                                     fromSavedRestaurants: false,
                                   );
                                 },

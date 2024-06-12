@@ -14,6 +14,7 @@ class Restaurant extends Equatable {
     required this.areaCode,
     required this.phoneNumber,
     required this.websiteUrl,
+    required this.geoLocation,
     required this.openingHours,
     required this.photos,
     required this.price,
@@ -38,6 +39,7 @@ class Restaurant extends Equatable {
           areaCode: '_empty.areaCode',
           phoneNumber: '_empty.phoneNumber',
           websiteUrl: '_empty.websiteUrl',
+          geoLocation: const GeoLocation.empty(),
           openingHours: const [],
           photos: const [],
           price: '_empty.price',
@@ -60,6 +62,7 @@ class Restaurant extends Equatable {
   final String areaCode;
   final String phoneNumber;
   final String websiteUrl;
+  final GeoLocation geoLocation;
 
   // final bool isOpenNow;
   final String? image;
@@ -90,5 +93,27 @@ class Restaurant extends Equatable {
         price,
         veganStatus,
         hasVeganOptions,
+      ];
+}
+
+class GeoLocation extends Equatable {
+  const GeoLocation({
+    required this.lng,
+    required this.lat,
+  });
+
+  const GeoLocation.empty()
+      : this(
+          lat: 0,
+          lng: 0,
+        );
+
+  final double lng;
+  final double lat;
+
+  @override
+  List<Object?> get props => [
+        lng,
+        lat,
       ];
 }

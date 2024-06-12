@@ -21,7 +21,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
     required this.weekdayText,
     required this.userPosition,
     required this.imageUrl,
-    required this.geometry,
+    // required this.geometry,
     required this.restaurantId,
     required this.restaurantName,
     required this.restaurantAddress,
@@ -34,7 +34,8 @@ class HorizontalRestaurantCard extends StatelessWidget {
   final bool fromSavedRestaurants;
   final List<RestaurantReview> reviews;
   final String imageUrl;
-  final Geometry geometry;
+
+  // final Geometry geometry;
   final String restaurantId;
   final String restaurantName;
   final String restaurantAddress;
@@ -57,12 +58,13 @@ class HorizontalRestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final distance = Geolocator.distanceBetween(
-      userPosition?.latitude ?? 0,
-      userPosition?.longitude ?? 0,
-      geometry.location.lat,
-      geometry.location.lng,
-    );
+    final distance = 0.0;
+    // Geolocator.distanceBetween(
+    //   userPosition?.latitude ?? 0,
+    //   userPosition?.longitude ?? 0,
+    //   geometry.location.lat,
+    //   geometry.location.lng,
+    // );
     return GestureDetector(
       onTap: fromSavedRestaurants
           ? null
