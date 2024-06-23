@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sheveegan/core/resources/media_resources.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 
 class VeganBestieLogoWidget extends StatelessWidget {
@@ -17,19 +18,19 @@ class VeganBestieLogoWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/tofu.png',
+              MediaResources.tofu,
               fit: BoxFit.contain,
               height: size,
               width: size,
             ),
             Image.asset(
-              'assets/broccoli.png',
+              MediaResources.broccoli,
               fit: BoxFit.contain,
               height: size,
               width: size,
             ),
             Image.asset(
-              'assets/avocado.png',
+              MediaResources.avocado,
               fit: BoxFit.contain,
               height: size,
               width: size,
@@ -42,9 +43,13 @@ class VeganBestieLogoWidget extends StatelessWidget {
             children: [
               Text(
                 Strings.appTitle,
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      fontSize: fontSize,
-                    ),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .displayMedium
+                    ?.copyWith(
+                  fontSize: fontSize,
+                ),
               ),
             ],
           ),

@@ -12,4 +12,8 @@ const kDefaultAvatar = 'https://images.freeimages.com/fic/images/icons/573/must_
 
 const kUserIconPath = 'assets/user.png';
 
-const kOneMile = 1609.344;
+const kOneMileInMeters = 1609.344;
+
+const kOneMileOfLat = 0.0144927536231884;
+
+const kOneMileOfLng = 0.0181818181818182;

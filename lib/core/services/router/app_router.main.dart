@@ -34,7 +34,7 @@ class AppRouter {
                     create: (_) => serviceLocator<AuthBloc>(),
                   ),
                 ],
-                child: const HomePage(),
+                child: const Dashboard(),
               );
             } else {
               return BlocProvider(
@@ -45,22 +45,9 @@ class AppRouter {
           },
           settings: settings,
         );
-      case HomePage.id:
+      case Dashboard.id:
         return _pageBuilder(
-          (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (_) => serviceLocator<FoodProductCubit>(),
-              ),
-              BlocProvider(
-                create: (_) => serviceLocator<RestaurantsBloc>(),
-              ),
-              BlocProvider(
-                create: (_) => serviceLocator<AuthBloc>(),
-              ),
-            ],
-            child: const HomePage(),
-          ),
+          (_) => const Dashboard(),
           settings: settings,
         );
       case SignInScreen.id:
@@ -149,7 +136,7 @@ class AppRouter {
           (_) => BlocProvider(
             create: (_) => serviceLocator<RestaurantsBloc>(),
             child: RestaurantDetailsPage(
-              restaurantDetails: settings.arguments! as RestaurantDetails,
+              restaurant: settings.arguments! as Restaurant,
             ),
           ),
           settings: settings,
@@ -169,7 +156,7 @@ class AppRouter {
           (_) => BlocProvider(
             create: (_) => serviceLocator<RestaurantsBloc>(),
             child: RestaurantReviewScreen(
-              restaurantDetails: settings.arguments! as RestaurantDetails,
+              restaurant: settings.arguments! as Restaurant,
             ),
           ),
           settings: settings,
@@ -224,6 +211,16 @@ class AppRouter {
           settings: settings,
         );
 
+      case AddRestaurantScreen.id:
+        final args = settings.arguments! as RestaurantsBloc;
+        return _pageBuilder(
+          (context) => BlocProvider.value(
+            value: serviceLocator<RestaurantsBloc>(),
+            child: const AddRestaurantScreen(),
+          ),
+          settings: settings,
+        );
+
       case FoodProductReportScreen.id:
         final args = settings.arguments! as FoodProductModel?;
         return _pageBuilder(
@@ -264,7 +261,7 @@ class EditRestaurantScreenArguments {
   const EditRestaurantScreenArguments(this.review, this.restaurant);
 
   final RestaurantReview review;
-  final RestaurantDetails restaurant;
+  final Restaurant restaurant;
 }
 
 class UpdateFoodProductPageArguments {

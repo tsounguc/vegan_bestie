@@ -11,3 +11,13 @@ abstract class UseCaseWithParams<T, Params> {
 
   ResultFuture<T> call(Params params);
 }
+
+abstract class StreamUseCase<T> {
+  const StreamUseCase();
+  ResultStream<T> call();
+}
+
+abstract class StreamUseCaseWithParams<T, Params> {
+  const StreamUseCaseWithParams();
+  ResultStream<T> call(Params params);
+}

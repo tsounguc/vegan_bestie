@@ -7,9 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sheveegan/core/common/widgets/i_field.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
-import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:sheveegan/features/auth/presentation/pages/sign_in_screen.dart';
 
 class CoreUtils {
   const CoreUtils._();
@@ -151,9 +149,9 @@ class CoreUtils {
           title: Text(
             'Hours',
             style: context.theme.textTheme.bodyMedium?.copyWith(
-              // color: Colors.black,
-              fontSize: 16.sp,
-            ),
+                // color: Colors.black,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600),
           ),
           content: IntrinsicHeight(
             child: Column(

@@ -164,8 +164,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
         backgroundColor: context.theme.colorScheme.background,
         leading: !Navigator.of(context).canPop()
             ? null
-            : const CustomBackButton(
-                color: Colors.black,
+            : CustomBackButton(
+                color: context.theme.iconTheme.color!,
               ),
         centerTitle: true,
         title: SizedBox(
@@ -189,7 +189,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   ),
                   DefaultTextStyle(
                     style: TextStyle(
-                      color: Colors.black,
+                      color: context.theme.iconTheme.color,
                       fontSize: 18.sp,
                     ),
                     child: Text('Loading $loadingPercentage'),

@@ -3,7 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 
 class RestaurantsNearMeProvider extends ChangeNotifier {
-  double _radius = kOneMile * 7.0;
+  double _radius = kOneMileInMeters * 7.0;
 
   Position? _currentLocation;
 

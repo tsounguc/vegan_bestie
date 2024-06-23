@@ -22,5 +22,5 @@ class _PersistentScreenState extends State<PersistentScreen> with AutomaticKeepA
   }
 
   @override
-  bool get wantKeepAlive => false;
+  bool get wantKeepAlive => true;
 }

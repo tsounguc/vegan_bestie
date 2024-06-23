@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-import 'package:sheveegan/core/common/app/providers/theme_mode_provider.dart';
 import 'package:sheveegan/core/common/screens/product_screens/product_not_found.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
@@ -12,6 +10,7 @@ import 'package:sheveegan/features/auth/presentation/pages/forgot_password_scree
 import 'package:sheveegan/features/auth/presentation/pages/sign_in_screen.dart';
 import 'package:sheveegan/features/auth/presentation/pages/sign_up_screen.dart';
 import 'package:sheveegan/features/auth/presentation/pages/welcome_page.dart';
+import 'package:sheveegan/features/dashboard/presentation/views/dashboard.dart';
 import 'package:sheveegan/features/food_product//presentation/pages/update_food_product_screen.dart';
 import 'package:sheveegan/features/food_product/data/models/food_product_model.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
@@ -27,12 +26,12 @@ import 'package:sheveegan/features/profile/presentation/screens/display_screen.d
 import 'package:sheveegan/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/reports_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/settings_page.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/add_restaurant_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/edit_restaurant_review_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_review_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
-import 'package:sheveegan/home_page.dart';
 
 part 'package:sheveegan/core/services/router/app_router.main.dart';

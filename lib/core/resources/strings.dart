@@ -1,4 +1,6 @@
 class Strings {
+  const Strings._();
+
   static const appTitle = 'Vegan Bestie';
   static const tapToScan = 'Tap to Scan';
 

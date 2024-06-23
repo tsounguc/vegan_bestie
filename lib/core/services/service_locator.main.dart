@@ -6,9 +6,41 @@ Future<void> setUpServices() async {
   await _initAuth();
   await _initScan();
   await _initRestaurants();
+  await _initNotification();
+}
+
+Future<void> _initNotification() async {
+  serviceLocator
+    ..registerFactory(
+      () => NotificationCubit(
+        clear: serviceLocator(),
+        clearAll: serviceLocator(),
+        getNotifications: serviceLocator(),
+        markAsRead: serviceLocator(),
+        sendNotification: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton(() => Clear(serviceLocator()))
+    ..registerLazySingleton(() => ClearAll(serviceLocator()))
+    ..registerLazySingleton(() => GetNotifications(serviceLocator()))
+    ..registerLazySingleton(() => MarkAsRead(serviceLocator()))
+    ..registerLazySingleton(() => SendNotification(serviceLocator()))
+    ..registerLazySingleton<NotificationRepository>(
+      () => NotificationRepositoryImpl(
+        serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<NotificationRemoteDatasource>(
+      () => NotificationRemoteDatasourceImpl(
+        firestore: serviceLocator(),
+        auth: serviceLocator(),
+      ),
+    );
 }
 
 Future<void> _initAuth() async {
+  final prefs = await SharedPreferences.getInstance();
+
   serviceLocator
     // App Logic
     ..registerFactory(
@@ -41,7 +73,8 @@ Future<void> _initAuth() async {
     // External dependencies
     ..registerLazySingleton(() => FirebaseAuth.instance)
     ..registerLazySingleton(() => FirebaseFirestore.instance)
-    ..registerLazySingleton(() => FirebaseStorage.instance);
+    ..registerLazySingleton(() => FirebaseStorage.instance)
+    ..registerLazySingleton(() => prefs);
 }
 
 Future<void> _initScan() async {
@@ -104,7 +137,7 @@ Future<void> _initRestaurants() async {
         getUserLocation: serviceLocator(),
         // getRestaurantDetails: serviceLocator(),
         // getUserLocation: serviceLocator(),
-        // getRestaurantsMarkers: serviceLocator(),
+        getRestaurantsMarkers: serviceLocator(),
         // getSavedRestaurantsList: serviceLocator(),
         // saveRestaurant: serviceLocator(),
         // removeRestaurant: serviceLocator(),
@@ -119,7 +152,7 @@ Future<void> _initRestaurants() async {
     ..registerLazySingleton(() => GetRestaurantsNearMe(serviceLocator()))
     // ..registerLazySingleton(() => GetRestaurantDetails(serviceLocator()))
     ..registerLazySingleton(() => GetUserLocation(serviceLocator()))
-    // ..registerLazySingleton(() => GetRestaurantsMarkers(serviceLocator()))
+    ..registerLazySingleton(() => GetRestaurantsMarkers(serviceLocator()))
     // ..registerLazySingleton(() => GetSavedRestaurantsList(serviceLocator()))
     // ..registerLazySingleton(() => SaveRestaurant(serviceLocator()))
     // ..registerLazySingleton(() => RemoveRestaurant(serviceLocator()))
@@ -138,12 +171,14 @@ Future<void> _initRestaurants() async {
         serviceLocator(),
         serviceLocator(),
         serviceLocator(),
-        // serviceLocator(),
+        serviceLocator(),
+        serviceLocator(),
         // serviceLocator(),
       ),
     )
     // External dependencies
     ..registerLazySingleton(LocationPlugin.new)
     ..registerLazySingleton(GoogleMapPlugin.new)
-    ..registerLazySingleton(Client.new);
+    ..registerLazySingleton(Client.new)
+    ..registerLazySingleton(GeocodingPlugin.new);
 }

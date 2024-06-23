@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
 
 class ThemeModeProvider extends ChangeNotifier {
-  var _themeMode = ThemeMode.light;
-  var _useDeviceSettings = false;
-  var _isDarkMode = false;
-
   ThemeModeProvider({required bool useDeviceSettings, required bool isDarkMode}) {
     _useDeviceSettings = useDeviceSettings;
     _isDarkMode = isDarkMode;
@@ -17,6 +14,9 @@ class ThemeModeProvider extends ChangeNotifier {
       _themeMode = ThemeMode.light;
     }
   }
+  var _themeMode = ThemeMode.light;
+  var _useDeviceSettings = false;
+  var _isDarkMode = false;
 
   ThemeModePreference prefs = ThemeModePreference();
 
@@ -51,22 +51,22 @@ class ThemeModeProvider extends ChangeNotifier {
 
 class ThemeModePreference {
   Future<void> setDarkTheme(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = serviceLocator<SharedPreferences>();
     await prefs.setBool('isDarkMode', value);
   }
 
   Future<void> setUseDeviceSettings(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = serviceLocator<SharedPreferences>();
     await prefs.setBool('useDeviceSettings', value);
   }
 
   Future<bool> getDarkTheme() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = serviceLocator<SharedPreferences>();
     return prefs.getBool('isDarkMode') ?? false;
   }
 
   Future<bool> getUseDeviceSettings() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = serviceLocator<SharedPreferences>();
     return prefs.getBool('useDeviceSettings') ?? false;
   }
 }

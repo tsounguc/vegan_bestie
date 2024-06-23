@@ -115,15 +115,15 @@ class _HomePageState extends State<HomePage> {
                     child: BottomNavigationBar(
                       type: BottomNavigationBarType.fixed,
                       currentIndex: controller.currentIndex,
-                      // onTap: controller.changeIndex,
-                      onTap: (int index) {
-                        controller.changeIndex(index);
-                        if (index == 1) {
-                          BlocProvider.of<RestaurantsBloc>(
-                            context,
-                          ).add(const LoadGeolocationEvent());
-                        }
-                      },
+                      onTap: controller.changeIndex,
+                      // onTap: (int index) {
+                      //   controller.changeIndex(index);
+                      //   if (index == 1) {
+                      //     BlocProvider.of<RestaurantsBloc>(
+                      //       context,
+                      //     ).add(const LoadGeolocationEvent());
+                      //   }
+                      // },
                       items: [
                         BottomNavigationBarItem(
                           label: 'Home',

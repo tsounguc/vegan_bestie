@@ -5,8 +5,18 @@ extension StringExtension on String {
         '****',
       );
 
-  String capitalizeFirstLetter() => this.isEmpty ? '' : '${this[0].toUpperCase()}${substring(1)}';
+  String capitalizeFirstLetter() => isEmpty ? '' : '${this[0].toUpperCase()}${substring(1)}';
 
   String capitalizeEveryWord(String splitPattern) =>
-      this.split(splitPattern).map((word) => word.capitalizeFirstLetter()).join(splitPattern);
+      split(splitPattern).map((word) => word.capitalizeFirstLetter()).join(splitPattern);
+
+  String lowerCaseFirstLetter() => isEmpty ? '' : '${this[0].toLowerCase()}${substring(1)}';
+
+  String lowerCaseEveryWord(String splitPattern) =>
+      isEmpty ? '' : split(splitPattern).map((word) => word.lowerCaseFirstLetter()).join(splitPattern);
+
+  String camelCase() =>
+      isEmpty ? '' : toLowerCase().capitalizeEveryWord(' ').lowerCaseFirstLetter().replaceAll(' ', '');
+
+  String snakeCase() => isEmpty ? '' : toLowerCase().replaceAll(' ', '_');
 }

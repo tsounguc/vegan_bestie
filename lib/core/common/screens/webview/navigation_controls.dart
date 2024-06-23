@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -22,7 +23,7 @@ class NavigationControls extends StatelessWidget {
         IconButton(
           icon: Icon(
             Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
-            color: Colors.black,
+            color: context.theme.iconTheme.color,
           ),
           onPressed: () async {
             if (await controller.canGoBack()) {
@@ -39,7 +40,7 @@ class NavigationControls extends StatelessWidget {
         IconButton(
           icon: Icon(
             Platform.isAndroid ? Icons.arrow_forward_ios : Icons.arrow_forward,
-            color: Colors.black,
+            color: context.theme.iconTheme.color,
           ),
           onPressed: () async {
             if (await controller.canGoForward()) {
@@ -54,7 +55,10 @@ class NavigationControls extends StatelessWidget {
           },
         ),
         IconButton(
-          icon: const Icon(Icons.replay, color: Colors.black),
+          icon: Icon(
+            Icons.replay,
+            color: context.theme.iconTheme.color,
+          ),
           onPressed: controller.reload,
         ),
       ],
