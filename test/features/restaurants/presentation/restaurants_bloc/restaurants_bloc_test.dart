@@ -6,6 +6,7 @@ import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/auth/domain/usecases/remove_restaurant.dart';
 import 'package:sheveegan/features/auth/domain/usecases/save_restaurant.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/get_saved_restaurants_list.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant.dart';
@@ -26,7 +27,7 @@ class MockGetRestaurantsNearMe extends Mock implements GetRestaurantsNearMe {}
 
 class MockGetUserLocation extends Mock implements GetUserLocation {}
 
-// class MockGetRestaurantsMarkers extends Mock implements GetRestaurantsMarkers {}
+class MockGetRestaurantsMarkers extends Mock implements GetRestaurantsMarkers {}
 
 // class MockGetSavedRestaurantsList extends Mock implements GetSavedRestaurantsList {}
 
@@ -47,12 +48,12 @@ void main() {
   late AddRestaurant addRestaurant;
   // late GetRestaurantDetails getRestaurantDetails;
   late GetUserLocation getUserLocation;
-  // late GetRestaurantsMarkers getRestaurantsMarkers;
+  late GetRestaurantsMarkers getRestaurantsMarkers;
   // late DeleteRestaurantReview deleteRestaurantReview;
   late RestaurantsBloc bloc;
   late GetRestaurantsNearMeParams testGetRestaurantsParams;
   // late GetRestaurantDetailsParams testGetRestaurantDetailsParams;
-  // late GetRestaurantsMarkersParams testGetRestaurantsMarkersParams;
+  late GetRestaurantsMarkersParams testGetRestaurantsMarkersParams;
 
   late RestaurantsFailure testRestaurantsFailure;
   late RestaurantDetailsFailure testRestaurantDetailsFailure;
@@ -65,14 +66,14 @@ void main() {
     getRestaurantsNearMe = MockGetRestaurantsNearMe();
     // getRestaurantDetails = MockGetRestaurantDetails();
     getUserLocation = MockGetUserLocation();
-    // getRestaurantsMarkers = MockGetRestaurantsMarkers();
+    getRestaurantsMarkers = MockGetRestaurantsMarkers();
     // deleteRestaurantReview = MockDeleteRestaurantReview();
     bloc = RestaurantsBloc(
       getRestaurantsNearMe: getRestaurantsNearMe,
       // getRestaurantDetails: getRestaurantDetails,
       getUserLocation: getUserLocation,
       addRestaurant: addRestaurant,
-      // getRestaurantsMarkers: getRestaurantsMarkers,
+      getRestaurantsMarkers: getRestaurantsMarkers,
       // getSavedRestaurantsList: MockGetSavedRestaurantsList(),
       // saveRestaurant: MockSaveRestaurant(),
       // removeRestaurant: MockRemoveRestaurant(),
@@ -81,10 +82,10 @@ void main() {
       // deleteRestaurantReview: MockDeleteRestaurantReview(),
       // editRestaurantReview: MockEditRestaurantReview(),
     );
-    testRestaurant = Restaurant.empty();
+    testRestaurant = const Restaurant.empty();
     testGetRestaurantsParams = GetRestaurantsNearMeParams.empty();
     // testGetRestaurantDetailsParams = const GetRestaurantDetailsParams.empty();
-    // testGetRestaurantsMarkersParams = GetRestaurantsMarkersParams.empty();
+    testGetRestaurantsMarkersParams = GetRestaurantsMarkersParams.empty();
     testRestaurantsFailure = RestaurantsFailure(
       message: 'message',
       statusCode: 400,
@@ -182,7 +183,7 @@ void main() {
       'then emit [LoadingRestaurants, RestaurantsLoaded]',
       build: () {
         when(() => getRestaurantsNearMe(any())).thenAnswer(
-          (_) async => Right(testRestaurants),
+          (_) => Stream.value(Right(testRestaurants)),
         );
         return bloc;
       },
@@ -210,7 +211,7 @@ void main() {
       'then emit [LoadingRestaurants, RestaurantsError]',
       build: () {
         when(() => getRestaurantsNearMe(any())).thenAnswer(
-          (_) async => Left(testRestaurantsFailure),
+          (_) => Stream.value(Left(testRestaurantsFailure)),
         );
         return bloc;
       },
@@ -279,6 +280,66 @@ void main() {
     );
   });
 
+  group('getRestaurantsMarkers - ', () {
+    final testMapEntity = MapEntity.empty();
+    blocTest<RestaurantsBloc, RestaurantsState>(
+      'given RestaurantsBloc '
+      'when [RestaurantsBloc.getRestaurantsMarkers] is called '
+      'and completed successfully '
+      'then emit [LoadingMarkers, MarkersLoaded]',
+      build: () {
+        when(
+          () => getRestaurantsMarkers(testGetRestaurantsMarkersParams),
+        ).thenAnswer((_) async => Right(testMapEntity));
+        return bloc;
+      },
+      act: (bloc) => bloc.add(
+        GetRestaurantsMarkersEvent(
+          restaurants: testGetRestaurantsMarkersParams.restaurants,
+        ),
+      ),
+      expect: () => [
+        const LoadingMarkers(),
+        MarkersLoaded(markers: testMapEntity.markers),
+      ],
+      verify: (bloc) {
+        verify(
+          () => getRestaurantsMarkers(testGetRestaurantsMarkersParams),
+        ).called(1);
+        verifyNoMoreInteractions(getRestaurantsMarkers);
+      },
+    );
+
+    blocTest<RestaurantsBloc, RestaurantsState>(
+      'given RestaurantsBloc '
+      'when [RestaurantsBloc.getRestaurantsMarkers] is called and unsuccessful '
+      'then emit [LoadingMarkers, RestaurantsError]',
+      build: () {
+        when(
+          () => getRestaurantsMarkers(testGetRestaurantsMarkersParams),
+        ).thenAnswer(
+          (_) async => Left(testMapFailure),
+        );
+        return bloc;
+      },
+      act: (bloc) => bloc.add(
+        GetRestaurantsMarkersEvent(
+          restaurants: testGetRestaurantsMarkersParams.restaurants,
+        ),
+      ),
+      expect: () => [
+        const LoadingMarkers(),
+        RestaurantsError(message: testMapFailure.errorMessage),
+      ],
+      verify: (cubit) {
+        verify(
+          () => getRestaurantsMarkers(testGetRestaurantsMarkersParams),
+        ).called(1);
+        verifyNoMoreInteractions(getRestaurantsMarkers);
+      },
+    );
+  });
+
   // group('getRestaurantDetails -', () {
   //   final testRestaurantDetails = RestaurantDetails.empty();
   //   blocTest<RestaurantsBloc, RestaurantsState>(
@@ -329,66 +390,6 @@ void main() {
   //         () => getRestaurantDetails(testGetRestaurantDetailsParams),
   //       ).called(1);
   //       verifyNoMoreInteractions(getRestaurantDetails);
-  //     },
-  //   );
-  // });
-
-  // group('getRestaurantsMarkers - ', () {
-  //   final testMapEntity = MapEntity.empty();
-  //   blocTest<RestaurantsBloc, RestaurantsState>(
-  //     'given RestaurantsBloc '
-  //     'when [RestaurantsBloc.getRestaurantsMarkers] is called '
-  //     'and completed successfully '
-  //     'then emit [LoadingMarkers, MarkersLoaded]',
-  //     build: () {
-  //       when(
-  //         () => getRestaurantsMarkers(testGetRestaurantsMarkersParams),
-  //       ).thenAnswer((_) async => Right(testMapEntity));
-  //       return bloc;
-  //     },
-  //     act: (bloc) => bloc.add(
-  //       GetRestaurantsMarkersEvent(
-  //         restaurants: testGetRestaurantsMarkersParams.restaurants,
-  //       ),
-  //     ),
-  //     expect: () => [
-  //       const LoadingMarkers(),
-  //       MarkersLoaded(markers: testMapEntity.markers),
-  //     ],
-  //     verify: (bloc) {
-  //       verify(
-  //         () => getRestaurantsMarkers(testGetRestaurantsMarkersParams),
-  //       ).called(1);
-  //       verifyNoMoreInteractions(getRestaurantsMarkers);
-  //     },
-  //   );
-  //
-  //   blocTest<RestaurantsBloc, RestaurantsState>(
-  //     'given RestaurantsBloc '
-  //     'when [RestaurantsBloc.getRestaurantsMarkers] is called and unsuccessful '
-  //     'then emit [LoadingMarkers, RestaurantsError]',
-  //     build: () {
-  //       when(
-  //         () => getRestaurantsMarkers(testGetRestaurantsMarkersParams),
-  //       ).thenAnswer(
-  //         (_) async => Left(testMapFailure),
-  //       );
-  //       return bloc;
-  //     },
-  //     act: (bloc) => bloc.add(
-  //       GetRestaurantsMarkersEvent(
-  //         restaurants: testGetRestaurantsMarkersParams.restaurants,
-  //       ),
-  //     ),
-  //     expect: () => [
-  //       const LoadingMarkers(),
-  //       RestaurantsError(message: testMapFailure.errorMessage),
-  //     ],
-  //     verify: (cubit) {
-  //       verify(
-  //         () => getRestaurantsMarkers(testGetRestaurantsMarkersParams),
-  //       ).called(1);
-  //       verifyNoMoreInteractions(getRestaurantsMarkers);
   //     },
   //   );
   // });

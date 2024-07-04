@@ -19,4 +19,10 @@ extension StringExtension on String {
       isEmpty ? '' : toLowerCase().capitalizeEveryWord(' ').lowerCaseFirstLetter().replaceAll(' ', '');
 
   String snakeCase() => isEmpty ? '' : toLowerCase().replaceAll(' ', '_');
+
+// Future<String> isOpenNow() async {
+//  final rightNow =  DateTime.now();
+//   final openingHourSplit = split(' ');
+//   var fromTime = int.openingHourSplit[1]
+// }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:sheveegan/core/resources/media_resources.dart';
 import 'package:sheveegan/core/utils/constants.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 
 class CustomPageView extends StatefulWidget {
-  const CustomPageView({required this.restaurantDetails, super.key});
+  const CustomPageView({required this.restaurant, super.key});
 
-  final RestaurantDetails restaurantDetails;
+  final Restaurant restaurant;
 
   @override
   State<CustomPageView> createState() => _CustomPageViewState();
@@ -42,7 +44,7 @@ class _CustomPageViewState extends State<CustomPageView> {
     }
     return PageView.builder(
       controller: pageController,
-      itemCount: widget.restaurantDetails.photos.length,
+      itemCount: widget.restaurant.photos.length,
       itemBuilder: (BuildContext context, int position) {
         debugPrint('CurrentPageValue = $_currentPageValue');
         debugPrint('Position = $position');
@@ -79,34 +81,41 @@ class _CustomPageViewState extends State<CustomPageView> {
               bottom: 10,
             ),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              // border: Border.all(color: Colors.black12),
-              boxShadow: _currentPageValue != position
-                  ? const [
-                      BoxShadow(
-                        color: Colors.black38,
-                        blurRadius: 2,
-                        offset: Offset(2, 4),
-                      ),
-                    ]
-                  : const [
-                      BoxShadow(
-                        color: Colors.black38,
-                        blurRadius: 2,
-                        offset: Offset(2, 4),
-                      ),
-                    ],
-              image: DecorationImage(
-                fit: BoxFit.fill,
-                image: NetworkImage(
-                  widget.restaurantDetails.photos[position].photoReference.isEmpty
-                      ? widget.restaurantDetails.icon
-                      : '$kImageBaseUrl'
-                          '${widget.restaurantDetails.photos[position].photoReference}'
-                          '&key=$kGoogleApiKey',
-                ),
-              ),
-            ),
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(15),
+                // border: Border.all(color: Colors.black12),
+                boxShadow: _currentPageValue != position
+                    ? const [
+                        BoxShadow(
+                          color: Colors.black38,
+                          blurRadius: 2,
+                          offset: Offset(2, 4),
+                        ),
+                      ]
+                    : const [
+                        BoxShadow(
+                          color: Colors.black38,
+                          blurRadius: 2,
+                          offset: Offset(2, 4),
+                        ),
+                      ],
+                image: widget.restaurant.photos[position].isNotEmpty &&
+                        widget.restaurant.photos[position] != '_empty.photo${position + 1}'
+                    ? DecorationImage(
+                        fit: BoxFit.fill,
+                        // TODO: Add Images
+                        image: NetworkImage(widget.restaurant.photos[position]
+                            // ? '$kImageBaseUrl'
+                            //     '${widget.restaurant.photos[position]}'
+                            //     '&key=$kGoogleApiKey'
+
+                            ),
+                      )
+                    : DecorationImage(
+                        fit: BoxFit.contain,
+                        // colorFilter: ColorFilter.mode(Colors.grey, BlendMode.darken),
+                        image: AssetImage(widget.restaurant.image ?? MediaResources.tofu),
+                      )),
           ),
         );
       },

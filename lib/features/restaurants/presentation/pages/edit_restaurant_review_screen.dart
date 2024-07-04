@@ -7,10 +7,10 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_review_form_field.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
 class EditRestaurantReviewScreen extends StatefulWidget {
   const EditRestaurantReviewScreen({
@@ -23,7 +23,7 @@ class EditRestaurantReviewScreen extends StatefulWidget {
   // final EditRestaurantScreenArguments argument;
 
   final RestaurantReview review;
-  final RestaurantDetails restaurant;
+  final Restaurant restaurant;
 
   static const String id = '/editRestaurantReviewScreen';
 
@@ -71,16 +71,14 @@ class _EditRestaurantReviewScreenState extends State<EditRestaurantReviewScreen>
       username: context.currentUser?.name,
       userProfilePic: context.currentUser?.photoUrl ?? kDefaultAvatar,
     );
-    BlocProvider.of<RestaurantsBloc>(context).add(
-      EditRestaurantReviewEvent(
-        review: restaurantReview,
-      ),
+    BlocProvider.of<RestaurantsCubit>(context).editRestaurantReview(
+      review: restaurantReview,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RestaurantsBloc, RestaurantsState>(
+    return BlocConsumer<RestaurantsCubit, RestaurantsState>(
       listener: (context, state) {
         if (state is RestaurantReviewEdited) {
           debugPrint('RestaurantReviewAdded');

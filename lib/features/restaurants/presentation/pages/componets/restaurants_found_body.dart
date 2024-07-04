@@ -2,25 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/restaurants_near_me_provider.dart';
-import 'package:sheveegan/core/common/screens/loading/loading.dart';
-import 'package:sheveegan/core/common/widgets/section_header.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
+import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
-import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/horizontal_restaurant_card.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/map_page.dart';
-import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
+
+import '../add_restaurant_screen.dart';
 
 class RestaurantsFoundBody extends StatelessWidget {
   const RestaurantsFoundBody({
@@ -39,20 +36,20 @@ class RestaurantsFoundBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
-    return BlocListener<RestaurantsBloc, RestaurantsState>(
+    return BlocListener<RestaurantsCubit, RestaurantsState>(
       listener: (context, state) {
         if (state is RestaurantDetailsLoaded) {
-          Navigator.of(context).pushNamed(
-            RestaurantDetailsPage.id,
-            arguments: state.restaurantDetails,
-          );
+          // Navigator.of(context).pushNamed(
+          //   RestaurantDetailsPage.id,
+          //   arguments: state.restaurant,
+          // );
         }
       },
       child: Consumer<RestaurantsNearMeProvider>(
         builder: (context, controller, child) {
           return Stack(
             children: [
-              BlocBuilder<RestaurantsBloc, RestaurantsState>(
+              BlocBuilder<RestaurantsCubit, RestaurantsState>(
                 builder: (context, state) {
                   return LayoutBuilder(
                     builder: (
@@ -129,20 +126,22 @@ class RestaurantsFoundBody extends StatelessWidget {
                                   final restaurant = restaurants[restaurantIndex];
                                   final userPosition = context.read<RestaurantsNearMeProvider>().currentLocation;
                                   return HorizontalRestaurantCard(
+                                    restaurant: restaurant,
                                     reviews: reviews,
                                     weekdayText: [],
                                     userPosition: userPosition,
-                                    imageUrl: restaurant.photos.isEmpty
+                                    imageUrl: restaurant.photos.isEmpty || restaurant.photos[0] == '_empty.photo1'
                                         ? restaurant.image != null &&
-                                                restaurant.image != 'empty.icon' &&
+                                                restaurant.image != '_empty.image' &&
                                                 restaurant.image!.isNotEmpty
                                             ? restaurant.image!
                                             : ''
-                                        : '$kImageBaseUrl${restaurant.photos[0]}',
+                                        : restaurant.photos[0],
                                     // geometry: restaurant.geometry,
                                     restaurantId: restaurant.id,
                                     restaurantName: restaurant.name.capitalizeFirstLetter(),
-                                    restaurantAddress: 'restaurant.vicinity',
+                                    restaurantAddress: '${restaurant.streetAddress}, '
+                                        '${restaurant.city}',
                                     restaurantPrice: r'$' * 3,
                                     isOpenNow: true,
                                     //restaurant.openingHours.openNow,
@@ -158,6 +157,33 @@ class RestaurantsFoundBody extends StatelessWidget {
                   );
                 },
               ),
+              Positioned(
+                right: 15,
+                bottom: 15,
+                child: ElevatedButton.icon(
+                  // color: context.theme.primaryColor,
+                  style: IconButton.styleFrom(
+                    backgroundColor: context.theme.primaryColor,
+                    foregroundColor: Colors.white,
+                  ),
+
+                  onPressed: () {
+                    // BlocProvider.of<RestaurantsBloc>(context).add(
+                    //   const AddRestaurantEvent(
+                    //     restaurant: Restaurant.empty(),
+                    //   ),
+                    // );
+
+                    Navigator.of(context).pushNamed(
+                      AddRestaurantScreen.id,
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.add,
+                  ),
+                  label: const Text(Strings.addBusinessText),
+                ),
+              )
             ],
           );
         },

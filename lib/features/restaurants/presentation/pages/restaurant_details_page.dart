@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:sheveegan/core/common/screens/webview/web_view_screen.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
+import 'package:sheveegan/core/common/widgets/popup_item.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
@@ -16,7 +17,7 @@ import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/custom_page_view.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/dine_in_takeout_delivery.dart';
@@ -24,17 +25,19 @@ import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_o
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/rating_and_reviews_count.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/review_card.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_review_screen.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/update_restaurant_screen.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RestaurantDetailsPage extends StatelessWidget {
   RestaurantDetailsPage({
-    required this.restaurantDetails,
+    // required this.restaurantDetails,
+    required this.restaurant,
     super.key,
   });
 
-  final RestaurantDetails restaurantDetails;
-
+  // final RestaurantDetails restaurantDetails;
+  final Restaurant restaurant;
   static const String id = '/restaurantDetailsPage';
 
   final dateFormat = DateFormat('h:mm a');
@@ -50,53 +53,24 @@ class RestaurantDetailsPage extends StatelessWidget {
   };
 
   final controller = ScrollController();
-  final baseTextStyle = TextStyle(
-    // color: Colors.grey.shade700,
-    fontSize: 10.sp,
-    fontWeight: FontWeight.w500,
-  );
-  final elevatedButtonStyle = ButtonStyle(
-    backgroundColor: const MaterialStatePropertyAll(
-      Colors.white,
-    ),
-    surfaceTintColor: const MaterialStatePropertyAll(
-      Colors.white,
-    ),
-    shape: MaterialStatePropertyAll(
-      RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          25,
-        ),
-      ),
-    ),
-    padding: const MaterialStatePropertyAll(
-      EdgeInsets.symmetric(
-        vertical: 15,
-        horizontal: 12,
-      ),
-    ),
-    elevation: const MaterialStatePropertyAll(
-      2,
-    ),
-  );
 
   void removeRestaurant(
-    RestaurantDetails restaurantDetails,
+    Restaurant restaurant,
     BuildContext context,
   ) {
-    BlocProvider.of<RestaurantsBloc>(
+    BlocProvider.of<RestaurantsCubit>(
       context,
-    ).add(RemoveRestaurantEvent(restaurant: restaurantDetails));
+    ).removeRestaurant(restaurant: restaurant);
     CoreUtils.showSnackBar(
       context,
       'Restaurant removed',
     );
   }
 
-  void saveRestaurant(RestaurantDetails product, BuildContext context) {
-    BlocProvider.of<RestaurantsBloc>(
+  void saveRestaurant(Restaurant product, BuildContext context) {
+    BlocProvider.of<RestaurantsCubit>(
       context,
-    ).add(SaveRestaurantEvent(restaurant: restaurantDetails));
+    ).saveRestaurant(restaurant);
     CoreUtils.showSnackBar(
       context,
       'Restaurant saved',
@@ -117,11 +91,40 @@ class RestaurantDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appleUrl = 'https://maps.apple.com/?q=${restaurantDetails.name}'
-        ' ${restaurantDetails.formattedAddress}';
-    final googleUrl =
-        'https://www.google.com/maps/search/?api=1&query=${restaurantDetails.name}'
-        ' ${restaurantDetails.formattedAddress}';
+    final baseTextStyle = TextStyle(
+      fontSize: 10.sp,
+      fontWeight: FontWeight.w500,
+    );
+    final elevatedButtonStyle = ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll(
+        context.theme.cardTheme.color,
+      ),
+      surfaceTintColor: MaterialStatePropertyAll(
+        context.theme.cardTheme.color,
+      ),
+      shape: MaterialStatePropertyAll(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            25,
+          ),
+        ),
+      ),
+      padding: const MaterialStatePropertyAll(
+        EdgeInsets.symmetric(
+          vertical: 15,
+          horizontal: 12,
+        ),
+      ),
+      elevation: const MaterialStatePropertyAll(
+        2,
+      ),
+    );
+    String formattedAddress = '${restaurant.streetAddress}, ${restaurant.city},'
+        '${restaurant.state} ${restaurant.zipCode}';
+    final appleUrl = 'https://maps.apple.com/?q=${restaurant.name}'
+        ' $formattedAddress';
+    final googleUrl = 'https://www.google.com/maps/search/?api=1&query=${restaurant.name}'
+        ' $formattedAddress';
     return StreamBuilder<UserModel>(
       stream: serviceLocator<FirebaseFirestore>()
           .collection('users')
@@ -139,8 +142,7 @@ class RestaurantDetailsPage extends StatelessWidget {
         return StreamBuilder<List<RestaurantReview>>(
           stream: serviceLocator<FirebaseFirestore>()
               .collection('restaurantReviews')
-              .where('restaurantId', isEqualTo: restaurantDetails.id)
-              // .orderBy('createdAt')
+              .where('restaurantId', isEqualTo: restaurant.id)
               .snapshots()
               .map(
                 (event) => event.docs
@@ -150,8 +152,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                     .toList(),
               ),
           builder: (context, snapshot) {
-            final reviews =
-                snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
+            final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
             return Scaffold(
               appBar: AppBar(
                 leadingWidth: 80,
@@ -161,36 +162,132 @@ class RestaurantDetailsPage extends StatelessWidget {
                     : CustomBackButton(
                         color: context.theme.iconTheme.color!,
                       ),
-                centerTitle: true,
-                title: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: const VeganBestieLogoWidget(
-                    size: 25,
-                    fontSize: 35,
-                  ),
-                ),
+                centerTitle: false,
+                // title: SizedBox(
+                //   width: MediaQuery.of(context).size.width * 0.5,
+                //   child: const VeganBestieLogoWidget(
+                //     size: 25,
+                //     fontSize: 35,
+                //   ),
+                // ),
                 actions: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       elevation: 2,
                       shape: const CircleBorder(),
                       backgroundColor: Colors.white.withOpacity(0.7),
+                      padding: EdgeInsets.zero,
                     ),
                     child: Icon(
                       Icons.bookmark,
                       color: user!.savedRestaurantsIds!.contains(
-                        restaurantDetails.id,
+                        restaurant.id,
                       )
                           ? Colors.amberAccent
                           : Colors.white,
-                      // size: 30,
                     ),
                     onPressed: () => user.savedRestaurantsIds!.contains(
-                      restaurantDetails.id,
+                      restaurant.id,
                     )
-                        ? removeRestaurant(restaurantDetails, context)
-                        : saveRestaurant(restaurantDetails, context),
+                        ? removeRestaurant(restaurant, context)
+                        : saveRestaurant(restaurant, context),
                   ),
+                  PopupMenuButton(
+                    // padding: EdgeInsets.only(
+                    //   right: 10.w,
+                    // ),
+                    icon: Icon(
+                      Icons.more_vert_outlined,
+                      color: context.theme.appBarTheme.iconTheme?.color,
+                    ),
+                    surfaceTintColor: context.theme.cardTheme.color,
+                    color: context.theme.cardTheme.color,
+                    offset: const Offset(0, 60),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    itemBuilder: (_) {
+                      return [
+                        if (context.userProvider.user?.isAdmin ?? false)
+                          PopupMenuItem<void>(
+                            onTap: () => Navigator.of(context).pushNamed(
+                              UpdateRestaurantScreen.id,
+                              arguments: context.read<RestaurantsCubit>(),
+                            ),
+                            child: PopupItem(
+                              title: context.currentUser?.isAdmin == true ? 'Edit' : 'Suggest An Edit',
+                              icon: Icon(
+                                Icons.edit_outlined,
+                                color: context.theme.iconTheme.color,
+                              ),
+                            ),
+                          ),
+                        PopupMenuItem<void>(
+                          onTap: () => user.savedRestaurantsIds!.contains(
+                            restaurant.id,
+                          )
+                              ? removeRestaurant(restaurant, context)
+                              : saveRestaurant(restaurant, context),
+                          child: PopupItem(
+                            title: user.savedRestaurantsIds!.contains(
+                              restaurant.id,
+                            )
+                                ? 'Unsave'
+                                : 'Save',
+                            icon: Icon(
+                              Icons.bookmark,
+                              color: context.theme.iconTheme.color,
+                            ),
+                          ),
+                        ),
+
+                        // PopupMenuItem<void>(
+                        //   onTap: () => Navigator.of(context).pushNamed(
+                        //     SettingsPage.id,
+                        //     arguments: context.read<AuthBloc>(),
+                        //   ),
+                        //   child: PopupItem(
+                        //     title: 'Settings',
+                        //     icon: Icon(
+                        //       Icons.settings_outlined,
+                        //       color: context.theme.iconTheme.color,
+                        //     ),
+                        //   ),
+                        // ),
+                        // const PopupMenuItem<void>(
+                        //   // onTap: () => context.push(const Placeholder()),
+                        //   child: PopupItem(
+                        //     title: 'Notifications',
+                        //     icon: Icon(
+                        //       Icons.notifications,
+                        //       color: Color(0xFF757C8E),
+                        //     ),
+                        //   ),
+                        // ),
+                        // const PopupMenuItem<void>(
+                        //   // onTap: () => context.push(const Placeholder()),
+                        //   child: PopupItem(
+                        //     title: 'Help',
+                        //     icon: Icon(
+                        //       Icons.help_outline_outlined,
+                        //       color: Color(0xFF757C8E),
+                        //     ),
+                        //   ),
+                        // ),
+                        PopupMenuItem<void>(
+                          height: 1,
+                          padding: EdgeInsets.zero,
+                          child: Divider(
+                            height: 1,
+                            color: Colors.grey.shade300,
+                            endIndent: 10,
+                            indent: 10,
+                          ),
+                        ),
+                      ];
+                    },
+                  ),
+                  const SizedBox(width: 10)
                 ],
               ),
               backgroundColor: Theme.of(context).colorScheme.background,
@@ -205,8 +302,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 15),
                         child: SizedBox(
                           height: MediaQuery.of(context).size.height * 0.30,
-                          child: CustomPageView(
-                              restaurantDetails: restaurantDetails),
+                          child: CustomPageView(restaurant: restaurant),
                         ),
                       ),
                       const SizedBox(height: 30),
@@ -224,12 +320,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   bottom: 5,
                                 ),
                                 child: Text(
-                                  restaurantDetails.name
-                                      .capitalizeFirstLetter(),
+                                  restaurant.name.capitalizeFirstLetter(),
                                   style: baseTextStyle.copyWith(
                                     // color: Colors.grey.shade800,
-                                    color: context
-                                        .theme.textTheme.bodyMedium?.color,
+                                    color: context.theme.textTheme.bodyMedium?.color,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16.sp,
                                   ),
@@ -238,17 +332,19 @@ class RestaurantDetailsPage extends StatelessWidget {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.65,
                                 child: DineInTakeoutDeliveryWidget(
-                                  dineIn: restaurantDetails.dineIn,
-                                  takeout: restaurantDetails.takeout,
-                                  delivery: restaurantDetails.delivery,
+                                  dineIn: restaurant.dineIn,
+                                  takeout: restaurant.takeout,
+                                  delivery: restaurant.delivery,
                                 ),
                               ),
                             ],
                           ),
                           IsOpenNowWidget(
-                            weekdayText:
-                                restaurantDetails.openingHours.weekdayText,
-                            isOpenNow: restaurantDetails.openingHours.openNow,
+                            // weekdayText: [],
+                            openHours: restaurant.openHours,
+                            // TODO: Create algorithm to figure out if open now
+                            isOpenNow: true,
+                            isFromDetailedPage: true,
                             fontSize: 10.sp,
                           ),
                         ],
@@ -272,7 +368,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.55,
                               child: Text(
-                                restaurantDetails.formattedAddress,
+                                formattedAddress,
                                 style: baseTextStyle.copyWith(),
                               ),
                             ),
@@ -283,8 +379,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         height: MediaQuery.of(context).size.height * 0.015,
                       ),
                       Padding(
-                        padding:
-                            const EdgeInsets.only(left: 5, right: 5, top: 10),
+                        padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -296,14 +391,13 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     launchUrl(
                                       Uri(
                                         scheme: 'tel',
-                                        path: restaurantDetails
-                                            .formattedPhoneNumber,
+                                        path: restaurant.phoneNumber,
                                       ),
                                     );
                                   },
                                   child: Icon(
                                     Icons.call,
-                                    color: Colors.grey.shade800,
+                                    color: context.theme.iconTheme.color,
                                     size: 20,
                                   ),
                                 ),
@@ -330,20 +424,18 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     if (Platform.isIOS) {
                                       launchUrl(
                                         Uri.parse(appleUrl),
-                                        mode: LaunchMode
-                                            .externalNonBrowserApplication,
+                                        mode: LaunchMode.externalNonBrowserApplication,
                                       );
                                     } else {
                                       launchUrl(
                                         Uri.parse(googleUrl),
-                                        mode: LaunchMode
-                                            .externalNonBrowserApplication,
+                                        mode: LaunchMode.externalNonBrowserApplication,
                                       );
                                     }
                                   },
                                   child: Icon(
                                     Icons.directions,
-                                    color: Colors.grey.shade800,
+                                    color: context.theme.iconTheme.color,
                                     size: 20,
                                   ),
                                 ),
@@ -367,11 +459,11 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 ElevatedButton(
                                   style: elevatedButtonStyle,
                                   onPressed: () {
-                                    if (restaurantDetails.website.isNotEmpty) {
+                                    if (restaurant.websiteUrl.isNotEmpty) {
                                       Navigator.of(context).push(
                                         MaterialPageRoute<WebViewScreen>(
                                           builder: (_) => WebViewScreen(
-                                            url: restaurantDetails.website,
+                                            url: restaurant.websiteUrl,
                                           ),
                                         ),
                                       );
@@ -384,7 +476,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   },
                                   child: Icon(
                                     Icons.launch,
-                                    color: Colors.grey.shade800,
+                                    color: context.theme.iconTheme.color,
                                     size: 20,
                                   ),
                                 ),
@@ -411,12 +503,12 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     Navigator.pushNamed(
                                       context,
                                       RestaurantReviewScreen.id,
-                                      arguments: restaurantDetails,
+                                      arguments: restaurant,
                                     );
                                   },
                                   child: Icon(
                                     Icons.edit,
-                                    color: Colors.grey.shade800,
+                                    color: context.theme.iconTheme.color,
                                     size: 20,
                                   ),
                                 ),
@@ -450,10 +542,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12)
-                            .copyWith(top: 5),
+                        padding: const EdgeInsets.symmetric(horizontal: 12).copyWith(top: 5),
                         child: RatingAndReviewsCountWidget(
-                          restaurantDetails: restaurantDetails,
                           rating: totalRestaurantRating(reviews),
                           reviewCount: reviews.length,
                         ),
@@ -461,13 +551,12 @@ class RestaurantDetailsPage extends StatelessWidget {
                       const SizedBox(height: 15),
                       if (reviews.isEmpty)
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 35),
+                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 35),
                           child: SizedBox(
                             height: 150,
                             width: context.width * 0.75,
                             child: Text(
-                              'No reviews for ${restaurantDetails.name.capitalizeFirstLetter()}'
+                              'No reviews for ${restaurant.name.capitalizeFirstLetter()}'
                               '\nBe the first to leave a review!',
                               style: baseTextStyle.copyWith(
                                 color: Colors.grey.shade500,
@@ -485,8 +574,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                           itemCount: reviews.length,
                           itemBuilder: (BuildContext context, int index) {
                             return ReviewCard(
-                                review: reviews[index],
-                                restaurant: restaurantDetails);
+                              review: reviews[index],
+                              restaurant: restaurant,
+                            );
                           },
                         ),
                       const SizedBox(height: 75),

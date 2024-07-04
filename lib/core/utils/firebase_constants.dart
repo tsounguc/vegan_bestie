@@ -4,4 +4,6 @@ class FirebaseConstants {
   static const restaurantReviewsCollection = 'restaurantReviews';
   static const foodProductReportCollection = 'foodProductReport';
   static const businessesCollection = 'businesses';
+
+  static const submittedRestaurantsCollection = 'submittedRestaurants';
 }

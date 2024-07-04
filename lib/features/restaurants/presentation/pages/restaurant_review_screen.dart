@@ -7,14 +7,14 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurant_review_form_field.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
 class RestaurantReviewScreen extends StatefulWidget {
-  const RestaurantReviewScreen({required this.restaurantDetails, super.key});
+  const RestaurantReviewScreen({required this.restaurant, super.key});
 
-  final RestaurantDetails restaurantDetails;
+  final Restaurant restaurant;
 
   static const String id = '/restaurantReviewScreen';
 
@@ -37,21 +37,17 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
               : context.currentUser!.name,
       review: reviewController.text.trim(),
       rating: rating,
-      restaurantId: widget.restaurantDetails.id,
+      restaurantId: widget.restaurant.id,
       username: context.currentUser?.name,
       userId: context.currentUser != null ? context.currentUser!.uid : 'Anonymous',
       userProfilePic: context.currentUser?.photoUrl ?? kDefaultAvatar,
     );
-    BlocProvider.of<RestaurantsBloc>(context).add(
-      AddRestaurantReviewEvent(
-        restaurantReview: restaurantReview,
-      ),
-    );
+    BlocProvider.of<RestaurantsCubit>(context).addRestaurantReview(restaurantReview);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RestaurantsBloc, RestaurantsState>(
+    return BlocConsumer<RestaurantsCubit, RestaurantsState>(
       listener: (context, state) {
         if (state is RestaurantReviewAdded) {
           debugPrint('RestaurantReviewAdded');
@@ -70,7 +66,7 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
           appBar: AppBar(
             title: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Text(widget.restaurantDetails.name),
+              child: Text(widget.restaurant.name),
             ),
           ),
           body: Padding(
@@ -83,7 +79,7 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
                   child: Wrap(
                     children: [
                       Text(
-                        'How would you rate ${widget.restaurantDetails.name}',
+                        'How would you rate ${widget.restaurant.name}',
                         style: TextStyle(
                           // color: Colors.black,
                           fontSize: 14.sp,

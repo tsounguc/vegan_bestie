@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -18,15 +19,15 @@ class DataSourceUtils {
     }
   }
 
-  static GeoLocation getLesserGeoLocation(Position userLocation, double distance) {
+  static GeoPoint getLesserGeoPoint(Position userLocation, double distance) {
     final lowerLat = userLocation.latitude - (kOneMileOfLat * distance);
     final lowerLng = userLocation.longitude - (kOneMileOfLng * distance);
-    return GeoLocation(lng: lowerLng, lat: lowerLat);
+    return GeoPoint(lowerLat, lowerLng);
   }
 
-  static GeoLocation getGreaterGeoLocation(Position userLocation, double distance) {
+  static GeoPoint getGreaterGeoPoint(Position userLocation, double distance) {
     final lowerLat = userLocation.latitude + (kOneMileOfLat * distance);
     final lowerLng = userLocation.longitude + (kOneMileOfLng * distance);
-    return GeoLocation(lng: lowerLng, lat: lowerLat);
+    return GeoPoint(lowerLat, lowerLng);
   }
 }

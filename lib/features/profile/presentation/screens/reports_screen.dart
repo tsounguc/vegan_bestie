@@ -48,7 +48,9 @@ class ReportsScreen extends StatelessWidget {
             appBar: AppBar(
               elevation: 0,
               surfaceTintColor: Colors.white,
-              leading: const CustomBackButton(),
+              leading: CustomBackButton(
+                color: context.theme.iconTheme.color!,
+              ),
               title: const Text(
                 'Reports',
               ),
@@ -102,7 +104,10 @@ class ReportsScreen extends StatelessWidget {
                                         context,
                                       ).deleteReports(report);
                                     },
-                                    icon: Icon(Icons.delete, color: context.theme.iconTheme.color),
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: context.theme.iconTheme.color,
+                                    ),
                                   )
                                 ],
                               ),
@@ -149,13 +154,29 @@ class ReportsScreen extends StatelessWidget {
                                     horizontal: 25,
                                     vertical: 10,
                                   ),
-                                  child: Text(
-                                    'Incorrect Product Name',
-                                    style: TextStyle(
-                                      // color: Colors.grey.shade800,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Incorrect Product Name',
+                                        style: TextStyle(
+                                          // color: Colors.grey.shade800,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      Text(
+                                        'Suggestion: ${report.productNameSuggestion}',
+                                        style: TextStyle(
+                                          // color: Colors.grey.shade800,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               if (report.incorrectMacros)
@@ -164,13 +185,29 @@ class ReportsScreen extends StatelessWidget {
                                     horizontal: 25,
                                     vertical: 10,
                                   ),
-                                  child: Text(
-                                    'Incorrect Macros',
-                                    style: TextStyle(
-                                      // color: Colors.grey.shade800,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Incorrect Macros',
+                                        style: TextStyle(
+                                          // color: Colors.grey.shade800,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      Text(
+                                        'Suggestion: ${report.macrosSuggestion}',
+                                        style: TextStyle(
+                                          // color: Colors.grey.shade800,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               if (report.incorrectIngredients)
@@ -179,13 +216,29 @@ class ReportsScreen extends StatelessWidget {
                                     horizontal: 25,
                                     vertical: 10,
                                   ),
-                                  child: Text(
-                                    'Incorrect Ingredients',
-                                    style: TextStyle(
-                                      // color: Colors.grey.shade800,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Incorrect Ingredients',
+                                        style: TextStyle(
+                                          // color: Colors.grey.shade800,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      Text(
+                                        'Suggestion: ${report.ingredientsSuggestion}',
+                                        style: TextStyle(
+                                          // color: Colors.grey.shade800,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               if (report.incorrectLabel)
@@ -194,13 +247,29 @@ class ReportsScreen extends StatelessWidget {
                                     horizontal: 25,
                                     vertical: 10,
                                   ),
-                                  child: Text(
-                                    'Incorrect Label',
-                                    style: TextStyle(
-                                      // color: Colors.grey.shade800,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Incorrect Label',
+                                        style: TextStyle(
+                                          // color: Colors.grey.shade800,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      Text(
+                                        'Suggestion: ${report.labelSuggestion}',
+                                        style: TextStyle(
+                                          // color: Colors.grey.shade800,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               if (report.isWrongProduct)
@@ -209,13 +278,29 @@ class ReportsScreen extends StatelessWidget {
                                     horizontal: 25,
                                     vertical: 10,
                                   ),
-                                  child: Text(
-                                    'Wrong Product',
-                                    style: TextStyle(
-                                      // color: Colors.grey.shade800,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Wrong Product',
+                                        style: TextStyle(
+                                          // color: Colors.grey.shade800,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5.h,
+                                      ),
+                                      Text(
+                                        'Suggestion: ${report.productDescription}',
+                                        style: TextStyle(
+                                          // color: Colors.grey.shade800,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               if (report.doesNotExist)
@@ -226,21 +311,6 @@ class ReportsScreen extends StatelessWidget {
                                   ),
                                   child: Text(
                                     "Doesn't Not Exist",
-                                    style: TextStyle(
-                                      // color: Colors.grey.shade800,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              if (report.other)
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 25,
-                                    vertical: 10,
-                                  ),
-                                  child: Text(
-                                    'Other Issues',
                                     style: TextStyle(
                                       // color: Colors.grey.shade800,
                                       fontSize: 12.sp,

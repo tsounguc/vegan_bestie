@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/resources/media_resources.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/scan_results_page.dart';
@@ -34,6 +35,12 @@ class ScanProductHomePage extends StatelessWidget {
             ScanResultsPage.id,
             arguments: context.read<FoodProductCubit>(),
           );
+        }
+        if (state is SavedProductsListFetched) {
+          context.savedProductsProvider.savedProductsList = state.savedProductsList;
+        }
+        if (state is ReportsFetched) {
+          context.reportsProvider.reports = state.reports;
         }
       },
       child: SingleChildScrollView(
@@ -110,8 +117,7 @@ class ScanProductHomePage extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.only(right: 10.0.r),
                           child: ImageIcon(
-                            const AssetImage(
-                                'assets/logo/VeganBestie_NoBackground_Fixed2.png'),
+                            const AssetImage(MediaResources.scannerLogo),
                             size: 170.0.r,
                             color: Colors.grey.shade900,
                           ),

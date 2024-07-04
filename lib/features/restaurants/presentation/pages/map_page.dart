@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
 class MapPage extends StatelessWidget {
   const MapPage({
@@ -19,8 +20,6 @@ class MapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(markers.first.mapsId.value);
-
     return GoogleMap(
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
@@ -44,11 +43,11 @@ class MapPage extends StatelessWidget {
     BuildContext context,
     GoogleMapController controller,
   ) async {
-    context.read<RestaurantsBloc>().controller = controller;
+    context.read<RestaurantsCubit>().controller = controller;
 
     Future.delayed(
       const Duration(milliseconds: 200),
-      () => context.read<RestaurantsBloc>().controller?.animateCamera(
+      () => context.read<RestaurantsCubit>().controller?.animateCamera(
             CameraUpdate.newLatLngBounds(
               MapUtils.boundsFromLatLngList(
                 markers.map((location) => location.position).toList(),

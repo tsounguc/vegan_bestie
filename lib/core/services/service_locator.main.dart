@@ -131,9 +131,10 @@ Future<void> _initRestaurants() async {
   serviceLocator
     // App Logic
     ..registerFactory(
-      () => RestaurantsBloc(
+      () => RestaurantsCubit(
         getRestaurantsNearMe: serviceLocator(),
         addRestaurant: serviceLocator(),
+        submitRestaurant: serviceLocator(),
         getUserLocation: serviceLocator(),
         // getRestaurantDetails: serviceLocator(),
         // getUserLocation: serviceLocator(),
@@ -141,14 +142,16 @@ Future<void> _initRestaurants() async {
         // getSavedRestaurantsList: serviceLocator(),
         // saveRestaurant: serviceLocator(),
         // removeRestaurant: serviceLocator(),
-        // addRestaurantReview: serviceLocator(),
+        addRestaurantReview: serviceLocator(),
         // getRestaurantReviews: serviceLocator(),
-        // deleteRestaurantReview: serviceLocator(),
-        // editRestaurantReview: serviceLocator(),
+        deleteRestaurantReview: serviceLocator(),
+        deleteRestaurantSubmission: serviceLocator(),
+        editRestaurantReview: serviceLocator(),
       ),
     )
     // Use cases
     ..registerLazySingleton(() => AddRestaurant(serviceLocator()))
+    ..registerLazySingleton(() => SubmitRestaurant(serviceLocator()))
     ..registerLazySingleton(() => GetRestaurantsNearMe(serviceLocator()))
     // ..registerLazySingleton(() => GetRestaurantDetails(serviceLocator()))
     ..registerLazySingleton(() => GetUserLocation(serviceLocator()))
@@ -156,10 +159,11 @@ Future<void> _initRestaurants() async {
     // ..registerLazySingleton(() => GetSavedRestaurantsList(serviceLocator()))
     // ..registerLazySingleton(() => SaveRestaurant(serviceLocator()))
     // ..registerLazySingleton(() => RemoveRestaurant(serviceLocator()))
-    // ..registerLazySingleton(() => AddRestaurantReview(serviceLocator()))
+    ..registerLazySingleton(() => AddRestaurantReview(serviceLocator()))
     // ..registerLazySingleton(() => GetRestaurantReviews(serviceLocator()))
-    // ..registerLazySingleton(() => DeleteRestaurantReview(serviceLocator()))
-    // ..registerLazySingleton(() => EditRestaurantReview(serviceLocator()))
+    ..registerLazySingleton(() => DeleteRestaurantReview(serviceLocator()))
+    ..registerLazySingleton(() => DeleteRestaurantSubmission(serviceLocator()))
+    ..registerLazySingleton(() => EditRestaurantReview(serviceLocator()))
     // Repositories
     ..registerLazySingleton<RestaurantsRepository>(
       () => RestaurantsRepositoryImpl(serviceLocator()),

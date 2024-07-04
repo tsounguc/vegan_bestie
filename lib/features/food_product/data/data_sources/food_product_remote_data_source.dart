@@ -14,6 +14,7 @@ import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/restaurants_services/barcode_scanner_plugin.dart';
 import 'package:sheveegan/core/services/vegan_checker.dart';
 import 'package:sheveegan/core/utils/constants.dart';
+import 'package:sheveegan/core/utils/datasource_utils.dart';
 import 'package:sheveegan/core/utils/firebase_constants.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/food_product/data/models/barcode_model.dart';
@@ -484,13 +485,7 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
   @override
   Future<void> deleteReport(FoodProductReport report) async {
     try {
-      final user = _authClient.currentUser;
-      if (user == null) {
-        throw const DeleteReportException(
-          message: 'User is not authenticated',
-          statusCode: '401',
-        );
-      }
+      DataSourceUtils.authorizeUser(_authClient);
 
       return _foodProductReport.doc(report.id).delete();
     } on FirebaseException catch (e, s) {

@@ -11,7 +11,9 @@ class MediaResources {
   static const broccoli = '$_baseImage/broccoli.png';
   static const tofu = '$_baseImage/tofu.png';
   static const bread = '$_baseImage/bread.png';
+  static const user = '$_baseImage/user.png';
 
   // Lottie
   static const noNotification = '$_baseLottie/no_notifictions.json';
+  static const pageNotFound = '$_baseLottie/page_not_found.json';
 }

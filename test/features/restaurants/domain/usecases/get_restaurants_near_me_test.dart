@@ -31,11 +31,16 @@ void main() {
           position: params.position,
           radius: params.radius,
         ),
-      ).thenAnswer((_) async => const Right(testResponse));
+      ).thenAnswer((_) => Stream.value(const Right(testResponse)));
       // Act
       final result = await useCase(params);
       // Assert
-      expect(result, const Right<Failure, List<Restaurant>>(testResponse));
+      expect(
+        result,
+        emits(
+          const Right<Failure, List<Restaurant>>(testResponse),
+        ),
+      );
       verify(
         () => repository.getRestaurantsNearMe(
           position: params.position,
@@ -55,13 +60,13 @@ void main() {
       // Arrange
       when(
         () => repository.getRestaurantsNearMe(position: params.position, radius: params.radius),
-      ).thenAnswer((_) async => Left(testFailure));
+      ).thenAnswer((_) => Stream.value(Left(testFailure)));
       // Act
       final result = await useCase(params);
       // Assert
       expect(
         result,
-        Left<Failure, List<Restaurant>>(testFailure),
+        emits(Left<Failure, List<Restaurant>>(testFailure)),
       );
       verify(
         () => repository.getRestaurantsNearMe(

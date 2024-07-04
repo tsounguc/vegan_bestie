@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:sheveegan/core/common/widgets/i_field.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 
 class CoreUtils {
@@ -139,6 +141,8 @@ class CoreUtils {
     BuildContext context,
     List<String> weekdayText,
   ) async {
+    final date = DateTime.now();
+    String todaysWeekDay = DateFormat('EEEE').format(date).toLowerCase().capitalizeFirstLetter();
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -170,7 +174,9 @@ class CoreUtils {
                           style: TextStyle(
                             // color: Colors.black,
                             fontSize: 12.sp,
-                            fontWeight: FontWeight.normal,
+                            fontWeight: weekdayText[index].split(' ')[0] == todaysWeekDay
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                           ),
                         ),
                       ),

@@ -165,9 +165,9 @@ class FoodProductCubit extends Cubit<FoodProductState> {
     );
   }
 
-  Future<void> fetchProductsList(List<String> savedBarcodesList) async {
+  Future<void> fetchProductsList(List<String>? savedBarcodesList) async {
     emit(const FetchingProductsList());
-    final result = await _fetchSavedProductsList(savedBarcodesList);
+    final result = await _fetchSavedProductsList(savedBarcodesList ?? []);
     result.fold(
       (failure) => emit(
         FoodProductError(message: failure.message),
@@ -187,7 +187,7 @@ class FoodProductCubit extends Cubit<FoodProductState> {
     );
   }
 
-  Future<void> reportIusse(FoodProductReport report) async {
+  Future<void> reportIssue(FoodProductReport report) async {
     emit(const ReportingIssue());
     final result = await _reportIssue(report);
     result.fold(

@@ -17,5 +17,6 @@
   "price": "_empty.price",
   "veganStatus": false,
   "hasVeganOptions": false,
+  "permanentlyClosed": false,
   "description": null
 }

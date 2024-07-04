@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 
 class RatingAndReviewsCountWidget extends StatelessWidget {
   const RatingAndReviewsCountWidget({
     required this.rating,
     required this.reviewCount,
-    required this.restaurantDetails,
     super.key,
   });
 
-  final RestaurantDetails restaurantDetails;
   final double rating;
   final int reviewCount;
 

@@ -152,7 +152,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:sheveegan/core/common/widgets/auth_error_message_widget.dart';
 // import 'package:sheveegan/core/common/widgets/buttons.dart';
-// import 'package:sheveegan/core/resources/colors.dart';
+// import 'package:sheveegan/core/resources/colours.dart';
 //
 // class ForgotPasswordPage extends StatelessWidget {
 //   ForgotPasswordPage({super.key});

@@ -11,7 +11,7 @@ import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/auth/presentation/pages/components/sign_up_form.dart';
 import 'package:sheveegan/features/auth/presentation/pages/sign_in_screen.dart';
-import 'package:sheveegan/home_page.dart';
+import 'package:sheveegan/features/dashboard/presentation/views/dashboard.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -70,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 );
           } else if (state is SignedIn) {
             context.read<UserProvider>().initUser(state.user as UserModel);
-            Navigator.pushReplacementNamed(context, HomePage.id);
+            Navigator.pushReplacementNamed(context, Dashboard.id);
           }
         },
         builder: (context, state) {

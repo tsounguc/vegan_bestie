@@ -23,6 +23,45 @@ void main() {
     },
   );
 
+  group('copy - ', () {
+    const testRestaurant = Restaurant(
+      id: '12345678',
+      name: 'name',
+      contactName: 'contactName',
+      email: 'email',
+      streetAddress: 'streetAddress',
+      city: 'city',
+      state: 'state',
+      zipCode: 'zipCode',
+      county: 'county',
+      areaCode: 'areaCode',
+      phoneNumber: 'phoneNumber',
+      websiteUrl: 'websiteUrl',
+      geoLocation: GeoLocation.empty(),
+      openHours: OpenHours.empty(),
+      photos: [],
+      price: 'price',
+      veganStatus: false,
+      hasVeganOptions: false,
+      dineIn: false,
+      takeout: false,
+      delivery: false,
+      permanentlyClosed: false,
+    );
+    test(
+      'given [RestaurantModel], '
+      'when copy constructor called, '
+      'then return [RestaurantModel] with updated data from [Restaurant]',
+      () {
+        // Arrange
+        // Act
+        final result = RestaurantModel.copy(testRestaurant);
+        // Assert
+        expect(result.id, equals(testRestaurant.id));
+      },
+    );
+  });
+
   group('fromMap - ', () {
     test(
         'given [RestaurantModel], '

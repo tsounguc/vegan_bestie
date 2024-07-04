@@ -28,7 +28,7 @@ class AppRouter {
                     create: (_) => serviceLocator<FoodProductCubit>(),
                   ),
                   BlocProvider(
-                    create: (_) => serviceLocator<RestaurantsBloc>(),
+                    create: (_) => serviceLocator<RestaurantsCubit>(),
                   ),
                   BlocProvider(
                     create: (_) => serviceLocator<AuthBloc>(),
@@ -123,6 +123,15 @@ class AppRouter {
           settings: settings,
         );
 
+      case SubmittedRestaurantsScreen.id:
+        return _pageBuilder(
+          (_) => BlocProvider<RestaurantsCubit>.value(
+            value: settings.arguments! as RestaurantsCubit,
+            child: const SubmittedRestaurantsScreen(),
+          ),
+          settings: settings,
+        );
+
       case ScanResultsPage.id:
         return _pageBuilder(
           (_) => BlocProvider<FoodProductCubit>.value(
@@ -134,7 +143,7 @@ class AppRouter {
       case RestaurantDetailsPage.id:
         return _pageBuilder(
           (_) => BlocProvider(
-            create: (_) => serviceLocator<RestaurantsBloc>(),
+            create: (_) => serviceLocator<RestaurantsCubit>(),
             child: RestaurantDetailsPage(
               restaurant: settings.arguments! as Restaurant,
             ),
@@ -154,7 +163,7 @@ class AppRouter {
       case RestaurantReviewScreen.id:
         return _pageBuilder(
           (_) => BlocProvider(
-            create: (_) => serviceLocator<RestaurantsBloc>(),
+            create: (_) => serviceLocator<RestaurantsCubit>(),
             child: RestaurantReviewScreen(
               restaurant: settings.arguments! as Restaurant,
             ),
@@ -168,8 +177,8 @@ class AppRouter {
         );
       case AllSavedRestaurantsPage.id:
         return _pageBuilder(
-          (_) => BlocProvider<RestaurantsBloc>.value(
-            value: serviceLocator<RestaurantsBloc>(),
+          (_) => BlocProvider<RestaurantsCubit>.value(
+            value: serviceLocator<RestaurantsCubit>(),
             child: const AllSavedRestaurantsPage(),
           ),
           settings: settings,
@@ -179,7 +188,7 @@ class AppRouter {
         final args = settings.arguments! as EditRestaurantScreenArguments;
         return _pageBuilder(
           (_) => BlocProvider(
-            create: (_) => serviceLocator<RestaurantsBloc>(),
+            create: (_) => serviceLocator<RestaurantsCubit>(),
             child: EditRestaurantReviewScreen(
               review: args.review,
               restaurant: args.restaurant,
@@ -201,6 +210,16 @@ class AppRouter {
           settings: settings,
         );
 
+      case UpdateRestaurantScreen.id:
+        // final args = settings.arguments! as UpdateFoodProductPageArguments;
+        return _pageBuilder(
+          (_) => BlocProvider.value(
+            value: serviceLocator<RestaurantsCubit>(),
+            child: const UpdateRestaurantScreen(),
+          ),
+          settings: settings,
+        );
+
       case AddFoodProductScreen.id:
         final args = settings.arguments! as FoodProductCubit;
         return _pageBuilder(
@@ -212,17 +231,19 @@ class AppRouter {
         );
 
       case AddRestaurantScreen.id:
-        final args = settings.arguments! as RestaurantsBloc;
+        final args = settings.arguments as RestaurantModel?;
         return _pageBuilder(
           (context) => BlocProvider.value(
-            value: serviceLocator<RestaurantsBloc>(),
-            child: const AddRestaurantScreen(),
+            value: serviceLocator<RestaurantsCubit>(),
+            child: AddRestaurantScreen(
+              restaurant: args,
+            ),
           ),
           settings: settings,
         );
 
       case FoodProductReportScreen.id:
-        final args = settings.arguments! as FoodProductModel?;
+        final args = settings.arguments as FoodProductModel?;
         return _pageBuilder(
           (_) => BlocProvider.value(
             value: serviceLocator<FoodProductCubit>(),
@@ -232,7 +253,10 @@ class AppRouter {
         );
 
       default:
-        throw Exception('Route not found!');
+        return _pageBuilder(
+          (_) => const PageNotFound(),
+          settings: settings,
+        );
     }
   }
 

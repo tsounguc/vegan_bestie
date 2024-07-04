@@ -51,6 +51,7 @@ import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_r
 import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant_review.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant_submission.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/edit_restaurant_review.dart';
 
 // import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_details.dart';
@@ -58,6 +59,8 @@ import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_re
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/submit_restaurant.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
 part 'service_locator.main.dart';

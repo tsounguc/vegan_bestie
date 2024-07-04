@@ -13,7 +13,7 @@ import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/auth/presentation/pages/components/sign_in_form.dart';
 import 'package:sheveegan/features/auth/presentation/pages/forgot_password_screen.dart';
 import 'package:sheveegan/features/auth/presentation/pages/sign_up_screen.dart';
-import 'package:sheveegan/home_page.dart';
+import 'package:sheveegan/features/dashboard/presentation/views/dashboard.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -59,7 +59,7 @@ class _SignInScreenState extends State<SignInScreen> {
             CoreUtils.showSnackBar(context, state.message);
           } else if (state is SignedIn) {
             context.read<UserProvider>().initUser(state.user as UserModel);
-            Navigator.pushReplacementNamed(context, HomePage.id);
+            Navigator.pushReplacementNamed(context, '/');
           }
         },
         builder: (context, state) {

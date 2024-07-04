@@ -59,13 +59,13 @@ class FetchSavedRestaurantsListEvent extends RestaurantsEvent {
 class RemoveRestaurantEvent extends RestaurantsEvent {
   const RemoveRestaurantEvent({required this.restaurant});
 
-  final RestaurantDetails restaurant;
+  final Restaurant restaurant;
 }
 
 class SaveRestaurantEvent extends RestaurantsEvent {
   const SaveRestaurantEvent({required this.restaurant});
 
-  final RestaurantDetails restaurant;
+  final Restaurant restaurant;
 }
 
 class AddRestaurantReviewEvent extends RestaurantsEvent {

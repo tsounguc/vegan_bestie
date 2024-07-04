@@ -9,14 +9,17 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/constants.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class HorizontalRestaurantCard extends StatelessWidget {
   const HorizontalRestaurantCard({
+    required this.restaurant,
     required this.reviews,
     required this.weekdayText,
     required this.userPosition,
@@ -31,6 +34,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
     super.key,
   });
 
+  final Restaurant restaurant;
   final bool fromSavedRestaurants;
   final List<RestaurantReview> reviews;
   final String imageUrl;
@@ -58,21 +62,25 @@ class HorizontalRestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final distance = 0.0;
-    // Geolocator.distanceBetween(
-    //   userPosition?.latitude ?? 0,
-    //   userPosition?.longitude ?? 0,
-    //   geometry.location.lat,
-    //   geometry.location.lng,
-    // );
+    final distance = Geolocator.distanceBetween(
+      userPosition?.latitude ?? 0,
+      userPosition?.longitude ?? 0,
+      restaurant.geoLocation.lat,
+      restaurant.geoLocation.lng,
+    );
     return GestureDetector(
       onTap: fromSavedRestaurants
           ? null
           : () {
-              debugPrint(restaurantId);
-              BlocProvider.of<RestaurantsBloc>(
-                context,
-              ).add(GetRestaurantDetailsEvent(id: restaurantId));
+              // debugPrint(restaurantId);
+              // BlocProvider.of<RestaurantsBloc>(
+              //   context,
+              // ).add(GetRestaurantDetailsEvent(id: restaurantId));
+
+              Navigator.of(context).pushNamed(
+                RestaurantDetailsPage.id,
+                arguments: restaurant,
+              );
             },
       child: Card(
         // color: Colors.white,
@@ -109,7 +117,10 @@ class HorizontalRestaurantCard extends StatelessWidget {
                         ),
                         height: MediaQuery.of(context).size.width * 0.30,
                         width: MediaQuery.of(context).size.width * 0.30,
-                        child: const Icon(Icons.restaurant),
+                        child: const Icon(
+                          Icons.restaurant,
+                          color: Colors.black,
+                        ),
                       ),
               ),
             ),
@@ -224,7 +235,8 @@ class HorizontalRestaurantCard extends StatelessWidget {
                     ),
                     IsOpenNowWidget(
                       isOpenNow: isOpenNow,
-                      weekdayText: weekdayText,
+                      // weekdayText: weekdayText,
+                      openHours: restaurant.openHours,
                       fontSize: 10.sp,
                     ),
                     SizedBox(

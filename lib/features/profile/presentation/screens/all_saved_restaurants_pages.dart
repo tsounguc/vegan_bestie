@@ -9,6 +9,7 @@ import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/horizontal_restaurant_card.dart';
@@ -36,7 +37,7 @@ class AllSavedRestaurantsPage extends StatelessWidget {
     final scrollController = ScrollController();
     return Consumer<SavedRestaurantsProvider>(
       builder: (_, restaurantsProvider, __) {
-        final restaurantsList = restaurantsProvider.savedRestaurantsList ?? <RestaurantDetails>[];
+        final restaurantsList = restaurantsProvider.savedRestaurantsList ?? <Restaurant>[];
         return Scaffold(
           appBar: AppBar(
             elevation: 0,
@@ -57,6 +58,8 @@ class AllSavedRestaurantsPage extends StatelessWidget {
                   itemCount: restaurantsList.length,
                   itemBuilder: (BuildContext context, int index) {
                     final restaurant = restaurantsList[index];
+                    final restaurantAddress = '${restaurant.streetAddress}, '
+                        '${restaurant.city}, ${restaurant.state} ${restaurant.zipCode}';
                     return StreamBuilder<List<RestaurantReview>>(
                       stream: serviceLocator<FirebaseFirestore>()
                           .collection('restaurantReviews')
@@ -82,20 +85,21 @@ class AllSavedRestaurantsPage extends StatelessWidget {
                             );
                           },
                           child: HorizontalRestaurantCard(
+                            restaurant: restaurant,
                             fromSavedRestaurants: true,
                             reviews: reviews,
                             weekdayText: const [],
                             userPosition: userPosition,
                             imageUrl: restaurant.photos.isEmpty
-                                ? restaurant.icon
-                                : '$kImageBaseUrl${restaurant.photos[0].photoReference}'
+                                ? restaurant.image ?? ''
+                                : '$kImageBaseUrl${restaurant.photos[0]}'
                                     '&key=$kGoogleApiKey',
                             // geometry: restaurant.geometry,
                             restaurantId: restaurant.id,
                             restaurantName: restaurant.name.capitalizeFirstLetter(),
-                            restaurantAddress: restaurant.vicinity,
+                            restaurantAddress: restaurantAddress,
                             restaurantPrice: '',
-                            isOpenNow: restaurant.openingHours.openNow,
+                            isOpenNow: true,
                           ),
                         );
                       },

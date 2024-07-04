@@ -7,13 +7,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:sheveegan/core/common/app/providers/bottom_navigation_bar_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sheveegan/core/common/app/providers/notifications_notifier.dart';
+import 'package:sheveegan/core/common/app/providers/submitted_restaurants_provider.dart';
+import 'package:sheveegan/features/dashboard/presentation/providers/bottom_navigation_bar_provider.dart';
 import 'package:sheveegan/core/common/app/providers/food_product_reports_provider.dart';
 import 'package:sheveegan/core/common/app/providers/restaurants_near_me_provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_products_provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_restaurants_provider.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
-import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
@@ -25,10 +27,14 @@ void main() async {
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await setUpServices();
   final themeModePreference = ThemeModePreference();
   final useDeviceSettings = await themeModePreference.getUseDeviceSettings();
   final isDarkMode = await themeModePreference.getDarkTheme();
-
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitUp,
+  ]);
   if (!kDebugMode) {
     debugPrint('Not In Debug');
     await FirebaseAppCheck.instance.activate(
@@ -41,11 +47,7 @@ void main() async {
       appleProvider: AppleProvider.debug,
     );
   }
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitDown,
-    DeviceOrientation.portraitUp,
-  ]);
-  await setUpServices();
+
   runApp(
     DevicePreview(
       enabled: false,
@@ -83,18 +85,21 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-          value: UserProvider(),
+          value: NotificationsNotifier(serviceLocator<SharedPreferences>()),
         ),
+        ChangeNotifierProvider.value(value: UserProvider()),
         ChangeNotifierProvider.value(value: SavedProductsProvider()),
         ChangeNotifierProvider.value(value: SavedRestaurantsProvider()),
         ChangeNotifierProvider.value(value: BottomNavigationBarProvider()),
         ChangeNotifierProvider.value(value: FoodProductReportsProvider()),
         ChangeNotifierProvider.value(value: RestaurantsNearMeProvider()),
+        ChangeNotifierProvider.value(value: SubmittedRestaurantsProvider()),
         ChangeNotifierProvider.value(
-            value: ThemeModeProvider(
-          useDeviceSettings: widget.useDeviceSettings,
-          isDarkMode: widget.isDarkMode,
-        ))
+          value: ThemeModeProvider(
+            useDeviceSettings: widget.useDeviceSettings,
+            isDarkMode: widget.isDarkMode,
+          ),
+        ),
       ],
       child: ScreenUtilInit(
         builder: (context, child) => Consumer<ThemeModeProvider>(

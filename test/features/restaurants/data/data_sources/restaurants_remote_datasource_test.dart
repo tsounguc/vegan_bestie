@@ -3,17 +3,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
+import 'package:sheveegan/core/services/restaurants_services/geocoding_plugin.dart';
 import 'package:sheveegan/core/services/restaurants_services/location_plugin.dart';
+import 'package:sheveegan/core/services/restaurants_services/map_plugin.dart';
+import 'package:sheveegan/core/utils/firebase_constants.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
+import 'package:sheveegan/features/restaurants/data/models/map_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/user_location_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 
 class MockLocationPlugin extends Mock implements LocationPlugin {}
+
+class MockGoogleMapPlugin extends Mock implements GoogleMapPlugin {}
+
+class MockGeocodingPlugin extends Mock implements GeocodingPlugin {}
 
 Future<void> main() async {
   late RestaurantsRemoteDataSource remoteDataSource;
@@ -21,6 +31,8 @@ Future<void> main() async {
   late MockFirebaseAuth auth;
   late MockFirebaseStorage storage;
   late LocationPlugin location;
+  late GoogleMapPlugin googleMap;
+  late GeocodingPlugin geocoding;
   late RestaurantsException testRestaurantsException;
   final testPosition = Position(
     longitude: 0,
@@ -37,6 +49,7 @@ Future<void> main() async {
 
   const testRadius = 5.0;
   const testRestaurant = RestaurantModel.empty();
+  final testMapModel = MapModel.empty();
   final testUserLocation = UserLocationModel.empty();
   setUp(() async {
     firestore = FakeFirebaseFirestore();
@@ -60,20 +73,37 @@ Future<void> main() async {
 
     location = MockLocationPlugin();
 
+    googleMap = MockGoogleMapPlugin();
+
+    geocoding = MockGeocodingPlugin();
+
     remoteDataSource = RestaurantsRemoteDataSourceImpl(
       firestore,
       storage,
       auth,
       location,
+      googleMap,
+      geocoding,
     );
     testRestaurantsException = const RestaurantsException(
       message: 'message',
       statusCode: 501,
     );
 
+    final restaurantRef = firestore
+        .collection(FirebaseConstants.businessesCollection)
+        .doc('${FirebaseConstants.restaurantsCollection}')
+        .collection('In Washington'.camelCase())
+        .doc();
+
+    await restaurantRef.set(
+      const RestaurantModel.empty().copyWith(id: testRestaurant.id).toMap(),
+    );
+
     registerFallbackValue(testRestaurant);
     registerFallbackValue(testPosition);
     registerFallbackValue(testRadius);
+    registerFallbackValue([testRestaurant]);
   });
 
   group('addRestaurant', () {
@@ -83,50 +113,123 @@ Future<void> main() async {
       'then add the given restaurant to the firestore collection ',
       () async {
         // Arrange
-
+        when(
+          () => geocoding.getCoordinateFromAddress(any()),
+        ).thenAnswer(
+          (_) async => Location(
+            latitude: 0,
+            longitude: 0,
+            timestamp: DateTime.now(),
+          ),
+        );
         // Act
         await remoteDataSource.addRestaurant(
           restaurant: testRestaurant,
         );
 
         // Assert
-        final firestoreData = await firestore.collection('restaurants').get();
-        expect(firestoreData.docs.length, 1);
+        final restaurantCollectionRef = await firestore
+            .collection(FirebaseConstants.businessesCollection)
+            .doc('${FirebaseConstants.restaurantsCollection}')
+            .collection('In Washington'.camelCase())
+            .get();
+        expect(restaurantCollectionRef.docs.length, 1);
+        expect(restaurantCollectionRef.docs.first.data()['id'], testRestaurant.id);
 
-        final restaurantReference = firestoreData.docs.first;
-        expect(restaurantReference.data()['id'], restaurantReference.id);
+        verify(() => geocoding.getCoordinateFromAddress(any())).called(1);
+        verifyNoMoreInteractions(geocoding);
       },
     );
   });
 
-  group('getRestaurants', () {
+  group('getRestaurantsNearMe', () {
     test(
       'given RestaurantRemoteDataSourceImpl '
-      'when [RestaurantRemoteDataSourceImpl.getRestaurants] is called '
+      'when [RestaurantRemoteDataSourceImpl.getRestaurantsNearMe] is called '
       'then return a List<Restaurant> ',
       () async {
         // Arrange
-        // final firstDate = DateTime.now();
-        // final secondDate = DateTime.now().add(const Duration(seconds: 20));
-        const expectedRestaurants = [
-          RestaurantModel.empty(),
-          RestaurantModel.empty(),
+        when(
+          () => geocoding.getPlaceMarkFromPosition(
+            latitude: any(named: 'latitude'),
+            longitude: any(named: 'longitude'),
+          ),
+        ).thenAnswer((invocation) async => const Placemark());
+        final expectedRestaurants = [
+          const RestaurantModel.empty(),
+          const RestaurantModel.empty().copyWith(id: '1'),
         ];
 
         for (final restaurant in expectedRestaurants) {
-          await firestore.collection('restaurants').add(restaurant.toMap());
+          await firestore
+              .collection(FirebaseConstants.businessesCollection)
+              .doc(FirebaseConstants.restaurantsCollection)
+              .collection('In Washington'.camelCase())
+              .add(restaurant.toMap());
         }
 
         // Act
-        final result = await remoteDataSource.getRestaurantsNearMe(
+        final result = remoteDataSource.getRestaurantsNearMe(
           position: testPosition,
           radius: testRadius,
         );
 
         // Assert
-        expect(result, expectedRestaurants);
+        expect(result, emits([equals(expectedRestaurants)]));
       },
     );
+  });
+
+  group('getRestaurantsMarkers ', () {
+    test(
+      'given RestaurantRemoteDataSourceImpl '
+      'when [RestaurantRemoteDataSourceImpl.getRestaurantsMarkers] is called '
+      'then return a [MapEntity] ',
+      () async {
+        // Arrange
+        when(
+          () => googleMap.getRestaurantsMarkers(restaurants: any(named: 'restaurants')),
+        ).thenAnswer((_) async => testMapModel);
+
+        // Act
+        final result = await remoteDataSource.getRestaurantsMarkers(restaurants: [testRestaurant]);
+
+        // Assert
+        expect(result, testMapModel);
+
+        verify(
+          () => googleMap.getRestaurantsMarkers(
+            restaurants: any(named: 'restaurants'),
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(googleMap);
+      },
+    );
+
+    test(
+        'given RestaurantRemoteDataSourceImpl '
+        'when [RestaurantRemoteDataSourceImpl.getRestaurantsMarkers] call is unsuccessful '
+        'then throw [MapException]', () async {
+      // Arrange
+      when(
+        () => googleMap.getRestaurantsMarkers(restaurants: any(named: 'restaurants')),
+      ).thenThrow((_) async => const MapException(message: 'message'));
+      // Act
+      final methodCall = remoteDataSource.getRestaurantsMarkers;
+
+      // Assert
+      expect(
+        () async => methodCall(restaurants: [testRestaurant]),
+        throwsA(isA<MapException>()),
+      );
+
+      verify(
+        () => googleMap.getRestaurantsMarkers(
+          restaurants: any(named: 'restaurants'),
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(googleMap);
+    });
   });
 
   group('getUserLocation', () {
@@ -158,14 +261,14 @@ Future<void> main() async {
       // Arrange
       when(
         () => location.getCurrentLocation(),
-      ).thenThrow(const UserLocationException(message: 'message'));
+      ).thenThrow((_) async => const UserLocationException(message: 'message'));
       // Act
       final methodCall = remoteDataSource.getUserLocation;
 
       // Assert
       expect(
         () async => methodCall(),
-        throwsA(const UserLocationException(message: 'message')),
+        throwsA(isA<UserLocationException>()),
       );
 
       verify(() => location.getCurrentLocation()).called(1);

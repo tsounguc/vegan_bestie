@@ -8,10 +8,10 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/utils/constants.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/edit_restaurant_review_screen.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
 class ReviewCard extends StatelessWidget {
   const ReviewCard({
@@ -21,12 +21,12 @@ class ReviewCard extends StatelessWidget {
   });
 
   final RestaurantReview review;
-  final RestaurantDetails restaurant;
+  final Restaurant restaurant;
 
   void deleteReview(BuildContext context, RestaurantReview review) {
-    BlocProvider.of<RestaurantsBloc>(
+    BlocProvider.of<RestaurantsCubit>(
       context,
-    ).add(DeleteRestaurantReviewEvent(review: review));
+    ).deleteReview(review);
   }
 
   void editReview(BuildContext context, RestaurantReview review) {

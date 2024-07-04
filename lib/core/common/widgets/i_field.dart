@@ -9,6 +9,7 @@ class IField extends StatelessWidget {
     this.readOnly = false,
     this.validator,
     this.fillColor,
+    this.contentPadding,
     this.suffixIcon,
     this.hintText,
     this.keyboardType,
@@ -20,15 +21,19 @@ class IField extends StatelessWidget {
     this.textInputAction = TextInputAction.next,
     this.onEditingComplete,
     this.onFieldSubmitted,
+    this.onTap,
+    this.fontSize,
     super.key,
   });
 
   final String? Function(String?)? validator;
   final void Function()? onEditingComplete;
   final void Function(String)? onFieldSubmitted;
+  final void Function()? onTap;
   final TextEditingController controller;
   final bool filled;
   final Color? fillColor;
+  final EdgeInsetsGeometry? contentPadding;
   final bool obscureText;
   final TextInputAction? textInputAction;
   final bool readOnly;
@@ -40,6 +45,7 @@ class IField extends StatelessWidget {
   final BorderRadius? borderRadius;
   final int? maxLines;
   final int? minLines;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +61,14 @@ class IField extends StatelessWidget {
             },
       maxLines: maxLines,
       minLines: minLines,
+      onTap: onTap,
       onTapOutside: (_) {
         FocusScope.of(context).unfocus();
       },
       style: TextStyle(
         // color: Colors.black,
         fontWeight: FontWeight.normal,
-        fontSize: 14.r,
+        fontSize: fontSize ?? 14.r,
       ),
       keyboardType: keyboardType,
       obscureText: obscureText,
@@ -84,10 +91,12 @@ class IField extends StatelessWidget {
           ),
         ),
         // overriding the default padding helps with that puffy look
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 15,
-        ),
+        contentPadding: contentPadding ??
+            const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 15,
+            ),
+
         filled: filled,
         fillColor: fillColor,
         suffixIcon: suffixIcon,
@@ -97,6 +106,7 @@ class IField extends StatelessWidget {
               fontSize: 16.r,
               fontWeight: FontWeight.w400,
             ),
+        hintMaxLines: null,
       ),
     );
   }

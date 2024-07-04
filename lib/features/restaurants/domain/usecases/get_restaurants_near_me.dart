@@ -6,19 +6,23 @@ import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
 
-class GetRestaurantsNearMe extends UseCaseWithParams<List<Restaurant>, GetRestaurantsNearMeParams> {
+class GetRestaurantsNearMe extends StreamUseCaseWithParams<List<Restaurant>, GetRestaurantsNearMeParams> {
   const GetRestaurantsNearMe(this._repository);
 
   final RestaurantsRepository _repository;
 
   @override
-  ResultFuture<List<Restaurant>> call(
-    GetRestaurantsNearMeParams params,
-  ) async =>
-      _repository.getRestaurantsNearMe(
-        position: params.position,
-        radius: params.radius,
-      );
+  ResultStream<List<Restaurant>> call(GetRestaurantsNearMeParams params) =>
+      _repository.getRestaurantsNearMe(position: params.position, radius: params.radius);
+
+// @override
+// ResultFuture<List<Restaurant>> call(
+//   GetRestaurantsNearMeParams params,
+// ) async =>
+//     _repository.getRestaurantsNearMe(
+//       position: params.position,
+//       radius: params.radius,
+//     );
 }
 
 class GetRestaurantsNearMeParams extends Equatable {

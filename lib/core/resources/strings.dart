@@ -28,5 +28,9 @@ class Strings {
 
   static const reportIssueText = 'Report Issue';
 
-  static String leaveReview = 'Add Review';
+  static const leaveReview = 'Add Review';
+
+  static const pageNotFoundText = 'Page Not Found';
+
+  static const addBusinessText = 'Add Business';
 }

@@ -8,12 +8,16 @@ class FoodProductReport extends Equatable {
     required this.userName,
     required this.incorrectImage,
     required this.incorrectProductName,
+    required this.productNameSuggestion,
     required this.incorrectMacros,
+    required this.macrosSuggestion,
     required this.incorrectIngredients,
+    required this.ingredientsSuggestion,
     required this.incorrectLabel,
+    required this.labelSuggestion,
     required this.isWrongProduct,
+    required this.productDescription,
     required this.doesNotExist,
-    required this.other,
     this.comment,
   });
 
@@ -25,12 +29,16 @@ class FoodProductReport extends Equatable {
           userName: '_empty.userName',
           incorrectImage: false,
           incorrectProductName: false,
+          productNameSuggestion: '_empty.productName',
           incorrectMacros: false,
+          macrosSuggestion: '_empty.macros',
           incorrectIngredients: false,
+          ingredientsSuggestion: '_empty.ingredients',
           incorrectLabel: false,
+          labelSuggestion: '_empty.label',
           isWrongProduct: false,
+          productDescription: 'empty.productDescription',
           doesNotExist: false,
-          other: false,
           comment: '_empty.comment',
         );
   final String id;
@@ -38,13 +46,18 @@ class FoodProductReport extends Equatable {
   final String userId;
   final String userName;
   final bool incorrectImage;
+
   final bool incorrectProductName;
+  final String productNameSuggestion;
   final bool incorrectMacros;
+  final String macrosSuggestion;
   final bool incorrectIngredients;
+  final String ingredientsSuggestion;
   final bool incorrectLabel;
+  final String labelSuggestion;
   final bool isWrongProduct;
+  final String productDescription;
   final bool doesNotExist;
-  final bool other;
   final String? comment;
 
   @override
@@ -60,7 +73,6 @@ class FoodProductReport extends Equatable {
         incorrectLabel,
         isWrongProduct,
         doesNotExist,
-        other,
         comment,
       ];
 }

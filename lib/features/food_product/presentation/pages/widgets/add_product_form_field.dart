@@ -14,6 +14,7 @@ class AddProductFormField extends StatelessWidget {
     this.minLines,
     this.onFieldSubmitted,
     this.onTrailingButtonPressed,
+    this.textInputAction,
     super.key,
   });
 
@@ -24,6 +25,7 @@ class AddProductFormField extends StatelessWidget {
   final BorderRadius? borderRadius;
   final int? maxLines;
   final int? minLines;
+  final TextInputAction? textInputAction;
   final bool showTrailingButton;
   final void Function(String)? onFieldSubmitted;
   final void Function()? onTrailingButtonPressed;
@@ -65,7 +67,7 @@ class AddProductFormField extends StatelessWidget {
           borderRadius: borderRadius,
           maxLines: maxLines,
           minLines: minLines,
-          textInputAction: TextInputAction.send,
+          textInputAction: textInputAction,
           onFieldSubmitted: onFieldSubmitted,
         ),
         const SizedBox(height: 30),

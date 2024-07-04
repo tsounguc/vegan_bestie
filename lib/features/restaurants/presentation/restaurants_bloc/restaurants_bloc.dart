@@ -1,20 +1,15 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sheveegan/features/auth/domain/usecases/remove_restaurant.dart';
-import 'package:sheveegan/features/auth/domain/usecases/save_restaurant.dart';
-import 'package:sheveegan/features/food_product/domain/use_cases/get_saved_restaurants_list.dart';
+import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant.dart';
-import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant_review.dart';
-import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant_review.dart';
-import 'package:sheveegan/features/restaurants/domain/usecases/edit_restaurant_review.dart';
-import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_reviews.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
@@ -29,7 +24,7 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
     required GetUserLocation getUserLocation,
     required GetRestaurantsNearMe getRestaurantsNearMe,
     // required GetRestaurantDetails getRestaurantDetails,
-    // required GetRestaurantsMarkers getRestaurantsMarkers,
+    required GetRestaurantsMarkers getRestaurantsMarkers,
     // required GetSavedRestaurantsList getSavedRestaurantsList,
     // required SaveRestaurant saveRestaurant,
     // required RemoveRestaurant removeRestaurant,
@@ -41,7 +36,7 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
         _getUserLocation = getUserLocation,
         _getRestaurantsNearMe = getRestaurantsNearMe,
         // _getRestaurantDetails = getRestaurantDetails,
-        // _getRestaurantsMarkers = getRestaurantsMarkers,
+        _getRestaurantsMarkers = getRestaurantsMarkers,
         // _getSavedRestaurantsList = getSavedRestaurantsList,
         // _saveRestaurant = saveRestaurant,
         // _removeRestaurant = removeRestaurant,
@@ -54,7 +49,7 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
     on<GetRestaurantsEvent>(_getRestaurantsHandler);
     on<AddRestaurantEvent>(_addRestaurantHandler);
     // on<GetRestaurantDetailsEvent>(_getRestaurantDetailsHandler);
-    // on<GetRestaurantsMarkersEvent>(_getRestaurantsMarkersHandler);
+    on<GetRestaurantsMarkersEvent>(_getRestaurantsMarkersHandler);
     // on<FetchSavedRestaurantsListEvent>(_fetchRestaurantsListHandler);
     // on<SaveRestaurantEvent>(_saveRestaurantHandler);
     // on<RemoveRestaurantEvent>(_removeRestaurantHandler);
@@ -73,7 +68,8 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
   final GetUserLocation _getUserLocation;
 
   // final GetRestaurantDetails _getRestaurantDetails;
-  // final GetRestaurantsMarkers _getRestaurantsMarkers;
+  final GetRestaurantsMarkers _getRestaurantsMarkers;
+
   // final GetSavedRestaurantsList _getSavedRestaurantsList;
   // final SaveRestaurant _saveRestaurant;
   // final RemoveRestaurant _removeRestaurant;
@@ -89,25 +85,38 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
       (failure) => emit(
         RestaurantsError(message: failure.errorMessage),
       ),
-      (success) => emit(RestaurantAdded()),
+      (success) => emit(const RestaurantAdded()),
     );
   }
 
-  Future<void> _getRestaurantsHandler(
+  void _getRestaurantsHandler(
     GetRestaurantsEvent event,
     Emitter<RestaurantsState> emit,
-  ) async {
+  ) {
     emit(const LoadingRestaurants());
-    final result = await _getRestaurantsNearMe(
-      GetRestaurantsNearMeParams(
-        position: event.position,
-        radius: event.radius,
-      ),
-    );
+    StreamSubscription<Either<Failure, List<Restaurant>>>? subscription;
 
-    result.fold(
-      (failure) => emit(RestaurantsError(message: failure.errorMessage)),
-      (restaurants) => emit(RestaurantsLoaded(restaurants: restaurants)),
+    subscription = _getRestaurantsNearMe(
+      GetRestaurantsNearMeParams(position: event.position, radius: event.radius),
+    ).listen(
+      /*onData:*/
+      (result) {
+        result.fold(
+          (failure) {
+            debugPrint(failure.errorMessage);
+            emit(RestaurantsError(message: failure.errorMessage));
+            subscription?.cancel();
+          },
+          (restaurantsList) => emit(RestaurantsLoaded(restaurants: restaurantsList)),
+        );
+      },
+      onError: (dynamic error) {
+        debugPrint(error.toString());
+        emit(RestaurantsError(message: error.toString()));
+      },
+      onDone: () {
+        subscription?.cancel();
+      },
     );
   }
 
@@ -139,19 +148,19 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
 //   );
 // }
 
-// Future<void> _getRestaurantsMarkersHandler(
-//   GetRestaurantsMarkersEvent event,
-//   Emitter<RestaurantsState> emit,
-// ) async {
-//   emit(const LoadingMarkers());
-//   final result = await _getRestaurantsMarkers(
-//     GetRestaurantsMarkersParams(restaurants: event.restaurants),
-//   );
-//   result.fold(
-//     (failure) => emit(RestaurantsError(message: failure.errorMessage)),
-//     (mapEntity) => emit(MarkersLoaded(markers: mapEntity.markers)),
-//   );
-// }
+  Future<void> _getRestaurantsMarkersHandler(
+    GetRestaurantsMarkersEvent event,
+    Emitter<RestaurantsState> emit,
+  ) async {
+    emit(const LoadingMarkers());
+    final result = await _getRestaurantsMarkers(
+      GetRestaurantsMarkersParams(restaurants: event.restaurants),
+    );
+    result.fold(
+      (failure) => emit(RestaurantsError(message: failure.errorMessage)),
+      (mapEntity) => emit(MarkersLoaded(markers: mapEntity.markers)),
+    );
+  }
 
 // Future<void> _fetchRestaurantsListHandler(
 //   FetchSavedRestaurantsListEvent event,

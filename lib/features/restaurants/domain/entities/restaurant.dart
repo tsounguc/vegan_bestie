@@ -15,11 +15,15 @@ class Restaurant extends Equatable {
     required this.phoneNumber,
     required this.websiteUrl,
     required this.geoLocation,
-    required this.openingHours,
+    required this.openHours,
     required this.photos,
     required this.price,
     required this.veganStatus,
     required this.hasVeganOptions,
+    required this.dineIn,
+    required this.takeout,
+    required this.delivery,
+    required this.permanentlyClosed,
     this.imageIsFile = false,
     this.description,
     this.image,
@@ -40,14 +44,18 @@ class Restaurant extends Equatable {
           phoneNumber: '_empty.phoneNumber',
           websiteUrl: '_empty.websiteUrl',
           geoLocation: const GeoLocation.empty(),
-          openingHours: const [],
-          photos: const [],
+          openHours: const OpenHours.empty(),
+          photos: const ['_empty.photo1', '_empty.photo2'],
           price: '_empty.price',
           veganStatus: false,
           hasVeganOptions: false,
           imageIsFile: false,
           description: null,
           image: null,
+          dineIn: false,
+          takeout: false,
+          delivery: false,
+          permanentlyClosed: false,
         );
 
   final String id;
@@ -68,32 +76,87 @@ class Restaurant extends Equatable {
   final String? image;
   final String? description;
   final bool imageIsFile;
-  final List<String> openingHours;
+  final OpenHours openHours;
   final List<String> photos;
   final String price;
   final bool veganStatus;
   final bool hasVeganOptions;
+  final bool dineIn;
+  final bool takeout;
+  final bool delivery;
+  final bool permanentlyClosed;
 
   @override
   List<Object?> get props => [
         id,
-        name,
-        contactName,
-        email,
-        streetAddress,
-        city,
-        state,
-        zipCode,
-        county,
-        areaCode,
-        phoneNumber,
-        websiteUrl,
-        openingHours,
-        photos,
-        price,
-        veganStatus,
-        hasVeganOptions,
+        // name,
+        // contactName,
+        // email,
+        // streetAddress,
+        // city,
+        // state,
+        // zipCode,
+        // county,
+        // areaCode,
+        // phoneNumber,
+        // websiteUrl,
+        // geoLocation,
+        // openingHours,
+        // photos,
+        // price,
+        // veganStatus,
+        // hasVeganOptions,
       ];
+}
+
+class OpenHours extends Equatable {
+  const OpenHours({
+    required this.periods,
+  });
+
+  const OpenHours.empty() : this(periods: const []);
+  final List<Period> periods;
+
+  @override
+  List<Object?> get props => [periods];
+}
+
+class Period extends Equatable {
+  const Period({
+    required this.close,
+    required this.open,
+  });
+
+  const Period.empty()
+      : this(
+          open: const OpenClose.empty(),
+          close: const OpenClose.empty(),
+        );
+
+  final OpenClose open;
+  final OpenClose close;
+
+  @override
+  List<Object?> get props => [open, close];
+}
+
+class OpenClose extends Equatable {
+  const OpenClose({
+    required this.day,
+    required this.time,
+  });
+
+  const OpenClose.empty()
+      : this(
+          day: 0,
+          time: '20:00',
+        );
+
+  final int day;
+  final String time;
+
+  @override
+  List<Object?> get props => [day, time];
 }
 
 class GeoLocation extends Equatable {

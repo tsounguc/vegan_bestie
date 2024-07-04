@@ -10,7 +10,6 @@ import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/food_product/data/models/food_product_model.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/refactors/add_product_form.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
-import 'package:sheveegan/home_page.dart';
 
 class AddFoodProductScreen extends StatefulWidget {
   const AddFoodProductScreen({

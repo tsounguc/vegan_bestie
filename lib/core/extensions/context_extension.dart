@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/food_product_reports_provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_products_provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_restaurants_provider.dart';
+import 'package:sheveegan/core/common/app/providers/submitted_restaurants_provider.dart';
 import 'package:sheveegan/core/common/app/providers/tab_navigator.dart';
 import 'package:sheveegan/core/common/app/providers/theme_mode_provider.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
@@ -29,6 +30,8 @@ extension ContextExtension on BuildContext {
 
   FoodProductReportsProvider get reportsProvider => read<FoodProductReportsProvider>();
 
+  SubmittedRestaurantsProvider get submittedRestaurantsProvider => read<SubmittedRestaurantsProvider>();
+
   ThemeModeProvider get themeModeProvider => read<ThemeModeProvider>();
 
   TabNavigator get tabNavigator => read<TabNavigator>();
@@ -36,4 +39,14 @@ extension ContextExtension on BuildContext {
   void pop() => tabNavigator.pop();
 
   void push(Widget page) => tabNavigator.push(TabItem(child: page));
+
+  Map<int, String> get daysOfTheWeek => <int, String>{
+        0: 'Sunday',
+        1: 'Monday',
+        2: 'Tuesday',
+        3: 'Wednesday',
+        4: 'Thursday',
+        5: 'Friday',
+        6: 'Saturday',
+      };
 }

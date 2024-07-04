@@ -8,6 +8,7 @@ import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_rem
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/user_location_model.dart';
 import 'package:sheveegan/features/restaurants/data/repositories/restaurants_repository_impl.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
@@ -34,6 +35,8 @@ void main() {
   );
 
   const testRadius = 5.0;
+
+  final testMapEntity = MapEntity.empty();
 
   setUp(() {
     remoteDataSource = MockRestaurantsRemoteDataSource();
@@ -69,9 +72,7 @@ void main() {
             position: any(named: 'position'),
             radius: any(named: 'radius'),
           ),
-        ).thenAnswer(
-          (_) async => testRestaurants,
-        );
+        ).thenAnswer((_) => Stream.value(testRestaurants));
         // Act
         final result = await repositoryImpl.getRestaurantsNearMe(
           position: testPosition,
@@ -108,9 +109,12 @@ void main() {
             position: any(named: 'position'),
             radius: any(named: 'radius'),
           ),
-        ).thenThrow(testRestaurantsException);
+        ).thenAnswer((_) => Stream.error(testRestaurantsException));
         // Act
-        final result = await repositoryImpl.getRestaurantsNearMe(position: testPosition, radius: testRadius);
+        final result = await repositoryImpl.getRestaurantsNearMe(
+          position: testPosition,
+          radius: testRadius,
+        );
         // Assert
         expect(
           result,
@@ -225,7 +229,7 @@ void main() {
       'given RestaurantsRepositoryImpl, '
       'when [RestaurantsRepositoryImpl.getUserLocation] is called '
       'and remote data source call is unsuccessful '
-      'then return [UserLocationException] ',
+      'then return [UserLocationFailure] ',
       () async {
         // Arrange
         when(
@@ -246,6 +250,74 @@ void main() {
         );
         verify(
           () => remoteDataSource.getUserLocation(),
+        ).called(1);
+        verifyNoMoreInteractions(remoteDataSource);
+      },
+    );
+  });
+
+  group('getRestaurantMarkers', () {
+    test(
+      'given RestaurantsRepositoryImpl, '
+      'when [RestaurantsRepositoryImpl.getRestaurantMarkers] is called '
+      'then complete call to remote data source successfully '
+      'and return [MapEntity]',
+      () async {
+        // Arrange
+        when(
+          () => remoteDataSource.getRestaurantsMarkers(
+            restaurants: any(named: 'restaurants'),
+          ),
+        ).thenAnswer((_) async => testMapEntity);
+        // Act
+        final result = await repositoryImpl.getRestaurantsMarkers(
+          restaurants: testRestaurants,
+        );
+        // Assert
+        expect(
+          result,
+          equals(
+            Right<Failure, MapEntity>(testMapEntity),
+          ),
+        );
+        verify(
+          () => remoteDataSource.getRestaurantsMarkers(
+            restaurants: any(named: 'restaurants'),
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(remoteDataSource);
+      },
+    );
+
+    test(
+      'given RestaurantsRepositoryImpl, '
+      'when [RestaurantsRepositoryImpl.getRestaurantsMarkers] is called '
+      'and remote data source call is unsuccessful '
+      'then return [MapFailure] ',
+      () async {
+        // Arrange
+        when(
+          () => remoteDataSource.getRestaurantsMarkers(
+            restaurants: any(named: 'restaurants'),
+          ),
+        ).thenThrow(
+          const MapException(message: 'message'),
+        );
+        // Act
+        final result = await repositoryImpl.getRestaurantsMarkers(restaurants: testRestaurants);
+        // Assert
+        expect(
+          result,
+          equals(
+            Left<Failure, MapEntity>(
+              MapFailure.fromException(const MapException(message: 'message')),
+            ),
+          ),
+        );
+        verify(
+          () => remoteDataSource.getRestaurantsMarkers(
+            restaurants: any(named: 'restaurants'),
+          ),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);
       },

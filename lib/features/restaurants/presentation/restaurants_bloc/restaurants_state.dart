@@ -41,12 +41,12 @@ class RestaurantsLoaded extends RestaurantsState {
 }
 
 class RestaurantDetailsLoaded extends RestaurantsState {
-  const RestaurantDetailsLoaded({required this.restaurantDetails});
+  const RestaurantDetailsLoaded({required this.restaurant});
 
-  final RestaurantDetails restaurantDetails;
+  final Restaurant restaurant;
 
   @override
-  List<Object> get props => [restaurantDetails];
+  List<Object> get props => [restaurant];
 }
 
 class FetchingSavedRestaurantsList extends RestaurantsState {
@@ -58,7 +58,7 @@ class SavedRestaurantsListFetched extends RestaurantsState {
     required this.savedRestaurantsList,
   });
 
-  final List<RestaurantDetails> savedRestaurantsList;
+  final List<Restaurant> savedRestaurantsList;
 }
 
 class SavingRestaurant extends RestaurantsState {

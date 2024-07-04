@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
+import 'package:sheveegan/core/resources/media_resources.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
@@ -77,7 +78,7 @@ class ProductFoundBody extends StatelessWidget {
                 title: Strings.proteinText,
                 percentage: proteinsPercentage,
                 icon: Image.asset(
-                  'assets/tofu.png',
+                  MediaResources.tofu,
                   fit: BoxFit.contain,
                   height: 10,
                   width: 10,
@@ -90,7 +91,7 @@ class ProductFoundBody extends StatelessWidget {
                 title: Strings.carbsText,
                 percentage: carbsPercentage,
                 icon: Image.asset(
-                  'assets/bread.png',
+                  MediaResources.bread,
                   fit: BoxFit.contain,
                   height: 10,
                   width: 10,
@@ -105,7 +106,7 @@ class ProductFoundBody extends StatelessWidget {
                 title: Strings.fatText,
                 percentage: fatPercentage,
                 icon: Image.asset(
-                  'assets/avocado.png',
+                  MediaResources.avocado,
                   fit: BoxFit.contain,
                   height: 10,
                   width: 10,
@@ -154,23 +155,23 @@ class ProductFoundBody extends StatelessWidget {
                 ).copyWith(bottom: 0),
                 child: product.ingredientsText.isNotEmpty
                     ? Text(
-                        product.ingredientsText.toLowerCase().capitalizeEveryWord(', ').capitalizeEveryWord(' ('),
-                        style: TextStyle(
-                          // color: Colors.grey.shade800,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      )
+                  product.ingredientsText.toLowerCase().capitalizeEveryWord(', ').capitalizeEveryWord(' ('),
+                  style: TextStyle(
+                    // color: Colors.grey.shade800,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.normal,
+                  ),
+                )
                     : Center(
-                        child: Text(
-                          Strings.ingredientsNotFoundText,
-                          style: TextStyle(
-                            // color: Colors.grey.shade800,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ),
+                  child: Text(
+                    Strings.ingredientsNotFoundText,
+                    style: TextStyle(
+                      // color: Colors.grey.shade800,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -183,7 +184,8 @@ class ProductFoundBody extends StatelessWidget {
               surfaceTintColor: context.theme.cardTheme.color,
               backgroundColor: context.theme.cardTheme.color,
             ),
-            onPressed: () => user != null && user.isAdmin
+            onPressed: () =>
+            user != null && user.isAdmin
                 ? gotoUpdateFoodProductPage(context)
                 : goToReportIssue(context, product),
             icon: const Icon(

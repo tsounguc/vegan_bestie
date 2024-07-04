@@ -12,7 +12,7 @@ import 'package:sheveegan/features/food_product/data/models/food_product_model.d
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/refactors/add_product_form.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
-import 'package:sheveegan/home_page.dart';
+import 'package:sheveegan/features/dashboard/presentation/views/dashboard.dart';
 
 class UpdateFoodProductScreen extends StatefulWidget {
   const UpdateFoodProductScreen({
@@ -275,7 +275,7 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
             CoreUtils.showSnackBar(context, 'Product uploaded');
             Navigator.pushNamedAndRemoveUntil(
               context,
-              HomePage.id,
+              Dashboard.id,
               (Route<dynamic> route) => false,
             );
           }
@@ -284,7 +284,7 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
           CoreUtils.showSnackBar(context, 'Product uploaded');
           Navigator.pushNamedAndRemoveUntil(
             context,
-            HomePage.id,
+            Dashboard.id,
             (Route<dynamic> route) => false,
           );
         } else if (state is FoodProductError) {

@@ -41,6 +41,9 @@ class AddProductForm extends StatelessWidget {
           'Macros',
           style: TextStyle(),
         ),
+        SizedBox(
+          height: 20,
+        ),
         AddProductFormField(
           hintText: proteinController.text.isNotEmpty ? proteinController.text : 'Enter protein',
           fieldTitle: 'Protein',
@@ -65,6 +68,7 @@ class AddProductForm extends StatelessWidget {
           minLines: 4,
           maxLines: null,
           onTrailingButtonPressed: onReadIngredientsFromImage,
+          textInputAction: TextInputAction.send,
         ),
       ],
     );

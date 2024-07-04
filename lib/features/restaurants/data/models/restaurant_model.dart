@@ -18,11 +18,15 @@ class RestaurantModel extends Restaurant {
     required super.phoneNumber,
     required super.geoLocation,
     required super.websiteUrl,
-    required super.openingHours,
+    required super.openHours,
     required super.photos,
     required super.price,
     required super.veganStatus,
     required super.hasVeganOptions,
+    required super.dineIn,
+    required super.takeout,
+    required super.delivery,
+    required super.permanentlyClosed,
     super.description,
     super.image,
     super.imageIsFile = false,
@@ -31,7 +35,6 @@ class RestaurantModel extends Restaurant {
   const RestaurantModel.empty()
       : this(
           id: '_empty.id',
-          image: null,
           name: '_empty.name',
           contactName: '_empty.contactName',
           email: '_empty.email',
@@ -44,12 +47,41 @@ class RestaurantModel extends Restaurant {
           phoneNumber: '_empty.phoneNumber',
           websiteUrl: '_empty.websiteUrl',
           geoLocation: const GeoLocationModel.empty(),
-          openingHours: const [],
-          photos: const [],
+          openHours: const OpenHoursModel.empty(),
+          photos: const ['_empty.photo1', '_empty.photo2'],
           price: '_empty.price',
+          permanentlyClosed: false,
           veganStatus: false,
           hasVeganOptions: false,
-          description: null,
+          dineIn: false,
+          takeout: false,
+          delivery: false,
+        );
+
+  RestaurantModel.copy(Restaurant restaurant) // HERE
+      : this(
+          id: restaurant.id,
+          name: restaurant.name,
+          contactName: restaurant.contactName,
+          email: restaurant.email,
+          streetAddress: restaurant.streetAddress,
+          city: restaurant.city,
+          state: restaurant.state,
+          zipCode: restaurant.zipCode,
+          county: restaurant.county,
+          areaCode: restaurant.areaCode,
+          phoneNumber: restaurant.phoneNumber,
+          websiteUrl: restaurant.websiteUrl,
+          geoLocation: restaurant.geoLocation,
+          openHours: restaurant.openHours,
+          photos: restaurant.photos,
+          price: restaurant.price,
+          permanentlyClosed: restaurant.permanentlyClosed,
+          veganStatus: restaurant.veganStatus,
+          hasVeganOptions: restaurant.hasVeganOptions,
+          dineIn: restaurant.dineIn,
+          takeout: restaurant.takeout,
+          delivery: restaurant.delivery,
         );
 
   factory RestaurantModel.fromJson(String source) => RestaurantModel.fromMap(
@@ -58,33 +90,39 @@ class RestaurantModel extends Restaurant {
 
   RestaurantModel.fromMap(DataMap dataMap)
       : this(
-          id: '_empty.id',
+          id: dataMap['id'] as String? ?? '',
           image: dataMap['image'] as String?,
           imageIsFile: dataMap['imageIsFile'] as bool? ?? false,
           description: dataMap['description'] as String?,
-          name: dataMap['name'] as String,
-          contactName: dataMap['contactName'] as String,
-          email: dataMap['email'] as String,
-          streetAddress: dataMap['streetAddress'] as String,
-          city: dataMap['city'] as String,
-          state: dataMap['state'] as String,
-          zipCode: dataMap['zipCode'] as String,
-          county: dataMap['county'] as String,
-          areaCode: dataMap['areaCode'] as String,
-          phoneNumber: dataMap['phoneNumber'] as String,
-          websiteUrl: dataMap['websiteUrl'] as String,
+          name: dataMap['name'] as String? ?? '',
+          contactName: dataMap['contactName'] as String? ?? '',
+          email: dataMap['email'] as String? ?? '',
+          streetAddress: dataMap['streetAddress'] as String? ?? '',
+          city: dataMap['city'] as String? ?? '',
+          state: dataMap['state'] as String? ?? '',
+          zipCode: dataMap['zipCode'] as String? ?? '',
+          county: dataMap['county'] as String? ?? '',
+          areaCode: dataMap['areaCode'] as String? ?? '',
+          phoneNumber: dataMap['phoneNumber'] as String? ?? '',
+          websiteUrl: dataMap['websiteUrl'] as String? ?? '',
           geoLocation: dataMap['geoLocation'] == null
               ? const GeoLocationModel.empty()
               : GeoLocationModel.fromMap(dataMap['geoLocation'] as DataMap),
-          openingHours: List<String>.from(
-            (dataMap['openingHours'] as List).map((openingHour) => openingHour),
-          ),
-          photos: List<String>.from(
-            (dataMap['photos'] as List).map((photo) => photo),
-          ),
-          price: dataMap['price'] as String,
+          openHours: dataMap['openHours'] == null
+              ? const OpenHoursModel.empty()
+              : OpenHoursModel.fromMap(dataMap['openHours'] as DataMap),
+          photos: dataMap['photos'] == null
+              ? []
+              : List<String>.from(
+                  (dataMap['photos'] as List).map((photo) => photo),
+                ),
+          price: dataMap['price'] as String? ?? '',
+          permanentlyClosed: dataMap['permanentlyClosed'] as bool? ?? false,
           veganStatus: dataMap['veganStatus'] as bool? ?? false,
           hasVeganOptions: dataMap['hasVeganOptions'] as bool? ?? false,
+          dineIn: dataMap['dineIn'] as bool? ?? false,
+          takeout: dataMap['takeout'] as bool? ?? false,
+          delivery: dataMap['delivery'] as bool? ?? false,
         );
 
   String toJson() => jsonEncode(toMap());
@@ -105,19 +143,20 @@ class RestaurantModel extends Restaurant {
         'areaCode': areaCode,
         'phoneNumber': phoneNumber,
         'websiteUrl': websiteUrl,
-        'openingHours': List<dynamic>.from(
-          openingHours.map(
-            (openingHour) => openingHour,
-          ),
-        ),
+        'geoLocation': (geoLocation as GeoLocationModel).toMap(),
+        'openHours': (openHours as OpenHoursModel).toMap(),
         'photos': List<dynamic>.from(
           photos.map(
             (photo) => photo,
           ),
         ),
+        'permanentlyClosed': permanentlyClosed,
         'price': price,
         'veganStatus': false,
         'hasVeganOptions': false,
+        'dineIn': false,
+        'takeout': false,
+        'delivery': false,
       };
 
   RestaurantModel copyWith({
@@ -137,11 +176,15 @@ class RestaurantModel extends Restaurant {
     String? phoneNumber,
     String? websiteUrl,
     GeoLocation? geoLocation,
-    List<String>? openingHours,
+    OpenHoursModel? openHours,
     List<String>? photos,
     String? price,
+    bool? permanentlyClosed,
     bool? veganStatus,
     bool? hasVeganOptions,
+    bool? dineIn,
+    bool? takeout,
+    bool? delivery,
   }) {
     return RestaurantModel(
       id: id ?? this.id,
@@ -160,13 +203,127 @@ class RestaurantModel extends Restaurant {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       websiteUrl: websiteUrl ?? this.websiteUrl,
       geoLocation: geoLocation ?? this.geoLocation,
-      openingHours: openingHours ?? this.openingHours,
+      openHours: openHours ?? this.openHours,
       photos: photos ?? this.photos,
       price: price ?? this.price,
+      permanentlyClosed: permanentlyClosed ?? this.permanentlyClosed,
       veganStatus: veganStatus ?? this.veganStatus,
       hasVeganOptions: hasVeganOptions ?? this.hasVeganOptions,
+      dineIn: dineIn ?? this.dineIn,
+      takeout: takeout ?? this.takeout,
+      delivery: delivery ?? this.delivery,
     );
   }
+}
+
+class OpenHoursModel extends OpenHours {
+  const OpenHoursModel({
+    required super.periods,
+  });
+
+  const OpenHoursModel.empty()
+      : this(
+          periods: const [],
+        );
+
+  factory OpenHoursModel.fromJson(String source) => OpenHoursModel.fromMap(jsonDecode(source) as DataMap);
+
+  OpenHoursModel.fromMap(DataMap dataMap)
+      : this(
+          periods: dataMap['periods'] == null
+              ? []
+              : List<PeriodModel>.from(
+                  (dataMap['periods'] as List).map(
+                    (period) => PeriodModel.fromMap(period as DataMap),
+                  ),
+                ),
+        );
+
+  String toJson() => json.encode(toMap());
+
+  DataMap toMap() => {
+        'periods': List<dynamic>.from(
+          periods.map(
+            (period) => (period as PeriodModel).toMap(),
+          ),
+        ),
+      };
+
+  OpenHoursModel copyWith({
+    List<Period>? periods,
+  }) =>
+      OpenHoursModel(
+        periods: periods ?? this.periods,
+      );
+}
+
+class PeriodModel extends Period {
+  const PeriodModel({
+    required super.open,
+    required super.close,
+  });
+
+  const PeriodModel.empty()
+      : this(
+          open: const OpenCloseModel.empty(),
+          close: const OpenCloseModel.empty(),
+        );
+
+  factory PeriodModel.fromJson(String source) => PeriodModel.fromMap(jsonDecode(source) as DataMap);
+
+  PeriodModel.fromMap(DataMap dataMap)
+      : this(
+          open: dataMap['open'] == null
+              ? const OpenCloseModel.empty()
+              : OpenCloseModel.fromMap(dataMap['open'] as DataMap),
+          close: dataMap['close'] == null
+              ? const OpenCloseModel.empty()
+              : OpenCloseModel.fromMap(dataMap['close'] as DataMap),
+        );
+
+  String toJson() => jsonEncode(toMap());
+
+  DataMap toMap() => {
+        'close': (close as OpenCloseModel).toMap(),
+        'open': (open as OpenCloseModel).toMap(),
+      };
+
+  PeriodModel copyWith({
+    OpenCloseModel? close,
+    OpenCloseModel? open,
+  }) =>
+      PeriodModel(
+        close: close ?? this.close,
+        open: open ?? this.open,
+      );
+}
+
+class OpenCloseModel extends OpenClose {
+  const OpenCloseModel({
+    required super.day,
+    required super.time,
+  });
+
+  const OpenCloseModel.empty()
+      : this(
+          day: 0,
+          time: '',
+        );
+
+  factory OpenCloseModel.fromJson(String source) => OpenCloseModel.fromMap(jsonDecode(source) as DataMap);
+
+  OpenCloseModel.fromMap(DataMap dataMap)
+      : this(
+          day: dataMap['day'] as int? ?? 0,
+          time: dataMap['time'] as String? ?? '',
+        );
+
+  String toJson() => jsonEncode(toMap());
+
+  DataMap toMap() => {
+        'day': day,
+        'time': time,
+      };
 }
 
 class GeoLocationModel extends GeoLocation {
@@ -195,3 +352,32 @@ class GeoLocationModel extends GeoLocation {
         'lng': lng,
       };
 }
+
+// class OpenPeriodModel extends OpenPeriod {
+//   const OpenPeriodModel({
+//     required super.openingTime,
+//     required super.closingTime,
+//   });
+//
+//   const OpenPeriodModel.empty()
+//       : this(
+//           openingTime: '00:00',
+//           closingTime: '00:00',
+//         );
+//
+//   factory OpenPeriodModel.fromJson(String source) => OpenPeriodModel.fromMap(
+//         jsonDecode(source) as DataMap,
+//       );
+//
+//   String toJson() => json.encode(toMap());
+//
+//   factory OpenPeriodModel.fromMap(DataMap dataMap) => OpenPeriodModel(
+//         openingTime: dataMap["openingTime"] as String? ?? '',
+//         closingTime: dataMap["closingTime"] as String? ?? '',
+//       );
+//
+//   Map<String, dynamic> toMap() => {
+//         'openingTime': openingTime,
+//         'closingTime': closingTime,
+//       };
+// }

@@ -184,6 +184,6 @@ class ProductNotFoundPage extends StatelessWidget {
       doesNotExist: true,
     );
 
-    BlocProvider.of<FoodProductCubit>(context).reportIusse(report);
+    BlocProvider.of<FoodProductCubit>(context).reportIssue(report);
   }
 }

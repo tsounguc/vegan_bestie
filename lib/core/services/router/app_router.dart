@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sheveegan/core/common/screens/error/page_not_found.dart';
 import 'package:sheveegan/core/common/screens/product_screens/product_not_found.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
@@ -26,12 +27,16 @@ import 'package:sheveegan/features/profile/presentation/screens/display_screen.d
 import 'package:sheveegan/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/reports_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/settings_page.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/add_restaurant_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/edit_restaurant_review_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_review_screen.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/submitted_restaurants_screen.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/update_restaurant_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
 part 'package:sheveegan/core/services/router/app_router.main.dart';

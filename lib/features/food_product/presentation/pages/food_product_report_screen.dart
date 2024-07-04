@@ -10,7 +10,6 @@ import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/food_product/data/models/food_product_model.dart';
 import 'package:sheveegan/features/food_product/data/models/food_product_report_model.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
-import 'package:sheveegan/home_page.dart';
 
 class FoodProductReportScreen extends StatefulWidget {
   const FoodProductReportScreen({super.key, this.product});
@@ -19,19 +18,47 @@ class FoodProductReportScreen extends StatefulWidget {
   static const String id = '/foodProductReportScreen';
 
   @override
-  State<FoodProductReportScreen> createState() =>
-      _FoodProductReportScreenState();
+  State<FoodProductReportScreen> createState() => _FoodProductReportScreenState();
 }
 
 class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
   final List<IssueItem> listOfIssues = [
-    IssueItem(title: 'Wrong Image'),
-    IssueItem(title: 'Incorrect Name'),
-    IssueItem(title: 'Incorrect protein, carbs, and/or fat amounts'),
-    IssueItem(title: 'Wrong or incomplete ingredients'),
-    IssueItem(title: 'Wrong Vegan or Vegetarian label'),
-    IssueItem(title: 'Wrong product'),
-    IssueItem(title: 'other'),
+    IssueItem(
+      title: 'Wrong Image',
+      hint: '',
+      textEditingController: TextEditingController(),
+      expansionTileController: ExpansionTileController(),
+    ),
+    IssueItem(
+      title: 'Incorrect Name',
+      hint: 'What is the correct name',
+      textEditingController: TextEditingController(),
+      expansionTileController: ExpansionTileController(),
+    ),
+    IssueItem(
+      title: 'Incorrect protein, carbs, and/or fat amounts',
+      hint: 'What is the correct information',
+      textEditingController: TextEditingController(),
+      expansionTileController: ExpansionTileController(),
+    ),
+    IssueItem(
+      title: 'Wrong or incomplete ingredients',
+      hint: 'What is the correct information',
+      textEditingController: TextEditingController(),
+      expansionTileController: ExpansionTileController(),
+    ),
+    IssueItem(
+      title: 'Wrong Vegan or Vegetarian label',
+      hint: 'What is the correct label?',
+      textEditingController: TextEditingController(),
+      expansionTileController: ExpansionTileController(),
+    ),
+    IssueItem(
+      title: 'Wrong product',
+      hint: 'What product should this be?',
+      textEditingController: TextEditingController(),
+      expansionTileController: ExpansionTileController(),
+    ),
   ];
   bool itemSelected = false;
   final commentController = TextEditingController();
@@ -52,12 +79,22 @@ class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
       incorrectIngredients: listOfIssues[3].isSelected,
       incorrectLabel: listOfIssues[4].isSelected,
       isWrongProduct: listOfIssues[5].isSelected,
-      other: listOfIssues[6].isSelected,
       comment: commentController.text.trim(),
+      productNameSuggestion: listOfIssues[1].textEditingController?.text ?? '',
+      macrosSuggestion: listOfIssues[2].textEditingController?.text ?? '',
+      ingredientsSuggestion: listOfIssues[3].textEditingController?.text ?? '',
+      labelSuggestion: listOfIssues[4].textEditingController?.text ?? '',
+      productDescription: listOfIssues[5].textEditingController?.text ?? '',
     );
     BlocProvider.of<FoodProductCubit>(
       context,
-    ).reportIusse(report);
+    ).reportIssue(report);
+  }
+
+  @override
+  void initState() {
+    listOfIssues[1].textEditingController!.text = widget.product?.productName ?? '';
+    super.initState();
   }
 
   @override
@@ -120,36 +157,78 @@ class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
                     itemCount: listOfIssues.length,
                     itemBuilder: (context, index) {
                       final issue = listOfIssues[index];
-                      return ListTile(
-                        title: Text(
-                          issue.title,
-                          style: TextStyle(
-                            color: context.theme.textTheme.bodyMedium?.color,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                        trailing: Theme(
-                          data: ThemeData(
-                            unselectedWidgetColor:
-                                context.theme.iconTheme.color,
-                          ),
-                          child: Checkbox(
-                            value: issue.isSelected,
-                            fillColor: MaterialStatePropertyAll(
-                                issue.isSelected!
-                                    ? context.theme.primaryColor
-                                    : Colors.transparent),
-                            onChanged: (value) {
-                              itemSelected = false;
-                              setState(() {
-                                listOfIssues[index].isSelected = value;
-                              });
-                              debugPrint('${listOfIssues[index].isSelected}');
-                            },
-                          ),
-                        ),
-                      );
+                      return Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Theme(
+                            data: context.theme.copyWith(dividerColor: Colors.transparent),
+                            child: ExpansionTile(
+                              iconColor: context.theme.iconTheme.color,
+                              collapsedIconColor: context.theme.iconTheme.color,
+                              childrenPadding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 25,
+                              ),
+                              initiallyExpanded: issue.isSelected ?? false,
+                              controller: issue.expansionTileController,
+                              title: Text(
+                                issue.title,
+                                style: TextStyle(
+                                  color: context.theme.textTheme.bodyMedium?.color,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              trailing: Theme(
+                                data: ThemeData(
+                                  unselectedWidgetColor: context.theme.iconTheme.color,
+                                ),
+                                child: Checkbox(
+                                  value: issue.isSelected,
+                                  fillColor: MaterialStatePropertyAll(
+                                      issue.isSelected! ? context.theme.primaryColor : Colors.transparent),
+                                  onChanged: (value) {
+                                    itemSelected = false;
+                                    setState(() {
+                                      issue.isSelected = value;
+                                      if (issue.isSelected == true && issue.title != 'Wrong Image') {
+                                        issue.expansionTileController.expand();
+                                      } else {
+                                        issue.expansionTileController.collapse();
+                                      }
+                                    });
+                                  },
+                                ),
+                              ),
+                              enabled: false,
+                              children: [
+                                if (issue.title != 'Wrong Image')
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 12.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              width: context.width * 0.70,
+                                              child: IField(
+                                                controller: issue.textEditingController!,
+                                                hintText: issue.hint,
+                                                hintStyle: TextStyle(fontSize: 12.sp),
+                                                borderRadius: BorderRadius.circular(10),
+                                                textInputAction: null,
+                                                maxLines: null,
+                                                minLines: index == 1 ? 2 : 4,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ));
                     },
                   ),
                   const SizedBox(height: 70),
@@ -195,11 +274,17 @@ class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
 class IssueItem extends Equatable {
   IssueItem({
     required this.title,
+    required this.hint,
+    required this.expansionTileController,
     this.isSelected = false,
+    this.textEditingController,
   });
 
   final String title;
+  final String hint;
   bool? isSelected;
+  final ExpansionTileController expansionTileController;
+  final TextEditingController? textEditingController;
 
   @override
   List<Object?> get props => [title, isSelected];

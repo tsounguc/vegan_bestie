@@ -5,11 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sheveegan/core/common/app/providers/restaurants_near_me_provider.dart';
 import 'package:sheveegan/core/common/screens/error/error.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
-import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurants_found_body.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
 class RestaurantsHomePage extends StatelessWidget {
   RestaurantsHomePage({super.key});
@@ -39,16 +37,16 @@ class RestaurantsHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RestaurantsBloc, RestaurantsState>(
+    return BlocConsumer<RestaurantsCubit, RestaurantsState>(
       listener: (context, state) {
         if (state is UserLocationLoaded) {
           userCurrentLocation = context.read<RestaurantsNearMeProvider>().currentLocation;
 
           if (locationChanged(state)) {
             debugPrint('Getting Restaurants');
-            BlocProvider.of<RestaurantsBloc>(
+            BlocProvider.of<RestaurantsCubit>(
               context,
-            ).add(const LoadGeolocationEvent());
+            ).loadGeoLocation();
             context.read<RestaurantsNearMeProvider>().currentLocation = state.position;
             userCurrentLocation = state.position;
 
@@ -56,27 +54,25 @@ class RestaurantsHomePage extends StatelessWidget {
               'userCurrentLocation: ${userCurrentLocation?.latitude}'
               ' ${userCurrentLocation?.longitude}',
             );
-            BlocProvider.of<RestaurantsBloc>(context).add(
-              GetRestaurantsEvent(
-                position: state.position,
-                radius: context.read<RestaurantsNearMeProvider>().radius,
-              ),
-            );
           }
+          BlocProvider.of<RestaurantsCubit>(context).getRestaurants(
+            state.position,
+            context.read<RestaurantsNearMeProvider>().radius,
+          );
         }
         if (state is RestaurantsLoaded) {
-          // BlocProvider.of<RestaurantsBloc>(
-          //   context,
-          // ).restaurants = state.restaurants..sort(sortByDistance);
-          // restaurants = state.restaurants..sort(sortByDistance);
-          BlocProvider.of<RestaurantsBloc>(context).add(
-            GetRestaurantsMarkersEvent(
-              restaurants: state.restaurants,
-            ),
+          debugPrint('RestaurantsLoaded');
+          BlocProvider.of<RestaurantsCubit>(
+            context,
+          ).restaurants = state.restaurants..sort(sortByDistance);
+          restaurants = state.restaurants..sort(sortByDistance);
+          BlocProvider.of<RestaurantsCubit>(context).getRestaurantsMarkers(
+            state.restaurants,
           );
         }
         if (state is MarkersLoaded) {
-          BlocProvider.of<RestaurantsBloc>(context).markers = state.markers;
+          debugPrint('MarkersLoaded');
+          BlocProvider.of<RestaurantsCubit>(context).markers = state.markers;
           markers = state.markers;
         }
       },
@@ -84,23 +80,23 @@ class RestaurantsHomePage extends StatelessWidget {
         if (state is LoadingMarkers) {
           currentPage = const LoadingPage();
           return const LoadingPage();
-        } else if (state is RestaurantsLoaded) {
+        } else if (state is MarkersLoaded) {
           userCurrentLocation = context.read<RestaurantsNearMeProvider>().currentLocation;
-          restaurants = BlocProvider.of<RestaurantsBloc>(
+          restaurants = BlocProvider.of<RestaurantsCubit>(
             context,
           ).restaurants;
-          markers = BlocProvider.of<RestaurantsBloc>(
+          markers = BlocProvider.of<RestaurantsCubit>(
             context,
           ).markers;
           currentPage = RestaurantsFoundBody(
-            restaurants: restaurants!,
+            restaurants: restaurants ?? [],
             userLocation: userCurrentLocation!,
-            markers: markers!,
+            markers: markers ?? <Marker>{},
           );
           return RestaurantsFoundBody(
-            restaurants: restaurants!,
+            restaurants: restaurants ?? [],
             userLocation: userCurrentLocation!,
-            markers: markers!,
+            markers: markers ?? <Marker>{},
           );
         } else if (state is RestaurantsError) {
           currentPage = ErrorPage(error: state.message);
@@ -115,18 +111,18 @@ class RestaurantsHomePage extends StatelessWidget {
     );
   }
 
-  int sortByDistance(RestaurantEntity a, RestaurantEntity b) {
+  int sortByDistance(Restaurant a, Restaurant b) {
     final distanceA = Geolocator.distanceBetween(
       userCurrentLocation?.latitude ?? 0,
       userCurrentLocation?.longitude ?? 0,
-      a.geometry.location.lat,
-      a.geometry.location.lng,
+      a.geoLocation.lat,
+      a.geoLocation.lng,
     );
     final distanceB = Geolocator.distanceBetween(
       userCurrentLocation?.latitude ?? 0,
       userCurrentLocation?.longitude ?? 0,
-      b.geometry.location.lat,
-      b.geometry.location.lng,
+      b.geoLocation.lat,
+      b.geoLocation.lng,
     );
     return distanceA.compareTo(distanceB);
   }
