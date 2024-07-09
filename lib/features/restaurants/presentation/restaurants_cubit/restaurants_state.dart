@@ -35,6 +35,14 @@ class SubmittingRestaurant extends RestaurantsState {
   const SubmittingRestaurant();
 }
 
+class UpdatingRestaurant extends RestaurantsState {
+  const UpdatingRestaurant();
+}
+
+class RestaurantUpdated extends RestaurantsState {
+  const RestaurantUpdated();
+}
+
 class RestaurantsLoaded extends RestaurantsState {
   const RestaurantsLoaded({required this.restaurants});
 

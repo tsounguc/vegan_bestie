@@ -22,6 +22,24 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
   final RestaurantsRemoteDataSource _remoteDataSource;
 
   @override
+  ResultVoid updateRestaurant({
+    required Restaurant restaurant,
+    required dynamic restaurantData,
+    required UpdateRestaurantInfoAction action,
+  }) async {
+    try {
+      final result = await _remoteDataSource.updateRestaurant(
+        action: action,
+        restaurantData: restaurantData,
+        restaurant: restaurant,
+      );
+      return Right(result);
+    } on RestaurantsException catch (e) {
+      return Left(RestaurantsFailure.fromException(e));
+    }
+  }
+
+  @override
   ResultVoid addRestaurant({required Restaurant restaurant}) async {
     try {
       final result = await _remoteDataSource.addRestaurant(
@@ -34,9 +52,9 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
   }
 
   @override
-  ResultVoid deleteRestaurantSubmission({required RestaurantSubmit restaurantSubmit}) async {
+  ResultVoid submitRestaurant({required RestaurantSubmit restaurantSubmit}) async {
     try {
-      final result = await _remoteDataSource.deleteRestaurantSubmission(restaurantSubmit: restaurantSubmit);
+      final result = await _remoteDataSource.submitRestaurant(restaurantSubmit: restaurantSubmit);
       return Right(result);
     } on RestaurantsException catch (e) {
       return Left(RestaurantsFailure.fromException(e));
@@ -44,9 +62,9 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
   }
 
   @override
-  ResultVoid submitRestaurant({required RestaurantSubmit restaurantSubmit}) async {
+  ResultVoid deleteRestaurantSubmission({required RestaurantSubmit restaurantSubmit}) async {
     try {
-      final result = await _remoteDataSource.submitRestaurant(restaurantSubmit: restaurantSubmit);
+      final result = await _remoteDataSource.deleteRestaurantSubmission(restaurantSubmit: restaurantSubmit);
       return Right(result);
     } on RestaurantsException catch (e) {
       return Left(RestaurantsFailure.fromException(e));
@@ -95,57 +113,80 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
   }
 
   @override
-  ResultVoid addRestaurantReview({required RestaurantReview restaurantReview}) {
-    // TODO: implement addRestaurantReview
-    throw UnimplementedError();
+  ResultVoid deleteRestaurant({required String restaurantId}) async {
+    try {
+      final result = await _remoteDataSource.deleteRestaurant(
+        restaurantId: restaurantId,
+      );
+      return Right(result);
+    } on RestaurantsException catch (e) {
+      return Left(RestaurantsFailure.fromException(e));
+    }
   }
 
   @override
-  ResultVoid deleteRestaurantReview({required RestaurantReview restaurantReview}) {
-    // TODO: implement deleteRestaurantReview
-    throw UnimplementedError();
+  ResultVoid addRestaurantReview({required RestaurantReview restaurantReview}) async {
+    try {
+      final result = await _remoteDataSource.addRestaurantReview(restaurantReview);
+      return Right(result);
+    } on AddRestaurantReviewException catch (e) {
+      return Left(AddRestaurantReviewFailure.fromException(e));
+    }
   }
 
   @override
-  ResultVoid editRestaurantReview({required RestaurantReview restaurantReview}) {
-    // TODO: implement editRestaurantReview
-    throw UnimplementedError();
+  ResultVoid deleteRestaurantReview({required RestaurantReview restaurantReview}) async {
+    try {
+      final result = await _remoteDataSource.deleteRestaurantReview(restaurantReview);
+      return Right(result);
+    } on DeleteRestaurantReviewException catch (e) {
+      return Left(DeleteRestaurantReviewFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid editRestaurantReview({required RestaurantReview restaurantReview}) async {
+    try {
+      final result = await _remoteDataSource.editRestaurantReview(restaurantReview);
+      return Right(result);
+    } on EditRestaurantReviewException catch (e) {
+      return Left(EditRestaurantReviewFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<List<RestaurantReview>> getRestaurantReviews(String restaurantId) async {
+    try {
+      final result = await _remoteDataSource.getRestaurantReviews(restaurantId);
+      return Right(result);
+    } on GetRestaurantReviewsException catch (e) {
+      return Left(GetRestaurantReviewsFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid saveRestaurant({required String restaurantId}) async {
+    try {
+      final result = await _remoteDataSource.saveRestaurant(restaurantId: restaurantId);
+      return Right(result);
+    } on SaveRestaurantException catch (e) {
+      return Left(SaveRestaurantFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid unSaveRestaurant({required String restaurantId}) async {
+    try {
+      final result = await _remoteDataSource.unSaveRestaurant(restaurantId: restaurantId);
+      return Right(result);
+    } on SaveRestaurantException catch (e) {
+      return Left(SaveRestaurantFailure.fromException(e));
+    }
   }
 
   @override
   ResultVoid submitUpdateSuggestion({required Restaurant restaurant}) {
     // TODO: implement submitUpdateSuggestion
-    throw UnimplementedError();
-  }
-
-  @override
-  ResultVoid updateRestaurant(
-      {required Restaurant restaurant, required restaurantData, required UpdateRestaurantInfo action}) {
-    // TODO: implement updateRestaurant
-    throw UnimplementedError();
-  }
-
-  @override
-  ResultVoid deleteRestaurant({required String restaurantId}) {
-    // TODO: implement deleteRestaurant
-    throw UnimplementedError();
-  }
-
-  @override
-  ResultVoid saveRestaurant({required String restaurantId}) {
-    // TODO: implement saveRestaurant
-    throw UnimplementedError();
-  }
-
-  @override
-  ResultVoid unSaveRestaurant({required String restaurantId}) {
-    // TODO: implement unSaveRestaurant
-    throw UnimplementedError();
-  }
-
-  @override
-  ResultFuture<List<RestaurantReview>> getRestaurantReviews(String restaurantId) {
-    // TODO: implement getRestaurantReviews
     throw UnimplementedError();
   }
 }

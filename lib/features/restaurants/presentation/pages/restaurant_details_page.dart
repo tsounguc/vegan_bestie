@@ -2,17 +2,21 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:sheveegan/core/common/screens/webview/web_view_screen.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
+import 'package:sheveegan/core/common/widgets/expandable_text.dart';
 import 'package:sheveegan/core/common/widgets/popup_item.dart';
+import 'package:sheveegan/core/common/widgets/section_header.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
+import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
@@ -212,10 +216,15 @@ class RestaurantDetailsPage extends StatelessWidget {
                           PopupMenuItem<void>(
                             onTap: () => Navigator.of(context).pushNamed(
                               UpdateRestaurantScreen.id,
-                              arguments: context.read<RestaurantsCubit>(),
+                              arguments: UpdateRestaurantScreenArguments(
+                                '',
+                                restaurant,
+                              ),
                             ),
                             child: PopupItem(
-                              title: context.currentUser?.isAdmin == true ? 'Edit' : 'Suggest An Edit',
+                              title: context.currentUser?.isAdmin == true
+                                  ? 'Edit Restaurant'
+                                  : 'Suggest Restaurant Edit',
                               icon: Icon(
                                 Icons.edit_outlined,
                                 color: context.theme.iconTheme.color,
@@ -306,30 +315,69 @@ class RestaurantDetailsPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.55,
+                                width: MediaQuery.of(context).size.width * 0.65,
                                 padding: const EdgeInsets.only(
                                   left: 8,
-                                  bottom: 5,
+                                  bottom: 6,
                                 ),
                                 child: Text(
                                   restaurant.name.capitalizeFirstLetter(),
                                   style: baseTextStyle.copyWith(
-                                    // color: Colors.grey.shade800,
                                     color: context.theme.textTheme.bodyMedium?.color,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16.sp,
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              IsOpenNowWidget(
+                                openHours: restaurant.openHours,
+                                isFromDetailedPage: true,
+                                fontSize: 10.sp,
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10, top: 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.location_on,
+                                  color: Colors.redAccent,
+                                  size: 12,
+                                ),
+                                SizedBox(
+                                  width: 3.w,
+                                ),
+                                SizedBox(
+                                  width: context.width * 0.54,
+                                  child: Text(
+                                    '${restaurant.streetAddress}, ${restaurant.city}, ${restaurant.state}',
+                                    style: baseTextStyle,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.010,
+                          ),
+                          Visibility(
+                            visible: restaurant.dineIn || restaurant.takeout || restaurant.delivery,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 5,
+                                top: 5,
+                                left: 10,
+                              ),
+                              child: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.65,
                                 child: DineInTakeoutDeliveryWidget(
                                   dineIn: restaurant.dineIn,
@@ -337,49 +385,15 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   delivery: restaurant.delivery,
                                 ),
                               ),
-                            ],
-                          ),
-                          IsOpenNowWidget(
-                            // weekdayText: [],
-                            openHours: restaurant.openHours,
-                            // TODO: Create algorithm to figure out if open now
-                            isOpenNow: true,
-                            isFromDetailedPage: true,
-                            fontSize: 10.sp,
+                            ),
                           ),
                         ],
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.010,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 4.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.location_on,
-                              color: Colors.redAccent,
-                              size: 12,
-                            ),
-                            SizedBox(
-                              width: 3.w,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.55,
-                              child: Text(
-                                formattedAddress,
-                                style: baseTextStyle.copyWith(),
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.015,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                        padding: const EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 35),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -527,11 +541,39 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ],
                         ),
                       ),
+                      // SizedBox(
+                      //   height: MediaQuery.of(context).size.height * 0.035,
+                      // ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 25,
+                        ).copyWith(bottom: 10),
+                        child: SectionHeader(
+                          sectionTitle: 'About Restaurant',
+                          seeAll: false,
+                          onSeeAll: () {},
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 35).copyWith(left: 20),
+                        child: ExpandableText(
+                          context,
+                          text: restaurant.description ?? restaurant.name.capitalizeFirstLetter(),
+                          style: baseTextStyle.copyWith(
+                            color: restaurant.description != null && restaurant.description!.isNotEmpty
+                                ? context.theme.textTheme.titleSmall?.color
+                                : Colors.grey.shade500,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.035,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           'Reviews',
                           style: baseTextStyle.copyWith(
@@ -542,7 +584,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12).copyWith(top: 5),
+                        padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 5),
                         child: RatingAndReviewsCountWidget(
                           rating: totalRestaurantRating(reviews),
                           reviewCount: reviews.length,

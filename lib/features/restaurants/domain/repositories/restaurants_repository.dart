@@ -27,7 +27,7 @@ abstract class RestaurantsRepository {
   ResultVoid updateRestaurant({
     required Restaurant restaurant,
     required dynamic restaurantData,
-    required UpdateRestaurantInfo action,
+    required UpdateRestaurantInfoAction action,
   });
 
   ResultVoid saveRestaurant({required String restaurantId});

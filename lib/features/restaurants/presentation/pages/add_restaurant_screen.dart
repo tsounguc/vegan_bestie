@@ -72,6 +72,12 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
 
   final List<OpenDayItem> openDaysList = [];
 
+  final tddItems = [
+    TakeoutDineInDeliveryItem(title: 'Take out'),
+    TakeoutDineInDeliveryItem(title: 'Dine in'),
+    TakeoutDineInDeliveryItem(title: 'Delivery'),
+  ];
+
   void submitRestaurant(BuildContext context) {
     final bloc = BlocProvider.of<RestaurantsCubit>(context);
     final openHours = const OpenHoursModel.empty().copyWith(periods: []);
@@ -99,9 +105,13 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
       zipCode: zipcodeController.text.trim(),
       phoneNumber: phoneNumberController.text.trim(),
       websiteUrl: websiteController.text.trim(),
+      description: descriptionController.text.trim(),
       veganStatus: veganStatus,
       hasVeganOptions: hasVeganOptions,
       openHours: openHours,
+      takeout: tddItems[0].isSelected,
+      dineIn: tddItems[1].isSelected,
+      delivery: tddItems[2].isSelected,
     );
     if (context.currentUser?.isAdmin == true) {
       bloc.addRestaurant(
@@ -207,7 +217,6 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                 ),
                 shrinkWrap: true,
                 children: [
-                  // TODO: be able to add picture inital if you're admin
                   // if(context.currentUser?.isAdmin??false)
                   // Builder(
                   //   builder: (context) {
@@ -301,6 +310,31 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                       });
                     },
                     adminList: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: tddItems.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return CheckboxListTile(
+                            controlAffinity: ListTileControlAffinity.leading,
+                            title: Text(
+                              tddItems[index].title,
+                              style: TextStyle(
+                                color: context.theme.textTheme.bodyMedium?.color,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            value: tddItems[index].isSelected,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                tddItems[index].isSelected = value!;
+                              });
+                            },
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 10),
                       Theme(
                         data: context.theme.copyWith(dividerColor: Colors.transparent),
                         child: ExpansionTile(
@@ -315,7 +349,6 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          //TODO: ADD OPEN HOURS LIST
                           children: [
                             const SizedBox(
                               height: 30,
@@ -333,7 +366,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                                     children: [
                                       OpenHourTile(
                                         title: dayName!.substring(0, 3),
-                                        value: openDay.isSelected,
+                                        value: openDay.isSelected ?? false,
                                         periodControllers: openDay.periodItems,
                                         onChanged: (bool? value) {
                                           setState(() {
@@ -351,56 +384,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                                             openDay.periodItems.add(periodItem);
                                           });
                                         },
-                                        // onRemoveButtonPressed: () {
-                                        //   openDay.periodItems.removeAt(i);
-                                        // },
                                       ),
-                                      // CheckboxListTile(
-                                      //   controlAffinity: ListTileControlAffinity.leading,
-                                      //   // shape: RoundedRectangleBorder(
-                                      //   //   borderRadius: BorderRadius.horizontal(),
-                                      //   //   side: BorderSide(
-                                      //   //     color: context.theme.iconTheme.color!,
-                                      //   //   ),
-                                      //   // ),
-                                      //   // side: BorderSide(color: context.theme.iconTheme.color!),
-                                      //   title: Text(
-                                      //     dayName!.substring(0, 3),
-                                      //     style: TextStyle(
-                                      //       color: context.theme.textTheme.bodyMedium?.color,
-                                      //       fontSize: 12.sp,
-                                      //       fontWeight: FontWeight.w500,
-                                      //     ),
-                                      //   ),
-                                      //   subtitle: openHour.isSelected == false
-                                      //       ? null
-                                      //       : SizedBox(
-                                      //           child: Column(
-                                      //             children: [
-                                      //               GestureDetector(
-                                      //                 onTap: () async {
-                                      //                   final time = selectTime(context);
-                                      //                 },
-                                      //                 child: IField(
-                                      //                   controller: TextEditingController(),
-                                      //                 ),
-                                      //               ),
-                                      //             ],
-                                      //           ),
-                                      //         ),
-                                      //   value: openHour.isSelected,
-                                      //   onChanged: (bool? value) {
-                                      //     setState(() {
-                                      //       openHour.isSelected = value;
-                                      //     });
-                                      //   },
-                                      //   secondary: openHour.isSelected == false
-                                      //       ? null
-                                      //       : IconButton(
-                                      //           icon: Icon(Icons.add),
-                                      //           onPressed: () {},
-                                      //         ),
-                                      // ),
                                       const SizedBox(height: 20),
                                       Divider(
                                         color: context.theme.iconTheme.color,
@@ -428,6 +412,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                       zipcodeController.addListener(() => refresh(() {}));
                       phoneNumberController.addListener(() => refresh(() {}));
                       websiteController.addListener(() => refresh(() {}));
+                      descriptionController.addListener(() => refresh(() {}));
                       return state is AddingRestaurant
                           ? const Center(child: CircularProgressIndicator())
                           : LongButton(
@@ -487,4 +472,20 @@ class PeriodItem extends Equatable {
 
   @override
   List<Object?> get props => [openTextEditingController, closeTextEditingController, day, periods];
+}
+
+class TakeoutDineInDeliveryItem extends Equatable {
+  TakeoutDineInDeliveryItem({
+    required this.title,
+    this.isSelected = false,
+  });
+
+  final String title;
+  bool isSelected;
+
+  @override
+  List<Object?> get props => [
+        title,
+        isSelected,
+      ];
 }

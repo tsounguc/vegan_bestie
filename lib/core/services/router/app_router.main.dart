@@ -211,11 +211,13 @@ class AppRouter {
         );
 
       case UpdateRestaurantScreen.id:
-        // final args = settings.arguments! as UpdateFoodProductPageArguments;
+        final args = settings.arguments! as UpdateRestaurantScreenArguments;
         return _pageBuilder(
           (_) => BlocProvider.value(
             value: serviceLocator<RestaurantsCubit>(),
-            child: const UpdateRestaurantScreen(),
+            child: UpdateRestaurantScreen(
+              restaurant: args.restaurant,
+            ),
           ),
           settings: settings,
         );
@@ -293,4 +295,11 @@ class UpdateFoodProductPageArguments {
 
   final String title;
   final FoodProduct? product;
+}
+
+class UpdateRestaurantScreenArguments {
+  const UpdateRestaurantScreenArguments(this.title, this.restaurant);
+
+  final String title;
+  final Restaurant? restaurant;
 }

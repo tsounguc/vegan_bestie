@@ -4,21 +4,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:sheveegan/core/extensions/string_extensions.dart';
+import 'package:sheveegan/core/enums/update_restaurant_info.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/services/restaurants_services/geocoding_plugin.dart';
 import 'package:sheveegan/core/services/restaurants_services/location_plugin.dart';
 import 'package:sheveegan/core/services/restaurants_services/map_plugin.dart';
 import 'package:sheveegan/core/utils/datasource_utils.dart';
 import 'package:sheveegan/core/utils/firebase_constants.dart';
+import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_submit_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/user_location_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_submit.dart';
 
 abstract class RestaurantsRemoteDataSource {
+  Future<UserLocationModel> getUserLocation();
+
   Future<void> addRestaurant({
     required Restaurant restaurant,
   });
@@ -31,12 +36,32 @@ abstract class RestaurantsRemoteDataSource {
     required RestaurantSubmit restaurantSubmit,
   });
 
+  // Future<void> submitUpdateSuggestion({required Restaurant restaurant});
+
+  Future<void> updateRestaurant({
+    required UpdateRestaurantInfoAction action,
+    required dynamic restaurantData,
+    required Restaurant restaurant,
+  });
+
+  Future<void> saveRestaurant({required String restaurantId});
+
+  Future<void> unSaveRestaurant({required String restaurantId});
+
+  Future<void> deleteRestaurant({required String restaurantId});
+
   Stream<List<RestaurantModel>> getRestaurantsNearMe({
     required Position position,
     required double radius,
   });
 
-  Future<UserLocationModel> getUserLocation();
+  Future<void> addRestaurantReview(RestaurantReview restaurantReview);
+
+  Future<List<RestaurantReview>> getRestaurantReviews(String restaurantId);
+
+  Future<void> editRestaurantReview(RestaurantReview restaurantReview);
+
+  Future<void> deleteRestaurantReview(RestaurantReview restaurantReview);
 
   Future<MapEntity> getRestaurantsMarkers({required List<Restaurant> restaurants});
 }
@@ -51,6 +76,189 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   final LocationPlugin _location;
   final GeocodingPlugin _geocoding;
   final GoogleMapPlugin _googleMap;
+
+  @override
+  Future<void> updateRestaurant({
+    required UpdateRestaurantInfoAction action,
+    required dynamic restaurantData,
+    required Restaurant restaurant,
+  }) async {
+    try {
+      switch (action) {
+        case UpdateRestaurantInfoAction.thumbnail:
+          final thumbnailRef =
+              _storage.ref().child('restaurants/${restaurant.name}${restaurant.id}/thumbnail/${restaurant.id}');
+          final photosRef = _storage.ref().child(
+              'restaurants/${restaurant.name}${restaurant.id}/photos/${restaurant.photos[0].contains('_empty.photo') ? 1 : restaurant.photos.length + 1}_${restaurant.id}');
+
+          await thumbnailRef.putFile(restaurantData as File);
+          await photosRef.putFile(restaurantData as File);
+
+          final thumbnailUrl = await thumbnailRef.getDownloadURL();
+          final photoUrl = await photosRef.getDownloadURL();
+          var photos = restaurant.photos;
+          for (int index = 0; index < photos.length; index++) {
+            if (photos[index].contains('_empty.photo') || photos[index].isEmpty) {
+              photos.removeAt(index);
+            }
+          }
+
+          photos.add(photoUrl);
+
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {
+              'thumbnail': thumbnailUrl,
+              'photos': photos,
+            },
+          );
+
+        case UpdateRestaurantInfoAction.name:
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {'name': restaurantData},
+          );
+        case UpdateRestaurantInfoAction.streetAddress:
+          final fullAddress = '$restaurantData,'
+              ' ${restaurant.city}, '
+              '${restaurant.state} ${restaurant.zipCode}';
+
+          final geoPoint = await _geocoding.getCoordinateFromAddress(fullAddress);
+
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {
+              'streetAddress': restaurantData,
+              'geoLocation': {
+                'lat': geoPoint.latitude,
+                'lng': geoPoint.longitude,
+              },
+            },
+          );
+        case UpdateRestaurantInfoAction.city:
+          final fullAddress = '${restaurant.streetAddress},'
+              ' $restaurantData, '
+              '${restaurant.state} ${restaurant.zipCode}';
+
+          final geoPoint = await _geocoding.getCoordinateFromAddress(fullAddress);
+
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {
+              'city': restaurantData,
+              'geoLocation': {
+                'lat': geoPoint.latitude,
+                'lng': geoPoint.longitude,
+              },
+            },
+          );
+        case UpdateRestaurantInfoAction.state:
+          final fullAddress = '${restaurant.streetAddress},'
+              ' ${restaurant.city}, '
+              '$restaurantData ${restaurant.zipCode}';
+
+          final geoPoint = await _geocoding.getCoordinateFromAddress(fullAddress);
+
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {
+              'state': restaurantData,
+              'geoLocation': {
+                'lat': geoPoint.latitude,
+                'lng': geoPoint.longitude,
+              },
+            },
+          );
+        case UpdateRestaurantInfoAction.zipcode:
+          final fullAddress = '${restaurant.streetAddress},'
+              ' ${restaurant.city}, '
+              '${restaurant.state} $restaurantData';
+
+          final geoPoint = await _geocoding.getCoordinateFromAddress(fullAddress);
+
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {
+              'zipcode': restaurantData,
+              'geoLocation': {
+                'lat': geoPoint.latitude,
+                'lng': geoPoint.longitude,
+              },
+            },
+          );
+        case UpdateRestaurantInfoAction.description:
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {'description': restaurantData},
+          );
+
+        case UpdateRestaurantInfoAction.email:
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {'email': restaurantData},
+          );
+        case UpdateRestaurantInfoAction.phone:
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {'phone': restaurantData},
+          );
+        case UpdateRestaurantInfoAction.website:
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {'websiteUrl': restaurantData},
+          );
+        case UpdateRestaurantInfoAction.permanentlyClosed:
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {'permanentlyClosed': restaurantData},
+          );
+        case UpdateRestaurantInfoAction.openHours:
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {'openHours': restaurantData},
+          );
+        case UpdateRestaurantInfoAction.takeout:
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {'takeout': restaurantData},
+          );
+        case UpdateRestaurantInfoAction.dineIn:
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {'dineIn': restaurantData},
+          );
+        case UpdateRestaurantInfoAction.delivery:
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {'delivery': restaurantData},
+          );
+        case UpdateRestaurantInfoAction.veganStatus:
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {'delivery': restaurantData},
+          );
+        case UpdateRestaurantInfoAction.hasVeganOptions:
+          await _updateRestaurantData(
+            id: restaurant.id,
+            data: {'delivery': restaurantData},
+          );
+      }
+    } on FirebaseException catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw RestaurantsException(
+        message: e.message ?? 'Unknown error occurred',
+        statusCode: 501,
+      );
+    } on RestaurantsException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw RestaurantsException(
+        message: e.toString(),
+        statusCode: 505,
+      );
+    }
+  }
 
   @override
   Future<void> addRestaurant({required Restaurant restaurant}) async {
@@ -96,9 +304,9 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
 
           // use image reference to store image in firebase storage
           // set the courseModel image to the url returned
-          await imageReference.putFile(File(restaurantModel.image!)).then((value) async {
+          await imageReference.putFile(File(restaurantModel.thumbnail!)).then((value) async {
             final url = await value.ref.getDownloadURL();
-            restaurantModel = restaurantModel.copyWith(image: url);
+            restaurantModel = restaurantModel.copyWith(thumbnail: url);
           });
         }
 
@@ -156,17 +364,18 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
 
         final geoPoint = await _geocoding.getCoordinateFromAddress(fullAddress);
 
-        // Create restaurant model with course id and group id from references
-        var restaurantModel = RestaurantModel.copy(restaurantSubmit.submittedRestaurant).copyWith(
+        // Copy submittedRestaurant with geoLocation added
+        var submittedRestaurantModel = RestaurantModel.copy(
+          restaurantSubmit.submittedRestaurant,
+        ).copyWith(
           geoLocation: GeoLocationModel(
             lat: geoPoint.latitude,
             lng: geoPoint.longitude,
           ),
         );
 
-        var restaurantSubmitModel = (restaurantSubmit as RestaurantSubmitModel).copyWith(
-          id: submittedRestaurantsReference.id,
-        );
+        var restaurantSubmitModel = (restaurantSubmit as RestaurantSubmitModel)
+            .copyWith(id: submittedRestaurantsReference.id, submittedRestaurant: submittedRestaurantModel);
 
         // push restaurant model info to document in firestore
         return await submittedRestaurantsReference.set(
@@ -212,7 +421,10 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   }
 
   @override
-  Stream<List<RestaurantModel>> getRestaurantsNearMe({required Position position, required double radius}) {
+  Stream<List<RestaurantModel>> getRestaurantsNearMe({
+    required Position position,
+    required double radius,
+  }) {
     try {
       DataSourceUtils.authorizeUser(_auth);
 
@@ -251,17 +463,17 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       });
     } on FirebaseException catch (e, s) {
       debugPrintStack(stackTrace: s);
-      throw RestaurantsException(
+      throw ServerException(
         message: e.message ?? 'Unknown error occurred',
-        statusCode: 501,
+        statusCode: '501',
       );
-    } on RestaurantsException {
+    } on ServerException {
       rethrow;
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
-      throw RestaurantsException(
+      throw ServerException(
         message: e.toString(),
-        statusCode: 505,
+        statusCode: '505',
       );
     }
   }
@@ -295,6 +507,184 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
     }
   }
 
+  @override
+  Future<void> deleteRestaurant({required String restaurantId}) {
+    try {
+      DataSourceUtils.authorizeUser(_auth);
+      return _restaurants.doc(restaurantId).delete();
+    } on FirebaseException catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw RestaurantsException(
+        message: e.message ?? 'Error occurred',
+        statusCode: 500,
+      );
+    } on RestaurantsException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw RestaurantsException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
+  Future<List<RestaurantReview>> getRestaurantReviews(String restaurantId) {
+    try {
+      DataSourceUtils.authorizeUser(_auth);
+
+      return _restaurantReviews
+          .where(
+            'restaurantId',
+            isEqualTo: restaurantId,
+          )
+          .get()
+          .then(
+            (value) => value.docs
+                .map(
+                  (doc) => RestaurantReviewModel.fromMap(doc.data()),
+                )
+                .toList(),
+          );
+    } on FirebaseException catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw GetRestaurantReviewsException(
+        message: e.message ?? 'Unknown error occurred',
+        statusCode: e.code,
+      );
+    } on GetRestaurantReviewsException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw GetRestaurantReviewsException(message: e.toString(), statusCode: '505');
+    }
+  }
+
+  @override
+  Future<void> addRestaurantReview(RestaurantReview restaurantReview) async {
+    try {
+      DataSourceUtils.authorizeUser(_auth);
+      // Create restaurantReview firestore reference
+      final restaurantReviewReference = _restaurantReviews.doc();
+
+      // Create restaurantReview model with restaurantReview id from references
+      final restaurantReviewModel = (restaurantReview as RestaurantReviewModel).copyWith(
+        id: restaurantReviewReference.id,
+      );
+
+      await restaurantReviewReference.set(
+        restaurantReviewModel.toMap(),
+      );
+
+      // Create restaurant firestore reference
+      // Increment reviewsCount
+      return await _restaurants.doc(restaurantReviewModel.restaurantId).set(
+        {
+          'restaurantId': restaurantReview.restaurantId,
+          'restaurantReviewsCount': FieldValue.increment(1),
+        },
+        SetOptions(merge: true),
+      );
+    } on FirebaseException catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw AddRestaurantReviewException(
+        message: e.message ?? 'Unknown error occurred',
+        statusCode: e.code,
+      );
+    } on AddRestaurantReviewException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw AddRestaurantReviewException(message: e.toString(), statusCode: '505');
+    }
+  }
+
+  @override
+  Future<void> deleteRestaurantReview(RestaurantReview restaurantReview) async {
+    try {
+      DataSourceUtils.authorizeUser(_auth);
+      return _restaurantReviews.doc(restaurantReview.id).delete();
+    } on FirebaseException catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw DeleteRestaurantReviewException(
+        message: e.message ?? 'Unknown error occurred',
+        statusCode: e.code,
+      );
+    } on DeleteRestaurantReviewException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw DeleteRestaurantReviewException(message: e.toString(), statusCode: '505');
+    }
+  }
+
+  @override
+  Future<void> editRestaurantReview(RestaurantReview restaurantReview) async {
+    try {
+      DataSourceUtils.authorizeUser(_auth);
+
+      return _restaurantReviews
+          .doc(restaurantReview.id)
+          .update((restaurantReview as RestaurantReviewModel).copyWith(updatedAt: DateTime.timestamp()).toMap());
+    } on FirebaseException catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw EditRestaurantReviewException(
+        message: e.message ?? 'Unknown error occurred',
+        statusCode: e.code,
+      );
+    } on EditRestaurantReviewException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw EditRestaurantReviewException(message: e.toString(), statusCode: '505');
+    }
+  }
+
+  @override
+  Future<void> saveRestaurant({required String restaurantId}) async {
+    try {
+      await _users.doc(_auth.currentUser?.uid).update({
+        'savedRestaurantsIds': FieldValue.arrayUnion([restaurantId]),
+      });
+    } on FirebaseException catch (e) {
+      throw SaveFoodProductException(
+        message: e.message ?? 'Error Occurred',
+        statusCode: e.code,
+      );
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw SaveFoodProductException(
+        message: e.toString(),
+        statusCode: '505',
+      );
+    }
+  }
+
+  @override
+  Future<void> unSaveRestaurant({required String restaurantId}) async {
+    try {
+      await _users.doc(_auth.currentUser?.uid).update({
+        'savedRestaurantsIds': FieldValue.arrayRemove([restaurantId]),
+      });
+    } on FirebaseException catch (e) {
+      throw SaveFoodProductException(
+        message: e.message ?? 'Error Occurred',
+        statusCode: e.code,
+      );
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw SaveFoodProductException(
+        message: e.toString(),
+        statusCode: '505',
+      );
+    }
+  }
+
+  Future<void> _updateRestaurantData({
+    required String id,
+    required DataMap data,
+  }) async {
+    await _restaurants.doc(id).update(data);
+  }
+
   CollectionReference<Map<String, dynamic>> get _users => _firestore.collection(
         FirebaseConstants.usersCollection,
       );
@@ -309,6 +699,10 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
 
   CollectionReference<Map<String, dynamic>> get _submittedRestaurants => _firestore.collection(
         FirebaseConstants.submittedRestaurantsCollection,
+      );
+
+  CollectionReference<Map<String, dynamic>> get _restaurantReviews => _firestore.collection(
+        FirebaseConstants.restaurantReviewsCollection,
       );
 }
 

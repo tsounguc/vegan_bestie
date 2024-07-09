@@ -1,4 +1,4 @@
-enum UpdateRestaurantInfo {
+enum UpdateRestaurantInfoAction {
   name,
   streetAddress,
   city,
@@ -8,7 +8,12 @@ enum UpdateRestaurantInfo {
   email,
   phone,
   website,
-  openingHours,
+  openHours,
   permanentlyClosed,
-  image,
+  thumbnail,
+  takeout,
+  dineIn,
+  delivery,
+  veganStatus,
+  hasVeganOptions,
 }

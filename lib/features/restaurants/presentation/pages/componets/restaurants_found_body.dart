@@ -130,18 +130,16 @@ class RestaurantsFoundBody extends StatelessWidget {
                                     reviews: reviews,
                                     weekdayText: [],
                                     userPosition: userPosition,
-                                    imageUrl: restaurant.photos.isEmpty || restaurant.photos[0] == '_empty.photo1'
-                                        ? restaurant.image != null &&
-                                                restaurant.image != '_empty.image' &&
-                                                restaurant.image!.isNotEmpty
-                                            ? restaurant.image!
-                                            : ''
-                                        : restaurant.photos[0],
+                                    imageUrl: restaurant.thumbnail != null &&
+                                            restaurant.thumbnail != '_empty.image' &&
+                                            restaurant.thumbnail!.isNotEmpty
+                                        ? restaurant.thumbnail!
+                                        : '',
                                     // geometry: restaurant.geometry,
                                     restaurantId: restaurant.id,
                                     restaurantName: restaurant.name.capitalizeFirstLetter(),
                                     restaurantAddress: '${restaurant.streetAddress}, '
-                                        '${restaurant.city}',
+                                        '${restaurant.city}, ${restaurant.state}',
                                     restaurantPrice: r'$' * 3,
                                     isOpenNow: true,
                                     //restaurant.openingHours.openNow,

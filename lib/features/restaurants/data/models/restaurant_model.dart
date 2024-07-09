@@ -28,7 +28,7 @@ class RestaurantModel extends Restaurant {
     required super.delivery,
     required super.permanentlyClosed,
     super.description,
-    super.image,
+    super.thumbnail,
     super.imageIsFile = false,
   });
 
@@ -48,7 +48,9 @@ class RestaurantModel extends Restaurant {
           websiteUrl: '_empty.websiteUrl',
           geoLocation: const GeoLocationModel.empty(),
           openHours: const OpenHoursModel.empty(),
-          photos: const ['_empty.photo1', '_empty.photo2'],
+          photos: const [
+            '_empty.photo1',
+          ],
           price: '_empty.price',
           permanentlyClosed: false,
           veganStatus: false,
@@ -91,7 +93,7 @@ class RestaurantModel extends Restaurant {
   RestaurantModel.fromMap(DataMap dataMap)
       : this(
           id: dataMap['id'] as String? ?? '',
-          image: dataMap['image'] as String?,
+          thumbnail: dataMap['thumbnail'] as String?,
           imageIsFile: dataMap['imageIsFile'] as bool? ?? false,
           description: dataMap['description'] as String?,
           name: dataMap['name'] as String? ?? '',
@@ -129,7 +131,7 @@ class RestaurantModel extends Restaurant {
 
   DataMap toMap() => {
         'id': id,
-        'image': image,
+        'thumbnail': thumbnail,
         'imageIsFile': imageIsFile,
         'description': description,
         'name': name,
@@ -161,7 +163,7 @@ class RestaurantModel extends Restaurant {
 
   RestaurantModel copyWith({
     String? id,
-    String? image,
+    String? thumbnail,
     bool? imageIsFile,
     String? description,
     String? name,
@@ -188,7 +190,7 @@ class RestaurantModel extends Restaurant {
   }) {
     return RestaurantModel(
       id: id ?? this.id,
-      image: image ?? this.image,
+      thumbnail: thumbnail ?? this.thumbnail,
       imageIsFile: imageIsFile ?? this.imageIsFile,
       description: description ?? this.description,
       name: name ?? this.name,

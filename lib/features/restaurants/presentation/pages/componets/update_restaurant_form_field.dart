@@ -15,6 +15,8 @@ class UpdateRestaurantFormField extends StatelessWidget {
     this.textInputAction,
     this.onFieldSubmitted,
     this.onTrailingButtonPressed,
+    this.titleFontWeight = FontWeight.normal,
+    this.titleFontSize,
     super.key,
   });
 
@@ -27,6 +29,8 @@ class UpdateRestaurantFormField extends StatelessWidget {
   final int? minLines;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
+  final FontWeight? titleFontWeight;
+  final double? titleFontSize;
   final void Function(String)? onFieldSubmitted;
   final void Function()? onTrailingButtonPressed;
 
@@ -43,8 +47,8 @@ class UpdateRestaurantFormField extends StatelessWidget {
               child: Text(
                 fieldTitle,
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12.sp,
+                  fontWeight: titleFontWeight,
+                  fontSize: titleFontSize ?? 12.sp,
                 ),
               ),
             ),
@@ -54,6 +58,7 @@ class UpdateRestaurantFormField extends StatelessWidget {
         IField(
           controller: controller,
           hintText: hintText,
+          hintStyle: TextStyle(fontSize: 14.sp),
           readOnly: readOnly,
           borderRadius: borderRadius,
           maxLines: maxLines,

@@ -8,8 +8,6 @@ import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 
 class IsOpenNowWidget extends StatelessWidget {
   IsOpenNowWidget({
-    required this.isOpenNow,
-    // required this.weekdayText,
     required this.openHours,
     this.visible = true,
     this.isFromDetailedPage = false,
@@ -20,7 +18,6 @@ class IsOpenNowWidget extends StatelessWidget {
 
   final double? iconSize;
   final bool visible;
-  final bool isOpenNow;
   final bool isFromDetailedPage;
   final double? fontSize;
   List<String> weekdaysText = [];
@@ -79,25 +76,7 @@ class IsOpenNowWidget extends StatelessWidget {
           print(daysOpenHours);
         }
 
-        // Add day and open hours to weekdaysText list
-        // if (weekdaysText.isNotEmpty) {
-        //   for (var i = 0; i < weekdaysText.length; i++) {
-        //     var weekday = weekdaysText[i];
-        //     // check if day already exists in weekdaysText list
-        //     if (!weekday.contains(dayName)) {
-        //       // Add day and open hours doesn't exist
-        //       weekdaysText.add(daysOpenHours);
-        //     } else if (weekday.contains(dayName)) {
-        //       // Add just open hours if day exists
-        //       var index = weekday.indexOf(dayName) + dayName.length;
-        //       weekday = '$weekday\n\t${daysOpenHours.substring(index)}';
-        //       weekdaysText[i] = weekday;
-        //     }
-        //   }
-        // }
-        // else {
         weekdaysText.add(daysOpenHours);
-        // }
 
         if (daysOfTheWeek[period.open.day] == todaysWeekDay) {
           from = period.open.time;
@@ -140,90 +119,6 @@ class IsOpenNowWidget extends StatelessWidget {
           }
         }
       }
-
-      // for (final index in daysOfTheWeek.keys) {
-      //   for (final period in openHours.periods) {
-      //     if (period.open.day == index) {
-      //       dayName = daysOfTheWeek[index]!;
-      //       var daysOpenHours = '';
-      //
-      //       // Set day and open hours
-      //       // Example: Monday 06:00 - 11:00
-      //       print('Open: ${period.open.time}');
-      //       print('Close: ${period.close.time}');
-      //       if (period.open.time.isNotEmpty && period.close.time.isNotEmpty) {
-      //         final openTime = period.open.time;
-      //         final closeTime = period.close.time;
-      //         daysOpenHours = '$dayName $openTime - $closeTime';
-      //       }
-      //       // else {
-      //       //   daysOpenHours = '$dayName Closed';
-      //       // }
-      //
-      //       // Add day and open hours to weekdaysText list
-      //       if (weekdaysText.isNotEmpty) {
-      //         for (var i = 0; i < weekdaysText.length; i++) {
-      //           var weekday = weekdaysText[i];
-      //           // check if day already exists in weekdaysText list
-      //           if (!weekday.contains(dayName)) {
-      //             // Add day and open hours doesn't exist
-      //             weekdaysText.add(daysOpenHours);
-      //           } else if (weekday.contains(dayName)) {
-      //             // Add just open hours if day exists
-      //             var index = weekday.indexOf(dayName) + dayName.length;
-      //             weekday = '$weekday\n\t${daysOpenHours.substring(index)}';
-      //             weekdaysText[i] = weekday;
-      //           }
-      //         }
-      //       } else {
-      //         weekdaysText.add(daysOpenHours);
-      //       }
-      //     }
-      //   }
-      //   for (var i = 0; i < openHours.periods.length; i++) {
-      //     final dayIndex = openHours.periods[i].open.day;
-      //     if (daysOfTheWeek[dayIndex] == todaysWeekDay) {
-      //       from = openHours.periods[i].open.time;
-      //       final fromSplit = from.split(':');
-      //       print('Here: $from');
-      //       final fromHour = int.tryParse(fromSplit[0]) ?? -1;
-      //       final fromMinutes = int.tryParse(fromSplit[1]) ?? -1;
-      //       var fromTime = DateTime(
-      //         date.year,
-      //         date.month,
-      //         date.day,
-      //         fromHour,
-      //         fromMinutes,
-      //       );
-      //       to = openHours.periods[i].close.time;
-      //       final toHour = int.tryParse(to.split(':')[0]) ?? -1;
-      //       final toMinutes = int.tryParse(to.split(':')[1]) ?? -1;
-      //       var toTime = DateTime(
-      //         date.year,
-      //         date.month,
-      //         date.day,
-      //         toHour,
-      //         toMinutes,
-      //       );
-      //
-      //       if (fromHour == -1 || fromMinutes == -1 || toHour == -1 || toMinutes == -1) {
-      //         status = '';
-      //       } else {
-      //         if (toTime.isBefore(fromTime)) {
-      //           if (date.isBefore(fromTime) && date.hour > 12) {
-      //             toTime = toTime.add(const Duration(days: 1));
-      //           } else if (date.isAfter(fromTime) && date.hour < 12) {
-      //             fromTime = fromTime.subtract(const Duration(days: 1));
-      //           }
-      //         }
-      //
-      //         if (date.isAfter(fromTime) && date.isBefore(toTime)) {
-      //           status = 'Open Now';
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
     }
     return status;
   }
@@ -235,12 +130,10 @@ class IsOpenNowWidget extends StatelessWidget {
       visible: visible == true,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          // backgroundColor: context.theme.cardTheme.color,
-          // surfaceTintColor: context.theme.cardTheme.color,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
           ),
-          padding: EdgeInsets.symmetric(vertical: 12.r, horizontal: 12.r),
+          padding: EdgeInsets.symmetric(vertical: weekdaysText.isEmpty ? 0 : 12.r, horizontal: 12.r),
           elevation: weekdaysText.isEmpty ? 0 : 2,
         ).copyWith(
           backgroundColor: MaterialStatePropertyAll(isFromDetailedPage && weekdaysText.isEmpty

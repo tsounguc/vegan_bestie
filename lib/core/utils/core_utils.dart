@@ -217,6 +217,14 @@ class CoreUtils {
     return null;
   }
 
+  static Future<List<XFile>?> pickImagesFromGallery() async {
+    final List<XFile>? selectedImages = await ImagePicker().pickMultiImage();
+    if (selectedImages != null && selectedImages.isNotEmpty) {
+      return selectedImages;
+    }
+    return null;
+  }
+
   static Future<File?> getImageFromCamera() async {
     final picker = ImagePicker();
     if (picker.supportsImageSource(ImageSource.camera)) {
@@ -226,5 +234,6 @@ class CoreUtils {
       }
       return null;
     }
+    return null;
   }
 }

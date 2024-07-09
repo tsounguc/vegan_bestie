@@ -41,98 +41,6 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
   final fatsController = TextEditingController();
   File? pickedImage;
 
-  Future<void> pickImage() async {
-    pickedImage = await CoreUtils.pickImageFromGallery();
-  }
-
-  bool get barcodeChanged => widget.product!.code != barcodeController.text.trim();
-
-  bool get productNameChanged =>
-      widget.product!.productName.capitalizeFirstLetter() != productNameController.text.trim();
-
-  bool get ingredientsChanged =>
-      widget.product!.ingredientsText
-          .toLowerCase()
-          .capitalizeEveryWord(
-            ', ',
-          )
-          .capitalizeEveryWord(' (') !=
-      ingredientsController.text.trim();
-
-  bool get nutrimentsChanged =>
-      widget.product!.nutriments.proteinsServing.toString() != proteinController.text.trim() ||
-      widget.product!.nutriments.carbohydratesServing.toString() != carbsController.text.trim() ||
-      widget.product!.nutriments.fatServing.toString() != fatsController.text.trim();
-
-  bool get imageChanged => pickedImage != null;
-
-  bool get nothingChanged =>
-      !barcodeChanged && !productNameChanged && !ingredientsChanged && !nutrimentsChanged && !imageChanged;
-
-  Future<void> submitChanges(BuildContext context) async {
-    final bloc = BlocProvider.of<FoodProductCubit>(context);
-    if (imageChanged) {
-      await bloc.updateFoodProduct(
-        action: UpdateFoodAction.imageFrontUrl,
-        foodData: pickedImage,
-        foodProduct: widget.product!,
-      );
-    }
-    if (productNameChanged) {
-      await bloc.updateFoodProduct(
-        action: UpdateFoodAction.productName,
-        foodData: productNameController.text,
-        foodProduct: widget.product!,
-      );
-    }
-    if (ingredientsChanged) {
-      await bloc.updateFoodProduct(
-        action: UpdateFoodAction.ingredients,
-        foodData: ingredientsController.text,
-        foodProduct: widget.product!,
-      );
-    }
-    if (nutrimentsChanged) {
-      final nutriments = const NutrimentsModel.empty().copyWith(
-        proteinsServing: double.parse(proteinController.text),
-        carbohydratesServing: double.tryParse(carbsController.text),
-        fatServing: double.tryParse(fatsController.text),
-      );
-      await bloc.updateFoodProduct(
-        action: UpdateFoodAction.nutriments,
-        foodData: nutriments,
-        foodProduct: widget.product!,
-      );
-    }
-  }
-
-  @override
-  void initState() {
-    barcodeController.text = widget.product!.code;
-    productNameController.text = widget.product!.productName.capitalizeFirstLetter();
-    ingredientsController.text = widget.product!.ingredientsText
-        .toLowerCase()
-        .capitalizeEveryWord(
-          ', ',
-        )
-        .capitalizeEveryWord(' (');
-    proteinController.text = widget.product!.nutriments.proteinsServing.toString();
-    carbsController.text = widget.product!.nutriments.carbohydratesServing.toString();
-    fatsController.text = widget.product!.nutriments.fatServing.toString();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    barcodeController.dispose();
-    productNameController.dispose();
-    ingredientsController.dispose();
-    proteinController.dispose();
-    carbsController.dispose();
-    fatsController.dispose();
-    super.dispose();
-  }
-
   Future<void> showProductImagePickerOptions(BuildContext context) async {
     await showModalBottomSheet<void>(
       context: context,
@@ -254,6 +162,94 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
         );
       },
     );
+  }
+
+  bool get barcodeChanged => widget.product!.code != barcodeController.text.trim();
+
+  bool get productNameChanged =>
+      widget.product!.productName.capitalizeFirstLetter() != productNameController.text.trim();
+
+  bool get ingredientsChanged =>
+      widget.product!.ingredientsText
+          .toLowerCase()
+          .capitalizeEveryWord(
+            ', ',
+          )
+          .capitalizeEveryWord(' (') !=
+      ingredientsController.text.trim();
+
+  bool get nutrimentsChanged =>
+      widget.product!.nutriments.proteinsServing.toString() != proteinController.text.trim() ||
+      widget.product!.nutriments.carbohydratesServing.toString() != carbsController.text.trim() ||
+      widget.product!.nutriments.fatServing.toString() != fatsController.text.trim();
+
+  bool get imageChanged => pickedImage != null;
+
+  bool get nothingChanged =>
+      !barcodeChanged && !productNameChanged && !ingredientsChanged && !nutrimentsChanged && !imageChanged;
+
+  Future<void> submitChanges(BuildContext context) async {
+    final bloc = BlocProvider.of<FoodProductCubit>(context);
+    if (imageChanged) {
+      await bloc.updateFoodProduct(
+        action: UpdateFoodAction.imageFrontUrl,
+        foodData: pickedImage,
+        foodProduct: widget.product!,
+      );
+    }
+    if (productNameChanged) {
+      await bloc.updateFoodProduct(
+        action: UpdateFoodAction.productName,
+        foodData: productNameController.text,
+        foodProduct: widget.product!,
+      );
+    }
+    if (ingredientsChanged) {
+      await bloc.updateFoodProduct(
+        action: UpdateFoodAction.ingredients,
+        foodData: ingredientsController.text,
+        foodProduct: widget.product!,
+      );
+    }
+    if (nutrimentsChanged) {
+      final nutriments = const NutrimentsModel.empty().copyWith(
+        proteinsServing: double.parse(proteinController.text),
+        carbohydratesServing: double.tryParse(carbsController.text),
+        fatServing: double.tryParse(fatsController.text),
+      );
+      await bloc.updateFoodProduct(
+        action: UpdateFoodAction.nutriments,
+        foodData: nutriments,
+        foodProduct: widget.product!,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    barcodeController.text = widget.product!.code;
+    productNameController.text = widget.product!.productName.capitalizeFirstLetter();
+    ingredientsController.text = widget.product!.ingredientsText
+        .toLowerCase()
+        .capitalizeEveryWord(
+          ', ',
+        )
+        .capitalizeEveryWord(' (');
+    proteinController.text = widget.product!.nutriments.proteinsServing.toString();
+    carbsController.text = widget.product!.nutriments.carbohydratesServing.toString();
+    fatsController.text = widget.product!.nutriments.fatServing.toString();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    barcodeController.dispose();
+    productNameController.dispose();
+    ingredientsController.dispose();
+    proteinController.dispose();
+    carbsController.dispose();
+    fatsController.dispose();
+    super.dispose();
   }
 
   @override

@@ -26,7 +26,7 @@ class Restaurant extends Equatable {
     required this.permanentlyClosed,
     this.imageIsFile = false,
     this.description,
-    this.image,
+    this.thumbnail,
   });
 
   const Restaurant.empty()
@@ -51,7 +51,7 @@ class Restaurant extends Equatable {
           hasVeganOptions: false,
           imageIsFile: false,
           description: null,
-          image: null,
+          thumbnail: null,
           dineIn: false,
           takeout: false,
           delivery: false,
@@ -73,7 +73,7 @@ class Restaurant extends Equatable {
   final GeoLocation geoLocation;
 
   // final bool isOpenNow;
-  final String? image;
+  final String? thumbnail;
   final String? description;
   final bool imageIsFile;
   final OpenHours openHours;

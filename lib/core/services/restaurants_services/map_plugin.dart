@@ -19,10 +19,14 @@ class GoogleMapPlugin {
       final latitude = restaurant.geoLocation.lat;
       final longitude = restaurant.geoLocation.lng;
       final snippet = '${restaurant.streetAddress}, ${restaurant.city}, '
-          '${restaurant.state} ${restaurant.zipCode}';
+          '${restaurant.state}';
       final markerIcon = await getBytesFromAsset(MediaResources.broccoli, 100);
 
-      final customIcon = await getMarkerIcon(MediaResources.tofu, true, Size(150, 150));
+      bool isFromAsset = restaurant.thumbnail == null;
+
+      final imageUrl = isFromAsset ? MediaResources.tofu : restaurant.thumbnail;
+
+      final customIcon = await getMarkerIcon(imageUrl!, isFromAsset, Size(125, 125));
       // final icon = await Container(
       //   height: 35,
       //   width: 35,

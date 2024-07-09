@@ -81,41 +81,41 @@ class _CustomPageViewState extends State<CustomPageView> {
               bottom: 10,
             ),
             decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(15),
-                // border: Border.all(color: Colors.black12),
-                boxShadow: _currentPageValue != position
-                    ? const [
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2,
-                          offset: Offset(2, 4),
-                        ),
-                      ]
-                    : const [
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 2,
-                          offset: Offset(2, 4),
-                        ),
-                      ],
-                image: widget.restaurant.photos[position].isNotEmpty &&
-                        widget.restaurant.photos[position] != '_empty.photo${position + 1}'
-                    ? DecorationImage(
-                        fit: BoxFit.fill,
-                        // TODO: Add Images
-                        image: NetworkImage(widget.restaurant.photos[position]
-                            // ? '$kImageBaseUrl'
-                            //     '${widget.restaurant.photos[position]}'
-                            //     '&key=$kGoogleApiKey'
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(15),
+              // border: Border.all(color: Colors.black12),
+              boxShadow: _currentPageValue != position
+                  ? const [
+                      BoxShadow(
+                        color: Colors.black38,
+                        blurRadius: 2,
+                        offset: Offset(2, 4),
+                      ),
+                    ]
+                  : const [
+                      BoxShadow(
+                        color: Colors.black38,
+                        blurRadius: 2,
+                        offset: Offset(2, 4),
+                      ),
+                    ],
+              image: widget.restaurant.photos[position].isNotEmpty &&
+                      !widget.restaurant.photos[position].contains('_empty.photo')
+                  ? DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(widget.restaurant.photos[position]
+                          // ? '$kImageBaseUrl'
+                          //     '${widget.restaurant.photos[position]}'
+                          //     '&key=$kGoogleApiKey'
 
-                            ),
-                      )
-                    : DecorationImage(
-                        fit: BoxFit.contain,
-                        // colorFilter: ColorFilter.mode(Colors.grey, BlendMode.darken),
-                        image: AssetImage(widget.restaurant.image ?? MediaResources.tofu),
-                      )),
+                          ),
+                    )
+                  : const DecorationImage(
+                      fit: BoxFit.contain,
+                      // colorFilter: ColorFilter.mode(Colors.grey, BlendMode.darken),
+                      image: AssetImage(MediaResources.tofu),
+                    ),
+            ),
           ),
         );
       },

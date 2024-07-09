@@ -147,12 +147,14 @@ Future<void> _initRestaurants() async {
         deleteRestaurantReview: serviceLocator(),
         deleteRestaurantSubmission: serviceLocator(),
         editRestaurantReview: serviceLocator(),
+        updateRestaurant: serviceLocator(),
       ),
     )
     // Use cases
     ..registerLazySingleton(() => AddRestaurant(serviceLocator()))
     ..registerLazySingleton(() => SubmitRestaurant(serviceLocator()))
     ..registerLazySingleton(() => GetRestaurantsNearMe(serviceLocator()))
+    ..registerLazySingleton(() => UpdateRestaurant(serviceLocator()))
     // ..registerLazySingleton(() => GetRestaurantDetails(serviceLocator()))
     ..registerLazySingleton(() => GetUserLocation(serviceLocator()))
     ..registerLazySingleton(() => GetRestaurantsMarkers(serviceLocator()))

@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sheveegan/core/enums/update_restaurant_info.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
@@ -20,12 +21,14 @@ import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_m
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/submit_restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/update_restaurant.dart';
 
 part 'restaurants_state.dart';
 
 class RestaurantsCubit extends Cubit<RestaurantsState> {
   RestaurantsCubit({
     required AddRestaurant addRestaurant,
+    required UpdateRestaurant updateRestaurant,
     required SubmitRestaurant submitRestaurant,
     required DeleteRestaurantSubmission deleteRestaurantSubmission,
     required GetUserLocation getUserLocation,
@@ -36,6 +39,7 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     required EditRestaurantReview editRestaurantReview,
   })  : _addRestaurant = addRestaurant,
         _submitRestaurant = submitRestaurant,
+        _updateRestaurant = updateRestaurant,
         _deleteRestaurantSubmission = deleteRestaurantSubmission,
         _getUserLocation = getUserLocation,
         _getRestaurantsNearMe = getRestaurantsNearMe,
@@ -50,6 +54,7 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
 
   final AddRestaurant _addRestaurant;
   final SubmitRestaurant _submitRestaurant;
+  final UpdateRestaurant _updateRestaurant;
   final DeleteRestaurantSubmission _deleteRestaurantSubmission;
   final GetRestaurantsNearMe _getRestaurantsNearMe;
   final GetUserLocation _getUserLocation;
@@ -80,8 +85,29 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     );
   }
 
+  Future<void> updateRestaurant({
+    required UpdateRestaurantInfoAction action,
+    required Restaurant restaurant,
+    dynamic restaurantData,
+  }) async {
+    emit(const UpdatingRestaurant());
+    final result = await _updateRestaurant(
+      UpdateRestaurantParams(
+        action: action,
+        restaurantData: restaurantData,
+        restaurant: restaurant,
+      ),
+    );
+    result.fold(
+      (failure) => emit(
+        RestaurantsError(message: failure.errorMessage),
+      ),
+      (r) => emit(const RestaurantUpdated()),
+    );
+  }
+
   Future<void> deleteRestaurantSubmission(RestaurantSubmit restaurantSubmit) async {
-    emit(DeletingRestaurantSubmit());
+    emit(const DeletingRestaurantSubmit());
     final result = await _deleteRestaurantSubmission(restaurantSubmit);
 
     result.fold(

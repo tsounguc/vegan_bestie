@@ -91,7 +91,7 @@ class AllSavedRestaurantsPage extends StatelessWidget {
                             weekdayText: const [],
                             userPosition: userPosition,
                             imageUrl: restaurant.photos.isEmpty
-                                ? restaurant.image ?? ''
+                                ? restaurant.thumbnail ?? ''
                                 : '$kImageBaseUrl${restaurant.photos[0]}'
                                     '&key=$kGoogleApiKey',
                             // geometry: restaurant.geometry,

@@ -60,6 +60,7 @@ import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_m
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/submit_restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/update_restaurant.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 

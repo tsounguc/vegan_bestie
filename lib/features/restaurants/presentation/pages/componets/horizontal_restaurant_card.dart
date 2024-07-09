@@ -169,7 +169,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: context.width * 0.5,
+                          width: context.width * 0.45,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -234,8 +234,6 @@ class HorizontalRestaurantCard extends StatelessWidget {
                       ],
                     ),
                     IsOpenNowWidget(
-                      isOpenNow: isOpenNow,
-                      // weekdayText: weekdayText,
                       openHours: restaurant.openHours,
                       fontSize: 10.sp,
                     ),

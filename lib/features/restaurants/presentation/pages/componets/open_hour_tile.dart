@@ -13,14 +13,12 @@ class OpenHourTile extends StatefulWidget {
     this.value = false,
     this.onChanged,
     this.onAddButtonPressed,
-    this.onRemoveButtonPressed,
     super.key,
   });
 
-  final bool? value;
+  final bool value;
   final void Function(bool?)? onChanged;
   final void Function()? onAddButtonPressed;
-  final void Function()? onRemoveButtonPressed;
   final String title;
   final List<PeriodItem> periodControllers;
 
@@ -43,8 +41,9 @@ class _OpenHourTileState extends State<OpenHourTile> {
               children: [
                 Checkbox(
                   value: widget.value,
+                  tristate: true,
                   fillColor:
-                      MaterialStatePropertyAll(widget.value! ? context.theme.primaryColor : Colors.transparent),
+                      MaterialStatePropertyAll(widget.value ? context.theme.primaryColor : Colors.transparent),
                   onChanged: widget.onChanged,
                 ),
                 Text(
