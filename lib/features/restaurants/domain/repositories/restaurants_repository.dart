@@ -34,6 +34,10 @@ abstract class RestaurantsRepository {
 
   ResultVoid unSaveRestaurant({required String restaurantId});
 
+  ResultFuture<List<Restaurant>> getSavedRestaurants({
+    required List<String> restaurantsIdsList,
+  });
+
   ResultVoid deleteRestaurant({required String restaurantId});
 
   ResultStream<List<Restaurant>> getRestaurantsNearMe({

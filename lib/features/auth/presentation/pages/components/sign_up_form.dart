@@ -50,7 +50,6 @@ class _SignUpFormState extends State<SignUpForm> {
             hintText: 'Password',
             obscureText: obscurePassword,
             keyboardType: TextInputType.visiblePassword,
-            textInputAction: TextInputAction.next,
             suffixIcon: IconButton(
               onPressed: () => setState(() {
                 obscurePassword = !obscurePassword;

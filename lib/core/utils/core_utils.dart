@@ -130,7 +130,7 @@ class CoreUtils {
                 context.savedProductsProvider.savedProductsList = null;
                 context.savedRestaurantsProvider.savedRestaurantsList = null;
               },
-            )
+            ),
           ],
         );
       },
@@ -142,7 +142,7 @@ class CoreUtils {
     List<String> weekdayText,
   ) async {
     final date = DateTime.now();
-    String todaysWeekDay = DateFormat('EEEE').format(date).toLowerCase().capitalizeFirstLetter();
+    final todaysWeekDay = DateFormat('EEEE').format(date).toLowerCase().capitalizeFirstLetter();
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -153,9 +153,10 @@ class CoreUtils {
           title: Text(
             'Hours',
             style: context.theme.textTheme.bodyMedium?.copyWith(
-                // color: Colors.black,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600),
+              // color: Colors.black,
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           content: IntrinsicHeight(
             child: Column(
@@ -218,8 +219,8 @@ class CoreUtils {
   }
 
   static Future<List<XFile>?> pickImagesFromGallery() async {
-    final List<XFile>? selectedImages = await ImagePicker().pickMultiImage();
-    if (selectedImages != null && selectedImages.isNotEmpty) {
+    final selectedImages = await ImagePicker().pickMultiImage();
+    if (selectedImages.isNotEmpty) {
       return selectedImages;
     }
     return null;

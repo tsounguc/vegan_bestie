@@ -7,8 +7,8 @@ class UserEntity extends Equatable {
     required this.email,
     this.photoUrl,
     this.bio,
-    this.savedProductsBarcodes,
-    this.savedRestaurantsIds,
+    this.savedProductsBarcodes = const [],
+    this.savedRestaurantsIds = const [],
   });
 
   const UserEntity.empty()
@@ -26,8 +26,8 @@ class UserEntity extends Equatable {
   final String email;
   final String? photoUrl;
   final String? bio;
-  final List<String>? savedProductsBarcodes;
-  final List<String>? savedRestaurantsIds;
+  final List<String> savedProductsBarcodes;
+  final List<String> savedRestaurantsIds;
 
   bool get isAdmin => email == 'christiantsoungui@gmail.com';
 

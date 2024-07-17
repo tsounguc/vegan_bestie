@@ -30,23 +30,21 @@ class _DashboardState extends State<Dashboard> {
 
         return Consumer<BottomNavigationBarProvider>(
           builder: (context, controller, child) {
-            final savedBarcodesList = context.userProvider.user!.savedProductsBarcodes;
+            final savedBarcodes = context.userProvider.user!.savedProductsBarcodes;
 
-            if (savedBarcodesList?.length != context.savedProductsProvider.savedProductsList?.length) {
+            if (savedBarcodes.length != context.savedProductsProvider.savedProductsList?.length) {
               BlocProvider.of<FoodProductCubit>(
                 context,
-              ).fetchProductsList(savedBarcodesList);
+              ).fetchProductsList(savedBarcodes);
             }
-            // final savedRestaurantsIdsList = context.userProvider.user!.savedRestaurantsIds;
-            // if (savedRestaurantsIdsList?.length != context.savedRestaurantsProvider.savedRestaurantsList?.length) {
-            //   BlocProvider.of<RestaurantsBloc>(
-            //     context,
-            //   ).add(
-            //     FetchSavedRestaurantsListEvent(
-            //       savedRestaurantsIdsList: savedRestaurantsIdsList!,
-            //     ),
-            //   );c
-            // }
+
+            final savedRestaurantsIds = context.userProvider.user!.savedRestaurantsIds;
+
+            if (savedRestaurantsIds.length != context.savedRestaurantsProvider.savedRestaurantsList?.length) {
+              BlocProvider.of<RestaurantsCubit>(
+                context,
+              ).getSavedRestaurants(savedRestaurantsIdsList: savedRestaurantsIds);
+            }
 
             if (controller.currentIndex == 1) {
               BlocProvider.of<RestaurantsCubit>(
@@ -59,6 +57,7 @@ class _DashboardState extends State<Dashboard> {
                 context,
               ).fetchReports();
             }
+
             return Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,
@@ -91,7 +90,10 @@ class _DashboardState extends State<Dashboard> {
                   child: BottomNavigationBar(
                     type: BottomNavigationBarType.fixed,
                     currentIndex: controller.currentIndex,
-                    onTap: controller.changeIndex,
+                    onTap: (index) {
+                      controller.changeIndex(index);
+                      BlocProvider.of<RestaurantsCubit>(context).loadGeoLocation();
+                    },
                     items: [
                       BottomNavigationBarItem(
                         label: 'Home',

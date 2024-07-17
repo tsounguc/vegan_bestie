@@ -36,7 +36,6 @@ import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_det
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_review_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/submitted_restaurants_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/update_restaurant_screen.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
 part 'package:sheveegan/core/services/router/app_router.main.dart';

@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-import 'package:sheveegan/core/common/app/providers/food_product_reports_provider.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
@@ -108,7 +106,7 @@ class ReportsScreen extends StatelessWidget {
                                       Icons.delete,
                                       color: context.theme.iconTheme.color,
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                               const SizedBox(
@@ -175,7 +173,7 @@ class ReportsScreen extends StatelessWidget {
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -206,7 +204,7 @@ class ReportsScreen extends StatelessWidget {
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -237,7 +235,7 @@ class ReportsScreen extends StatelessWidget {
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -268,7 +266,7 @@ class ReportsScreen extends StatelessWidget {
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),

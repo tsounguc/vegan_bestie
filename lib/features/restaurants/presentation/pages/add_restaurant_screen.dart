@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
-import 'package:sheveegan/core/common/widgets/i_field.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
@@ -38,6 +37,13 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
   final ExpansionTileController veganStatusExpansionController = ExpansionTileController();
   bool? veganStatus;
   bool? hasVeganOptions;
+  final List<OpenDayItem> openDaysList = [];
+
+  final tddItems = [
+    TakeoutDineInDeliveryItem(title: 'Take out'),
+    TakeoutDineInDeliveryItem(title: 'Dine in'),
+    TakeoutDineInDeliveryItem(title: 'Delivery'),
+  ];
 
   bool get restaurantNameEntered => restaurantNameController.text.trim().isNotEmpty;
 
@@ -70,22 +76,55 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
       // && hasVeganOptionsSelected
       ;
 
-  final List<OpenDayItem> openDaysList = [];
+  @override
+  void initState() {
+    restaurantNameController.text = widget.restaurant?.name ?? '';
+    streetAddressController.text = widget.restaurant?.streetAddress ?? '';
+    cityController.text = widget.restaurant?.city ?? '';
+    stateController.text = widget.restaurant?.state ?? '';
+    zipcodeController.text = widget.restaurant?.zipCode ?? '';
+    phoneNumberController.text = widget.restaurant?.phoneNumber ?? '';
+    websiteController.text = widget.restaurant?.websiteUrl ?? '';
+    descriptionController.text = widget.restaurant?.description ?? '';
+    veganStatus = widget.restaurant?.veganStatus;
+    hasVeganOptions = widget.restaurant?.hasVeganOptions;
 
-  final tddItems = [
-    TakeoutDineInDeliveryItem(title: 'Take out'),
-    TakeoutDineInDeliveryItem(title: 'Dine in'),
-    TakeoutDineInDeliveryItem(title: 'Delivery'),
-  ];
+    for (var dayIndex = 0; dayIndex < context.daysOfTheWeek.length; dayIndex++) {
+      final periodItems = <PeriodItem>[
+        PeriodItem(
+          day: dayIndex,
+          periods: const [],
+          openTextEditingController: TextEditingController(),
+          closeTextEditingController: TextEditingController(),
+        ),
+      ];
+      openDaysList.add(OpenDayItem(periodItems: periodItems));
+    }
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    restaurantNameController.dispose();
+    streetAddressController.dispose();
+    cityController.dispose();
+    stateController.dispose();
+    zipcodeController.dispose();
+    phoneNumberController.dispose();
+    websiteController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
 
   void submitRestaurant(BuildContext context) {
     final bloc = BlocProvider.of<RestaurantsCubit>(context);
     final openHours = const OpenHoursModel.empty().copyWith(periods: []);
 
-    for (int d = 0; d < openDaysList.length; d++) {
+    for (var d = 0; d < openDaysList.length; d++) {
       final openDay = openDaysList[d];
-      for (int p = 0; p < openDaysList[d].periodItems.length; p++) {
-        var period = PeriodModel.empty();
+      for (var p = 0; p < openDaysList[d].periodItems.length; p++) {
+        const period = PeriodModel.empty();
         final dayIndex = openDay.periodItems[p].day;
         final openTime = openDay.periodItems[p].openTextEditingController.text;
         final closeTime = openDay.periodItems[p].closeTextEditingController.text;
@@ -120,52 +159,12 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
     } else {
       bloc.submitRestaurant(
         RestaurantSubmitModel.empty().copyWith(
-            submittedRestaurant: restaurant,
-            userId: context.currentUser?.uid,
-            userName: context.currentUser?.name),
+          submittedRestaurant: restaurant,
+          userId: context.currentUser?.uid,
+          userName: context.currentUser?.name,
+        ),
       );
     }
-  }
-
-  @override
-  void initState() {
-    restaurantNameController.text = widget.restaurant?.name ?? '';
-    streetAddressController.text = widget.restaurant?.streetAddress ?? '';
-    cityController.text = widget.restaurant?.city ?? '';
-    stateController.text = widget.restaurant?.state ?? '';
-    zipcodeController.text = widget.restaurant?.zipCode ?? '';
-    phoneNumberController.text = widget.restaurant?.phoneNumber ?? '';
-    websiteController.text = widget.restaurant?.websiteUrl ?? '';
-    descriptionController.text = widget.restaurant?.description ?? '';
-    veganStatus = widget.restaurant?.veganStatus;
-    hasVeganOptions = widget.restaurant?.hasVeganOptions;
-
-    for (int dayIndex = 0; dayIndex < context.daysOfTheWeek.length; dayIndex++) {
-      final periodItems = <PeriodItem>[
-        PeriodItem(
-          day: dayIndex,
-          periods: [],
-          openTextEditingController: TextEditingController(),
-          closeTextEditingController: TextEditingController(),
-        )
-      ];
-      openDaysList.add(OpenDayItem(periodItems: periodItems));
-    }
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    restaurantNameController.dispose();
-    streetAddressController.dispose();
-    cityController.dispose();
-    stateController.dispose();
-    zipcodeController.dispose();
-    phoneNumberController.dispose();
-    websiteController.dispose();
-    descriptionController.dispose();
-    super.dispose();
   }
 
   @override
@@ -377,7 +376,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                                           setState(() {
                                             final periodItem = PeriodItem(
                                               day: index,
-                                              periods: [],
+                                              periods: const [],
                                               openTextEditingController: TextEditingController(),
                                               closeTextEditingController: TextEditingController(),
                                             );
@@ -394,7 +393,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                                   ),
                                 );
                               },
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -441,6 +440,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
   }
 }
 
+//ignore: must_be_immutable
 class OpenDayItem extends Equatable {
   OpenDayItem({
     required this.periodItems,
@@ -468,12 +468,11 @@ class PeriodItem extends Equatable {
   final List<Period> periods;
   final int day;
 
-  // final void Function()? onOpenTap
-
   @override
   List<Object?> get props => [openTextEditingController, closeTextEditingController, day, periods];
 }
 
+//ignore: must_be_immutable
 class TakeoutDineInDeliveryItem extends Equatable {
   TakeoutDineInDeliveryItem({
     required this.title,

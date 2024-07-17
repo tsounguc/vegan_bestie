@@ -5,10 +5,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sheveegan/core/common/app/providers/restaurants_near_me_provider.dart';
 import 'package:sheveegan/core/common/screens/error/error.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurants_found_body.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
+//ignore: must_be_immutable
 class RestaurantsHomePage extends StatelessWidget {
   RestaurantsHomePage({super.key});
 
@@ -40,9 +42,8 @@ class RestaurantsHomePage extends StatelessWidget {
     return BlocConsumer<RestaurantsCubit, RestaurantsState>(
       listener: (context, state) {
         if (state is UserLocationLoaded) {
-          userCurrentLocation = context.read<RestaurantsNearMeProvider>().currentLocation;
-
           if (locationChanged(state)) {
+            userCurrentLocation = context.read<RestaurantsNearMeProvider>().currentLocation;
             debugPrint('Getting Restaurants');
             BlocProvider.of<RestaurantsCubit>(
               context,
@@ -54,12 +55,13 @@ class RestaurantsHomePage extends StatelessWidget {
               'userCurrentLocation: ${userCurrentLocation?.latitude}'
               ' ${userCurrentLocation?.longitude}',
             );
+            BlocProvider.of<RestaurantsCubit>(context).getRestaurants(
+              state.position,
+              context.read<RestaurantsNearMeProvider>().radius,
+            );
           }
-          BlocProvider.of<RestaurantsCubit>(context).getRestaurants(
-            state.position,
-            context.read<RestaurantsNearMeProvider>().radius,
-          );
         }
+
         if (state is RestaurantsLoaded) {
           debugPrint('RestaurantsLoaded');
           BlocProvider.of<RestaurantsCubit>(
@@ -70,14 +72,19 @@ class RestaurantsHomePage extends StatelessWidget {
             state.restaurants,
           );
         }
+
         if (state is MarkersLoaded) {
           debugPrint('MarkersLoaded');
           BlocProvider.of<RestaurantsCubit>(context).markers = state.markers;
           markers = state.markers;
         }
+
+        if (state is SavedRestaurantsListFetched) {
+          context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
+        }
       },
       builder: (context, state) {
-        if (state is LoadingMarkers) {
+        if (state is LoadingRestaurants || state is LoadingMarkers) {
           currentPage = const LoadingPage();
           return const LoadingPage();
         } else if (state is MarkersLoaded) {
@@ -90,7 +97,19 @@ class RestaurantsHomePage extends StatelessWidget {
           ).markers;
           currentPage = RestaurantsFoundBody(
             restaurants: restaurants ?? [],
-            userLocation: userCurrentLocation!,
+            userLocation: userCurrentLocation ??
+                Position(
+                  longitude: 0,
+                  latitude: 0,
+                  timestamp: DateTime.now(),
+                  accuracy: 0,
+                  altitude: 0,
+                  altitudeAccuracy: 0,
+                  heading: 0,
+                  headingAccuracy: 0,
+                  speed: 0,
+                  speedAccuracy: 0,
+                ),
             markers: markers ?? <Marker>{},
           );
           return RestaurantsFoundBody(

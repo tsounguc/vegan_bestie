@@ -68,9 +68,12 @@ class _AddFoodProductScreenState extends State<AddFoodProductScreen> {
   void submitChanges(BuildContext context) {
     final bloc = BlocProvider.of<FoodProductCubit>(context);
     final nutriments = const NutrimentsModel.empty().copyWith(
-        proteins100G: double.parse(proteinController.text),
-        carbohydrates100G: double.tryParse(carbsController.text),
-        fat100G: double.tryParse(fatsController.text));
+      proteins100G: double.parse(proteinController.text),
+      carbohydrates100G: double.tryParse(carbsController.text),
+      fat100G: double.tryParse(
+        fatsController.text,
+      ),
+    );
     final product = FoodProductModel.empty().copyWith(
       code: barcodeController.text,
       productName: productNameController.text,
@@ -179,11 +182,14 @@ class _AddFoodProductScreenState extends State<AddFoodProductScreen> {
               ),
               onTap: () async {
                 pickedIngredientsImage = await CoreUtils.getImageFromCamera();
-                Navigator.of(context).pop();
-                if (pickedIngredientsImage != null) {
-                  await BlocProvider.of<FoodProductCubit>(
-                    context,
-                  ).readIngredientsFromImage(pickedIngredientsImage!);
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+
+                  if (pickedIngredientsImage != null) {
+                    await BlocProvider.of<FoodProductCubit>(
+                      context,
+                    ).readIngredientsFromImage(pickedIngredientsImage!);
+                  }
                 }
               },
             ),
@@ -193,21 +199,30 @@ class _AddFoodProductScreenState extends State<AddFoodProductScreen> {
               ),
             ),
             ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 35,
+                vertical: 10,
+              ),
               leading: const Icon(
                 Icons.image_outlined,
               ),
               title: Text(
                 'Gallery',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               onTap: () async {
                 pickedIngredientsImage = await CoreUtils.pickImageFromGallery();
-                Navigator.of(context).pop();
-                if (pickedIngredientsImage != null) {
-                  await BlocProvider.of<FoodProductCubit>(
-                    context,
-                  ).readIngredientsFromImage(pickedIngredientsImage!);
+
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  if (pickedIngredientsImage != null) {
+                    await BlocProvider.of<FoodProductCubit>(
+                      context,
+                    ).readIngredientsFromImage(pickedIngredientsImage!);
+                  }
                 }
               },
             ),

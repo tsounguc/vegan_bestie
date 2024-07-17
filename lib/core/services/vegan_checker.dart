@@ -438,7 +438,7 @@ class VeganChecker {
       }
       // debugPrint('Non Vegetarian ingredients: $_nonVegetarianIngredientsInProduct');
       return isVegetarian;
-    } catch (e, stackTrace) {
+    } catch (e) {
       // debugPrint(stackTrace.toString());
       // throw ScanException(message: e.toString(), statusCode: 502);
       rethrow;

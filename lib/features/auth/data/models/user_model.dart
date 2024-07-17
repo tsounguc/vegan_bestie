@@ -32,7 +32,7 @@ class UserModel extends UserEntity {
   UserModel.fromMap(DataMap dataMap)
       : this(
           uid: dataMap['uid'] as String,
-          name: dataMap['fullName'] as String? ?? "",
+          name: dataMap['fullName'] as String? ?? '',
           email: dataMap['email'] as String,
           photoUrl: dataMap['photoUrl'] as String?,
           bio: dataMap['bio'] as String?,

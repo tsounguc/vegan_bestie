@@ -19,8 +19,11 @@ import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant
 import 'package:sheveegan/features/restaurants/domain/usecases/edit_restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/get_saved_restaurants.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/save_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/submit_restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/unsave_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/update_restaurant.dart';
 
 part 'restaurants_state.dart';
@@ -37,7 +40,11 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     required AddRestaurantReview addRestaurantReview,
     required DeleteRestaurantReview deleteRestaurantReview,
     required EditRestaurantReview editRestaurantReview,
-  })  : _addRestaurant = addRestaurant,
+    required SaveRestaurant saveRestaurant,
+    required GetSavedRestaurants getSavedRestaurants,
+    required UnSaveRestaurant unSaveRestaurant,
+  })
+      : _addRestaurant = addRestaurant,
         _submitRestaurant = submitRestaurant,
         _updateRestaurant = updateRestaurant,
         _deleteRestaurantSubmission = deleteRestaurantSubmission,
@@ -47,6 +54,9 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
         _addRestaurantReview = addRestaurantReview,
         _deleteRestaurantReview = deleteRestaurantReview,
         _editRestaurantReview = editRestaurantReview,
+        _saveRestaurant = saveRestaurant,
+        _unSaveRestaurant = unSaveRestaurant,
+        _getSavedRestaurants = getSavedRestaurants,
         super(const RestaurantsInitial());
   GoogleMapController? controller;
   List<Restaurant>? restaurants;
@@ -62,15 +72,19 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
   final AddRestaurantReview _addRestaurantReview;
   final DeleteRestaurantReview _deleteRestaurantReview;
   final EditRestaurantReview _editRestaurantReview;
+  final SaveRestaurant _saveRestaurant;
+  final UnSaveRestaurant _unSaveRestaurant;
+  final GetSavedRestaurants _getSavedRestaurants;
 
   Future<void> addRestaurant(Restaurant restaurant) async {
     emit(const AddingRestaurant());
     final result = await _addRestaurant(restaurant);
     result.fold(
-      (failure) => emit(
-        RestaurantsError(message: failure.errorMessage),
-      ),
-      (success) => emit(const RestaurantAdded()),
+          (failure) =>
+          emit(
+            RestaurantsError(message: failure.errorMessage),
+          ),
+          (success) => emit(const RestaurantAdded()),
     );
   }
 
@@ -78,10 +92,11 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     emit(const SubmittingRestaurant());
     final result = await _submitRestaurant(restaurantSubmit);
     result.fold(
-      (failure) => emit(
-        RestaurantsError(message: failure.errorMessage),
-      ),
-      (success) => emit(const RestaurantSubmitted()),
+          (failure) =>
+          emit(
+            RestaurantsError(message: failure.errorMessage),
+          ),
+          (success) => emit(const RestaurantSubmitted()),
     );
   }
 
@@ -99,10 +114,11 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
       ),
     );
     result.fold(
-      (failure) => emit(
-        RestaurantsError(message: failure.errorMessage),
-      ),
-      (r) => emit(const RestaurantUpdated()),
+          (failure) =>
+          emit(
+            RestaurantsError(message: failure.errorMessage),
+          ),
+          (r) => emit(const RestaurantUpdated()),
     );
   }
 
@@ -111,8 +127,8 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     final result = await _deleteRestaurantSubmission(restaurantSubmit);
 
     result.fold(
-      (failure) => emit(RestaurantsError(message: failure.errorMessage)),
-      (r) => emit(const RestaurantSubmitDeleted()),
+          (failure) => emit(RestaurantsError(message: failure.errorMessage)),
+          (r) => emit(const RestaurantSubmitDeleted()),
     );
   }
 
@@ -124,14 +140,14 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
       GetRestaurantsNearMeParams(position: position, radius: radius),
     ).listen(
       /*onData:*/
-      (result) {
+          (result) {
         result.fold(
-          (failure) {
+              (failure) {
             debugPrint(failure.errorMessage);
             emit(RestaurantsError(message: failure.errorMessage));
             subscription?.cancel();
           },
-          (restaurantsList) => emit(RestaurantsLoaded(restaurants: restaurantsList)),
+              (restaurantsList) => emit(RestaurantsLoaded(restaurants: restaurantsList)),
         );
       },
       onError: (dynamic error) {
@@ -150,8 +166,8 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
       GetRestaurantsMarkersParams(restaurants: restaurants),
     );
     result.fold(
-      (failure) => emit(RestaurantsError(message: failure.errorMessage)),
-      (mapEntity) => emit(MarkersLoaded(markers: mapEntity.markers)),
+          (failure) => emit(RestaurantsError(message: failure.errorMessage)),
+          (mapEntity) => emit(MarkersLoaded(markers: mapEntity.markers)),
     );
   }
 
@@ -159,10 +175,11 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     emit(const LoadingUserGeoLocation());
     final result = await _getUserLocation();
     result.fold(
-      (failure) => emit(RestaurantsError(message: failure.errorMessage)),
-      (userLocation) => emit(
-        UserLocationLoaded(position: userLocation.position),
-      ),
+          (failure) => emit(RestaurantsError(message: failure.errorMessage)),
+          (userLocation) =>
+          emit(
+            UserLocationLoaded(position: userLocation.position),
+          ),
     );
   }
 
@@ -170,8 +187,8 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     emit(const AddingRestaurantReview());
     final result = await _addRestaurantReview(restaurantReview);
     result.fold(
-      (failure) => emit(RestaurantsError(message: failure.message)),
-      (r) => emit(const RestaurantReviewAdded()),
+          (failure) => emit(RestaurantsError(message: failure.message)),
+          (r) => emit(const RestaurantReviewAdded()),
     );
   }
 
@@ -179,8 +196,8 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     emit(const DeletingRestaurantReview());
     final result = await _deleteRestaurantReview(review);
     result.fold(
-      (failure) => emit(RestaurantsError(message: failure.message)),
-      (success) => emit(const RestaurantReviewDeleted()),
+          (failure) => emit(RestaurantsError(message: failure.message)),
+          (success) => emit(const RestaurantReviewDeleted()),
     );
   }
 
@@ -188,8 +205,8 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     emit(const AddingRestaurantReview());
     final result = await _addRestaurantReview(review);
     result.fold(
-      (failure) => emit(RestaurantsError(message: failure.message)),
-      (success) => emit(const RestaurantReviewAdded()),
+          (failure) => emit(RestaurantsError(message: failure.message)),
+          (success) => emit(const RestaurantReviewAdded()),
     );
   }
 
@@ -197,35 +214,51 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     emit(const EditingRestaurantReview());
     final result = await _editRestaurantReview(review);
     result.fold(
-      (failure) => emit(RestaurantsError(message: failure.message)),
-      (success) => emit(const RestaurantReviewEdited()),
+          (failure) => emit(RestaurantsError(message: failure.message)),
+          (success) => emit(const RestaurantReviewEdited()),
     );
   }
 
   Future<void> saveRestaurant(Restaurant restaurant) async {
-    // emit(const SavingRestaurant());
-    // final result = await _saveRestaurant(restaurant.id);
-    // result.fold(
-    //   (failure) => RestaurantsError(message: failure.message),
-    //   (success) => emit(
-    //     RestaurantDetailsLoaded(
-    //       restaurant: restaurant,
-    //     ),
-    //   ),
-    // );
+    emit(const SavingRestaurant());
+    final result = await _saveRestaurant(restaurant.id);
+    result.fold(
+          (failure) => RestaurantsError(message: failure.message),
+          (success) =>
+          emit(
+            const RestaurantSaved(),
+          ),
+    );
   }
 
-  Future<void> removeRestaurant({required Restaurant restaurant}) async {
-    // emit(const RemovingRestaurant());
-    // final result = await _removeRestaurant(restaurant.id);
-    // result.fold(
-    //   (failure) => RestaurantsError(message: failure.message),
-    //   (success) => emit(
-    //     RestaurantDetailsLoaded(
-    //       restaurant: restaurant,
-    //     ),
-    //   ),
-    // );
+  Future<void> unSaveRestaurant({required Restaurant restaurant}) async {
+    emit(const UnSavingRestaurant());
+    final result = await _unSaveRestaurant(restaurant.id);
+    result.fold(
+          (failure) => RestaurantsError(message: failure.message),
+          (success) =>
+          emit(
+            const RestaurantUnSaved(),
+          ),
+    );
+  }
+
+  Future<void> getSavedRestaurants({required List<String> savedRestaurantsIdsList}) async {
+    emit(const FetchingSavedRestaurantsList());
+    final result = await _getSavedRestaurants(savedRestaurantsIdsList);
+
+    result.fold(
+          (failure) =>
+          emit(
+            RestaurantsError(message: failure.errorMessage),
+          ),
+          (savedRestaurantsList) =>
+          emit(
+            SavedRestaurantsListFetched(
+              savedRestaurantsList: savedRestaurantsList,
+            ),
+          ),
+    );
   }
 
   Future<void> editRestaurantReview({required RestaurantReviewModel review}) async {}

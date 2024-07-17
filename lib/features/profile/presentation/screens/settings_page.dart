@@ -1,14 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:sheveegan/core/common/app/providers/theme_mode_provider.dart';
-import 'package:sheveegan/core/common/widgets/buttons.dart';
-import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
-import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/profile/presentation/refactors/user_card.dart';
@@ -89,7 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Card(
@@ -131,9 +124,12 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Text(
                 'Delete Account',
                 style: context.theme.textTheme.titleMedium?.copyWith(
-                    color: Colors.red, decoration: TextDecoration.underline, decorationColor: Colors.red),
+                  color: Colors.red,
+                  decoration: TextDecoration.underline,
+                  decorationColor: Colors.red,
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),

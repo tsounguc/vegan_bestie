@@ -17,7 +17,7 @@ class DisplayScreen extends StatelessWidget {
         Widget? child,
       ) {
         return Scaffold(
-          appBar: AppBar(title: Text('Display')),
+          appBar: AppBar(title: const Text('Display')),
           body: SafeArea(
             child: ListView(
               shrinkWrap: true,

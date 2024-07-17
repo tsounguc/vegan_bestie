@@ -41,7 +41,7 @@ class AddProductForm extends StatelessWidget {
           'Macros',
           style: TextStyle(),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         AddProductFormField(

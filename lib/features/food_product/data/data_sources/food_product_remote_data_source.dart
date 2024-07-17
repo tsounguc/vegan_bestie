@@ -101,16 +101,17 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
       final data = jsonDecode(response.body);
 
       final foodProduct = FoodProductModel.fromMap(data['product'] as DataMap);
-      debugPrint(foodProduct.id);
+      // debugPrint(foodProduct.id);
       final isVegan = _veganChecker.veganCheck(foodProduct);
       var isVegetarian = false;
       if (!isVegan) isVegetarian = _veganChecker.vegetarianCheck(foodProduct);
+
       return foodProduct.copyWith(
         isVegan: isVegan,
         isVegetarian: isVegetarian,
-        nonVeganIngredients: isVegetarian
+        nonVeganIngredients: !isVegan && isVegetarian
             ? _veganChecker.nonVeganIngredientsInProduct
-            : _veganChecker.nonVegetarianIngredientsInProduct,
+            : _veganChecker.nonVeganIngredientsInProduct,
       );
     } on FetchProductException catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
@@ -305,6 +306,7 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
           );
       }
     } on ClientException catch (e) {
+      debugPrint(e.message);
       throw const UpdateFoodProductException(
         message: 'Error: Connection Failed try again',
         statusCode: 500,
@@ -536,7 +538,7 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
 
       final reportModel = (report as FoodProductReportModel).copyWith(id: reportReference.id);
 
-      reportReference.set(
+      await reportReference.set(
         reportModel.toMap(),
       );
     } catch (e, s) {

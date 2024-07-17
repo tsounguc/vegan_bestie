@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheveegan/core/common/widgets/i_field.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/add_restaurant_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/period_widget.dart';
 
@@ -79,14 +77,14 @@ class _OpenHourTileState extends State<OpenHourTile> {
                         final time = await selectTime(context);
                         if (time != null) {
                           widget.periodControllers[i].openTextEditingController.text =
-                              '${time?.hour}:${time?.minute}';
+                              '${time.hour}:${time.minute}';
                         }
                       },
                       onCloseTap: () async {
                         final time = await selectTime(context);
                         if (time != null) {
                           widget.periodControllers[i].closeTextEditingController.text =
-                              '${time?.hour}:${time?.minute}';
+                              '${time.hour}:${time.minute}';
                         }
                       },
                       onRemoveButtonPressed: () {
@@ -104,20 +102,20 @@ class _OpenHourTileState extends State<OpenHourTile> {
                   visible: widget.value == true,
                   child: IconButton(
                     onPressed: widget.onAddButtonPressed,
-                    icon: Icon(Icons.add),
+                    icon: const Icon(Icons.add),
                   ),
-                )
+                ),
               ],
-            )
+            ),
           ],
         ),
-        const SizedBox(height: 10)
+        const SizedBox(height: 10),
       ],
     );
   }
 
   Future<TimeOfDay?> selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
+    final picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );

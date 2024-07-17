@@ -29,11 +29,13 @@ class NavigationControls extends StatelessWidget {
             if (await controller.canGoBack()) {
               await controller.goBack();
             } else {
-              CoreUtils.showSnackBar(
-                context,
-                'No forward history item',
-              );
-              return;
+              if (context.mounted) {
+                CoreUtils.showSnackBar(
+                  context,
+                  'No forward history item',
+                );
+                return;
+              }
             }
           },
         ),
@@ -46,10 +48,12 @@ class NavigationControls extends StatelessWidget {
             if (await controller.canGoForward()) {
               await controller.goForward();
             } else {
-              CoreUtils.showSnackBar(
-                context,
-                'No forward history item',
-              );
+              if (context.mounted) {
+                CoreUtils.showSnackBar(
+                  context,
+                  'No forward history item',
+                );
+              }
               return;
             }
           },

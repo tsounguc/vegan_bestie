@@ -1,21 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:sheveegan/core/common/entities/restaurant_entities.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
-import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
-import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_entity.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 
 class HorizontalRestaurantCard extends StatelessWidget {
   const HorizontalRestaurantCard({
@@ -24,7 +17,6 @@ class HorizontalRestaurantCard extends StatelessWidget {
     required this.weekdayText,
     required this.userPosition,
     required this.imageUrl,
-    // required this.geometry,
     required this.restaurantId,
     required this.restaurantName,
     required this.restaurantAddress,
@@ -62,21 +54,18 @@ class HorizontalRestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final distance = Geolocator.distanceBetween(
-      userPosition?.latitude ?? 0,
-      userPosition?.longitude ?? 0,
-      restaurant.geoLocation.lat,
-      restaurant.geoLocation.lng,
-    );
+    final distance = userPosition == null
+        ? 0
+        : Geolocator.distanceBetween(
+            userPosition!.latitude,
+            userPosition!.longitude,
+            restaurant.geoLocation.lat,
+            restaurant.geoLocation.lng,
+          );
     return GestureDetector(
       onTap: fromSavedRestaurants
           ? null
           : () {
-              // debugPrint(restaurantId);
-              // BlocProvider.of<RestaurantsBloc>(
-              //   context,
-              // ).add(GetRestaurantDetailsEvent(id: restaurantId));
-
               Navigator.of(context).pushNamed(
                 RestaurantDetailsPage.id,
                 arguments: restaurant,
@@ -148,7 +137,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          fromSavedRestaurants
+                          userPosition == null
                               ? ''
                               : '${(distance / 1609.344).round()} '
                                   '${Strings.distanceUnitText}',
@@ -195,7 +184,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          restaurantPrice,
+                          restaurantPrice.contains('_empty.price') ? '' : restaurantPrice,
                           style: TextStyle(
                             // color: Colors.grey.shade800,
                             fontWeight: FontWeight.w500,

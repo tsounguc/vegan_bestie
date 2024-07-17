@@ -7,6 +7,7 @@ import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/enums/update_restaurant_info.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/add_restaurant_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/open_hour_tile.dart';
@@ -40,7 +41,8 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
   bool? takeout;
   bool? dineIn;
   bool? delivery;
-  List<OpenDayItem>? openDaysList;
+
+  List<OpenDayItem> openDaysList = [];
   File? pickedImage;
 
   Future<void> showRestaurantThumbnailPickerOptions(BuildContext context) async {
@@ -130,6 +132,18 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
 
   bool get deliveryChanged => widget.restaurant!.delivery != delivery;
 
+  bool get openHoursChanged {
+    for (final openDay in openDaysList) {
+      for (final periodItem in openDay.periodItems) {
+        if (periodItem.openTextEditingController.text.isNotEmpty &&
+            periodItem.closeTextEditingController.text.isNotEmpty) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   bool get imageChanged => pickedImage != null;
 
   bool get nothingChanged =>
@@ -145,10 +159,92 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
       !takeoutChanged &&
       !dineInChanged &&
       !deliveryChanged &&
-      !imageChanged;
+      !imageChanged &&
+      !openHoursChanged;
+
+  @override
+  void initState() {
+    restaurantNameController.text = widget.restaurant!.name;
+    streetAddressController.text = widget.restaurant!.streetAddress;
+    cityController.text = widget.restaurant!.city;
+    stateController.text = widget.restaurant!.state;
+    zipcodeController.text = widget.restaurant!.zipCode;
+    phoneNumberController.text = widget.restaurant!.phoneNumber;
+    descriptionController.text = widget.restaurant!.description ?? '';
+    veganStatus = widget.restaurant!.veganStatus;
+    hasVeganOptions = widget.restaurant!.hasVeganOptions;
+    takeout = widget.restaurant!.takeout;
+    dineIn = widget.restaurant!.dineIn;
+    delivery = widget.restaurant!.delivery;
+
+    for (var dayIndex = 0; dayIndex < context.daysOfTheWeek.length; dayIndex++) {
+      final periodItems = <PeriodItem>[
+        PeriodItem(
+          day: dayIndex,
+          periods: const [],
+          // widget.restaurant?.openHours.periods.where((period) => period.open.day == dayIndex).toList() ?? [],
+          openTextEditingController: TextEditingController(),
+          closeTextEditingController: TextEditingController(),
+        ),
+      ];
+      openDaysList.add(OpenDayItem(periodItems: periodItems));
+    }
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    restaurantNameController.dispose();
+    streetAddressController.dispose();
+    cityController.dispose();
+    stateController.dispose();
+    zipcodeController.dispose();
+    phoneNumberController.dispose();
+    websiteController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
 
   Future<void> submitChanges(BuildContext context) async {
     final bloc = BlocProvider.of<RestaurantsCubit>(context);
+    const openHours = OpenHoursModel.empty();
+    final periods = <Period>[];
+    if (openHoursChanged) {
+      for (var d = 0; d < openDaysList.length; d++) {
+        final openDay = openDaysList[d];
+        for (var p = 0; p < openDaysList[d].periodItems.length; p++) {
+          final dayIndex = openDay.periodItems[p].day;
+          final openTime = openDay.periodItems[p].openTextEditingController.text;
+          final closeTime = openDay.periodItems[p].closeTextEditingController.text;
+
+          periods.add(
+            PeriodModel(
+              open: OpenCloseModel(
+                day: dayIndex,
+                time: openTime,
+              ),
+              close: OpenCloseModel(day: dayIndex, time: closeTime),
+            ),
+          );
+
+          // openHours.periods.add(
+          //   period.copyWith(
+          //     open: OpenCloseModel(day: dayIndex, time: openTime),
+          //     close: OpenCloseModel(day: dayIndex, time: closeTime),
+          //   ),
+          // );
+        }
+      }
+
+      openHours.copyWith(periods: periods);
+      await bloc.updateRestaurant(
+        action: UpdateRestaurantInfoAction.openHours,
+        restaurantData: OpenHoursModel(periods: periods),
+        restaurant: widget.restaurant!,
+      );
+    }
+
     if (imageChanged) {
       await bloc.updateRestaurant(
         action: UpdateRestaurantInfoAction.thumbnail,
@@ -255,50 +351,6 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
         restaurant: widget.restaurant!,
       );
     }
-  }
-
-  @override
-  void initState() {
-    restaurantNameController.text = widget.restaurant!.name;
-    streetAddressController.text = widget.restaurant!.streetAddress;
-    cityController.text = widget.restaurant!.city;
-    stateController.text = widget.restaurant!.state;
-    zipcodeController.text = widget.restaurant!.zipCode;
-    phoneNumberController.text = widget.restaurant!.phoneNumber;
-    descriptionController.text = widget.restaurant!.description ?? '';
-    veganStatus = widget.restaurant!.veganStatus;
-    hasVeganOptions = widget.restaurant!.hasVeganOptions;
-    takeout = widget.restaurant!.takeout;
-    dineIn = widget.restaurant!.dineIn;
-    delivery = widget.restaurant!.delivery;
-
-    for (int dayIndex = 0; dayIndex < context.daysOfTheWeek.length; dayIndex++) {
-      final periodItems = <PeriodItem>[
-        PeriodItem(
-          day: dayIndex,
-          periods:
-              widget.restaurant?.openHours.periods.where((period) => period.open.day == dayIndex).toList() ?? [],
-          openTextEditingController: TextEditingController(),
-          closeTextEditingController: TextEditingController(),
-        )
-      ];
-      openDaysList?.add(OpenDayItem(periodItems: periodItems));
-    }
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    restaurantNameController.dispose();
-    streetAddressController.dispose();
-    cityController.dispose();
-    stateController.dispose();
-    zipcodeController.dispose();
-    phoneNumberController.dispose();
-    websiteController.dispose();
-    descriptionController.dispose();
-    super.dispose();
   }
 
   @override
@@ -482,7 +534,7 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                       CheckboxListTile(
                         controlAffinity: ListTileControlAffinity.leading,
                         title: Text(
-                          'Takeout',
+                          'Delivery',
                           style: TextStyle(
                             color: context.theme.textTheme.bodyMedium?.color,
                             fontSize: 12.sp,
@@ -497,69 +549,71 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                         },
                       ),
                       const SizedBox(height: 10),
-                      // Theme(
-                      //   data: context.theme.copyWith(dividerColor: Colors.transparent),
-                      //   child: ExpansionTile(
-                      //     collapsedBackgroundColor: context.theme.cardTheme.color,
-                      //     iconColor: context.theme.iconTheme.color,
-                      //     collapsedIconColor: context.theme.iconTheme.color,
-                      //     title: Text(
-                      //       'Open Hours',
-                      //       style: TextStyle(
-                      //         color: context.theme.textTheme.bodyMedium?.color,
-                      //         fontSize: 14.sp,
-                      //         fontWeight: FontWeight.bold,
-                      //       ),
-                      //     ),
-                      //     children: [
-                      //       const SizedBox(
-                      //         height: 30,
-                      //       ),
-                      //       ListView.builder(
-                      //         shrinkWrap: true,
-                      //         physics: const NeverScrollableScrollPhysics(),
-                      //         itemCount: openDaysList?.length,
-                      //         itemBuilder: (context, index) {
-                      //           final dayName = context.daysOfTheWeek[index];
-                      //           final openDay = openDaysList?[index];
-                      //           return Padding(
-                      //             padding: const EdgeInsets.only(bottom: 25),
-                      //             child: Column(
-                      //               children: [
-                      //                 OpenHourTile(
-                      //                   title: dayName?.substring(0, 3) ?? '',
-                      //                   value: openDay?.isSelected ?? false,
-                      //                   periodControllers: openDay?.periodItems ?? [],
-                      //                   onChanged: (bool? value) {
-                      //                     setState(() {
-                      //                       openDay?.isSelected = value;
-                      //                     });
-                      //                   },
-                      //                   onAddButtonPressed: () {
-                      //                     setState(() {
-                      //                       final periodItem = PeriodItem(
-                      //                         day: index,
-                      //                         periods: [],
-                      //                         openTextEditingController: TextEditingController(),
-                      //                         closeTextEditingController: TextEditingController(),
-                      //                       );
-                      //                       openDay?.periodItems.add(periodItem);
-                      //                     });
-                      //                   },
-                      //                 ),
-                      //                 const SizedBox(height: 20),
-                      //                 Divider(
-                      //                   color: context.theme.iconTheme.color,
-                      //                   height: 1,
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           );
-                      //         },
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
+                      Theme(
+                        data: context.theme.copyWith(dividerColor: Colors.transparent),
+                        child: ExpansionTile(
+                          collapsedBackgroundColor: context.theme.cardTheme.color,
+                          iconColor: context.theme.iconTheme.color,
+                          collapsedIconColor: context.theme.iconTheme.color,
+                          title: Text(
+                            'Open Hours',
+                            style: TextStyle(
+                              color: context.theme.textTheme.bodyMedium?.color,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          children: [
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: openDaysList.length,
+                              itemBuilder: (context, index) {
+                                final dayName = context.daysOfTheWeek[index];
+                                final openDay = openDaysList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 25),
+                                  child: Column(
+                                    children: [
+                                      OpenHourTile(
+                                        title: dayName?.substring(0, 3) ?? '',
+                                        value: openDay.isSelected ?? false,
+                                        periodControllers: openDay.periodItems,
+                                        onChanged: (bool? value) {
+                                          setState(() {
+                                            openDay.isSelected = value;
+                                          });
+                                        },
+                                        onAddButtonPressed: () {
+                                          setState(() {
+                                            final periodItem = PeriodItem(
+                                              day: index,
+                                              periods: const [],
+                                              openTextEditingController: TextEditingController(),
+                                              closeTextEditingController: TextEditingController(),
+                                            );
+                                            openDay.periodItems.add(
+                                              periodItem,
+                                            );
+                                          });
+                                        },
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Divider(
+                                        color: context.theme.iconTheme.color,
+                                        height: 1,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 50),
@@ -573,6 +627,16 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                       phoneNumberController.addListener(() => refresh(() {}));
                       websiteController.addListener(() => refresh(() {}));
                       descriptionController.addListener(() => refresh(() {}));
+                      for (final openDay in openDaysList) {
+                        for (final periodItem in openDay.periodItems) {
+                          periodItem.openTextEditingController.addListener(
+                            () => refresh(() {}),
+                          );
+                          periodItem.closeTextEditingController.addListener(
+                            () => refresh(() {}),
+                          );
+                        }
+                      }
                       return state is UpdatingRestaurant
                           ? const Center(child: CircularProgressIndicator())
                           : LongButton(

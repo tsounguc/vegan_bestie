@@ -13,7 +13,6 @@ import 'package:sheveegan/core/common/widgets/section_header.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/media_resources.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
-import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/add_food_product_screen.dart';
@@ -22,7 +21,6 @@ import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/
 import 'package:sheveegan/features/profile/presentation/refactors/profile_header.dart';
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_products_page.dart';
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_restaurants_pages.dart';
-import 'package:sheveegan/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/reports_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/settings_page.dart';
 import 'package:sheveegan/features/profile/presentation/widgets/product_card.dart';
@@ -64,7 +62,14 @@ class ProfileScreen extends StatelessWidget {
               context.reportsProvider.reports = state.reports;
             }
           },
-        )
+        ),
+        BlocListener<RestaurantsCubit, RestaurantsState>(
+          listener: (context, state) {
+            if (state is SavedRestaurantsListFetched) {
+              context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
+            }
+          },
+        ),
       ],
       child: Scaffold(
         // backgroundColor: Colors.white,
@@ -214,9 +219,10 @@ class ProfileScreen extends StatelessWidget {
                                           onTap: () async {
                                             final navigator = Navigator.of(context);
                                             await serviceLocator<FirebaseAuth>().signOut();
-                                            context.savedProductsProvider.savedProductsList = null;
-                                            context.savedRestaurantsProvider.savedRestaurantsList = null;
-
+                                            if (context.mounted) {
+                                              context.savedProductsProvider.savedProductsList = null;
+                                              context.savedRestaurantsProvider.savedRestaurantsList = null;
+                                            }
                                             unawaited(
                                               navigator.pushNamedAndRemoveUntil(
                                                 '/',
@@ -351,76 +357,76 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 20.h),
-                                // Padding(
-                                //   padding: const EdgeInsets.symmetric(horizontal: 25).copyWith(
-                                //     top: 5.h,
-                                //     bottom: 5.h,
-                                //   ),
-                                //   child: SectionHeader(
-                                //     sectionTitle: 'Saved Restaurants',
-                                //     seeAll: restaurantsProvider.savedRestaurantsList != null &&
-                                //         restaurantsProvider.savedRestaurantsList!.length >= 4,
-                                //     onSeeAll: () => Navigator.of(context).pushNamed(
-                                //       AllSavedRestaurantsPage.id,
-                                //     ),
-                                //   ),
-                                // ),
-                                // SingleChildScrollView(
-                                //   scrollDirection: Axis.horizontal,
-                                //   child: Padding(
-                                //     padding: const EdgeInsets.symmetric(
-                                //       horizontal: 15,
-                                //     ),
-                                //     child: Row(
-                                //       crossAxisAlignment: CrossAxisAlignment.start,
-                                //       children: restaurantsProvider.savedRestaurantsList == null
-                                //           ? [
-                                //               const Padding(
-                                //                 padding: EdgeInsets.symmetric(
-                                //                   vertical: 45,
-                                //                   horizontal: 35,
-                                //                 ),
-                                //                 child: CircularProgressIndicator(),
-                                //               ),
-                                //             ]
-                                //           : restaurantsProvider.savedRestaurantsList!.isEmpty
-                                //               ? [
-                                //                   Padding(
-                                //                     padding: const EdgeInsets.symmetric(
-                                //                       vertical: 50,
-                                //                       horizontal: 35,
-                                //                     ),
-                                //                     child: Text(
-                                //                       'Restaurants will be here once saved',
-                                //                       style: TextStyle(
-                                //                         fontSize: 12.sp,
-                                //                         fontWeight: FontWeight.w500,
-                                //                         color: context.theme.textTheme.bodySmall?.color,
-                                //                         overflow: TextOverflow.ellipsis,
-                                //                       ),
-                                //                     ),
-                                //                   ),
-                                //                 ]
-                                //               : restaurantsProvider.savedRestaurantsList!
-                                //                   .take(4)
-                                //                   .map(
-                                //                     (restaurant) => Padding(
-                                //                       padding: const EdgeInsets.only(
-                                //                         right: 16,
-                                //                       ),
-                                //                       child: RestaurantCard(
-                                //                         restaurant: restaurant,
-                                //                         onTap: () => Navigator.of(context).pushNamed(
-                                //                           RestaurantDetailsPage.id,
-                                //                           arguments: restaurant,
-                                //                         ),
-                                //                       ),
-                                //                     ),
-                                //                   )
-                                //                   .toList(),
-                                //     ),
-                                //   ),
-                                // ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 25).copyWith(
+                                    top: 5.h,
+                                    bottom: 5.h,
+                                  ),
+                                  child: SectionHeader(
+                                    sectionTitle: 'Saved Restaurants',
+                                    seeAll: restaurantsProvider.savedRestaurantsList != null &&
+                                        restaurantsProvider.savedRestaurantsList!.length >= 4,
+                                    onSeeAll: () => Navigator.of(context).pushNamed(
+                                      AllSavedRestaurantsPage.id,
+                                    ),
+                                  ),
+                                ),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 15,
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: restaurantsProvider.savedRestaurantsList == null
+                                          ? [
+                                              const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                  vertical: 45,
+                                                  horizontal: 35,
+                                                ),
+                                                child: CircularProgressIndicator(),
+                                              ),
+                                            ]
+                                          : restaurantsProvider.savedRestaurantsList!.isEmpty
+                                              ? [
+                                                  Padding(
+                                                    padding: const EdgeInsets.symmetric(
+                                                      vertical: 50,
+                                                      horizontal: 35,
+                                                    ),
+                                                    child: Text(
+                                                      'Restaurants will be here once saved',
+                                                      style: TextStyle(
+                                                        fontSize: 12.sp,
+                                                        fontWeight: FontWeight.w500,
+                                                        color: context.theme.textTheme.bodySmall?.color,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ]
+                                              : restaurantsProvider.savedRestaurantsList!
+                                                  .take(4)
+                                                  .map(
+                                                    (restaurant) => Padding(
+                                                      padding: const EdgeInsets.only(
+                                                        right: 16,
+                                                      ),
+                                                      child: RestaurantCard(
+                                                        restaurant: restaurant,
+                                                        onTap: () => Navigator.of(context).pushNamed(
+                                                          RestaurantDetailsPage.id,
+                                                          arguments: restaurant,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                    ),
+                                  ),
+                                ),
                                 SizedBox(
                                   height: 10.h,
                                 ),

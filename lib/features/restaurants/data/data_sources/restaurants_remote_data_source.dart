@@ -64,11 +64,21 @@ abstract class RestaurantsRemoteDataSource {
   Future<void> deleteRestaurantReview(RestaurantReview restaurantReview);
 
   Future<MapEntity> getRestaurantsMarkers({required List<Restaurant> restaurants});
+
+  Future<List<RestaurantModel>> getSavedRestaurants({
+    required List<String> restaurantsIdsList,
+  });
 }
 
 class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   RestaurantsRemoteDataSourceImpl(
-      this._firestore, this._storage, this._auth, this._location, this._googleMap, this._geocoding);
+    this._firestore,
+    this._storage,
+    this._auth,
+    this._location,
+    this._googleMap,
+    this._geocoding,
+  );
 
   final FirebaseFirestore _firestore;
   final FirebaseStorage _storage;
@@ -88,20 +98,25 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
         case UpdateRestaurantInfoAction.thumbnail:
           final thumbnailRef =
               _storage.ref().child('restaurants/${restaurant.name}${restaurant.id}/thumbnail/${restaurant.id}');
-          final photosRef = _storage.ref().child(
-              'restaurants/${restaurant.name}${restaurant.id}/photos/${restaurant.photos[0].contains('_empty.photo') ? 1 : restaurant.photos.length + 1}_${restaurant.id}');
 
           await thumbnailRef.putFile(restaurantData as File);
-          await photosRef.putFile(restaurantData as File);
 
           final thumbnailUrl = await thumbnailRef.getDownloadURL();
-          final photoUrl = await photosRef.getDownloadURL();
-          var photos = restaurant.photos;
-          for (int index = 0; index < photos.length; index++) {
+
+          final photos = restaurant.photos;
+          for (var index = 0; index < photos.length; index++) {
             if (photos[index].contains('_empty.photo') || photos[index].isEmpty) {
               photos.removeAt(index);
             }
           }
+          final photosRef = _storage.ref().child(
+                'restaurants/${restaurant.name}${restaurant.id}/'
+                'photos/${photos.length + 1}_${restaurant.id}',
+              );
+
+          await photosRef.putFile(restaurantData);
+
+          final photoUrl = await photosRef.getDownloadURL();
 
           photos.add(photoUrl);
 
@@ -215,7 +230,9 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
         case UpdateRestaurantInfoAction.openHours:
           await _updateRestaurantData(
             id: restaurant.id,
-            data: {'openHours': restaurantData},
+            data: {
+              'openHours': (restaurantData as OpenHoursModel).toMap(),
+            },
           );
         case UpdateRestaurantInfoAction.takeout:
           await _updateRestaurantData(
@@ -235,12 +252,12 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
         case UpdateRestaurantInfoAction.veganStatus:
           await _updateRestaurantData(
             id: restaurant.id,
-            data: {'delivery': restaurantData},
+            data: {'veganStatus': restaurantData},
           );
         case UpdateRestaurantInfoAction.hasVeganOptions:
           await _updateRestaurantData(
             id: restaurant.id,
-            data: {'delivery': restaurantData},
+            data: {'hasVeganOptions': restaurantData},
           );
       }
     } on FirebaseException catch (e, s) {
@@ -272,7 +289,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
                 )
                 .toList(),
           );
-      bool isInData = false;
+      var isInData = false;
       for (final restaurantData in restaurantsData) {
         if (restaurant.streetAddress == restaurantData.streetAddress) {
           isInData = true;
@@ -281,6 +298,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
 
       if (!isInData) {
         final restaurantsReference = _restaurants.doc();
+
         // Get restaurant coordinates from address
         final fullAddress = '${restaurant.streetAddress},'
             ' ${restaurant.city}, '
@@ -344,7 +362,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
                 .toList(),
           );
 
-      bool isInSubmittedData = false;
+      var isInSubmittedData = false;
 
       for (final submittedData in submittedRestaurantsData) {
         if (restaurantSubmit.submittedRestaurant.streetAddress ==
@@ -357,6 +375,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
 
       if (!isInSubmittedData) {
         final submittedRestaurantsReference = _submittedRestaurants.doc();
+
         // Get restaurant coordinates from address
         final fullAddress = '${restaurantSubmit.submittedRestaurant.streetAddress},'
             ' ${restaurantSubmit.submittedRestaurant.city}, '
@@ -365,7 +384,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
         final geoPoint = await _geocoding.getCoordinateFromAddress(fullAddress);
 
         // Copy submittedRestaurant with geoLocation added
-        var submittedRestaurantModel = RestaurantModel.copy(
+        final submittedRestaurantModel = RestaurantModel.copy(
           restaurantSubmit.submittedRestaurant,
         ).copyWith(
           geoLocation: GeoLocationModel(
@@ -374,7 +393,7 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
           ),
         );
 
-        var restaurantSubmitModel = (restaurantSubmit as RestaurantSubmitModel)
+        final restaurantSubmitModel = (restaurantSubmit as RestaurantSubmitModel)
             .copyWith(id: submittedRestaurantsReference.id, submittedRestaurant: submittedRestaurantModel);
 
         // push restaurant model info to document in firestore
@@ -427,12 +446,6 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   }) {
     try {
       DataSourceUtils.authorizeUser(_auth);
-
-      // final placemark = await _geocoding.getPlaceMarkFromPosition(
-      //   latitude: position.latitude,
-      //   longitude: position.longitude,
-      // );
-      // final userCity = placemark.locality?.toLowerCase().capitalizeFirstLetter();
 
       final distance = radius * 0.000621371;
 
@@ -641,6 +654,8 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   @override
   Future<void> saveRestaurant({required String restaurantId}) async {
     try {
+      DataSourceUtils.authorizeUser(_auth);
+
       await _users.doc(_auth.currentUser?.uid).update({
         'savedRestaurantsIds': FieldValue.arrayUnion([restaurantId]),
       });
@@ -661,6 +676,8 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   @override
   Future<void> unSaveRestaurant({required String restaurantId}) async {
     try {
+      DataSourceUtils.authorizeUser(_auth);
+
       await _users.doc(_auth.currentUser?.uid).update({
         'savedRestaurantsIds': FieldValue.arrayRemove([restaurantId]),
       });
@@ -676,6 +693,24 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
         statusCode: '505',
       );
     }
+  }
+
+  @override
+  Future<List<RestaurantModel>> getSavedRestaurants({
+    required List<String> restaurantsIdsList,
+  }) async {
+    DataSourceUtils.authorizeUser(_auth);
+
+    final restaurantsList = <RestaurantModel>[];
+    for (final restaurantId in restaurantsIdsList) {
+      final restaurant = await _restaurants.doc(restaurantId).get().then(
+            (value) => RestaurantModel.fromMap(
+              value.data()!,
+            ),
+          );
+      restaurantsList.add(restaurant);
+    }
+    return restaurantsList;
   }
 
   Future<void> _updateRestaurantData({

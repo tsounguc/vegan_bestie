@@ -56,7 +56,7 @@ class AddProductFormField extends StatelessWidget {
                   'Read from Image',
                   style: TextStyle(color: Colors.grey.shade800),
                 ),
-              )
+              ),
           ],
         ),
         const SizedBox(height: 10),

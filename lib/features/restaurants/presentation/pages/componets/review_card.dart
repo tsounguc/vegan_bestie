@@ -53,7 +53,6 @@ class ReviewCard extends StatelessWidget {
         ).copyWith(top: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

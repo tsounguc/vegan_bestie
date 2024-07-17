@@ -3,7 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 
 class ThemeModeProvider extends ChangeNotifier {
-  ThemeModeProvider({required bool useDeviceSettings, required bool isDarkMode}) {
+  ThemeModeProvider({
+    required bool useDeviceSettings,
+    required bool isDarkMode,
+  }) {
     _useDeviceSettings = useDeviceSettings;
     _isDarkMode = isDarkMode;
     if (_useDeviceSettings) {
@@ -14,6 +17,7 @@ class ThemeModeProvider extends ChangeNotifier {
       _themeMode = ThemeMode.light;
     }
   }
+
   var _themeMode = ThemeMode.light;
   var _useDeviceSettings = false;
   var _isDarkMode = false;

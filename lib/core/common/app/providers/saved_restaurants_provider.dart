@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 
 class SavedRestaurantsProvider extends ChangeNotifier {
   List<Restaurant>? _savedRestaurantsList;

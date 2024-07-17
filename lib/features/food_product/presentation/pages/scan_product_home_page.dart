@@ -92,7 +92,7 @@ class ScanProductHomePage extends StatelessWidget {
                     //   print('Status update: $status');
                     // },
                     builder: (animationContext, value, animationChild) {
-                      return Container(
+                      return SizedBox(
                         width: value,
                         height: value,
                         // color: Colors.white,

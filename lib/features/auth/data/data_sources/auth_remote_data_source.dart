@@ -203,7 +203,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       // });
       await _authClient.currentUser?.reload();
     } on FirebaseException catch (e) {
-      String errorMessage = 'Error Occurred';
+      var errorMessage = 'Error Occurred';
       if (e.code == 'user-mismatch' || e.code == 'invalid-credential' || e.code == 'wrong-password') {
         errorMessage = 'Authentication Failed';
       } else {
@@ -301,8 +301,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             name: user.displayName ?? '',
             photoUrl: user.photoURL ?? '',
             bio: '',
-            savedProductsBarcodes: const [],
-            savedRestaurantsIds: const [],
           ).toMap(),
         );
   }

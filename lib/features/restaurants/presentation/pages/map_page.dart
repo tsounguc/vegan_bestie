@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
 class MapPage extends StatelessWidget {

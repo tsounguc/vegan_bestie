@@ -223,7 +223,6 @@ class AppRouter {
         );
 
       case AddFoodProductScreen.id:
-        final args = settings.arguments! as FoodProductCubit;
         return _pageBuilder(
           (_) => BlocProvider.value(
             value: serviceLocator<FoodProductCubit>(),

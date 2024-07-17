@@ -65,12 +65,15 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(widget.restaurant.name),
             ),
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 25,
+              vertical: 25,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

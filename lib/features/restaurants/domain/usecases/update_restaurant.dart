@@ -11,7 +11,7 @@ class UpdateRestaurant extends UseCaseWithParams<void, UpdateRestaurantParams> {
   final RestaurantsRepository _repository;
 
   @override
-  ResultFuture<void> call(params) => _repository.updateRestaurant(
+  ResultFuture<void> call(UpdateRestaurantParams params) => _repository.updateRestaurant(
         restaurant: params.restaurant,
         restaurantData: params.restaurantData,
         action: params.action,

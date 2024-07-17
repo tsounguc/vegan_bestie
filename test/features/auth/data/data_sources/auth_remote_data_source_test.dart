@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/enums/update_user.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
-import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';

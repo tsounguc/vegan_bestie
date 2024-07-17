@@ -60,7 +60,7 @@ class TitledInputField extends StatelessWidget {
             }
             return null;
           },
-        )
+        ),
       ],
     );
   }

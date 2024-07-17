@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/restaurants_near_me_provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_restaurants_provider.dart';
-import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
-import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/horizontal_restaurant_card.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
@@ -42,7 +39,7 @@ class AllSavedRestaurantsPage extends StatelessWidget {
           appBar: AppBar(
             elevation: 0,
             surfaceTintColor: Colors.white,
-            title: Text(
+            title: const Text(
               'Saved Restaurants',
             ),
           ),
@@ -59,7 +56,7 @@ class AllSavedRestaurantsPage extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     final restaurant = restaurantsList[index];
                     final restaurantAddress = '${restaurant.streetAddress}, '
-                        '${restaurant.city}, ${restaurant.state} ${restaurant.zipCode}';
+                        '${restaurant.city}, ${restaurant.state}';
                     return StreamBuilder<List<RestaurantReview>>(
                       stream: serviceLocator<FirebaseFirestore>()
                           .collection('restaurantReviews')
@@ -90,15 +87,16 @@ class AllSavedRestaurantsPage extends StatelessWidget {
                             reviews: reviews,
                             weekdayText: const [],
                             userPosition: userPosition,
-                            imageUrl: restaurant.photos.isEmpty
-                                ? restaurant.thumbnail ?? ''
-                                : '$kImageBaseUrl${restaurant.photos[0]}'
-                                    '&key=$kGoogleApiKey',
+                            imageUrl: restaurant.thumbnail != null &&
+                                    restaurant.thumbnail != '_empty.image' &&
+                                    restaurant.thumbnail!.isNotEmpty
+                                ? restaurant.thumbnail!
+                                : '',
                             // geometry: restaurant.geometry,
                             restaurantId: restaurant.id,
                             restaurantName: restaurant.name.capitalizeFirstLetter(),
                             restaurantAddress: restaurantAddress,
-                            restaurantPrice: '',
+                            restaurantPrice: restaurant.price,
                             isOpenNow: true,
                           ),
                         );

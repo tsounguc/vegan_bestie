@@ -150,7 +150,7 @@ class UpdateRestaurantForm extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

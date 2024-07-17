@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
-import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/enums/update_food_product.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
@@ -12,7 +11,6 @@ import 'package:sheveegan/features/food_product/data/models/food_product_model.d
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/refactors/add_product_form.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
-import 'package:sheveegan/features/dashboard/presentation/views/dashboard.dart';
 
 class UpdateFoodProductScreen extends StatefulWidget {
   const UpdateFoodProductScreen({
@@ -123,11 +121,13 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
               ),
               onTap: () async {
                 pickedIngredientsImage = await CoreUtils.getImageFromCamera();
-                Navigator.of(context).pop();
-                if (pickedIngredientsImage != null) {
-                  await BlocProvider.of<FoodProductCubit>(
-                    context,
-                  ).readIngredientsFromImage(pickedIngredientsImage!);
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  if (pickedIngredientsImage != null) {
+                    await BlocProvider.of<FoodProductCubit>(
+                      context,
+                    ).readIngredientsFromImage(pickedIngredientsImage!);
+                  }
                 }
               },
             ),
@@ -150,11 +150,13 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
               ),
               onTap: () async {
                 pickedIngredientsImage = await CoreUtils.pickImageFromGallery();
-                Navigator.of(context).pop();
-                if (pickedIngredientsImage != null) {
-                  await BlocProvider.of<FoodProductCubit>(
-                    context,
-                  ).readIngredientsFromImage(pickedIngredientsImage!);
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  if (pickedIngredientsImage != null) {
+                    await BlocProvider.of<FoodProductCubit>(
+                      context,
+                    ).readIngredientsFromImage(pickedIngredientsImage!);
+                  }
                 }
               },
             ),
@@ -258,10 +260,10 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
       listener: (context, state) {
         if (state is FoodProductUploaded) {
           if (context.userProvider.user != null &&
-              context.userProvider.user!.savedProductsBarcodes!.contains(
+              context.userProvider.user!.savedProductsBarcodes.contains(
                 widget.product!.code,
               )) {
-            final savedBarcodes = context.userProvider.user!.savedProductsBarcodes!;
+            final savedBarcodes = context.userProvider.user!.savedProductsBarcodes;
 
             context.savedProductsProvider.savedProductsList = null;
             BlocProvider.of<FoodProductCubit>(
@@ -271,7 +273,7 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
             CoreUtils.showSnackBar(context, 'Product uploaded');
             Navigator.pushNamedAndRemoveUntil(
               context,
-              Dashboard.id,
+              '/',
               (Route<dynamic> route) => false,
             );
           }
@@ -280,7 +282,7 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
           CoreUtils.showSnackBar(context, 'Product uploaded');
           Navigator.pushNamedAndRemoveUntil(
             context,
-            Dashboard.id,
+            '/',
             (Route<dynamic> route) => false,
           );
         } else if (state is FoodProductError) {

@@ -119,6 +119,11 @@ class OpenHours extends Equatable {
 
   @override
   List<Object?> get props => [periods];
+
+  @override
+  String toString() {
+    return 'OpenHours: {\nperiods: $periods \n}';
+  }
 }
 
 class Period extends Equatable {
@@ -138,6 +143,11 @@ class Period extends Equatable {
 
   @override
   List<Object?> get props => [open, close];
+
+  @override
+  String toString() {
+    return 'Period{\nopen: $open,\nclose: $close\n}\n';
+  }
 }
 
 class OpenClose extends Equatable {
@@ -157,6 +167,11 @@ class OpenClose extends Equatable {
 
   @override
   List<Object?> get props => [day, time];
+
+  @override
+  String toString() {
+    return '{\nday: $day,\ntime: $time\n}\n';
+  }
 }
 
 class GeoLocation extends Equatable {

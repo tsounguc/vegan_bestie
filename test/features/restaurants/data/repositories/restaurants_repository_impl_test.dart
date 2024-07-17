@@ -74,7 +74,7 @@ void main() {
           ),
         ).thenAnswer((_) => Stream.value(testRestaurants));
         // Act
-        final result = await repositoryImpl.getRestaurantsNearMe(
+        final result = repositoryImpl.getRestaurantsNearMe(
           position: testPosition,
           radius: testRadius,
         );
@@ -111,7 +111,7 @@ void main() {
           ),
         ).thenAnswer((_) => Stream.error(testRestaurantsException));
         // Act
-        final result = await repositoryImpl.getRestaurantsNearMe(
+        final result = repositoryImpl.getRestaurantsNearMe(
           position: testPosition,
           radius: testRadius,
         );

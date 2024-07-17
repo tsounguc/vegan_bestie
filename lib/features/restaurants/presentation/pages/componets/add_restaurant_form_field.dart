@@ -56,7 +56,7 @@ class AddRestaurantFormField extends StatelessWidget {
         ),
         const SizedBox(height: 15),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: IField(
             controller: controller,
             hintText: hintText,

@@ -50,7 +50,7 @@ void main() {
   test(
       'given the GetRestaurantMarkers use case '
       'when instantiated '
-      'then call [RestaurantsRepository.getRestaurantsMarkers] is unsuccessfull'
+      'then call [RestaurantsRepository.getRestaurantsMarkers] is unsuccessful '
       'and return [RestaurantsFailure]', () async {
     // Arrange
     when(

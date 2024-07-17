@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomBackButton extends StatefulWidget {
@@ -26,9 +24,7 @@ class _CustomBackButtonState extends State<CustomBackButton> {
               padding: const EdgeInsets.only(left: 6),
               shape: const CircleBorder(),
               // minimumSize: const Size(45, 45),
-              backgroundColor: widget.color != Colors.white
-                  ? Colors.white
-                  : Colors.transparent,
+              backgroundColor: widget.color != Colors.white ? Colors.white : Colors.transparent,
             ),
             onPressed: () {
               Navigator.pop(context);

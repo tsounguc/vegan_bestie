@@ -14,7 +14,7 @@ class AppTheme {
   static Color lightAccentColor = Colors.greenAccent;
   static Color lightParticles = Colors.green.shade900;
 
-  static Color darkBackgroundColor = Color(0xFF121212);
+  static Color darkBackgroundColor = const Color(0xFF121212);
 
   static Color darkPrimaryColor = const Color(0XFF66b032);
   static Color darkSecondaryColor = Colors.green.shade300;
@@ -183,7 +183,6 @@ class AppTheme {
         side: const MaterialStatePropertyAll(
           BorderSide(
             color: Colors.white,
-            width: 1,
           ),
         ),
         elevation: const MaterialStatePropertyAll(2),

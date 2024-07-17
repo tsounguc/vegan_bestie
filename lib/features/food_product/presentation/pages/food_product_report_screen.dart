@@ -158,77 +158,83 @@ class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
                     itemBuilder: (context, index) {
                       final issue = listOfIssues[index];
                       return Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Theme(
-                            data: context.theme.copyWith(dividerColor: Colors.transparent),
-                            child: ExpansionTile(
-                              iconColor: context.theme.iconTheme.color,
-                              collapsedIconColor: context.theme.iconTheme.color,
-                              childrenPadding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 25,
-                              ),
-                              initiallyExpanded: issue.isSelected ?? false,
-                              controller: issue.expansionTileController,
-                              title: Text(
-                                issue.title,
-                                style: TextStyle(
-                                  color: context.theme.textTheme.bodyMedium?.color,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                              trailing: Theme(
-                                data: ThemeData(
-                                  unselectedWidgetColor: context.theme.iconTheme.color,
-                                ),
-                                child: Checkbox(
-                                  value: issue.isSelected,
-                                  fillColor: MaterialStatePropertyAll(
-                                      issue.isSelected! ? context.theme.primaryColor : Colors.transparent),
-                                  onChanged: (value) {
-                                    itemSelected = false;
-                                    setState(() {
-                                      issue.isSelected = value;
-                                      if (issue.isSelected == true && issue.title != 'Wrong Image') {
-                                        issue.expansionTileController.expand();
-                                      } else {
-                                        issue.expansionTileController.collapse();
-                                      }
-                                    });
-                                  },
-                                ),
-                              ),
-                              enabled: false,
-                              children: [
-                                if (issue.title != 'Wrong Image')
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 12.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              width: context.width * 0.70,
-                                              child: IField(
-                                                controller: issue.textEditingController!,
-                                                hintText: issue.hint,
-                                                hintStyle: TextStyle(fontSize: 12.sp),
-                                                borderRadius: BorderRadius.circular(10),
-                                                textInputAction: null,
-                                                maxLines: null,
-                                                minLines: index == 1 ? 2 : 4,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                              ],
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Theme(
+                          data: context.theme.copyWith(dividerColor: Colors.transparent),
+                          child: ExpansionTile(
+                            iconColor: context.theme.iconTheme.color,
+                            collapsedIconColor: context.theme.iconTheme.color,
+                            childrenPadding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 25,
                             ),
-                          ));
+                            initiallyExpanded: issue.isSelected ?? false,
+                            controller: issue.expansionTileController,
+                            title: Text(
+                              issue.title,
+                              style: TextStyle(
+                                color: context.theme.textTheme.bodyMedium?.color,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            trailing: Theme(
+                              data: ThemeData(
+                                unselectedWidgetColor: context.theme.iconTheme.color,
+                              ),
+                              child: Checkbox(
+                                value: issue.isSelected,
+                                fillColor: MaterialStatePropertyAll(
+                                  issue.isSelected! ? context.theme.primaryColor : Colors.transparent,
+                                ),
+                                onChanged: (value) {
+                                  itemSelected = false;
+                                  setState(() {
+                                    issue.isSelected = value;
+                                    if (issue.isSelected == true && issue.title != 'Wrong Image') {
+                                      issue.expansionTileController.expand();
+                                    } else {
+                                      issue.expansionTileController.collapse();
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                            enabled: false,
+                            children: [
+                              if (issue.title != 'Wrong Image')
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 12),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: context.width * 0.70,
+                                            child: IField(
+                                              controller: issue.textEditingController!,
+                                              hintText: issue.hint,
+                                              hintStyle: TextStyle(
+                                                fontSize: 12.sp,
+                                              ),
+                                              borderRadius: BorderRadius.circular(
+                                                10,
+                                              ),
+                                              textInputAction: null,
+                                              maxLines: null,
+                                              minLines: index == 1 ? 2 : 4,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      );
                     },
                   ),
                   const SizedBox(height: 70),
@@ -271,6 +277,7 @@ class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
   }
 }
 
+//ignore: must_be_immutable
 class IssueItem extends Equatable {
   IssueItem({
     required this.title,

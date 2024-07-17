@@ -16,9 +16,7 @@ import 'package:sheveegan/features/auth/domain/usecases/create_with_email_and_pa
 import 'package:sheveegan/features/auth/domain/usecases/delete_account.dart';
 import 'package:sheveegan/features/auth/domain/usecases/forgot_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/remove_food_product.dart';
-import 'package:sheveegan/features/auth/domain/usecases/remove_restaurant.dart';
 import 'package:sheveegan/features/auth/domain/usecases/save_food_product.dart';
-import 'package:sheveegan/features/auth/domain/usecases/save_restaurant.dart';
 import 'package:sheveegan/features/auth/domain/usecases/sign_in_with_email_and_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/update_user.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
@@ -27,14 +25,13 @@ import 'package:sheveegan/features/food_product/data/repositories/food_product_r
 import 'package:sheveegan/features/food_product/domain/repositories/food_product_repository.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/add_food_product.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/delete_report.dart';
-import 'package:sheveegan/features/food_product/domain/use_cases/fetch_reports.dart';
-import 'package:sheveegan/features/food_product/domain/use_cases/report_issue.dart';
-import 'package:sheveegan/features/food_product/domain/use_cases/update_food_product.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_product.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/fetch_reports.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/fetch_saved_products_list.dart';
-import 'package:sheveegan/features/food_product/domain/use_cases/get_saved_restaurants_list.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/read_ingredients_from_image.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/report_issue.dart';
 import 'package:sheveegan/features/food_product/domain/use_cases/scan_barcode.dart';
+import 'package:sheveegan/features/food_product/domain/use_cases/update_food_product.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 import 'package:sheveegan/features/notifications/data/datasources/notification_remote_data_source.dart';
 import 'package:sheveegan/features/notifications/data/repositories/notification_repo_impl.dart';
@@ -55,13 +52,14 @@ import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant
 import 'package:sheveegan/features/restaurants/domain/usecases/edit_restaurant_review.dart';
 
 // import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_details.dart';
-import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurant_reviews.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/get_saved_restaurants.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/save_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/submit_restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/unsave_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/update_restaurant.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
 part 'service_locator.main.dart';

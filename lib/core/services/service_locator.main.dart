@@ -139,15 +139,16 @@ Future<void> _initRestaurants() async {
         // getRestaurantDetails: serviceLocator(),
         // getUserLocation: serviceLocator(),
         getRestaurantsMarkers: serviceLocator(),
-        // getSavedRestaurantsList: serviceLocator(),
-        // saveRestaurant: serviceLocator(),
-        // removeRestaurant: serviceLocator(),
+
         addRestaurantReview: serviceLocator(),
         // getRestaurantReviews: serviceLocator(),
         deleteRestaurantReview: serviceLocator(),
         deleteRestaurantSubmission: serviceLocator(),
         editRestaurantReview: serviceLocator(),
         updateRestaurant: serviceLocator(),
+        saveRestaurant: serviceLocator(),
+        unSaveRestaurant: serviceLocator(),
+        getSavedRestaurants: serviceLocator(),
       ),
     )
     // Use cases
@@ -158,9 +159,9 @@ Future<void> _initRestaurants() async {
     // ..registerLazySingleton(() => GetRestaurantDetails(serviceLocator()))
     ..registerLazySingleton(() => GetUserLocation(serviceLocator()))
     ..registerLazySingleton(() => GetRestaurantsMarkers(serviceLocator()))
-    // ..registerLazySingleton(() => GetSavedRestaurantsList(serviceLocator()))
-    // ..registerLazySingleton(() => SaveRestaurant(serviceLocator()))
-    // ..registerLazySingleton(() => RemoveRestaurant(serviceLocator()))
+    ..registerLazySingleton(() => SaveRestaurant(serviceLocator()))
+    ..registerLazySingleton(() => UnSaveRestaurant(serviceLocator()))
+    ..registerLazySingleton(() => GetSavedRestaurants(serviceLocator()))
     ..registerLazySingleton(() => AddRestaurantReview(serviceLocator()))
     // ..registerLazySingleton(() => GetRestaurantReviews(serviceLocator()))
     ..registerLazySingleton(() => DeleteRestaurantReview(serviceLocator()))

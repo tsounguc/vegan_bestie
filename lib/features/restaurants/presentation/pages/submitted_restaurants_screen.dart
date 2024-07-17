@@ -7,9 +7,7 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/date_time_extensions.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/firebase_constants.dart';
-import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_submit_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_submit.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/add_restaurant_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
@@ -139,7 +137,7 @@ class SubmittedRestaurantsScreen extends StatelessWidget {
                                         fontSize: 12.sp,
                                         fontWeight: FontWeight.w500,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -219,7 +217,7 @@ class SubmittedRestaurantsScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),

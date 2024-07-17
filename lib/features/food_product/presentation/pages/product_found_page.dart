@@ -118,9 +118,7 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
                 expandedHeight: context.height * 0.46,
                 pinned: true,
                 // backgroundColor: Colors.white,
-                leading: CustomBackButton(
-                    // color: context.theme.iconTheme.color!,
-                    ),
+                leading: const CustomBackButton(),
                 actions: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -130,14 +128,14 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
                     ),
                     child: Icon(
                       Icons.bookmark,
-                      color: user!.savedProductsBarcodes!.contains(
+                      color: user!.savedProductsBarcodes.contains(
                         widget.product.code,
                       )
                           ? Colors.amberAccent
                           : Colors.white,
                       // size: 30,
                     ),
-                    onPressed: () => user.savedProductsBarcodes!.contains(
+                    onPressed: () => user.savedProductsBarcodes.contains(
                       widget.product.code,
                     )
                         ? removeFoodProduct(widget.product)

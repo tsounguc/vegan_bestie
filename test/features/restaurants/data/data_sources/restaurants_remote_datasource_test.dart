@@ -92,7 +92,7 @@ Future<void> main() async {
 
     final restaurantRef = firestore
         .collection(FirebaseConstants.businessesCollection)
-        .doc('${FirebaseConstants.restaurantsCollection}')
+        .doc(FirebaseConstants.restaurantsCollection)
         .collection('In Washington'.camelCase())
         .doc();
 
@@ -130,7 +130,7 @@ Future<void> main() async {
         // Assert
         final restaurantCollectionRef = await firestore
             .collection(FirebaseConstants.businessesCollection)
-            .doc('${FirebaseConstants.restaurantsCollection}')
+            .doc(FirebaseConstants.restaurantsCollection)
             .collection('In Washington'.camelCase())
             .get();
         expect(restaurantCollectionRef.docs.length, 1);

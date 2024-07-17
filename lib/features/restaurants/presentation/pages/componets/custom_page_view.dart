@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sheveegan/core/resources/media_resources.dart';
-import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
 
 class CustomPageView extends StatefulWidget {
   const CustomPageView({required this.restaurant, super.key});
@@ -100,15 +98,14 @@ class _CustomPageViewState extends State<CustomPageView> {
                       ),
                     ],
               image: widget.restaurant.photos[position].isNotEmpty &&
-                      !widget.restaurant.photos[position].contains('_empty.photo')
+                      !widget.restaurant.photos[position].contains(
+                        '_empty.photo',
+                      )
                   ? DecorationImage(
                       fit: BoxFit.fill,
-                      image: NetworkImage(widget.restaurant.photos[position]
-                          // ? '$kImageBaseUrl'
-                          //     '${widget.restaurant.photos[position]}'
-                          //     '&key=$kGoogleApiKey'
-
-                          ),
+                      image: NetworkImage(
+                        widget.restaurant.photos[position],
+                      ),
                     )
                   : const DecorationImage(
                       fit: BoxFit.contain,

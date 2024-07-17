@@ -26,6 +26,5 @@ class RestaurantSubmit extends Equatable {
   final DateTime submittedAt;
 
   @override
-  // TODO: implement props
   List<Object?> get props => [id, userId, userName, submittedRestaurant, submittedAt];
 }

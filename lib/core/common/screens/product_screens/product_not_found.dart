@@ -9,7 +9,6 @@ import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/food_product/data/models/food_product_model.dart';
 import 'package:sheveegan/features/food_product/data/models/food_product_report_model.dart';
-import 'package:sheveegan/features/food_product/domain/entities/food_product_report.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/update_food_product_screen.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 

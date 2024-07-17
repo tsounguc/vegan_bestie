@@ -4,7 +4,6 @@ import 'package:geolocator/geolocator.dart';
 
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/utils/constants.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 
 class DataSourceUtils {
   const DataSourceUtils._();

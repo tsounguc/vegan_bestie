@@ -33,7 +33,7 @@ void main() {
         ),
       ).thenAnswer((_) => Stream.value(const Right(testResponse)));
       // Act
-      final result = await useCase(params);
+      final result = useCase(params);
       // Assert
       expect(
         result,
@@ -62,7 +62,7 @@ void main() {
         () => repository.getRestaurantsNearMe(position: params.position, radius: params.radius),
       ).thenAnswer((_) => Stream.value(Left(testFailure)));
       // Act
-      final result = await useCase(params);
+      final result = useCase(params);
       // Assert
       expect(
         result,

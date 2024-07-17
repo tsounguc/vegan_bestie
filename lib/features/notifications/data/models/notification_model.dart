@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sheveegan/core/enums/notification_enum.dart';
 import 'package:sheveegan/core/extensions/enum_extensions.dart';
@@ -25,10 +23,6 @@ class NotificationModel extends Notification {
           seen: false,
           sentAt: DateTime.now(),
         );
-
-  // factory NotificationModel.fromJson(String source) => NotificationModel.fromMap(
-  //       jsonDecode(source) as DataMap,
-  //     );
 
   NotificationModel.fromMap(DataMap map)
       : super(
@@ -57,8 +51,6 @@ class NotificationModel extends Notification {
       sentAt: sentAt ?? this.sentAt,
     );
   }
-
-  // String toJson() => jsonEncode(toMap());
 
   DataMap toMap() => {
         'id': id,

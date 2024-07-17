@@ -29,7 +29,10 @@ class ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 8).copyWith(top: 3),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 3,
+                vertical: 8,
+              ).copyWith(top: 3),
               child: product.imageFrontUrl.isEmpty
                   ? Container(
                       decoration: BoxDecoration(

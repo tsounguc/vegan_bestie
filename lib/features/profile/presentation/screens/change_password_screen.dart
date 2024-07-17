@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/enums/update_user.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
@@ -84,13 +83,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
                 children: [
-                  Builder(builder: (context) {
-                    return ChangePasswordForm(
-                      oldPasswordController: oldPasswordController,
-                      passwordController: passwordController,
-                      onPasswordFieldSubmitted: (_) => saveChanges(context),
-                    );
-                  }),
+                  Builder(
+                    builder: (context) {
+                      return ChangePasswordForm(
+                        oldPasswordController: oldPasswordController,
+                        passwordController: passwordController,
+                        onPasswordFieldSubmitted: (_) => saveChanges(context),
+                      );
+                    },
+                  ),
                   const SizedBox(height: 30),
                   StatefulBuilder(
                     builder: (context, refresh) {

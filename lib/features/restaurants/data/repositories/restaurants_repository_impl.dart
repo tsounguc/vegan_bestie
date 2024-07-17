@@ -185,8 +185,18 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
   }
 
   @override
+  ResultFuture<List<Restaurant>> getSavedRestaurants({required List<String> restaurantsIdsList}) async {
+    try {
+      final result = await _remoteDataSource.getSavedRestaurants(restaurantsIdsList: restaurantsIdsList);
+      return Right(result);
+    } on SaveRestaurantException catch (e) {
+      return Left(SaveRestaurantFailure.fromException(e));
+    }
+  }
+
+  @override
   ResultVoid submitUpdateSuggestion({required Restaurant restaurant}) {
-    // TODO: implement submitUpdateSuggestion
+    // TODO(Submit-Update-Suggestion): implement submitUpdateSuggestion
     throw UnimplementedError();
   }
 }

@@ -106,7 +106,6 @@ class IField extends StatelessWidget {
               fontSize: 16.r,
               fontWeight: FontWeight.w400,
             ),
-        hintMaxLines: null,
       ),
     );
   }

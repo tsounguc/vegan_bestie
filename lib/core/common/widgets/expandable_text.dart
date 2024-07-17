@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
-import 'package:sheveegan/core/resources/colours.dart';
 
 class ExpandableText extends StatefulWidget {
   const ExpandableText(
@@ -32,7 +31,7 @@ class _ExpandableTextState extends State<ExpandableText> {
       children: [
         TextSpan(
           text: expanded ? 'show less' : 'show more',
-          style: TextStyle(
+          style: const TextStyle(
             // color: context.theme.primaryColor,
             fontWeight: FontWeight.w600,
           ),
@@ -49,7 +48,7 @@ class _ExpandableTextState extends State<ExpandableText> {
     textPainter = TextPainter(
       text: textSpan,
       textDirection: TextDirection.ltr,
-      maxLines: expanded ? null : 2,
+      maxLines: expanded ? null : 4,
     )..layout(
         maxWidth: widget.context.width * 0.9,
       );
@@ -65,7 +64,11 @@ class _ExpandableTextState extends State<ExpandableText> {
 
   @override
   Widget build(BuildContext context) {
-    var defaultStyle = TextStyle(height: 1.8, fontSize: 16, color: context.theme.textTheme.bodyMedium?.color);
+    final defaultStyle = TextStyle(
+      height: 1.8,
+      fontSize: 16,
+      color: context.theme.textTheme.bodyMedium?.color,
+    );
     return Container(
       child: textPainter.didExceedMaxLines
           ? RichText(

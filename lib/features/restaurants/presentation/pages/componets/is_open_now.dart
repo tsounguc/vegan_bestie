@@ -6,6 +6,7 @@ import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 
+//ignore: must_be_immutable
 class IsOpenNowWidget extends StatelessWidget {
   IsOpenNowWidget({
     required this.openHours,
@@ -24,11 +25,11 @@ class IsOpenNowWidget extends StatelessWidget {
   final OpenHours openHours;
 
   String getOpeningHours(BuildContext context) {
-    String status = 'Closed';
-    DateTime date = DateTime.now();
-    String from = '';
-    String to = '';
-    String todaysWeekDay = DateFormat('EEEE').format(date).toLowerCase().capitalizeFirstLetter();
+    var status = 'Closed';
+    final date = DateTime.now();
+    var from = '';
+    var to = '';
+    final todaysWeekDay = DateFormat('EEEE').format(date).toLowerCase().capitalizeFirstLetter();
 
     final daysOfTheWeek = context.daysOfTheWeek;
     var dayName = '';
@@ -40,13 +41,13 @@ class IsOpenNowWidget extends StatelessWidget {
         // Set day and open hours
         // Example: Monday 06:00 - 11:00
         if (period.open.time.isNotEmpty && period.close.time.isNotEmpty) {
-          DateFormat df = DateFormat.jm();
+          final df = DateFormat.jm();
 
           var openTime = period.open.time;
 
           final openHour = int.tryParse(openTime.split(':')[0]) ?? -1;
           final openMinutes = int.tryParse(openTime.split(':')[1]) ?? -1;
-          var fromDateTime = DateTime(
+          final fromDateTime = DateTime(
             date.year,
             date.month,
             date.day,
@@ -58,7 +59,7 @@ class IsOpenNowWidget extends StatelessWidget {
 
           final closeHour = int.tryParse(closeTime.split(':')[0]) ?? -1;
           final closeMinutes = int.tryParse(closeTime.split(':')[1]) ?? -1;
-          var toDateTime = DateTime(
+          final toDateTime = DateTime(
             date.year,
             date.month,
             date.day,
@@ -70,10 +71,8 @@ class IsOpenNowWidget extends StatelessWidget {
           closeTime = df.format(toDateTime);
 
           daysOpenHours = '$dayName $openTime - $closeTime';
-          print(daysOpenHours);
         } else {
           daysOpenHours = '$dayName Closed';
-          print(daysOpenHours);
         }
 
         weekdaysText.add(daysOpenHours);
@@ -81,7 +80,6 @@ class IsOpenNowWidget extends StatelessWidget {
         if (daysOfTheWeek[period.open.day] == todaysWeekDay) {
           from = period.open.time;
           final fromSplit = from.split(':');
-          print('Here: $from');
           final fromHour = int.tryParse(fromSplit[0]) ?? -1;
           final fromMinutes = int.tryParse(fromSplit[1]) ?? -1;
           var fromTime = DateTime(
@@ -136,12 +134,16 @@ class IsOpenNowWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: weekdaysText.isEmpty ? 0 : 12.r, horizontal: 12.r),
           elevation: weekdaysText.isEmpty ? 0 : 2,
         ).copyWith(
-          backgroundColor: MaterialStatePropertyAll(isFromDetailedPage && weekdaysText.isEmpty
-              ? context.theme.colorScheme.background
-              : context.theme.cardTheme.color),
-          surfaceTintColor: MaterialStatePropertyAll(isFromDetailedPage && weekdaysText.isEmpty
-              ? context.theme.colorScheme.background
-              : context.theme.cardTheme.color),
+          backgroundColor: MaterialStatePropertyAll(
+            isFromDetailedPage && weekdaysText.isEmpty
+                ? context.theme.colorScheme.background
+                : context.theme.cardTheme.color,
+          ),
+          surfaceTintColor: MaterialStatePropertyAll(
+            isFromDetailedPage && weekdaysText.isEmpty
+                ? context.theme.colorScheme.background
+                : context.theme.cardTheme.color,
+          ),
         ),
         onPressed: !(isFromDetailedPage && weekdaysText.isNotEmpty)
             ? null

@@ -146,7 +146,7 @@ class AddRestaurantForm extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -237,8 +237,8 @@ class AddRestaurantForm extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            tilePadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            childrenPadding: EdgeInsets.symmetric(horizontal: 10),
+            tilePadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
             children: [
               AddRestaurantFormField(
                 hintText:

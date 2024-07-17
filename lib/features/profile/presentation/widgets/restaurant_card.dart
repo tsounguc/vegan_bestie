@@ -2,8 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
-import 'package:sheveegan/core/utils/constants.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant_details.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 
 class RestaurantCard extends StatelessWidget {
   const RestaurantCard({
@@ -12,14 +11,12 @@ class RestaurantCard extends StatelessWidget {
     super.key,
   });
 
-  final RestaurantDetails restaurant;
+  final Restaurant restaurant;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = restaurant.photos.isEmpty
-        ? restaurant.icon
-        : '$kImageBaseUrl${restaurant.photos[0].photoReference}&key=$kGoogleApiKey';
+    final imageUrl = restaurant.thumbnail != null && restaurant.thumbnail!.isNotEmpty ? restaurant.thumbnail : '';
     return GestureDetector(
       onTap: onTap,
       child: Card(
@@ -32,8 +29,11 @@ class RestaurantCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 8).copyWith(top: 3),
-              child: imageUrl.isEmpty
+              padding: const EdgeInsets.symmetric(
+                horizontal: 3,
+                vertical: 8,
+              ).copyWith(top: 3),
+              child: imageUrl!.isEmpty
                   ? Container(
                       decoration: BoxDecoration(
                         color: Colors.green.shade50,

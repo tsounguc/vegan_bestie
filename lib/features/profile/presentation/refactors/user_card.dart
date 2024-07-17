@@ -11,8 +11,7 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.currentUser!;
-    final userImage =
-        user.photoUrl == null || user.photoUrl!.isEmpty ? null : user.photoUrl;
+    final userImage = user.photoUrl == null || user.photoUrl!.isEmpty ? null : user.photoUrl;
     return GestureDetector(
       onTap: () => Navigator.of(context).pushNamed(
         EditProfileScreen.id,
@@ -72,7 +71,7 @@ class UserCard extends StatelessWidget {
               SizedBox(
                 width: 40.r,
                 child: const Icon(Icons.edit_outlined),
-              )
+              ),
             ],
           ),
         ),
