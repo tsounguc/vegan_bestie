@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:sheveegan/core/common/widgets/popup_item.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/extensions/date_time_extensions.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/utils/constants.dart';
@@ -39,9 +40,11 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var timestamp = DateFormat('MMM d, yyyy').format(review.createdAt.toLocal());
+    var timestamp = review.createdAt.timeAgo;
+    // DateFormat('MMM d, yyyy').format(review.createdAt.toLocal());
     if (review.updatedAt.toLocal().isAfter(review.createdAt.toLocal())) {
-      timestamp = 'Edited ${DateFormat('MMM d, yyyy').format(review.updatedAt.toLocal())}';
+      timestamp = 'Edited ' + review.updatedAt.timeAgo;
+      // 'Edited ${DateFormat('MMM d, yyyy').format(review.updatedAt.toLocal())}';
     }
     return Card(
       // surfaceTintColor: Colors.white,
@@ -62,10 +65,12 @@ class ReviewCard extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.grey,
-                      backgroundImage: review.userProfilePic.isEmpty || review.userProfilePic == kDefaultAvatar
+                      backgroundImage: review.userProfilePic.isEmpty ||
+                              review.userProfilePic == kDefaultAvatar
                           ? null
                           : NetworkImage(review.userProfilePic),
-                      child: review.userProfilePic.isNotEmpty && review.userProfilePic != kDefaultAvatar
+                      child: review.userProfilePic.isNotEmpty &&
+                              review.userProfilePic != kDefaultAvatar
                           ? null
                           : const Icon(
                               Icons.person_outline,
@@ -134,23 +139,26 @@ class ReviewCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  review.title.capitalizeFirstLetter(),
-                  style: TextStyle(
-                    // color: Colors.grey.shade800,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 3),
+                  child: Text(
+                    review.title.capitalizeFirstLetter(),
+                    style: TextStyle(
+                      // color: Colors.grey.shade800,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 5),
-                Text(
-                  timestamp,
-                  style: TextStyle(
-                    color: context.theme.textTheme.bodySmall?.color,
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
+                // Text(
+                //   timestamp,
+                //   style: TextStyle(
+                //     color: context.theme.textTheme.bodySmall?.color,
+                //     fontSize: 10.sp,
+                //     fontWeight: FontWeight.normal,
+                //   ),
+                // ),
               ],
             ),
             const SizedBox(height: 5),
@@ -165,14 +173,33 @@ class ReviewCard extends StatelessWidget {
               unratedColor: Colors.grey.shade400,
               itemSize: 16,
             ),
-            const SizedBox(height: 5),
-            Text(
-              review.review,
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.normal,
+            const SizedBox(height: 15),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                review.text,
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
             ),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  timestamp,
+                  style: TextStyle(
+                    color: context.theme.textTheme.bodySmall?.color,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),

@@ -29,11 +29,12 @@ class IsOpenNowWidget extends StatelessWidget {
     final date = DateTime.now();
     var from = '';
     var to = '';
-    final todaysWeekDay = DateFormat('EEEE').format(date).toLowerCase().capitalizeFirstLetter();
+    final todaysWeekDay =
+        DateFormat('EEEE').format(date).toLowerCase().capitalizeFirstLetter();
 
     final daysOfTheWeek = context.daysOfTheWeek;
     var dayName = '';
-    var daysOpenHours = '';
+    var dayOpenHours = '';
     if (openHours.periods.isNotEmpty) {
       for (final period in openHours.periods) {
         dayName = daysOfTheWeek[period.open.day]!;
@@ -43,8 +44,8 @@ class IsOpenNowWidget extends StatelessWidget {
         if (period.open.time.isNotEmpty && period.close.time.isNotEmpty) {
           final df = DateFormat.jm();
 
+          // format openTime
           var openTime = period.open.time;
-
           final openHour = int.tryParse(openTime.split(':')[0]) ?? -1;
           final openMinutes = int.tryParse(openTime.split(':')[1]) ?? -1;
           final fromDateTime = DateTime(
@@ -54,9 +55,10 @@ class IsOpenNowWidget extends StatelessWidget {
             openHour,
             openMinutes,
           );
+          openTime = df.format(fromDateTime);
 
+          // format closeTime
           var closeTime = period.close.time;
-
           final closeHour = int.tryParse(closeTime.split(':')[0]) ?? -1;
           final closeMinutes = int.tryParse(closeTime.split(':')[1]) ?? -1;
           final toDateTime = DateTime(
@@ -66,17 +68,17 @@ class IsOpenNowWidget extends StatelessWidget {
             closeHour,
             closeMinutes,
           );
-
-          openTime = df.format(fromDateTime);
           closeTime = df.format(toDateTime);
 
-          daysOpenHours = '$dayName $openTime - $closeTime';
+          dayOpenHours = '$dayName $openTime - $closeTime';
         } else {
-          daysOpenHours = '$dayName Closed';
+          dayOpenHours = '$dayName Closed';
         }
 
-        weekdaysText.add(daysOpenHours);
+        weekdaysText.add(dayOpenHours);
+        // print('${weekdaysText}\n');
 
+        // check if is open now
         if (daysOfTheWeek[period.open.day] == todaysWeekDay) {
           from = period.open.time;
           final fromSplit = from.split(':');
@@ -89,6 +91,7 @@ class IsOpenNowWidget extends StatelessWidget {
             fromHour,
             fromMinutes,
           );
+
           to = period.close.time;
           final toHour = int.tryParse(to.split(':')[0]) ?? -1;
           final toMinutes = int.tryParse(to.split(':')[1]) ?? -1;
@@ -100,7 +103,10 @@ class IsOpenNowWidget extends StatelessWidget {
             toMinutes,
           );
 
-          if (fromHour == -1 || fromMinutes == -1 || toHour == -1 || toMinutes == -1) {
+          if (fromHour == -1 ||
+              fromMinutes == -1 ||
+              toHour == -1 ||
+              toMinutes == -1) {
             status = '';
           } else {
             if (toTime.isBefore(fromTime)) {
@@ -131,7 +137,8 @@ class IsOpenNowWidget extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
           ),
-          padding: EdgeInsets.symmetric(vertical: weekdaysText.isEmpty ? 0 : 12.r, horizontal: 12.r),
+          padding: EdgeInsets.symmetric(
+              vertical: weekdaysText.isEmpty ? 0 : 12.r, horizontal: 12.r),
           elevation: weekdaysText.isEmpty ? 0 : 2,
         ).copyWith(
           backgroundColor: MaterialStatePropertyAll(

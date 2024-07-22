@@ -4,7 +4,7 @@ class RestaurantReview extends Equatable {
   const RestaurantReview({
     required this.id,
     required this.title,
-    required this.review,
+    required this.text,
     required this.rating,
     required this.createdAt,
     required this.updatedAt,
@@ -18,7 +18,7 @@ class RestaurantReview extends Equatable {
       : this(
           id: '_empty.id',
           title: '_empty.title',
-          review: '_empty.id',
+          text: '_empty.id',
           rating: 0,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
@@ -30,7 +30,7 @@ class RestaurantReview extends Equatable {
 
   final String id;
   final String title;
-  final String review;
+  final String text;
   final double rating;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -43,7 +43,7 @@ class RestaurantReview extends Equatable {
   List<Object?> get props => [
         id,
         title,
-        review,
+        text,
         rating,
         createdAt,
         updatedAt,

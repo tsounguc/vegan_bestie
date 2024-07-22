@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/extensions/string_extensions.dart';
 
 class RatingAndReviewsCountWidget extends StatelessWidget {
   const RatingAndReviewsCountWidget({
@@ -37,18 +38,18 @@ class RatingAndReviewsCountWidget extends StatelessWidget {
             Text(
               '${rating.toStringAsPrecision(2)} out of 5',
               style: TextStyle(
-                color: context.theme.textTheme.bodySmall?.color,
+                color: context.theme.textTheme.titleSmall?.color,
                 fontSize: 11.sp,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.normal,
               ),
             ),
           ],
         ),
         const SizedBox(height: 5),
         Padding(
-          padding: const EdgeInsets.only(left: 5),
+          padding: const EdgeInsets.only(left: 4),
           child: Text(
-            '$reviewCount Reviews',
+            '$reviewCount review'.pluralize(reviewCount, ending: 's'),
             style: TextStyle(
               color: Colors.grey.shade500,
               fontSize: 11.sp,

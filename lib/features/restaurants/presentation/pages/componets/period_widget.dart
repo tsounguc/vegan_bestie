@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/open_hour_field.dart';
 
 class PeriodWidget extends StatelessWidget {
@@ -38,9 +39,10 @@ class PeriodWidget extends StatelessWidget {
             ),
             CloseButton(
               onPressed: onRemoveButtonPressed,
-              style: const ButtonStyle(
-                iconColor: MaterialStatePropertyAll(Colors.black54),
-                iconSize: MaterialStatePropertyAll(20),
+              style: ButtonStyle(
+                iconColor:
+                    MaterialStatePropertyAll(context.theme.iconTheme.color),
+                iconSize: const MaterialStatePropertyAll(20),
               ),
             ),
           ],

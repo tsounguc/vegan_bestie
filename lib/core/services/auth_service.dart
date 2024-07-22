@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+
+// import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthServiceContract<T, U> {
@@ -9,7 +10,7 @@ abstract class AuthServiceContract<T, U> {
 
   Future<U> signInWithGoogle();
 
-  Future<U> signInWithFacebook();
+  // Future<U> signInWithFacebook();
 
   Future<U> createWithEmailAndPassword(
     String userName,
@@ -22,9 +23,11 @@ abstract class AuthServiceContract<T, U> {
   Future<void> signOut();
 }
 
-class FireBaseAuthServiceImpl implements AuthServiceContract<User?, UserCredential> {
+class FireBaseAuthServiceImpl
+    implements AuthServiceContract<User?, UserCredential> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FacebookAuth facebookAuth = FacebookAuth.instance;
+
+  // final FacebookAuth facebookAuth = FacebookAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final DateTime timeStamp = DateTime.now();
@@ -80,47 +83,47 @@ class FireBaseAuthServiceImpl implements AuthServiceContract<User?, UserCredenti
   }
 
   @override
-  Future<UserCredential> signInWithFacebook() async {
-    final facebookLoginResult = await facebookAuth.login(
-      permissions: ['email', 'public_profile'],
-    );
-    // debugPrint('Facebook token userID: '
-    //     '${facebookLoginResult.accessToken?.grantedPermissions} ');
-    //
-    // final graphResponse = await http.get(Uri.parse(
-    //     'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${facebookLoginResult.accessToken?.token}'));
-    // final profile = jsonDecode(graphResponse.body);
-    // debugPrint("Profile is equal to $profile");
-
-    if (facebookLoginResult.accessToken != null) {
-      final AuthCredential authCredential = FacebookAuthProvider.credential(
-        facebookLoginResult.accessToken!.token,
-      );
-      final userCredential = await _auth.signInWithCredential(authCredential);
-
-      debugPrint('facebook profile picture: ${userCredential.user?.photoURL}');
-      final userdata = await facebookAuth.getUserData(
-        fields: 'picture.with(200).height(200)',
-      );
-      debugPrint(
-        "facebook profile picture: ${userdata['picture']['data']['url']}",
-      );
-
-      if (userCredential.user == null && userCredential.user?.photoURL == null ||
-          userCredential.user!.photoURL!.contains('https://graph.facebook.com/')) {
-        await userCredential.user
-            ?.updatePhotoURL(userdata['picture']['data']['url'] as String)
-            .then((value) => storeUserInfo(userCredential));
-        await _auth.signOut();
-        await _auth.signInWithCredential(authCredential);
-      }
-
-      await storeUserInfo(userCredential);
-      return userCredential;
-    } else {
-      throw Exception('Failed to login');
-    }
-  }
+  // Future<UserCredential> signInWithFacebook() async {
+  //   final facebookLoginResult = await facebookAuth.login(
+  //     permissions: ['email', 'public_profile'],
+  //   );
+  //   // debugPrint('Facebook token userID: '
+  //   //     '${facebookLoginResult.accessToken?.grantedPermissions} ');
+  //   //
+  //   // final graphResponse = await http.get(Uri.parse(
+  //   //     'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${facebookLoginResult.accessToken?.token}'));
+  //   // final profile = jsonDecode(graphResponse.body);
+  //   // debugPrint("Profile is equal to $profile");
+  //
+  //   if (facebookLoginResult.accessToken != null) {
+  //     final AuthCredential authCredential = FacebookAuthProvider.credential(
+  //       facebookLoginResult.accessToken!.token,
+  //     );
+  //     final userCredential = await _auth.signInWithCredential(authCredential);
+  //
+  //     debugPrint('facebook profile picture: ${userCredential.user?.photoURL}');
+  //     final userdata = await facebookAuth.getUserData(
+  //       fields: 'picture.with(200).height(200)',
+  //     );
+  //     debugPrint(
+  //       "facebook profile picture: ${userdata['picture']['data']['url']}",
+  //     );
+  //
+  //     if (userCredential.user == null && userCredential.user?.photoURL == null ||
+  //         userCredential.user!.photoURL!.contains('https://graph.facebook.com/')) {
+  //       await userCredential.user
+  //           ?.updatePhotoURL(userdata['picture']['data']['url'] as String)
+  //           .then((value) => storeUserInfo(userCredential));
+  //       await _auth.signOut();
+  //       await _auth.signInWithCredential(authCredential);
+  //     }
+  //
+  //     await storeUserInfo(userCredential);
+  //     return userCredential;
+  //   } else {
+  //     throw Exception('Failed to login');
+  //   }
+  // }
 
   @override
   Future<User?> currentUser() async {
@@ -140,7 +143,7 @@ class FireBaseAuthServiceImpl implements AuthServiceContract<User?, UserCredenti
       await _googleSignIn.disconnect();
       await _googleSignIn.signOut();
     }
-    await facebookAuth.logOut();
+    // await facebookAuth.logOut();
     await _auth.signOut();
   }
 

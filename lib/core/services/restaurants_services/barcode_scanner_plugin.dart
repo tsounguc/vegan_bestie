@@ -16,7 +16,7 @@ class BarcodeScannerPlugin {
     );
     debugPrint('Barcode: $barcodeString');
     if (barcodeString == '-1') {
-      throw const ScanException(message: 'Scan Cancelled');
+      throw const ScanException(message: 'Scan Canceled');
     }
     if (int.tryParse(barcodeString) == null || barcodeString.isEmpty
         // ||

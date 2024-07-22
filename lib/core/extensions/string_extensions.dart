@@ -5,18 +5,31 @@ extension StringExtension on String {
         '****',
       );
 
-  String capitalizeFirstLetter() => isEmpty ? '' : '${this[0].toUpperCase()}${substring(1)}';
+  String pluralize(int size, {required String ending}) =>
+      size > 1 ? this + ending : this;
 
-  String capitalizeEveryWord(String splitPattern) =>
-      split(splitPattern).map((word) => word.capitalizeFirstLetter()).join(splitPattern);
+  String capitalizeFirstLetter() =>
+      isEmpty ? '' : '${this[0].toUpperCase()}${substring(1)}';
 
-  String lowerCaseFirstLetter() => isEmpty ? '' : '${this[0].toLowerCase()}${substring(1)}';
+  String capitalizeEveryWord(String splitPattern) => split(splitPattern)
+      .map((word) => word.capitalizeFirstLetter())
+      .join(splitPattern);
 
-  String lowerCaseEveryWord(String splitPattern) =>
-      isEmpty ? '' : split(splitPattern).map((word) => word.lowerCaseFirstLetter()).join(splitPattern);
+  String lowerCaseFirstLetter() =>
+      isEmpty ? '' : '${this[0].toLowerCase()}${substring(1)}';
 
-  String camelCase() =>
-      isEmpty ? '' : toLowerCase().capitalizeEveryWord(' ').lowerCaseFirstLetter().replaceAll(' ', '');
+  String lowerCaseEveryWord(String splitPattern) => isEmpty
+      ? ''
+      : split(splitPattern)
+          .map((word) => word.lowerCaseFirstLetter())
+          .join(splitPattern);
+
+  String camelCase() => isEmpty
+      ? ''
+      : toLowerCase()
+          .capitalizeEveryWord(' ')
+          .lowerCaseFirstLetter()
+          .replaceAll(' ', '');
 
   String snakeCase() => isEmpty ? '' : toLowerCase().replaceAll(' ', '_');
 

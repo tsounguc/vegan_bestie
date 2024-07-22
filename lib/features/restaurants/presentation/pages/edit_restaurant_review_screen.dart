@@ -28,10 +28,12 @@ class EditRestaurantReviewScreen extends StatefulWidget {
   static const String id = '/editRestaurantReviewScreen';
 
   @override
-  State<EditRestaurantReviewScreen> createState() => _EditRestaurantReviewScreenState();
+  State<EditRestaurantReviewScreen> createState() =>
+      _EditRestaurantReviewScreenState();
 }
 
-class _EditRestaurantReviewScreenState extends State<EditRestaurantReviewScreen> {
+class _EditRestaurantReviewScreenState
+    extends State<EditRestaurantReviewScreen> {
   final titleController = TextEditingController();
   final reviewController = TextEditingController();
 
@@ -41,7 +43,7 @@ class _EditRestaurantReviewScreenState extends State<EditRestaurantReviewScreen>
   void initState() {
     rating = widget.review.rating;
     titleController.text = widget.review.title;
-    reviewController.text = widget.review.review;
+    reviewController.text = widget.review.text;
     super.initState();
   }
 
@@ -55,7 +57,7 @@ class _EditRestaurantReviewScreenState extends State<EditRestaurantReviewScreen>
 
   bool get titleChanged => titleController.text.trim() != widget.review.title;
 
-  bool get reviewChanged => reviewController.text.trim() != widget.review.review;
+  bool get reviewChanged => reviewController.text.trim() != widget.review.text;
 
   bool get nothingChanged => !ratingChanged && !titleChanged && !reviewChanged;
 
@@ -66,7 +68,7 @@ class _EditRestaurantReviewScreenState extends State<EditRestaurantReviewScreen>
           : context.currentUser == null
               ? 'Anonymous'
               : context.currentUser!.name,
-      review: reviewController.text.trim(),
+      text: reviewController.text.trim(),
       rating: rating,
       username: context.currentUser?.name,
       userProfilePic: context.currentUser?.photoUrl ?? kDefaultAvatar,
@@ -169,8 +171,12 @@ class _EditRestaurantReviewScreenState extends State<EditRestaurantReviewScreen>
                                     submitChanges(context);
                                   },
                             label: 'Submit',
-                            backgroundColor:
-                                nothingChanged ? Colors.grey : Theme.of(context).buttonTheme.colorScheme?.primary,
+                            backgroundColor: nothingChanged
+                                ? Colors.grey
+                                : Theme.of(context)
+                                    .buttonTheme
+                                    .colorScheme
+                                    ?.primary,
                             textColor: Colors.white,
                           );
                   },

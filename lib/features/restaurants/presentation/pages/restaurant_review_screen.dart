@@ -35,14 +35,16 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
           : context.currentUser == null
               ? 'Anonymous'
               : context.currentUser!.name,
-      review: reviewController.text.trim(),
+      text: reviewController.text.trim(),
       rating: rating,
       restaurantId: widget.restaurant.id,
       username: context.currentUser?.name,
-      userId: context.currentUser != null ? context.currentUser!.uid : 'Anonymous',
+      userId:
+          context.currentUser != null ? context.currentUser!.uid : 'Anonymous',
       userProfilePic: context.currentUser?.photoUrl ?? kDefaultAvatar,
     );
-    BlocProvider.of<RestaurantsCubit>(context).addRestaurantReview(restaurantReview);
+    BlocProvider.of<RestaurantsCubit>(context)
+        .addRestaurantReview(restaurantReview);
   }
 
   @override
@@ -127,7 +129,8 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
                   builder: (context, refresh) {
                     titleController.addListener(() => refresh(() {}));
                     reviewController.addListener(() => refresh(() {}));
-                    final canSave = titleController.text.trim().isEmpty || reviewController.text.trim().isEmpty;
+                    final canSave = titleController.text.trim().isEmpty ||
+                        reviewController.text.trim().isEmpty;
                     return state is AddingRestaurantReview
                         ? const Center(child: CircularProgressIndicator())
                         : LongButton(
@@ -135,8 +138,12 @@ class _RestaurantReviewScreenState extends State<RestaurantReviewScreen> {
                               submitReview(context);
                             },
                             label: 'Submit',
-                            backgroundColor:
-                                canSave ? Colors.grey : Theme.of(context).buttonTheme.colorScheme?.primary,
+                            backgroundColor: canSave
+                                ? Colors.grey
+                                : Theme.of(context)
+                                    .buttonTheme
+                                    .colorScheme
+                                    ?.primary,
                             textColor: Colors.white,
                           );
                   },

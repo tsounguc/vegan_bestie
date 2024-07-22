@@ -9,7 +9,8 @@ class Strings {
   static const toolTipVegetarianMessage = "It's Vegetarian 🙂 "
       '\nNon-vegan ingredients: ';
 
-  static const toolTipNonVeganMessage = "It's not Vegan or Vegetarian 😞\nContains ";
+  static const toolTipNonVeganMessage =
+      "It's not Vegan or Vegetarian 😞\nContains ";
   static const scanCanceledMessage = 'Scan Canceled';
   static const macrosText = 'Macros';
   static const proteinText = 'Protein';
@@ -20,7 +21,7 @@ class Strings {
   static const ingredientsNotFoundText = 'INGREDIENTS NOT FOUND';
 
   static const distanceUnitText = 'mi';
-  static const reviewsText = 'reviews';
+  static const reviewsText = 'review';
 
   static const directionsText = 'Directions';
   static const callText = 'Call';

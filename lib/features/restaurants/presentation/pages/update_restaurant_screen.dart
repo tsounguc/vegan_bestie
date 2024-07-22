@@ -27,7 +27,8 @@ class UpdateRestaurantScreen extends StatefulWidget {
 }
 
 class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
-  final TextEditingController restaurantNameController = TextEditingController();
+  final TextEditingController restaurantNameController =
+      TextEditingController();
   final TextEditingController streetAddressController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController stateController = TextEditingController();
@@ -35,7 +36,8 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController websiteController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final ExpansionTileController veganStatusExpansionController = ExpansionTileController();
+  final ExpansionTileController veganStatusExpansionController =
+      ExpansionTileController();
   bool? veganStatus;
   bool? hasVeganOptions;
   bool? takeout;
@@ -45,7 +47,8 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
   List<OpenDayItem> openDaysList = [];
   File? pickedImage;
 
-  Future<void> showRestaurantThumbnailPickerOptions(BuildContext context) async {
+  Future<void> showRestaurantThumbnailPickerOptions(
+      BuildContext context) async {
     await showModalBottomSheet<void>(
       context: context,
       builder: (context) {
@@ -105,26 +108,34 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
     );
   }
 
-  bool get restaurantNameChanged => widget.restaurant!.name != restaurantNameController.text.trim();
+  bool get restaurantNameChanged =>
+      widget.restaurant!.name != restaurantNameController.text.trim();
 
-  bool get streetAddressChanged => widget.restaurant!.streetAddress != streetAddressController.text.trim();
+  bool get streetAddressChanged =>
+      widget.restaurant!.streetAddress != streetAddressController.text.trim();
 
   bool get cityChanged => widget.restaurant!.city != cityController.text.trim();
 
-  bool get stateChanged => widget.restaurant!.state != stateController.text.trim();
+  bool get stateChanged =>
+      widget.restaurant!.state != stateController.text.trim();
 
-  bool get zipcodeChanged => widget.restaurant!.zipCode != zipcodeController.text.trim();
+  bool get zipcodeChanged =>
+      widget.restaurant!.zipCode != zipcodeController.text.trim();
 
-  bool get phoneNumberChanged => widget.restaurant!.phoneNumber != phoneNumberController.text.trim();
+  bool get phoneNumberChanged =>
+      widget.restaurant!.phoneNumber != phoneNumberController.text.trim();
 
-  bool get websiteChanged => widget.restaurant!.websiteUrl != websiteController.text.trim();
+  bool get websiteChanged =>
+      widget.restaurant!.websiteUrl != websiteController.text.trim();
 
   bool get descriptionChanged =>
-      descriptionController.text.isNotEmpty && widget.restaurant!.description != descriptionController.text.trim();
+      descriptionController.text.isNotEmpty &&
+      widget.restaurant!.description != descriptionController.text.trim();
 
   bool get veganStatusChanged => widget.restaurant!.veganStatus != veganStatus;
 
-  bool get hasVeganOptionsChanged => widget.restaurant!.hasVeganOptions != hasVeganOptions;
+  bool get hasVeganOptionsChanged =>
+      widget.restaurant!.hasVeganOptions != hasVeganOptions;
 
   bool get takeoutChanged => widget.restaurant!.takeout != takeout;
 
@@ -160,7 +171,8 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
       !dineInChanged &&
       !deliveryChanged &&
       !imageChanged &&
-      !openHoursChanged;
+      !openHoursChanged &&
+      !websiteChanged;
 
   @override
   void initState() {
@@ -171,13 +183,16 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
     zipcodeController.text = widget.restaurant!.zipCode;
     phoneNumberController.text = widget.restaurant!.phoneNumber;
     descriptionController.text = widget.restaurant!.description ?? '';
+    websiteController.text = widget.restaurant!.websiteUrl;
     veganStatus = widget.restaurant!.veganStatus;
     hasVeganOptions = widget.restaurant!.hasVeganOptions;
     takeout = widget.restaurant!.takeout;
     dineIn = widget.restaurant!.dineIn;
     delivery = widget.restaurant!.delivery;
 
-    for (var dayIndex = 0; dayIndex < context.daysOfTheWeek.length; dayIndex++) {
+    for (var dayIndex = 0;
+        dayIndex < context.daysOfTheWeek.length;
+        dayIndex++) {
       final periodItems = <PeriodItem>[
         PeriodItem(
           day: dayIndex,
@@ -215,8 +230,10 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
         final openDay = openDaysList[d];
         for (var p = 0; p < openDaysList[d].periodItems.length; p++) {
           final dayIndex = openDay.periodItems[p].day;
-          final openTime = openDay.periodItems[p].openTextEditingController.text;
-          final closeTime = openDay.periodItems[p].closeTextEditingController.text;
+          final openTime =
+              openDay.periodItems[p].openTextEditingController.text;
+          final closeTime =
+              openDay.periodItems[p].closeTextEditingController.text;
 
           periods.add(
             PeriodModel(
@@ -385,7 +402,9 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             surfaceTintColor: Colors.white,
-            title: Text(context.currentUser?.isAdmin == true ? 'Edit' : 'Suggest an edit'),
+            title: Text(context.currentUser?.isAdmin == true
+                ? 'Edit'
+                : 'Suggest an edit'),
             centerTitle: true,
           ),
           body: Container(
@@ -416,7 +435,8 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                                     pickedImage!,
                                     fit: BoxFit.contain,
                                   )
-                                : widget.restaurant?.thumbnail != null && widget.restaurant!.thumbnail!.isNotEmpty
+                                : widget.restaurant?.thumbnail != null &&
+                                        widget.restaurant!.thumbnail!.isNotEmpty
                                     ? Image.network(
                                         widget.restaurant!.thumbnail!,
                                         fit: BoxFit.contain,
@@ -440,12 +460,14 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                           ),
                           IconButton(
                             onPressed: () async {
-                              await showRestaurantThumbnailPickerOptions(context);
+                              await showRestaurantThumbnailPickerOptions(
+                                  context);
                             },
                             icon: Icon(
                               (pickedImage != null ||
                                       (widget.restaurant?.thumbnail != null &&
-                                          widget.restaurant!.thumbnail!.isNotEmpty))
+                                          widget.restaurant!.thumbnail!
+                                              .isNotEmpty))
                                   ? Icons.edit
                                   : Icons.add_a_photo,
                               color: Colors.white,
@@ -467,7 +489,8 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                     descriptionController: descriptionController,
                     veganStatus: veganStatus,
                     hasVeganOptions: hasVeganOptions,
-                    veganStatusExpansionController: veganStatusExpansionController,
+                    veganStatusExpansionController:
+                        veganStatusExpansionController,
                     onChangedIsVeganYes: (bool? value) {
                       setState(() {
                         veganStatus = value;
@@ -550,9 +573,11 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                       ),
                       const SizedBox(height: 10),
                       Theme(
-                        data: context.theme.copyWith(dividerColor: Colors.transparent),
+                        data: context.theme
+                            .copyWith(dividerColor: Colors.transparent),
                         child: ExpansionTile(
-                          collapsedBackgroundColor: context.theme.cardTheme.color,
+                          collapsedBackgroundColor:
+                              context.theme.cardTheme.color,
                           iconColor: context.theme.iconTheme.color,
                           collapsedIconColor: context.theme.iconTheme.color,
                           title: Text(
@@ -592,8 +617,10 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                                             final periodItem = PeriodItem(
                                               day: index,
                                               periods: const [],
-                                              openTextEditingController: TextEditingController(),
-                                              closeTextEditingController: TextEditingController(),
+                                              openTextEditingController:
+                                                  TextEditingController(),
+                                              closeTextEditingController:
+                                                  TextEditingController(),
                                             );
                                             openDay.periodItems.add(
                                               periodItem,
@@ -619,7 +646,8 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                   const SizedBox(height: 50),
                   StatefulBuilder(
                     builder: (context, refresh) {
-                      restaurantNameController.addListener(() => refresh(() {}));
+                      restaurantNameController
+                          .addListener(() => refresh(() {}));
                       streetAddressController.addListener(() => refresh(() {}));
                       cityController.addListener(() => refresh(() {}));
                       stateController.addListener(() => refresh(() {}));
@@ -640,7 +668,9 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                       return state is UpdatingRestaurant
                           ? const Center(child: CircularProgressIndicator())
                           : LongButton(
-                              onPressed: nothingChanged ? null : () => submitChanges(context),
+                              onPressed: nothingChanged
+                                  ? null
+                                  : () => submitChanges(context),
                               label: 'Submit',
                               backgroundColor: nothingChanged
                                   ? Colors.grey

@@ -39,7 +39,7 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   flutter_bloc: ^8.1.5
   flutter_dotenv: ^5.1.0
-  flutter_facebook_auth: ^6.2.0
+  #  flutter_facebook_auth: ^6.2.0
   flutter_launcher_icons: ^0.13.1
   #  flutter_localizations:
   flutter_native_splash: ^2.4.0

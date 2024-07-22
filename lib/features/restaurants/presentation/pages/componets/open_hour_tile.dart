@@ -40,8 +40,9 @@ class _OpenHourTileState extends State<OpenHourTile> {
                 Checkbox(
                   value: widget.value,
                   tristate: true,
-                  fillColor:
-                      MaterialStatePropertyAll(widget.value ? context.theme.primaryColor : Colors.transparent),
+                  fillColor: MaterialStatePropertyAll(widget.value
+                      ? context.theme.primaryColor
+                      : Colors.transparent),
                   onChanged: widget.onChanged,
                 ),
                 Text(
@@ -71,20 +72,24 @@ class _OpenHourTileState extends State<OpenHourTile> {
                 else
                   for (int i = 0; i < widget.periodControllers.length; i++)
                     PeriodWidget(
-                      openTextEditingController: widget.periodControllers[i].openTextEditingController,
-                      closeTextEditingController: widget.periodControllers[i].closeTextEditingController,
+                      openTextEditingController:
+                          widget.periodControllers[i].openTextEditingController,
+                      closeTextEditingController: widget
+                          .periodControllers[i].closeTextEditingController,
                       onOpenTap: () async {
                         final time = await selectTime(context);
                         if (time != null) {
-                          widget.periodControllers[i].openTextEditingController.text =
-                              '${time.hour}:${time.minute}';
+                          widget.periodControllers[i].openTextEditingController
+                                  .text =
+                              '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
                         }
                       },
                       onCloseTap: () async {
                         final time = await selectTime(context);
                         if (time != null) {
-                          widget.periodControllers[i].closeTextEditingController.text =
-                              '${time.hour}:${time.minute}';
+                          widget.periodControllers[i].closeTextEditingController
+                                  .text =
+                              '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
                         }
                       },
                       onRemoveButtonPressed: () {
@@ -102,7 +107,10 @@ class _OpenHourTileState extends State<OpenHourTile> {
                   visible: widget.value == true,
                   child: IconButton(
                     onPressed: widget.onAddButtonPressed,
-                    icon: const Icon(Icons.add),
+                    icon: Icon(
+                      Icons.add,
+                      color: context.theme.iconTheme.color,
+                    ),
                   ),
                 ),
               ],

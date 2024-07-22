@@ -105,20 +105,22 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
       final isVegan = _veganChecker.veganCheck(foodProduct);
       var isVegetarian = false;
       if (!isVegan) isVegetarian = _veganChecker.vegetarianCheck(foodProduct);
-
+      var nonVeganIngredients = _veganChecker.nonVeganIngredientsInProduct;
+      // TODO: remove last comma
       return foodProduct.copyWith(
         isVegan: isVegan,
         isVegetarian: isVegetarian,
         nonVeganIngredients: !isVegan && isVegetarian
-            ? _veganChecker.nonVeganIngredientsInProduct
-            : _veganChecker.nonVeganIngredientsInProduct,
+            ? nonVeganIngredients
+            : nonVeganIngredients,
       );
     } on FetchProductException catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
       rethrow;
     } catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
-      throw const FetchProductException(message: 'Issue fetching product', statusCode: 500);
+      throw const FetchProductException(
+          message: 'Issue fetching product', statusCode: 500);
     }
   }
 
@@ -536,7 +538,8 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
     try {
       final reportReference = _foodProductReport.doc();
 
-      final reportModel = (report as FoodProductReportModel).copyWith(id: reportReference.id);
+      final reportModel =
+          (report as FoodProductReportModel).copyWith(id: reportReference.id);
 
       await reportReference.set(
         reportModel.toMap(),
@@ -546,11 +549,13 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
     }
   }
 
-  CollectionReference<Map<String, dynamic>> get _users => _cloudStoreClient.collection(
+  CollectionReference<Map<String, dynamic>> get _users =>
+      _cloudStoreClient.collection(
         FirebaseConstants.usersCollection,
       );
 
-  CollectionReference<Map<String, dynamic>> get _foodProductReport => _cloudStoreClient.collection(
+  CollectionReference<Map<String, dynamic>> get _foodProductReport =>
+      _cloudStoreClient.collection(
         FirebaseConstants.foodProductReportCollection,
       );
 }
