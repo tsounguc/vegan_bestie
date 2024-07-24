@@ -44,13 +44,18 @@ class ProfileScreen extends StatelessWidget {
             if (state is AuthError) {
               CoreUtils.showSnackBar(context, state.message);
             }
-            if (state is AccountDeleted) {
-              CoreUtils.showSnackBar(context, 'Account Deleted');
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                '/',
-                (route) => false,
-              );
-            }
+            // if (state is AccountDeleted) {
+            //   Navigator.of(context).pushNamedAndRemoveUntil(
+            //     '/',
+            //     (route) => false,
+            //   );
+            // }
+            // if (state is UserUpdated) {
+            //   Navigator.of(context).pushNamedAndRemoveUntil(
+            //     '/',
+            //     (route) => false,
+            //   );
+            // }
           },
         ),
         BlocListener<FoodProductCubit, FoodProductState>(

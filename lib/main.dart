@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: UserProvider()),
         ChangeNotifierProvider.value(value: SavedProductsProvider()),
         ChangeNotifierProvider.value(value: SavedRestaurantsProvider()),
-        ChangeNotifierProvider.value(value: BottomNavigationBarProvider()),
+        ChangeNotifierProvider(create: (_) => BottomNavigationBarProvider()),
         ChangeNotifierProvider.value(value: FoodProductReportsProvider()),
         ChangeNotifierProvider.value(value: RestaurantsNearMeProvider()),
         ChangeNotifierProvider.value(value: SubmittedRestaurantsProvider()),

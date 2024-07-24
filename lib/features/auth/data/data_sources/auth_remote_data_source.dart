@@ -186,21 +186,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       await ref.getDownloadURL().then((response) {
         ref.delete();
       }).catchError((error) {
-        // throw DeleteAccountException(
-        //   message: error.toString(),
-        //   statusCode: '500',
-        // );
+        throw DeleteAccountException(
+          message: error.toString(),
+          statusCode: '500',
+        );
       });
 
       await _authClient.currentUser?.delete();
-      // }).catchError((error) async {
-      //   // throw const DeleteAccountException(
-      //   //   message: 'Authentication Failed',
-      //   //   statusCode: '500',
-      //   // );
-      //
-      //   throw await Future.value('Wrong Password');
-      // });
       await _authClient.currentUser?.reload();
     } on FirebaseException catch (e) {
       var errorMessage = 'Error Occurred';

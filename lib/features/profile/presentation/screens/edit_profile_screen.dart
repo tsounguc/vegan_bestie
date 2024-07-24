@@ -206,7 +206,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is UserUpdated) {
-          Navigator.of(context).pop();
+          Navigator.popUntil(
+            context,
+            ModalRoute.withName('/'),
+          );
           CoreUtils.showSnackBar(
             context,
             'Profile updated successfully',

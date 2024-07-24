@@ -23,8 +23,8 @@ class BottomNavigationBarProvider extends ChangeNotifier {
               BlocProvider.value(
                 value: serviceLocator<FoodProductCubit>(),
               ),
-              BlocProvider.value(
-                value: serviceLocator<AuthBloc>(),
+              BlocProvider(
+                create: (_) => serviceLocator<AuthBloc>(),
               ),
             ],
             child: const ScanProductHomePage(),
@@ -43,8 +43,8 @@ class BottomNavigationBarProvider extends ChangeNotifier {
               BlocProvider.value(
                 value: serviceLocator<RestaurantsCubit>(),
               ),
-              BlocProvider.value(
-                value: serviceLocator<AuthBloc>(),
+              BlocProvider(
+                create: (_) => serviceLocator<AuthBloc>(),
               ),
             ],
             child: RestaurantsHomePage(),
@@ -66,8 +66,8 @@ class BottomNavigationBarProvider extends ChangeNotifier {
               BlocProvider.value(
                 value: serviceLocator<RestaurantsCubit>(),
               ),
-              BlocProvider.value(
-                value: serviceLocator<AuthBloc>(),
+              BlocProvider(
+                create: (_) => serviceLocator<AuthBloc>(),
               ),
               BlocProvider.value(
                 value: serviceLocator<NotificationCubit>(),
@@ -77,9 +77,7 @@ class BottomNavigationBarProvider extends ChangeNotifier {
           ),
         ),
       ),
-      child: const PersistentScreen(
-        body: ProfileScreen(),
-      ),
+      child: const PersistentScreen(),
     ),
   ];
 

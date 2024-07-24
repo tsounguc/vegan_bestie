@@ -218,9 +218,9 @@ class AddRestaurantForm extends StatelessWidget {
           textInputAction: TextInputAction.next,
           maxLines: 4,
         ),
-        SizedBox(height: 10.h),
+        if (context.currentUser?.isAdmin ?? false) SizedBox(height: 10.h),
         if (context.currentUser?.isAdmin ?? false) ...adminList,
-        SizedBox(height: 10.h),
+        if (context.currentUser?.isAdmin ?? false) SizedBox(height: 10.h),
         Theme(
           data: context.theme.copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
@@ -237,7 +237,7 @@ class AddRestaurantForm extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            tilePadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            tilePadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
             childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
             children: [
               AddRestaurantFormField(

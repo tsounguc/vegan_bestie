@@ -9,7 +9,7 @@ class AppRouter {
         return _pageBuilder(
           (context) {
             final user = serviceLocator<FirebaseAuth>().currentUser;
-            user?.reload();
+
             if (user != null) {
               // get user info from firebase
 
@@ -24,11 +24,11 @@ class AppRouter {
 
               return MultiBlocProvider(
                 providers: [
-                  BlocProvider(
-                    create: (_) => serviceLocator<FoodProductCubit>(),
+                  BlocProvider.value(
+                    value: serviceLocator<FoodProductCubit>(),
                   ),
-                  BlocProvider(
-                    create: (_) => serviceLocator<RestaurantsCubit>(),
+                  BlocProvider.value(
+                    value: serviceLocator<RestaurantsCubit>(),
                   ),
                   BlocProvider(
                     create: (_) => serviceLocator<AuthBloc>(),
@@ -45,11 +45,11 @@ class AppRouter {
           },
           settings: settings,
         );
-      case Dashboard.id:
-        return _pageBuilder(
-          (_) => const Dashboard(),
-          settings: settings,
-        );
+      // case Dashboard.id:
+      //   return _pageBuilder(
+      //     (_) => const Dashboard(),
+      //     settings: settings,
+      //   );
       case SignInScreen.id:
         return _pageBuilder(
           (_) => BlocProvider(
@@ -84,8 +84,8 @@ class AppRouter {
         );
       case EditProfileScreen.id:
         return _pageBuilder(
-          (_) => BlocProvider<AuthBloc>.value(
-            value: settings.arguments! as AuthBloc,
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<AuthBloc>(),
             child: const EditProfileScreen(),
           ),
           settings: settings,
@@ -98,8 +98,8 @@ class AppRouter {
 
       case ChangePasswordScreen.id:
         return _pageBuilder(
-          (_) => BlocProvider<AuthBloc>.value(
-            value: settings.arguments! as AuthBloc,
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<AuthBloc>(),
             child: const ChangePasswordScreen(),
           ),
           settings: settings,
@@ -107,8 +107,8 @@ class AppRouter {
 
       case SettingsPage.id:
         return _pageBuilder(
-          (_) => BlocProvider<AuthBloc>.value(
-            value: settings.arguments! as AuthBloc,
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<AuthBloc>(),
             child: const SettingsPage(),
           ),
           settings: settings,
@@ -117,7 +117,7 @@ class AppRouter {
       case ReportsScreen.id:
         return _pageBuilder(
           (_) => BlocProvider<FoodProductCubit>.value(
-            value: settings.arguments! as FoodProductCubit,
+            value: serviceLocator<FoodProductCubit>(),
             child: const ReportsScreen(),
           ),
           settings: settings,
@@ -126,7 +126,7 @@ class AppRouter {
       case SubmittedRestaurantsScreen.id:
         return _pageBuilder(
           (_) => BlocProvider<RestaurantsCubit>.value(
-            value: settings.arguments! as RestaurantsCubit,
+            value: serviceLocator<RestaurantsCubit>(),
             child: const SubmittedRestaurantsScreen(),
           ),
           settings: settings,
@@ -135,15 +135,15 @@ class AppRouter {
       case ScanResultsPage.id:
         return _pageBuilder(
           (_) => BlocProvider<FoodProductCubit>.value(
-            value: settings.arguments! as FoodProductCubit,
+            value: serviceLocator<FoodProductCubit>(),
             child: const ScanResultsPage(),
           ),
           settings: settings,
         );
       case RestaurantDetailsPage.id:
         return _pageBuilder(
-          (_) => BlocProvider(
-            create: (_) => serviceLocator<RestaurantsCubit>(),
+          (_) => BlocProvider.value(
+            value: serviceLocator<RestaurantsCubit>(),
             child: RestaurantDetailsPage(
               restaurant: settings.arguments! as Restaurant,
             ),
@@ -152,8 +152,8 @@ class AppRouter {
         );
       case ProductFoundPage.id:
         return _pageBuilder(
-          (_) => BlocProvider(
-            create: (_) => serviceLocator<FoodProductCubit>(),
+          (_) => BlocProvider.value(
+            value: serviceLocator<FoodProductCubit>(),
             child: ProductFoundPage(
               product: settings.arguments! as FoodProduct,
             ),
@@ -162,8 +162,8 @@ class AppRouter {
         );
       case RestaurantReviewScreen.id:
         return _pageBuilder(
-          (_) => BlocProvider(
-            create: (_) => serviceLocator<RestaurantsCubit>(),
+          (_) => BlocProvider.value(
+            value: serviceLocator<RestaurantsCubit>(),
             child: RestaurantReviewScreen(
               restaurant: settings.arguments! as Restaurant,
             ),
@@ -187,8 +187,8 @@ class AppRouter {
       case EditRestaurantReviewScreen.id:
         final args = settings.arguments! as EditRestaurantScreenArguments;
         return _pageBuilder(
-          (_) => BlocProvider(
-            create: (_) => serviceLocator<RestaurantsCubit>(),
+          (_) => BlocProvider.value(
+            value: serviceLocator<RestaurantsCubit>(),
             child: EditRestaurantReviewScreen(
               review: args.review,
               restaurant: args.restaurant,

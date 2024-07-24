@@ -70,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 );
           } else if (state is SignedIn) {
             context.read<UserProvider>().initUser(state.user as UserModel);
-            Navigator.pushReplacementNamed(context, Dashboard.id);
+            Navigator.pushReplacementNamed(context, '/');
           }
         },
         builder: (context, state) {

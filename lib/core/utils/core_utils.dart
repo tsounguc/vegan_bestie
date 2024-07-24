@@ -6,9 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:sheveegan/core/common/widgets/enter_password_dialog.dart';
 import 'package:sheveegan/core/common/widgets/i_field.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 
 class CoreUtils {
@@ -89,49 +91,12 @@ class CoreUtils {
   }
 
   static void showEnterPasswordDialog(BuildContext context) async {
-    final textController = TextEditingController();
-    final bloc = BlocProvider.of<AuthBloc>(context);
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          // backgroundColor: Colors.yellow[600],
-          backgroundColor: context.theme.cardTheme.color,
-          surfaceTintColor: context.theme.cardTheme.color,
-          title: Text(
-            'Enter Password',
-            style: context.theme.textTheme.titleMedium,
-          ),
-          content: IField(
-            controller: textController,
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                'CANCEL',
-                style: context.theme.textTheme.bodyMedium,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: const Text(
-                'DELETE ACCOUNT',
-                style: TextStyle(color: Colors.red),
-              ),
-              onPressed: () {
-                // final navigator = Navigator.of(context);
-                bloc.add(
-                  DeleteAccountEvent(
-                    password: textController.text.trim(),
-                  ),
-                );
-                context.savedProductsProvider.savedProductsList = null;
-                context.savedRestaurantsProvider.savedRestaurantsList = null;
-              },
-            ),
-          ],
+        return BlocProvider.value(
+          value: serviceLocator<AuthBloc>(),
+          child: const EnterPasswordDialog(),
         );
       },
     );
