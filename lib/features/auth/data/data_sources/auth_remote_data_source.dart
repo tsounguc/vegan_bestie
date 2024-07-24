@@ -155,8 +155,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return UserModel.fromMap(userData.data()!);
     } on FirebaseAuthException catch (e) {
+      var errorMessage = e.message ?? 'An error occurred. Please try again';
+      if (e.code == 'user-mismatch' || e.code == 'invalid-credential' || e.code == 'wrong-password') {
+        errorMessage = 'Invalid username or password. Please try again';
+      } else if (e.code == 'too-many-requests') {
+        errorMessage = 'Too many attempts. Please try again later';
+      }
       throw SignInWithEmailAndPasswordException(
-        message: e.message ?? 'Error Occurred',
+        message: errorMessage,
         statusCode: e.code,
       );
     } on SignInWithEmailAndPasswordException {
@@ -185,22 +191,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final ref = _dbClient.ref().child('profile_pics/${_authClient.currentUser?.uid}');
       await ref.getDownloadURL().then((response) {
         ref.delete();
-      }).catchError((error) {
-        throw DeleteAccountException(
-          message: error.toString(),
-          statusCode: '500',
-        );
-      });
+      }).catchError((error) async {});
 
       await _authClient.currentUser?.delete();
       await _authClient.currentUser?.reload();
     } on FirebaseException catch (e) {
-      var errorMessage = 'Error Occurred';
+      var errorMessage = e.message ?? 'An error occurred. Please try again';
       if (e.code == 'user-mismatch' || e.code == 'invalid-credential' || e.code == 'wrong-password') {
-        errorMessage = 'Authentication Failed';
+        errorMessage = 'Invalid credentials. Please try again';
+      } else if (e.code == 'too-many-requests') {
+        errorMessage = 'Too many attempts. Please try again later';
       } else {
-        errorMessage = 'Authentication Failed';
+        errorMessage = 'An error occurred. Please try again';
       }
+      debugPrint(e.code);
       throw DeleteAccountException(
         message: errorMessage,
         statusCode: e.code,

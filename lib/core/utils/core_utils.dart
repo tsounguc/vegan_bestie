@@ -16,7 +16,11 @@ import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 class CoreUtils {
   const CoreUtils._();
 
-  static void showSnackBar(BuildContext context, String message) {
+  static void showSnackBar(
+    BuildContext context,
+    String message, {
+    int durationInMilliSecond = 3000,
+  }) {
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(
@@ -28,6 +32,7 @@ class CoreUtils {
               fontWeight: FontWeight.bold,
             ),
           ),
+          duration: Duration(milliseconds: durationInMilliSecond),
           behavior: SnackBarBehavior.floating,
           backgroundColor: Theme.of(context).colorScheme.primary,
           shape: RoundedRectangleBorder(

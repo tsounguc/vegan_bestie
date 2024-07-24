@@ -22,13 +22,24 @@ class _EnterPasswordDialogState extends State<EnterPasswordDialog> {
     final bloc = BlocProvider.of<AuthBloc>(context);
 
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
+      listener: (_, state) {
+        AuthState previousState = const AuthInitial();
         if (state is AccountDeleted) {
-          CoreUtils.showSnackBar(context, 'Account Deleted');
+          CoreUtils.showSnackBar(context, 'Account Deleted', durationInMilliSecond: 1500);
           Navigator.of(context).pushNamedAndRemoveUntil(
             '/',
             (route) => false,
           );
+        }
+        if (state is AuthError) {
+          Navigator.of(context).pop();
+
+          CoreUtils.showSnackBar(context, state.message, durationInMilliSecond: 2000);
+          previousState = state;
+        }
+        if (state is AuthLoading) {
+          previousState = state;
+          CoreUtils.showLoadingDialog(context);
         }
       },
       child: AlertDialog(
