@@ -10,8 +10,8 @@ class RestaurantReview extends Equatable {
     required this.updatedAt,
     required this.restaurantId,
     required this.userId,
-    required this.username,
-    required this.userProfilePic,
+    // required this.username,
+    // required this.userProfilePic,
   });
 
   RestaurantReview.empty()
@@ -23,9 +23,9 @@ class RestaurantReview extends Equatable {
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
           restaurantId: '_empty.restaurantId',
-          username: '_empty.username',
+          // username: '_empty.username',
           userId: '_empty.userId',
-          userProfilePic: '_empty.userProfilePic',
+          // userProfilePic: '_empty.userProfilePic',
         );
 
   final String id;
@@ -35,9 +35,11 @@ class RestaurantReview extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String restaurantId;
-  final String username;
+
+  // final String username;
   final String userId;
-  final String userProfilePic;
+
+  // final String userProfilePic;
 
   @override
   List<Object?> get props => [
@@ -48,8 +50,8 @@ class RestaurantReview extends Equatable {
         createdAt,
         updatedAt,
         restaurantId,
-        username,
+        // username,
         userId,
-        userProfilePic,
+        // userProfilePic,
       ];
 }

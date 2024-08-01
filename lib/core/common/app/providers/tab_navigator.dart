@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 class TabNavigator extends ChangeNotifier {
   TabNavigator(this._initialPage) {
     _navigationStack.add(_initialPage);
+    notifyListeners();
   }
 
   final TabItem _initialPage;

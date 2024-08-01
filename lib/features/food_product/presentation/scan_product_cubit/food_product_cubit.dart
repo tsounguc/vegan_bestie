@@ -44,7 +44,7 @@ class FoodProductCubit extends Cubit<FoodProductState> {
         _reportIssue = reportIssue,
         _fetchReports = fetchReports,
         _deleteReport = deleteReport,
-        super(const ScanProductInitial());
+        super(const FoodProductInitial());
   final ScanBarcode _scanBarcode;
   final FetchProduct _fetchProduct;
   final SaveFoodProduct _saveFoodProduct;

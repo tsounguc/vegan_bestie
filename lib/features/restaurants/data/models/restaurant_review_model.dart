@@ -11,9 +11,9 @@ class RestaurantReviewModel extends RestaurantReview {
     required super.createdAt,
     required super.updatedAt,
     required super.restaurantId,
-    required super.username,
+    // required super.username,
     required super.userId,
-    required super.userProfilePic,
+    // required super.userProfilePic,
   });
 
   RestaurantReviewModel.empty()
@@ -25,9 +25,9 @@ class RestaurantReviewModel extends RestaurantReview {
           createdAt: DateTime.timestamp(),
           updatedAt: DateTime.timestamp(),
           restaurantId: '_empty.restaurantId',
-          username: '_empty.username',
+          // username: '_empty.username',
           userId: '_empty.userId',
-          userProfilePic: '_empty.userProfilePic',
+          // userProfilePic: '_empty.userProfilePic',
         );
 
   RestaurantReviewModel.fromMap(DataMap map)
@@ -40,8 +40,8 @@ class RestaurantReviewModel extends RestaurantReview {
           updatedAt: (map['updatedAt'] as Timestamp).toDate(),
           restaurantId: map['restaurantId'] as String,
           userId: map['userId'] as String,
-          username: map['username'] as String,
-          userProfilePic: map['userProfilePic'] as String,
+          // username: map['username'] as String,
+          // userProfilePic: map['userProfilePic'] as String,
         );
 
   RestaurantReviewModel copyWith({
@@ -51,9 +51,9 @@ class RestaurantReviewModel extends RestaurantReview {
     double? rating,
     DateTime? createdAt,
     DateTime? updatedAt,
-    String? username,
+    // String? username,
     String? userId,
-    String? userProfilePic,
+    // String? userProfilePic,
     String? restaurantId,
   }) {
     return RestaurantReviewModel(
@@ -64,9 +64,9 @@ class RestaurantReviewModel extends RestaurantReview {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       restaurantId: restaurantId ?? this.restaurantId,
-      username: username ?? this.username,
+      // username: username ?? this.username,
       userId: userId ?? this.userId,
-      userProfilePic: userProfilePic ?? this.userProfilePic,
+      // userProfilePic: userProfilePic ?? this.userProfilePic,
     );
   }
 
@@ -78,8 +78,8 @@ class RestaurantReviewModel extends RestaurantReview {
         'createdAt': createdAt,
         'updatedAt': updatedAt,
         'restaurantId': restaurantId,
-        'username': username,
+        // 'username': username,
         'userId': userId,
-        'userProfilePic': userProfilePic,
+        // 'userProfilePic': userProfilePic,
       };
 }

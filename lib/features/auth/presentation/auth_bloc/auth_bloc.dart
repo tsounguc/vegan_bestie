@@ -2,12 +2,16 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:sheveegan/core/enums/update_user.dart';
+import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
 import 'package:sheveegan/features/auth/domain/usecases/create_with_email_and_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/delete_account.dart';
 import 'package:sheveegan/features/auth/domain/usecases/forgot_password.dart';
+import 'package:sheveegan/features/auth/domain/usecases/get_current_user.dart';
 import 'package:sheveegan/features/auth/domain/usecases/sign_in_with_email_and_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/update_user.dart';
 
@@ -16,23 +20,26 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc({
-    required SignInWithEmailAndPassword signInWithEmailAndPassword,
-    required CreateUserAccount createUserAccount,
-    required ForgotPassword forgotPassword,
-    required UpdateUser updateUser,
-    required DeleteAccount deleteAccount,
-  })  : _signInWithEmailAndPassword = signInWithEmailAndPassword,
+  AuthBloc(
+      {required SignInWithEmailAndPassword signInWithEmailAndPassword,
+      required CreateUserAccount createUserAccount,
+      required ForgotPassword forgotPassword,
+      required UpdateUser updateUser,
+      required DeleteAccount deleteAccount,
+      required GetCurrentUser getCurrentUser})
+      : _signInWithEmailAndPassword = signInWithEmailAndPassword,
         _createUserAccount = createUserAccount,
         _forgotPassword = forgotPassword,
         _updateUser = updateUser,
         _deleteAccount = deleteAccount,
+        _getCurrentUser = getCurrentUser,
         super(const AuthInitial()) {
     on<SignInWithEmailAndPasswordEvent>(_signInWithEmailAndPasswordHandler);
     on<CreateUserAccountEvent>(_createUserAccountHandler);
     on<ForgotPasswordEvent>(_forgotPasswordHandler);
     on<UpdateUserEvent>(_updateUserHandler);
     on<DeleteAccountEvent>(_deleteAccountHandler);
+    on<GetCurrentUserEvent>(_getCurrentUserHandler);
   }
 
   final SignInWithEmailAndPassword _signInWithEmailAndPassword;
@@ -40,6 +47,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ForgotPassword _forgotPassword;
   final UpdateUser _updateUser;
   final DeleteAccount _deleteAccount;
+  final GetCurrentUser _getCurrentUser;
 
   Future<void> _signInWithEmailAndPasswordHandler(
     SignInWithEmailAndPasswordEvent event,
@@ -104,6 +112,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold(
       (failure) => emit(AuthError(message: failure.message)),
       (success) => emit(const UserUpdated()),
+    );
+  }
+
+  void _getCurrentUserHandler(GetCurrentUserEvent event, Emitter<AuthState> emit) {
+    emit(const AuthLoading());
+    StreamSubscription<Either<Failure, UserEntity>>? subscription;
+    subscription = _getCurrentUser(event.userId).listen(
+      (result) {
+        result.fold(
+          (failure) {
+            debugPrint(failure.errorMessage);
+            emit(AuthError(message: failure.message));
+            subscription?.cancel();
+          },
+          (user) => emit(CurrentUserDataLoaded(currentUser: user)),
+        );
+      },
+      onError: (dynamic error) {
+        debugPrint(error.toString());
+        emit(AuthError(message: error.toString()));
+      },
+      onDone: () {
+        subscription?.cancel();
+      },
     );
   }
 

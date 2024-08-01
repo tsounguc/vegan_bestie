@@ -6,8 +6,8 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/profile/presentation/screens/edit_profile_screen.dart';
 
-class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key});
+class ProfileHeaderBottom extends StatelessWidget {
+  const ProfileHeaderBottom({super.key});
 
   @override
   Widget build(BuildContext context) {

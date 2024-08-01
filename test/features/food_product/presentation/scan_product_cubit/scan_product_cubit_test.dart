@@ -92,7 +92,7 @@ void main() {
     // Arrange
     // Act
     // Assert
-    expect(cubit.state, const ScanProductInitial());
+    expect(cubit.state, const FoodProductInitial());
   });
 
   group('scanBarcode - ', () {

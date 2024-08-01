@@ -7,6 +7,7 @@ import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
 import 'package:sheveegan/features/auth/domain/usecases/create_with_email_and_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/delete_account.dart';
 import 'package:sheveegan/features/auth/domain/usecases/forgot_password.dart';
+import 'package:sheveegan/features/auth/domain/usecases/get_current_user.dart';
 import 'package:sheveegan/features/auth/domain/usecases/sign_in_with_email_and_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/update_user.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
@@ -21,12 +22,15 @@ class MockUpdateUser extends Mock implements UpdateUser {}
 
 class MockDeleteAccount extends Mock implements DeleteAccount {}
 
+class MockGetCurrentUser extends Mock implements GetCurrentUser {}
+
 void main() {
   late SignInWithEmailAndPassword signInWithEmailAndPassword;
   late CreateUserAccount createUserAccount;
   late ForgotPassword forgotPassword;
   late UpdateUser updateUser;
   late DeleteAccount deleteAccount;
+  late GetCurrentUser getCurrentUser;
   late AuthBloc bloc;
 
   late SignInParams testSignInParams;
@@ -43,12 +47,15 @@ void main() {
     forgotPassword = MockForgotPassword();
     updateUser = MockUpdateUser();
     deleteAccount = MockDeleteAccount();
+    getCurrentUser = MockGetCurrentUser();
+
     bloc = AuthBloc(
       signInWithEmailAndPassword: signInWithEmailAndPassword,
       createUserAccount: createUserAccount,
       forgotPassword: forgotPassword,
       updateUser: updateUser,
       deleteAccount: deleteAccount,
+      getCurrentUser: getCurrentUser,
     );
 
     testSignInFailure = SignInWithEmailAndPasswordFailure(

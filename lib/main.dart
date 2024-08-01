@@ -86,15 +86,15 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(
           value: NotificationsNotifier(serviceLocator<SharedPreferences>()),
         ),
-        ChangeNotifierProvider.value(value: UserProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider.value(value: SavedProductsProvider()),
         ChangeNotifierProvider.value(value: SavedRestaurantsProvider()),
         ChangeNotifierProvider(create: (_) => BottomNavigationBarProvider()),
         ChangeNotifierProvider.value(value: FoodProductReportsProvider()),
         ChangeNotifierProvider.value(value: RestaurantsNearMeProvider()),
         ChangeNotifierProvider.value(value: SubmittedRestaurantsProvider()),
-        ChangeNotifierProvider.value(
-          value: ThemeModeProvider(
+        ChangeNotifierProvider(
+          create: (_) => ThemeModeProvider(
             useDeviceSettings: widget.useDeviceSettings,
             isDarkMode: widget.isDarkMode,
           ),
@@ -102,11 +102,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: ScreenUtilInit(
         builder: (context, child) => Consumer<ThemeModeProvider>(
-          builder: (
-            BuildContext context,
-            ThemeModeProvider provider,
-            Widget? child,
-          ) {
+          builder: (_, provider, __) {
             return MaterialApp(
               builder: DevicePreview.appBuilder,
               locale: DevicePreview.locale(context),

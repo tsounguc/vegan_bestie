@@ -8,6 +8,7 @@ import 'package:sheveegan/core/common/app/providers/tab_navigator.dart';
 import 'package:sheveegan/core/common/app/providers/theme_mode_provider.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
+import 'package:sheveegan/features/dashboard/presentation/providers/bottom_navigation_bar_provider.dart';
 
 extension ContextExtension on BuildContext {
   ThemeData get theme => Theme.of(this);
@@ -23,6 +24,10 @@ extension ContextExtension on BuildContext {
   UserProvider get userProvider => read<UserProvider>();
 
   UserEntity? get currentUser => userProvider.user;
+
+  BottomNavigationBarProvider get dashboardControllerProvider => read<BottomNavigationBarProvider>();
+
+  int get currentIndex => dashboardControllerProvider.currentIndex;
 
   SavedProductsProvider get savedProductsProvider => read<SavedProductsProvider>();
 

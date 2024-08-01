@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
 
+  static const String id = '/loadingPage';
+
   @override
   State<LoadingPage> createState() => _LoadingPageState();
 }

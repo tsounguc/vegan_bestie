@@ -6,15 +6,14 @@ import 'package:sheveegan/features/auth/domain/repositories/auth_repository.dart
 
 class UpdateUser extends UseCaseWithParams<void, UpdateUserParams> {
   const UpdateUser(this._repository);
+
   final AuthRepository _repository;
 
   @override
-  ResultVoid call(UpdateUserParams params) {
-    return _repository.updateUser(
-      action: params.action,
-      userData: params.userData,
-    );
-  }
+  ResultVoid call(UpdateUserParams params) => _repository.updateUser(
+        action: params.action,
+        userData: params.userData,
+      );
 }
 
 class UpdateUserParams extends Equatable {
@@ -31,6 +30,7 @@ class UpdateUserParams extends Equatable {
 
   final UpdateUserAction action;
   final dynamic userData;
+
   @override
   List<Object?> get props => [action, userData];
 }

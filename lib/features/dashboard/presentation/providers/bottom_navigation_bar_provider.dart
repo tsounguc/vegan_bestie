@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/tab_navigator.dart';
 import 'package:sheveegan/core/common/screens/persistent_screen/persistent_screen.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/scan_product_home_page.dart';
@@ -18,63 +19,23 @@ class BottomNavigationBarProvider extends ChangeNotifier {
     ChangeNotifierProvider(
       create: (_) => TabNavigator(
         TabItem(
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider.value(
-                value: serviceLocator<FoodProductCubit>(),
-              ),
-              BlocProvider(
-                create: (_) => serviceLocator<AuthBloc>(),
-              ),
-            ],
-            child: const ScanProductHomePage(),
-          ),
+          child: const ScanProductHomePage(),
         ),
       ),
-      child: const PersistentScreen(
-        body: ScanProductHomePage(),
-      ),
+      child: const PersistentScreen(),
     ),
     ChangeNotifierProvider(
       create: (_) => TabNavigator(
         TabItem(
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider.value(
-                value: serviceLocator<RestaurantsCubit>(),
-              ),
-              BlocProvider(
-                create: (_) => serviceLocator<AuthBloc>(),
-              ),
-            ],
-            child: RestaurantsHomePage(),
-          ),
+          child: RestaurantsHomePage(),
         ),
       ),
-      child: PersistentScreen(
-        body: RestaurantsHomePage(),
-      ),
+      child: const PersistentScreen(),
     ),
     ChangeNotifierProvider(
       create: (_) => TabNavigator(
         TabItem(
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider.value(
-                value: serviceLocator<FoodProductCubit>(),
-              ),
-              BlocProvider.value(
-                value: serviceLocator<RestaurantsCubit>(),
-              ),
-              BlocProvider(
-                create: (_) => serviceLocator<AuthBloc>(),
-              ),
-              BlocProvider.value(
-                value: serviceLocator<NotificationCubit>(),
-              ),
-            ],
-            child: const ProfileScreen(),
-          ),
+          child: const ProfileScreen(),
         ),
       ),
       child: const PersistentScreen(),
@@ -90,11 +51,6 @@ class BottomNavigationBarProvider extends ChangeNotifier {
     if (_currentIndex == index) return;
     _currentIndex = index;
     _indexHistory.add(index);
-    // if (index == 1) {
-    //   BlocProvider.of<RestaurantsBloc>(
-    //     context,
-    //   ).add(const LoadGeolocationEvent());
-    // }
     notifyListeners();
   }
 

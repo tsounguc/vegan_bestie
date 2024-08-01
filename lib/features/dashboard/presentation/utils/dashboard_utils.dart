@@ -13,4 +13,16 @@ class DashboardUtils {
       .map(
         (event) => UserModel.fromMap(event.data()!),
       );
+
+  static Stream<List<UserModel>> getUser(String userId) {
+    return serviceLocator<FirebaseFirestore>().collection('users').where('uid', isEqualTo: userId).snapshots().map(
+          (event) => event.docs
+              .map(
+                (e) => UserModel.fromMap(
+                  e.data(),
+                ),
+              )
+              .toList(),
+        );
+  }
 }

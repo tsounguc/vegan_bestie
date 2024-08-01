@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:sheveegan/core/enums/update_user.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/auth/data/data_sources/auth_remote_data_source.dart';
+import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
 import 'package:sheveegan/features/auth/domain/repositories/auth_repository.dart';
 
@@ -90,6 +94,25 @@ class AuthRepositoryImpl implements AuthRepository {
     } on DeleteAccountException catch (e) {
       return Left(DeleteAccountFailure.fromException(e));
     }
+  }
+
+  @override
+  ResultStream<UserEntity> getCurrentUser({required String userId}) {
+    return _remoteDataSource.getCurrentUser(userId: userId).transform(
+          StreamTransformer<UserModel, Either<Failure, UserEntity>>.fromHandlers(
+            handleData: (user, sink) {
+              sink.add(Right(user));
+            },
+            handleError: (error, stackTrace, sink) {
+              debugPrintStack(stackTrace: stackTrace);
+              if (error is ServerException) {
+                sink.add(Left(ServerFailure.fromException(error)));
+              } else {
+                sink.add(Left(ServerFailure(message: error.toString(), statusCode: 505)));
+              }
+            },
+          ),
+        );
   }
 
 // @override

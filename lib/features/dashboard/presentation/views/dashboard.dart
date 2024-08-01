@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
+import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
+import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/dashboard/presentation/providers/bottom_navigation_bar_provider.dart';
 import 'package:sheveegan/features/dashboard/presentation/utils/dashboard_utils.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
@@ -79,7 +82,11 @@ class _DashboardState extends State<Dashboard> {
                           ),
                         ),
                       ),
-                body: controller.screens[controller.currentIndex],
+                body: IndexedStack(
+                  index: controller.currentIndex,
+                  children: controller.screens,
+                ),
+                // body: controller.screens[controller.currentIndex],
                 bottomNavigationBar: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -90,10 +97,7 @@ class _DashboardState extends State<Dashboard> {
                   child: BottomNavigationBar(
                     type: BottomNavigationBarType.fixed,
                     currentIndex: controller.currentIndex,
-                    onTap: (index) {
-                      controller.changeIndex(index);
-                      BlocProvider.of<RestaurantsCubit>(context).loadGeoLocation();
-                    },
+                    onTap: controller.changeIndex,
                     items: [
                       BottomNavigationBarItem(
                         label: 'Home',

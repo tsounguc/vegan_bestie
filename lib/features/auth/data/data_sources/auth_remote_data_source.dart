@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:sheveegan/core/enums/update_user.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
+import 'package:sheveegan/core/utils/datasource_utils.dart';
 import 'package:sheveegan/core/utils/firebase_constants.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
@@ -41,6 +42,8 @@ abstract class AuthRemoteDataSource {
 // Future<void> signOut();
 
   Future<void> deleteAccount({required String password});
+
+  Stream<UserModel> getCurrentUser({required String userId});
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -279,6 +282,44 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw UpdateUserDataException(
+        message: e.toString(),
+        statusCode: '505',
+      );
+    }
+  }
+
+  @override
+  Stream<UserModel> getCurrentUser({required String userId}) {
+    try {
+      DataSourceUtils.authorizeUser(_authClient);
+
+      final userStream = _users.doc(userId).snapshots().map(
+            (event) => UserModel.fromMap(event.data()!),
+          );
+      return userStream.handleError((dynamic error) {
+        if (error is FirebaseException) {
+          debugPrintStack(stackTrace: error.stackTrace);
+          throw ServerException(
+            message: error.message ?? 'Unknown error occured',
+            statusCode: error.code,
+          );
+        }
+        throw ServerException(
+          message: error.toString(),
+          statusCode: '505',
+        );
+      });
+    } on FirebaseException catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(
+        message: e.message ?? 'Unknown error occurred',
+        statusCode: '501',
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(
         message: e.toString(),
         statusCode: '505',
       );

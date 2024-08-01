@@ -53,3 +53,12 @@ class AuthError extends AuthState {
   @override
   List<Object> get props => [message];
 }
+
+class CurrentUserDataLoaded extends AuthState {
+  const CurrentUserDataLoaded({required this.currentUser});
+
+  final UserEntity currentUser;
+
+  @override
+  List<Object> get props => [currentUser];
+}

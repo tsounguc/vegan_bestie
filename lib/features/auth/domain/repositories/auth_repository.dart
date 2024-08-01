@@ -25,6 +25,8 @@ abstract class AuthRepository {
 
   ResultVoid deleteAccount({required String password});
 
+  ResultStream<UserEntity> getCurrentUser({required String userId});
+
 // ResultFuture<UserEntity> signInWithGoogle();
 //
 // ResultFuture<UserEntity> signInWithFacebook();

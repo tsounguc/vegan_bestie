@@ -7,8 +7,8 @@ abstract class FoodProductState extends Equatable {
   List<Object> get props => [];
 }
 
-class ScanProductInitial extends FoodProductState {
-  const ScanProductInitial();
+class FoodProductInitial extends FoodProductState {
+  const FoodProductInitial();
 }
 
 class ScanningBarcode extends FoodProductState {

@@ -17,6 +17,7 @@ import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
+import 'package:sheveegan/features/dashboard/presentation/utils/dashboard_utils.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
@@ -124,24 +125,17 @@ class RestaurantDetailsPage extends StatelessWidget {
         '${restaurant.state} ${restaurant.zipCode}';
     final appleUrl = 'https://maps.apple.com/?q=${restaurant.name}'
         ' $formattedAddress';
-    final googleUrl =
-        'https://www.google.com/maps/search/?api=1&query=${restaurant.name}'
+    final googleUrl = 'https://www.google.com/maps/search/?api=1&query=${restaurant.name}'
         ' $formattedAddress';
     return StreamBuilder<UserModel>(
-      stream: serviceLocator<FirebaseFirestore>()
-          .collection('users')
-          .doc(serviceLocator<FirebaseAuth>().currentUser!.uid)
-          .snapshots()
-          .map(
-            (event) => UserModel.fromMap(event.data()!),
-          ),
+      stream: DashboardUtils.userDataStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           context.userProvider.user = snapshot.data;
         }
         final user = context.userProvider.user;
 
-        var isSaved = user!.savedRestaurantsIds.contains(
+        final isSaved = user!.savedRestaurantsIds.contains(
           restaurant.id,
         );
 
@@ -158,8 +152,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                     .toList(),
               ),
           builder: (context, snapshot) {
-            final reviews =
-                snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
+            final reviews = (snapshot.hasData ? snapshot.data! : <RestaurantReview>[])
+              ..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
             return BlocListener<RestaurantsCubit, RestaurantsState>(
               listener: (context, state) {
                 if (state is RestaurantSaved) {
@@ -167,26 +161,21 @@ class RestaurantDetailsPage extends StatelessWidget {
                     context,
                     'Restaurant saved',
                   );
-                  final restaurantIds =
-                      context.userProvider.user?.savedRestaurantsIds ?? [];
+                  final restaurantIds = context.userProvider.user?.savedRestaurantsIds ?? [];
                   BlocProvider.of<RestaurantsCubit>(context)
-                      .getSavedRestaurants(
-                          savedRestaurantsIdsList: restaurantIds);
+                      .getSavedRestaurants(savedRestaurantsIdsList: restaurantIds);
                 }
                 if (state is RestaurantUnSaved) {
                   CoreUtils.showSnackBar(
                     context,
                     'Restaurant unsaved',
                   );
-                  final restaurantIds =
-                      context.userProvider.user?.savedRestaurantsIds ?? [];
+                  final restaurantIds = context.userProvider.user?.savedRestaurantsIds ?? [];
                   BlocProvider.of<RestaurantsCubit>(context)
-                      .getSavedRestaurants(
-                          savedRestaurantsIdsList: restaurantIds);
+                      .getSavedRestaurants(savedRestaurantsIdsList: restaurantIds);
                 }
                 if (state is SavedRestaurantsListFetched) {
-                  context.savedRestaurantsProvider.savedRestaurantsList =
-                      state.savedRestaurantsList;
+                  context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
                 }
               },
               child: Scaffold(
@@ -216,13 +205,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                       ),
                       icon: Icon(
                         isSaved ? Icons.bookmark : Icons.bookmark_outline,
-                        color: isSaved
-                            ? Colors.amberAccent
-                            : context.theme.iconTheme.color,
+                        color: isSaved ? Colors.amberAccent : context.theme.iconTheme.color,
                       ),
-                      onPressed: () => isSaved
-                          ? unsaveRestaurant(restaurant, context)
-                          : saveRestaurant(restaurant, context),
+                      onPressed: () =>
+                          isSaved ? unsaveRestaurant(restaurant, context) : saveRestaurant(restaurant, context),
                     ),
                     PopupMenuButton(
                       // padding: EdgeInsets.only(
@@ -344,8 +330,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.65,
+                                  width: MediaQuery.of(context).size.width * 0.65,
                                   padding: const EdgeInsets.only(
                                     left: 8,
                                     bottom: 8,
@@ -353,8 +338,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   child: Text(
                                     restaurant.name.capitalizeFirstLetter(),
                                     style: baseTextStyle.copyWith(
-                                      color: context
-                                          .theme.textTheme.bodyMedium?.color,
+                                      color: context.theme.textTheme.bodyMedium?.color,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16.sp,
                                     ),
@@ -391,13 +375,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.0005,
+                              height: MediaQuery.of(context).size.height * 0.0005,
                             ),
                             Visibility(
-                              visible: restaurant.dineIn ||
-                                  restaurant.takeout ||
-                                  restaurant.delivery,
+                              visible: restaurant.dineIn || restaurant.takeout || restaurant.delivery,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   bottom: 5,
@@ -405,8 +386,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   left: 5,
                                 ),
                                 child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.65,
+                                  width: MediaQuery.of(context).size.width * 0.65,
                                   child: DineInTakeoutDeliveryWidget(
                                     dineIn: restaurant.dineIn,
                                     takeout: restaurant.takeout,
@@ -421,8 +401,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                           height: MediaQuery.of(context).size.height * 0.015,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              left: 5, right: 5, top: 15, bottom: 35),
+                          padding: const EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 35),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -467,14 +446,12 @@ class RestaurantDetailsPage extends StatelessWidget {
                                       if (Platform.isIOS) {
                                         launchUrl(
                                           Uri.parse(appleUrl),
-                                          mode: LaunchMode
-                                              .externalNonBrowserApplication,
+                                          mode: LaunchMode.externalNonBrowserApplication,
                                         );
                                       } else {
                                         launchUrl(
                                           Uri.parse(googleUrl),
-                                          mode: LaunchMode
-                                              .externalNonBrowserApplication,
+                                          mode: LaunchMode.externalNonBrowserApplication,
                                         );
                                       }
                                     },
@@ -587,15 +564,12 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15)
-                              .copyWith(left: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(left: 20),
                           child: ExpandableText(
                             context,
-                            text: restaurant.description ??
-                                restaurant.name.capitalizeFirstLetter(),
+                            text: restaurant.description ?? restaurant.name.capitalizeFirstLetter(),
                             style: baseTextStyle.copyWith(
-                              color: restaurant.description != null &&
-                                      restaurant.description!.isNotEmpty
+                              color: restaurant.description != null && restaurant.description!.isNotEmpty
                                   ? context.theme.textTheme.titleSmall?.color
                                   : Colors.grey.shade500,
                               fontSize: 12.sp,
@@ -618,8 +592,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 14)
-                              .copyWith(top: 5),
+                          padding: const EdgeInsets.symmetric(horizontal: 14).copyWith(top: 5),
                           child: RatingAndReviewsCountWidget(
                             rating: totalRestaurantRating(reviews),
                             reviewCount: reviews.length,
@@ -628,8 +601,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         const SizedBox(height: 15),
                         if (reviews.isEmpty)
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 35),
+                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 35),
                             child: SizedBox(
                               height: 150,
                               width: context.width * 0.75,

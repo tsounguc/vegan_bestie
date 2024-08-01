@@ -9,7 +9,7 @@ class AppRouter {
         return _pageBuilder(
           (context) {
             final user = serviceLocator<FirebaseAuth>().currentUser;
-
+            user?.reload();
             if (user != null) {
               // get user info from firebase
 
@@ -18,17 +18,18 @@ class AppRouter {
                 uid: user.uid,
                 email: user.email ?? '',
                 name: user.displayName ?? '',
+                photoUrl: user.photoURL,
               );
               // store user model in user provider
               context.userProvider.initUser(userModel);
 
               return MultiBlocProvider(
                 providers: [
-                  BlocProvider.value(
-                    value: serviceLocator<FoodProductCubit>(),
+                  BlocProvider(
+                    create: (_) => serviceLocator<FoodProductCubit>(),
                   ),
-                  BlocProvider.value(
-                    value: serviceLocator<RestaurantsCubit>(),
+                  BlocProvider(
+                    create: (_) => serviceLocator<RestaurantsCubit>(),
                   ),
                   BlocProvider(
                     create: (_) => serviceLocator<AuthBloc>(),
@@ -173,6 +174,11 @@ class AppRouter {
       case AllSavedProductsPage.id:
         return _pageBuilder(
           (_) => const AllSavedProductsPage(),
+          settings: settings,
+        );
+      case LoadingPage.id:
+        return _pageBuilder(
+          (_) => const LoadingPage(),
           settings: settings,
         );
       case AllSavedRestaurantsPage.id:

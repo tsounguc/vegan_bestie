@@ -28,12 +28,10 @@ class EditRestaurantReviewScreen extends StatefulWidget {
   static const String id = '/editRestaurantReviewScreen';
 
   @override
-  State<EditRestaurantReviewScreen> createState() =>
-      _EditRestaurantReviewScreenState();
+  State<EditRestaurantReviewScreen> createState() => _EditRestaurantReviewScreenState();
 }
 
-class _EditRestaurantReviewScreenState
-    extends State<EditRestaurantReviewScreen> {
+class _EditRestaurantReviewScreenState extends State<EditRestaurantReviewScreen> {
   final titleController = TextEditingController();
   final reviewController = TextEditingController();
 
@@ -70,8 +68,8 @@ class _EditRestaurantReviewScreenState
               : context.currentUser!.name,
       text: reviewController.text.trim(),
       rating: rating,
-      username: context.currentUser?.name,
-      userProfilePic: context.currentUser?.photoUrl ?? kDefaultAvatar,
+      // username: context.currentUser?.name,
+      // userProfilePic: context.currentUser?.photoUrl ?? kDefaultAvatar,
     );
     BlocProvider.of<RestaurantsCubit>(context).editRestaurantReview(
       review: restaurantReview,
@@ -171,12 +169,8 @@ class _EditRestaurantReviewScreenState
                                     submitChanges(context);
                                   },
                             label: 'Submit',
-                            backgroundColor: nothingChanged
-                                ? Colors.grey
-                                : Theme.of(context)
-                                    .buttonTheme
-                                    .colorScheme
-                                    ?.primary,
+                            backgroundColor:
+                                nothingChanged ? Colors.grey : Theme.of(context).buttonTheme.colorScheme?.primary,
                             textColor: Colors.white,
                           );
                   },

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/media_resources.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
+import 'package:sheveegan/features/food_product/presentation/pages/product_found_page.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/scan_results_page.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 import 'package:sheveegan/themes/app_theme.dart';
@@ -31,9 +33,21 @@ class ScanProductHomePage extends StatelessWidget {
             state.message,
           );
         } else if (state is FetchingProduct) {
+          Navigator.popUntil(
+            context,
+            ModalRoute.withName('/'),
+          );
           Navigator.of(context).pushNamed(
-            ScanResultsPage.id,
-            arguments: context.read<FoodProductCubit>(),
+            LoadingPage.id,
+          );
+        } else if (state is ProductFound) {
+          Navigator.popUntil(
+            context,
+            ModalRoute.withName('/'),
+          );
+          Navigator.of(context).pushNamed(
+            ProductFoundPage.id,
+            arguments: state.product,
           );
         }
         if (state is SavedProductsListFetched) {
