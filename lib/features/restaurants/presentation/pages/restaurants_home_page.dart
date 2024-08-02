@@ -18,54 +18,57 @@ class RestaurantsHomePage extends StatelessWidget {
 
   Position? userCurrentLocation;
 
-  late List<Restaurant>? restaurants;
-
-  late Set<Marker>? markers;
-
   Widget currentPage = Container();
 
   // @override
-  bool locationChanged(UserLocationLoaded state) {
-    return userCurrentLocation == null ||
-        userCurrentLocation?.latitude.toStringAsFixed(3) !=
-            state.position.latitude.toStringAsFixed(
+  bool checkLocation(
+    BuildContext context, {
+    required Position position,
+  }) {
+    final userLocation = context.currentLocation;
+    return userLocation == null ||
+        userLocation.latitude.toStringAsFixed(3) !=
+            position.latitude.toStringAsFixed(
               3,
             ) ||
-        userCurrentLocation?.longitude.toStringAsFixed(3) !=
-            state.position.longitude.toStringAsFixed(
+        userLocation.longitude.toStringAsFixed(3) !=
+            position.longitude.toStringAsFixed(
               3,
             );
   }
 
   @override
   Widget build(BuildContext context) {
+    if (context.currentLocation == null) {
+      BlocProvider.of<RestaurantsCubit>(
+        context,
+      ).loadGeoLocation();
+    }
     return BlocConsumer<RestaurantsCubit, RestaurantsState>(
       listener: (context, state) {
         if (state is UserLocationLoaded) {
           // store previous location into local variable
-          userCurrentLocation = context.read<RestaurantsNearMeProvider>().currentLocation;
-
+          final locationChanged = checkLocation(context, position: state.position);
           // if previous location is not the same as location just loaded ..
-          if (locationChanged(state)) {
+          if (locationChanged) {
             // store location loaded in provider variable ...
-            context.read<RestaurantsNearMeProvider>().currentLocation = state.position;
+            context.restaurantsNearMeProvider.currentLocation = state.position;
             // and local variable
             userCurrentLocation = state.position;
             debugPrint(
-              'userCurrentLocation: ${userCurrentLocation?.latitude}'
-              ' ${userCurrentLocation?.longitude}',
+              'userCurrentLocation: ${state.position.latitude}'
+              ' ${state.position.longitude}',
             );
             BlocProvider.of<RestaurantsCubit>(context).getRestaurants(
               state.position,
-              context.read<RestaurantsNearMeProvider>().radius,
+              context.radius,
             );
           }
         }
 
         if (state is RestaurantsLoaded) {
           debugPrint('RestaurantsLoaded');
-          context.read<RestaurantsNearMeProvider>().restaurants = state.restaurants..sort(sortByDistance);
-          restaurants = state.restaurants..sort(sortByDistance);
+          context.restaurantsNearMeProvider.restaurants = state.restaurants..sort(sortByDistance);
           BlocProvider.of<RestaurantsCubit>(context).getRestaurantsMarkers(
             state.restaurants,
           );
@@ -73,8 +76,7 @@ class RestaurantsHomePage extends StatelessWidget {
 
         if (state is MarkersLoaded) {
           debugPrint('MarkersLoaded');
-          context.read<RestaurantsNearMeProvider>().markers = state.markers;
-          markers = state.markers;
+          context.restaurantsNearMeProvider.markers = state.markers;
         }
 
         if (state is SavedRestaurantsListFetched) {
@@ -86,29 +88,9 @@ class RestaurantsHomePage extends StatelessWidget {
           currentPage = const LoadingPage();
           return const LoadingPage();
         } else if (state is MarkersLoaded) {
-          userCurrentLocation = context.read<RestaurantsNearMeProvider>().currentLocation;
-          restaurants = context.read<RestaurantsNearMeProvider>().restaurants;
-          markers = context.read<RestaurantsNearMeProvider>().markers;
-          currentPage = RestaurantsFoundBody(
-            restaurants: restaurants ?? [],
-            userLocation: userCurrentLocation ??
-                Position(
-                  longitude: 0,
-                  latitude: 0,
-                  timestamp: DateTime.now(),
-                  accuracy: 0,
-                  altitude: 0,
-                  altitudeAccuracy: 0,
-                  heading: 0,
-                  headingAccuracy: 0,
-                  speed: 0,
-                  speedAccuracy: 0,
-                ),
-            markers: markers ?? <Marker>{},
-          );
           return RestaurantsFoundBody(
-            restaurants: restaurants ?? [],
-            userLocation: userCurrentLocation ??
+            restaurants: context.restaurants ?? [],
+            userLocation: context.currentLocation ??
                 Position(
                   longitude: 0,
                   latitude: 0,
@@ -121,7 +103,7 @@ class RestaurantsHomePage extends StatelessWidget {
                   speed: 0,
                   speedAccuracy: 0,
                 ),
-            markers: markers ?? <Marker>{},
+            markers: context.markers ?? <Marker>{},
           );
         } else if (state is RestaurantsError) {
           currentPage = ErrorPage(error: state.message);
