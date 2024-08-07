@@ -99,6 +99,7 @@ class _EnterPasswordDialogState extends State<EnterPasswordDialog> {
               context.restaurantsNearMeProvider.currentLocation = null;
               context.restaurantsNearMeProvider.markers = null;
               context.restaurantsNearMeProvider.restaurants = null;
+              context.userProvider.user = null;
             },
           ),
         ],
