@@ -464,10 +464,12 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       return restaurantsStream.handleError((dynamic error) {
         if (error is FirebaseException) {
           debugPrintStack(stackTrace: error.stackTrace);
-          throw ServerException(
-            message: error.message ?? 'Unknown error occurred',
-            statusCode: error.code,
-          );
+          if (error.code != 'PERMISSION_DENIED') {
+            throw ServerException(
+              message: error.message ?? 'Unknown error occurred',
+              statusCode: error.code,
+            );
+          }
         }
         throw ServerException(
           message: error.toString(),

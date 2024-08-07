@@ -162,8 +162,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                     'Restaurant saved',
                   );
                   final restaurantIds = context.userProvider.user?.savedRestaurantsIds ?? [];
-                  BlocProvider.of<RestaurantsCubit>(context)
-                      .getSavedRestaurants(savedRestaurantsIdsList: restaurantIds);
+                  BlocProvider.of<RestaurantsCubit>(context).getSavedRestaurants(restaurantIds);
                 }
                 if (state is RestaurantUnSaved) {
                   CoreUtils.showSnackBar(
@@ -171,8 +170,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                     'Restaurant unsaved',
                   );
                   final restaurantIds = context.userProvider.user?.savedRestaurantsIds ?? [];
-                  BlocProvider.of<RestaurantsCubit>(context)
-                      .getSavedRestaurants(savedRestaurantsIdsList: restaurantIds);
+                  BlocProvider.of<RestaurantsCubit>(context).getSavedRestaurants(restaurantIds);
                 }
                 if (state is SavedRestaurantsListFetched) {
                   context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
@@ -188,13 +186,6 @@ class RestaurantDetailsPage extends StatelessWidget {
                           color: context.theme.iconTheme.color!,
                         ),
                   centerTitle: false,
-                  // title: SizedBox(
-                  //   width: MediaQuery.of(context).size.width * 0.5,
-                  //   child: const VeganBestieLogoWidget(
-                  //     size: 25,
-                  //     fontSize: 35,
-                  //   ),
-                  // ),
                   actions: [
                     IconButton(
                       style: ElevatedButton.styleFrom(
@@ -205,7 +196,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                       ),
                       icon: Icon(
                         isSaved ? Icons.bookmark : Icons.bookmark_outline,
-                        color: isSaved ? Colors.amberAccent : context.theme.iconTheme.color,
+                        color: isSaved ? Colors.amberAccent : context.theme.iconTheme.color?.withOpacity(0.5),
                       ),
                       onPressed: () =>
                           isSaved ? unsaveRestaurant(restaurant, context) : saveRestaurant(restaurant, context),

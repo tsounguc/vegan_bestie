@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/core/common/widgets/vegan_bestie_logo_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
@@ -23,44 +24,45 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   @override
+  void initState() {
+    // if (context.currentLocation == null) {
+    //   debugPrint('currentLocation is null Dashboard init');
+    // serviceLocator<RestaurantsCubit>().loadGeoLocation();
+    // }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext buildContext) {
     return StreamBuilder<UserModel>(
       stream: DashboardUtils.userDataStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          context.userProvider.user = snapshot.data;
+          context.read<UserProvider>().user = snapshot.data;
         }
 
         return Consumer<BottomNavigationBarProvider>(
           builder: (context, controller, child) {
-            final savedBarcodes = context.userProvider.user!.savedProductsBarcodes;
-
-            if (savedBarcodes.length != context.savedProductsProvider.savedProductsList?.length) {
-              BlocProvider.of<FoodProductCubit>(
-                context,
-              ).fetchProductsList(savedBarcodes);
-            }
-
-            final savedRestaurantsIds = context.userProvider.user!.savedRestaurantsIds;
-
-            if (savedRestaurantsIds.length != context.savedRestaurantsProvider.savedRestaurantsList?.length) {
-              BlocProvider.of<RestaurantsCubit>(
-                context,
-              ).getSavedRestaurants(savedRestaurantsIdsList: savedRestaurantsIds);
-            }
-
             if (controller.currentIndex == 1) {
-              BlocProvider.of<RestaurantsCubit>(
-                context,
-              ).loadGeoLocation();
+              debugPrint('if currentIndex is 1 loadGeoLocation from Dashboard');
+              BlocProvider.of<RestaurantsCubit>(context).loadGeoLocation();
             }
+            if (controller.currentIndex == 2) {
+              if (context.currentLocation == null) {
+                BlocProvider.of<RestaurantsCubit>(context).loadGeoLocation();
+              }
+              final savedRestaurantsIds = context.currentUser?.savedRestaurantsIds ?? [];
+              if (savedRestaurantsIds.length != context.savedRestaurantsList?.length) {
+                debugPrint('getSavedRestaurantsList from DashBoard');
+                BlocProvider.of<RestaurantsCubit>(context).getSavedRestaurants(savedRestaurantsIds);
+              }
 
-            if (snapshot.data?.isAdmin ?? false) {
-              BlocProvider.of<FoodProductCubit>(
-                context,
-              ).fetchReports();
+              final savedProductBarcodes = context.currentUser?.savedProductsBarcodes ?? [];
+              if (savedProductBarcodes.length != context.savedProductsList?.length) {
+                debugPrint('savedProductsList in ScanProductHome');
+                BlocProvider.of<FoodProductCubit>(context).fetchProductsList(savedProductBarcodes);
+              }
             }
-
             return Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,
@@ -126,5 +128,31 @@ class _DashboardState extends State<Dashboard> {
         );
       },
     );
+  }
+
+  Future<void> initDashboard(BuildContext context) async {
+    // final savedBarcodes = context.userProvider.user!.savedProductsBarcodes;
+    //
+    // if (savedBarcodes.length != context.savedProductsProvider.savedProductsList?.length) {
+    //   debugPrint('savedProductsList in dashboard');
+    //   serviceLocator<FoodProductCubit>().fetchProductsList(savedBarcodes);
+    // }
+
+    // final savedRestaurantsIds = context.userProvider.user!.savedRestaurantsIds;
+
+    // if (savedRestaurantsIds.length != context.savedRestaurantsProvider.savedRestaurantsList?.length) {
+    //   debugPrint('savedRestaurantsList in dashboard');
+    //   await serviceLocator<RestaurantsCubit>().getSavedRestaurants(savedRestaurantsIdsList: savedRestaurantsIds);
+    // }
+
+    // if (context.currentLocation == null) {
+    //   debugPrint('currentLocation is null');
+    //   await serviceLocator<RestaurantsCubit>().loadGeoLocation();
+    // }
+
+    // if (context.currentUser?.isAdmin ?? false) {
+    //   debugPrint('fetch Reports');
+    //   await serviceLocator<FoodProductCubit>().fetchReports();
+    // }
   }
 }

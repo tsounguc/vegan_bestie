@@ -37,7 +37,7 @@ abstract class FoodProductRemoteDataSource {
     required String barcode,
   });
 
-  Future<void> removeFoodProduct({
+  Future<void> unSaveFoodProduct({
     required String barcode,
   });
 
@@ -110,17 +110,14 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
       return foodProduct.copyWith(
         isVegan: isVegan,
         isVegetarian: isVegetarian,
-        nonVeganIngredients: !isVegan && isVegetarian
-            ? nonVeganIngredients
-            : nonVeganIngredients,
+        nonVeganIngredients: !isVegan && isVegetarian ? nonVeganIngredients : nonVeganIngredients,
       );
     } on FetchProductException catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
       rethrow;
     } catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
-      throw const FetchProductException(
-          message: 'Issue fetching product', statusCode: 500);
+      throw const FetchProductException(message: 'Issue fetching product', statusCode: 500);
     }
   }
 
@@ -437,7 +434,7 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
   }
 
   @override
-  Future<void> removeFoodProduct({required String barcode}) async {
+  Future<void> unSaveFoodProduct({required String barcode}) async {
     try {
       await _users.doc(_authClient.currentUser?.uid).update({
         'savedProductsBarcodes': FieldValue.arrayRemove([barcode]),
@@ -538,8 +535,7 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
     try {
       final reportReference = _foodProductReport.doc();
 
-      final reportModel =
-          (report as FoodProductReportModel).copyWith(id: reportReference.id);
+      final reportModel = (report as FoodProductReportModel).copyWith(id: reportReference.id);
 
       await reportReference.set(
         reportModel.toMap(),
@@ -549,13 +545,11 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
     }
   }
 
-  CollectionReference<Map<String, dynamic>> get _users =>
-      _cloudStoreClient.collection(
+  CollectionReference<Map<String, dynamic>> get _users => _cloudStoreClient.collection(
         FirebaseConstants.usersCollection,
       );
 
-  CollectionReference<Map<String, dynamic>> get _foodProductReport =>
-      _cloudStoreClient.collection(
+  CollectionReference<Map<String, dynamic>> get _foodProductReport => _cloudStoreClient.collection(
         FirebaseConstants.foodProductReportCollection,
       );
 }

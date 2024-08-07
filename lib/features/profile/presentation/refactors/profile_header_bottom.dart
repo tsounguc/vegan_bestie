@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/profile/presentation/screens/edit_profile_screen.dart';
 
@@ -55,18 +57,9 @@ class ProfileHeaderBottom extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     OutlinedButton(
-                      // style: OutlinedButton.styleFrom(
-                      //   surfaceTintColor: context.theme.colorScheme.background,
-                      //   // side: const BorderSide(
-                      //   //   color: Colors.black,
-                      //   //   width: 1,
-                      //   // ),
-                      //   minimumSize: const Size(130, 50),
-                      //   elevation: 2,
-                      // ),
                       onPressed: () => Navigator.of(context).pushNamed(
                         EditProfileScreen.id,
-                        arguments: context.read<AuthBloc>(),
+                        arguments: serviceLocator<AuthBloc>(),
                       ),
                       child: Text(
                         'Edit Profile',

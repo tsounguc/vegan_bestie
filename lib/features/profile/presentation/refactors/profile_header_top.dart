@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
+import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/common/widgets/popup_item.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/media_resources.dart';
@@ -24,28 +25,10 @@ class ProfileHeaderTop extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(
       builder: (context, provider, child) {
-        // final user = provider.user;
-        // final image = user?.photoUrl == null || user!.photoUrl!.isEmpty ? null : provider.user!.photoUrl!;
-        // print(provider.user?.photoUrl);
-        // final image = Image.network(
-        //   provider.user?.photoUrl ?? MediaResources.user,
-        //   fit: BoxFit.cover,
-        //   errorBuilder: (_, exception, stackTrace) {
-        //     return ErrorWidget(exception.toString());
-        //   },
-        // );
-        // image.image.resolve(ImageConfiguration.empty).addListener(
-        //       ImageStreamListener(
-        //         (_, __) {
-        //           /* You can do something when the image is loaded. */
-        //         },
-        //         onError: (_, __) {
-        //           // Evict the object from the cache to retry to fetch it the next
-        //           // time this widget is built.
-        //           imageCache.evict(image.image);
-        //         },
-        //       ),
-        //     );
+        final user = provider.user;
+
+        final image = user?.photoUrl == null || user!.photoUrl!.isEmpty ? null : provider.user!.photoUrl!;
+
         return SliverAppBar(
           expandedHeight: context.height * 0.50,
           pinned: true,
@@ -54,12 +37,20 @@ class ProfileHeaderTop extends StatelessWidget {
             background: Stack(
               children: [
                 Positioned.fill(
-                  child: provider.user?.photoUrl != null && provider.user!.photoUrl!.isNotEmpty
-                      // ? image
+                  child: image != null
+                      // ? Image.network(
+                      //     image,
+                      //     fit: BoxFit.cover,
+                      //   )
                       ? CachedNetworkImage(
-                          imageUrl: provider.user!.photoUrl ?? '',
+                          imageUrl: image,
                           // width: double.maxFinite,
                           fit: BoxFit.cover,
+
+                          placeholder: (context, percentage) {
+                            return const LoadingPage();
+                            // return Image.asset(MediaResources.user);
+                          },
                           errorWidget: (context, error, child) {
                             return Image.asset(MediaResources.user);
                           },
@@ -87,11 +78,11 @@ class ProfileHeaderTop extends StatelessWidget {
                   ),
                   itemBuilder: (_) {
                     return [
-                      if (context.userProvider.user?.isAdmin ?? false)
+                      if (user?.isAdmin ?? false)
                         PopupMenuItem<void>(
                           onTap: () => Navigator.of(context).pushNamed(
                             AddFoodProductScreen.id,
-                            arguments: context.read<FoodProductCubit>(),
+                            arguments: serviceLocator<FoodProductCubit>(),
                           ),
                           child: PopupItem(
                             title: 'Add New Product',
@@ -101,11 +92,11 @@ class ProfileHeaderTop extends StatelessWidget {
                             ),
                           ),
                         ),
-                      if (context.userProvider.user?.isAdmin ?? false)
+                      if (user?.isAdmin ?? false)
                         PopupMenuItem<void>(
                           onTap: () => Navigator.of(context).pushNamed(
                             ReportsScreen.id,
-                            arguments: context.read<FoodProductCubit>(),
+                            arguments: serviceLocator<FoodProductCubit>(),
                           ),
                           child: PopupItem(
                             title: 'Reports',
@@ -120,7 +111,7 @@ class ProfileHeaderTop extends StatelessWidget {
                         PopupMenuItem<void>(
                           onTap: () => Navigator.of(context).pushNamed(
                             SubmittedRestaurantsScreen.id,
-                            arguments: context.read<RestaurantsCubit>(),
+                            arguments: serviceLocator<RestaurantsCubit>(),
                           ),
                           child: PopupItem(
                             title: 'Submitted Restaurants',
@@ -134,7 +125,7 @@ class ProfileHeaderTop extends StatelessWidget {
                       PopupMenuItem<void>(
                         onTap: () => Navigator.of(context).pushNamed(
                           SettingsPage.id,
-                          arguments: context.read<AuthBloc>(),
+                          arguments: serviceLocator<AuthBloc>(),
                         ),
                         child: PopupItem(
                           title: 'Settings',
@@ -178,11 +169,15 @@ class ProfileHeaderTop extends StatelessWidget {
                       PopupMenuItem<void>(
                         onTap: () async {
                           final navigator = Navigator.of(context);
+
+                          context.savedProductsProvider.savedProductsList = null;
+                          context.savedRestaurantsProvider.savedRestaurantsList = null;
+                          context.restaurantsNearMeProvider.currentLocation = null;
+                          context.restaurantsNearMeProvider.markers = null;
+                          context.restaurantsNearMeProvider.restaurants = null;
+                          context.userProvider.user = null;
+
                           await serviceLocator<FirebaseAuth>().signOut();
-                          if (context.mounted) {
-                            context.savedProductsProvider.savedProductsList = null;
-                            context.savedRestaurantsProvider.savedRestaurantsList = null;
-                          }
                           unawaited(
                             navigator.pushNamedAndRemoveUntil(
                               '/',
@@ -194,9 +189,7 @@ class ProfileHeaderTop extends StatelessWidget {
                           title: 'Logout',
                           icon: Icon(
                             Icons.logout,
-                            color: context.themeModeProvider.themeMode == ThemeMode.dark
-                                ? Colors.grey.shade700
-                                : Colors.black,
+                            color: context.themeMode == ThemeMode.dark ? Colors.grey.shade700 : Colors.black,
                           ),
                         ),
                       ),
@@ -226,7 +219,7 @@ class ProfileHeaderTop extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  context.currentUser!.name,
+                  user?.name ?? '',
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w700,

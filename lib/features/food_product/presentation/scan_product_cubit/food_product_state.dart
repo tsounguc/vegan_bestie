@@ -36,32 +36,23 @@ class ProductFound extends FoodProductState {
   final FoodProduct product;
 
   @override
-  List<Object> get props => [
-        product,
-      ];
+  List<Object> get props => [product];
 }
 
 class SavingFoodProduct extends FoodProductState {
   const SavingFoodProduct();
 }
 
-class RemovingFoodProduct extends FoodProductState {
-  const RemovingFoodProduct();
+class UnSavingFoodProduct extends FoodProductState {
+  const UnSavingFoodProduct();
 }
 
 class FoodProductSaved extends FoodProductState {
-  const FoodProductSaved({
-    required this.product,
-    required this.nonVeganIngredients,
-    required this.isVegan,
-    required this.isVegetarian,
-  });
+  const FoodProductSaved();
+}
 
-  final FoodProduct product;
-  final bool isVegan;
-
-  final bool isVegetarian;
-  final String nonVeganIngredients;
+class FoodProductUnSaved extends FoodProductState {
+  const FoodProductUnSaved();
 }
 
 class FetchingProductsList extends FoodProductState {

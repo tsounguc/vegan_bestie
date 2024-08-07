@@ -87,7 +87,7 @@ Future<void> _initScan() async {
         scanBarcode: serviceLocator(),
         fetchProduct: serviceLocator(),
         saveFoodProduct: serviceLocator(),
-        removeFoodProduct: serviceLocator(),
+        unSaveFoodProduct: serviceLocator(),
         fetchSavedProductsList: serviceLocator(),
         readIngredientsFromImage: serviceLocator(),
         updateFoodProduct: serviceLocator(),
@@ -101,7 +101,7 @@ Future<void> _initScan() async {
     ..registerLazySingleton(() => ScanBarcode(serviceLocator()))
     ..registerLazySingleton(() => FetchProduct(serviceLocator()))
     ..registerLazySingleton(() => SaveFoodProduct(serviceLocator()))
-    ..registerLazySingleton(() => RemoveFoodProduct(serviceLocator()))
+    ..registerLazySingleton(() => UnSaveFoodProduct(serviceLocator()))
     ..registerLazySingleton(() => FetchSavedProductsList(serviceLocator()))
     ..registerLazySingleton(() => ReadIngredientsFromImage(serviceLocator()))
     ..registerLazySingleton(() => UpdateFoodProduct(serviceLocator()))

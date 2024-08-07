@@ -8,35 +8,39 @@ class AppRouter {
       case '/':
         return _pageBuilder(
           (context) {
-            final user = serviceLocator<FirebaseAuth>().currentUser;
-            user?.reload();
-            if (user != null) {
+            if (serviceLocator<FirebaseAuth>().currentUser != null) {
               // get user info from firebase
+              final user = serviceLocator<FirebaseAuth>().currentUser!;
 
               // create userModel with user info
               final userModel = UserModel(
                 uid: user.uid,
                 email: user.email ?? '',
                 name: user.displayName ?? '',
-                photoUrl: user.photoURL,
               );
               // store user model in user provider
               context.userProvider.initUser(userModel);
 
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (_) => serviceLocator<FoodProductCubit>(),
-                  ),
-                  BlocProvider(
-                    create: (_) => serviceLocator<RestaurantsCubit>(),
-                  ),
-                  BlocProvider(
-                    create: (_) => serviceLocator<AuthBloc>(),
-                  ),
-                ],
-                child: const Dashboard(),
-              );
+              // if (context.currentLocation == null) {
+              //   debugPrint('if currentLocation is null loadGeoLocation from appRouter');
+              //   serviceLocator<RestaurantsCubit>().loadGeoLocation().then(
+              //     (value) {
+              //       if (context.currentUser?.savedRestaurantsIds.length != context.savedRestaurantsList?.length) {
+              //         final savedRestaurantsIds = context.currentUser?.savedRestaurantsIds ?? [];
+              //         serviceLocator<RestaurantsCubit>().getSavedRestaurants(savedRestaurantsIds);
+              //       }
+              //     },
+              //   );
+              // }
+
+              return MultiBlocProvider(providers: [
+                BlocProvider(
+                  create: (_) => serviceLocator<RestaurantsCubit>(),
+                ),
+                BlocProvider(
+                  create: (_) => serviceLocator<FoodProductCubit>(),
+                ),
+              ], child: const Dashboard());
             } else {
               return BlocProvider(
                 create: (_) => serviceLocator<AuthBloc>(),

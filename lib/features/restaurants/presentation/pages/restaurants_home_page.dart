@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sheveegan/core/common/app/providers/restaurants_near_me_provider.dart';
 import 'package:sheveegan/core/common/screens/error/error.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
@@ -16,11 +15,6 @@ class RestaurantsHomePage extends StatelessWidget {
 
   static const String id = '/restaurantsHomepage';
 
-  Position? userCurrentLocation;
-
-  Widget currentPage = Container();
-
-  // @override
   bool checkLocation(
     BuildContext context, {
     required Position position,
@@ -37,13 +31,10 @@ class RestaurantsHomePage extends StatelessWidget {
             );
   }
 
+  Widget currentPage = const LoadingPage();
+
   @override
   Widget build(BuildContext context) {
-    if (context.currentLocation == null) {
-      BlocProvider.of<RestaurantsCubit>(
-        context,
-      ).loadGeoLocation();
-    }
     return BlocConsumer<RestaurantsCubit, RestaurantsState>(
       listener: (context, state) {
         if (state is UserLocationLoaded) {
@@ -53,8 +44,6 @@ class RestaurantsHomePage extends StatelessWidget {
           if (locationChanged) {
             // store location loaded in provider variable ...
             context.restaurantsNearMeProvider.currentLocation = state.position;
-            // and local variable
-            userCurrentLocation = state.position;
             debugPrint(
               'userCurrentLocation: ${state.position.latitude}'
               ' ${state.position.longitude}',
@@ -68,7 +57,8 @@ class RestaurantsHomePage extends StatelessWidget {
 
         if (state is RestaurantsLoaded) {
           debugPrint('RestaurantsLoaded');
-          context.restaurantsNearMeProvider.restaurants = state.restaurants..sort(sortByDistance);
+          context.restaurantsNearMeProvider.restaurants = state.restaurants
+            ..sort((a, b) => sortByDistance(context, a, b));
           BlocProvider.of<RestaurantsCubit>(context).getRestaurantsMarkers(
             state.restaurants,
           );
@@ -80,16 +70,17 @@ class RestaurantsHomePage extends StatelessWidget {
         }
 
         if (state is SavedRestaurantsListFetched) {
+          debugPrint('SavedRestaurantsListFetched');
           context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
         }
       },
       builder: (context, state) {
-        if (state is LoadingRestaurants || state is LoadingMarkers) {
-          currentPage = const LoadingPage();
-          return const LoadingPage();
+        if (state is RestaurantsError) {
+          currentPage = ErrorPage(error: state.message);
+          return ErrorPage(error: state.message);
         } else if (state is MarkersLoaded) {
-          return RestaurantsFoundBody(
-            restaurants: context.restaurants ?? [],
+          currentPage = RestaurantsFoundBody(
+            restaurants: context.restaurants ?? <Restaurant>[],
             userLocation: context.currentLocation ??
                 Position(
                   longitude: 0,
@@ -105,11 +96,25 @@ class RestaurantsHomePage extends StatelessWidget {
                 ),
             markers: context.markers ?? <Marker>{},
           );
-        } else if (state is RestaurantsError) {
-          currentPage = ErrorPage(error: state.message);
-          return ErrorPage(error: state.message);
+          return RestaurantsFoundBody(
+            restaurants: context.restaurants ?? <Restaurant>[],
+            userLocation: context.currentLocation ??
+                Position(
+                  longitude: 0,
+                  latitude: 0,
+                  timestamp: DateTime.now(),
+                  accuracy: 0,
+                  altitude: 0,
+                  altitudeAccuracy: 0,
+                  heading: 0,
+                  headingAccuracy: 0,
+                  speed: 0,
+                  speedAccuracy: 0,
+                ),
+            markers: context.markers ?? <Marker>{},
+          );
         } else {
-          if (userCurrentLocation == null) {
+          if (context.currentLocation == null) {
             currentPage = const LoadingPage();
           }
           return currentPage;
@@ -118,16 +123,16 @@ class RestaurantsHomePage extends StatelessWidget {
     );
   }
 
-  int sortByDistance(Restaurant a, Restaurant b) {
+  int sortByDistance(BuildContext context, Restaurant a, Restaurant b) {
     final distanceA = Geolocator.distanceBetween(
-      userCurrentLocation?.latitude ?? 0,
-      userCurrentLocation?.longitude ?? 0,
+      context.currentLocation?.latitude ?? 0,
+      context.currentLocation?.longitude ?? 0,
       a.geoLocation.lat,
       a.geoLocation.lng,
     );
     final distanceB = Geolocator.distanceBetween(
-      userCurrentLocation?.latitude ?? 0,
-      userCurrentLocation?.longitude ?? 0,
+      context.currentLocation?.latitude ?? 0,
+      context.currentLocation?.longitude ?? 0,
       b.geoLocation.lat,
       b.geoLocation.lng,
     );

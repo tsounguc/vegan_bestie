@@ -9,7 +9,7 @@ class SavedProductsProvider extends ChangeNotifier {
   set savedProductsList(List<FoodProduct>? savedProductsList) {
     if (_savedProductsList != savedProductsList) {
       _savedProductsList = savedProductsList;
+      Future.delayed(Duration.zero, notifyListeners);
     }
-    Future.delayed(Duration.zero, notifyListeners);
   }
 }

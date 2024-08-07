@@ -36,7 +36,7 @@ class UserEntity extends Equatable {
         uid,
         name,
         email,
-        // photoUrl,
+        photoUrl,
         bio,
         savedProductsBarcodes,
         savedRestaurantsIds,

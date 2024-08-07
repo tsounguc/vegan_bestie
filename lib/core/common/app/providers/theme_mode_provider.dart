@@ -36,7 +36,7 @@ class ThemeModeProvider extends ChangeNotifier {
     if (value) {
       _themeMode = ThemeMode.system;
     }
-    notifyListeners();
+    Future.delayed(Duration.zero, notifyListeners);
   }
 
   set isDarkMode(bool value) {
@@ -49,7 +49,7 @@ class ThemeModeProvider extends ChangeNotifier {
         _themeMode = ThemeMode.light;
       }
     }
-    notifyListeners();
+    Future.delayed(Duration.zero, notifyListeners);
   }
 }
 

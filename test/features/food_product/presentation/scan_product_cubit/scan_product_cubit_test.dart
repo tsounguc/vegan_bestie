@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
-import 'package:sheveegan/features/auth/domain/usecases/remove_food_product.dart';
+import 'package:sheveegan/features/auth/domain/usecases/unsave_food_product.dart';
 import 'package:sheveegan/features/auth/domain/usecases/save_food_product.dart';
 import 'package:sheveegan/features/food_product/domain/entities/barcode.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
@@ -24,7 +24,7 @@ class MockFetchProduct extends Mock implements FetchProduct {}
 
 class MockSaveFoodProduct extends Mock implements SaveFoodProduct {}
 
-class MockRemoveFoodProduct extends Mock implements RemoveFoodProduct {}
+class MockRemoveFoodProduct extends Mock implements UnSaveFoodProduct {}
 
 class MockFetchSavedProductsList extends Mock implements FetchSavedProductsList {}
 
@@ -44,7 +44,7 @@ void main() {
   late ScanBarcode scanBarcode;
   late FetchProduct fetchProduct;
   late SaveFoodProduct saveFoodProduct;
-  late RemoveFoodProduct removeFoodProduct;
+  late UnSaveFoodProduct removeFoodProduct;
   late FetchSavedProductsList fetchSavedProductsList;
   late FoodProductCubit cubit;
   late FetchProductParams testFetchProductParams;
@@ -70,7 +70,7 @@ void main() {
       scanBarcode: scanBarcode,
       fetchProduct: fetchProduct,
       saveFoodProduct: saveFoodProduct,
-      removeFoodProduct: removeFoodProduct,
+      unSaveFoodProduct: removeFoodProduct,
       fetchSavedProductsList: fetchSavedProductsList,
       readIngredientsFromImage: readIngredientsFromImage,
       updateFoodProduct: updateFoodProduct,

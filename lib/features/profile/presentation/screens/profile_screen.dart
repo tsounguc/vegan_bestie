@@ -41,57 +41,46 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
+    // final savedProductBarcodes = context.currentUser?.savedProductsBarcodes ?? [];
+    // if (context.currentIndex == 2 && context.savedProductsList != null) {
+    //   debugPrint('savedProductsList in Profile');
+    //   BlocProvider.of<FoodProductCubit>(context).fetchProductsList(savedProductBarcodes);
+    // }
+    // final savedRestaurantsIds = context.currentUser?.savedRestaurantsIds ?? [];
+    // if (context.currentIndex == 2 && context.savedRestaurantsList != null) {
+    //   debugPrint('savedRestaurantsList in Profile');
+    //   BlocProvider.of<RestaurantsCubit>(context).getSavedRestaurants(savedRestaurantsIds);
+    // }
 
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<FoodProductCubit, FoodProductState>(
-          listener: (context, state) {
-            if (state is SavedProductsListFetched) {
-              context.savedProductsProvider.savedProductsList = state.savedProductsList;
-            }
-            if (state is ReportsFetched) {
-              context.reportsProvider.reports = state.reports;
-            }
-          },
-        ),
-        BlocListener<RestaurantsCubit, RestaurantsState>(
-          listener: (context, state) {
-            if (state is SavedRestaurantsListFetched) {
-              context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
-            }
-          },
-        ),
-      ],
-      child: Scaffold(
-        // backgroundColor: Colors.white,
-        extendBodyBehindAppBar: true,
-        extendBody: true,
-        body: SingleChildScrollView(
+    return Scaffold(
+      // backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      body: SingleChildScrollView(
+        controller: scrollController,
+        child: CustomScrollView(
           controller: scrollController,
-          child: CustomScrollView(
-            controller: scrollController,
-            shrinkWrap: true,
-            slivers: [
-              // has profile image and user name
-              const ProfileHeaderTop(),
-              SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // has bio and edit button
-                    const ProfileHeaderBottom(),
-                    SizedBox(height: 10.h),
-                    const SavedFoodsSection(),
-                    SizedBox(height: 20.h),
-                    const SavedRestaurantsSection(),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                  ],
-                ),
+          shrinkWrap: true,
+          slivers: [
+            // has profile image and user name
+            const ProfileHeaderTop(),
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // has bio and edit button
+                  const ProfileHeaderBottom(),
+                  SizedBox(height: 10.h),
+                  const SavedFoodsSection(),
+                  SizedBox(height: 20.h),
+                  const SavedRestaurantsSection(),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

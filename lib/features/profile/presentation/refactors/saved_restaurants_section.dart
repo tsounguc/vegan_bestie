@@ -13,82 +13,84 @@ class SavedRestaurantsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SavedRestaurantsProvider>(builder: (_, restaurantsProvider, __) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25).copyWith(
-              top: 5.h,
-              bottom: 5.h,
-            ),
-            child: SectionHeader(
-              sectionTitle: 'Saved Restaurants',
-              seeAll: restaurantsProvider.savedRestaurantsList != null &&
-                  restaurantsProvider.savedRestaurantsList!.length >= 4,
-              onSeeAll: () => Navigator.of(context).pushNamed(
-                AllSavedRestaurantsPage.id,
+    return Consumer<SavedRestaurantsProvider>(
+      builder: (_, restaurantsProvider, __) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25).copyWith(
+                top: 5.h,
+                bottom: 5.h,
+              ),
+              child: SectionHeader(
+                sectionTitle: 'Saved Restaurants',
+                seeAll: restaurantsProvider.savedRestaurantsList != null &&
+                    restaurantsProvider.savedRestaurantsList!.length >= 4,
+                onSeeAll: () => Navigator.of(context).pushNamed(
+                  AllSavedRestaurantsPage.id,
+                ),
               ),
             ),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: restaurantsProvider.savedRestaurantsList == null
-                    ? [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 45,
-                            horizontal: 35,
-                          ),
-                          child: CircularProgressIndicator(),
-                        ),
-                      ]
-                    : restaurantsProvider.savedRestaurantsList!.isEmpty
-                        ? [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 50,
-                                horizontal: 35,
-                              ),
-                              child: Text(
-                                'Restaurants will be here once saved',
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: context.theme.textTheme.bodySmall?.color,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: restaurantsProvider.savedRestaurantsList == null
+                      ? [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 45,
+                              horizontal: 35,
                             ),
-                          ]
-                        : restaurantsProvider.savedRestaurantsList!
-                            .take(4)
-                            .map(
-                              (restaurant) => Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 16,
+                            child: CircularProgressIndicator(),
+                          ),
+                        ]
+                      : restaurantsProvider.savedRestaurantsList!.isEmpty
+                          ? [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 50,
+                                  horizontal: 35,
                                 ),
-                                child: RestaurantCard(
-                                  restaurant: restaurant,
-                                  onTap: () => Navigator.of(context).pushNamed(
-                                    RestaurantDetailsPage.id,
-                                    arguments: restaurant,
+                                child: Text(
+                                  'Restaurants will be here once saved',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: context.theme.textTheme.bodySmall?.color,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ),
-                            )
-                            .toList(),
+                            ]
+                          : restaurantsProvider.savedRestaurantsList!
+                              .take(4)
+                              .map(
+                                (restaurant) => Padding(
+                                  padding: const EdgeInsets.only(
+                                    right: 16,
+                                  ),
+                                  child: RestaurantCard(
+                                    restaurant: restaurant,
+                                    onTap: () => Navigator.of(context).pushNamed(
+                                      RestaurantDetailsPage.id,
+                                      arguments: restaurant,
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                ),
               ),
             ),
-          ),
-        ],
-      );
-    });
+          ],
+        );
+      },
+    );
   }
 }

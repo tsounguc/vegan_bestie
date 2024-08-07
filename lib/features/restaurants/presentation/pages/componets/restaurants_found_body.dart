@@ -33,144 +33,140 @@ class RestaurantsFoundBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<RestaurantsNearMeProvider>(
-      builder: (context, controller, child) {
-        return Stack(
-          children: [
-            BlocBuilder<RestaurantsCubit, RestaurantsState>(
-              builder: (context, state) {
-                return LayoutBuilder(
-                  builder: (
-                    BuildContext context,
-                    BoxConstraints constraints,
-                  ) {
-                    if (state is MarkersLoaded) {
-                      return SizedBox(
-                        height: constraints.maxHeight,
-                        child: MapPage(
-                          userLocation: userLocation,
-                          markers: markers,
-                        ),
-                      );
-                    }
-                    return SizedBox(
-                      height: constraints.maxHeight,
-                      child: MapPage(
-                        userLocation: userLocation,
-                        markers: markers,
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-            DraggableScrollableSheet(
-              minChildSize: 0.165,
-              maxChildSize: 0.90,
+    return Stack(
+      children: [
+        BlocBuilder<RestaurantsCubit, RestaurantsState>(
+          builder: (context, state) {
+            return LayoutBuilder(
               builder: (
                 BuildContext context,
-                ScrollController scrollController,
+                BoxConstraints constraints,
               ) {
-                return ColoredBox(
-                  color: Theme.of(context).colorScheme.background,
-                  child: Column(
-                    children: [
-                      SingleChildScrollView(
-                        controller: scrollController,
-                        physics: const ClampingScrollPhysics(),
-                        child: SizedBox(
-                          width: 100,
-                          height: 30,
-                          child: Divider(
-                            thickness: 5,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Expanded(
-                        child: ListView.builder(
-                          controller: scrollController,
-                          physics: const ClampingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: restaurants.length,
-                          itemBuilder: (context, restaurantIndex) {
-                            return StreamBuilder<List<RestaurantReview>>(
-                              stream: serviceLocator<FirebaseFirestore>()
-                                  .collection('restaurantReviews')
-                                  .where('restaurantId', isEqualTo: restaurants[restaurantIndex].id)
-                                  .snapshots()
-                                  .map(
-                                    (event) => event.docs
-                                        .map(
-                                          (e) => RestaurantReviewModel.fromMap(
-                                            e.data(),
-                                          ),
-                                        )
-                                        .toList(),
-                                  ),
-                              builder: (context, snapshot) {
-                                final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
-                                final restaurant = restaurants[restaurantIndex];
-                                final userPosition = context.read<RestaurantsNearMeProvider>().currentLocation;
-                                return HorizontalRestaurantCard(
-                                  restaurant: restaurant,
-                                  reviews: reviews,
-                                  weekdayText: const [],
-                                  userPosition: userPosition,
-                                  imageUrl: restaurant.thumbnail != null &&
-                                          restaurant.thumbnail != '_empty.image' &&
-                                          restaurant.thumbnail!.isNotEmpty
-                                      ? restaurant.thumbnail!
-                                      : '',
-                                  restaurantId: restaurant.id,
-                                  restaurantName: restaurant.name.capitalizeFirstLetter(),
-                                  restaurantAddress: '${restaurant.streetAddress}, '
-                                      '${restaurant.city}, ${restaurant.state}',
-                                  restaurantPrice: r'$' * 3,
-                                  isOpenNow: true,
-                                  fromSavedRestaurants: false,
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+                if (state is MarkersLoaded) {
+                  return SizedBox(
+                    height: constraints.maxHeight,
+                    child: MapPage(
+                      userLocation: userLocation,
+                      markers: markers,
+                    ),
+                  );
+                }
+                return SizedBox(
+                  height: constraints.maxHeight,
+                  child: MapPage(
+                    userLocation: userLocation,
+                    markers: markers,
                   ),
                 );
               },
-            ),
-            Positioned(
-              right: 15,
-              bottom: 15,
-              child: ElevatedButton.icon(
-                // color: context.theme.primaryColor,
-                style: IconButton.styleFrom(
-                  backgroundColor: context.theme.primaryColor,
-                  foregroundColor: Colors.white,
-                ),
-
-                onPressed: () {
-                  // BlocProvider.of<RestaurantsBloc>(context).add(
-                  //   const AddRestaurantEvent(
-                  //     restaurant: Restaurant.empty(),
-                  //   ),
-                  // );
-
-                  Navigator.of(context).pushNamed(
-                    AddRestaurantScreen.id,
-                  );
-                },
-                icon: const Icon(
-                  Icons.add,
-                ),
-                label: const Text(Strings.addBusinessText),
+            );
+          },
+        ),
+        DraggableScrollableSheet(
+          minChildSize: 0.165,
+          maxChildSize: 0.90,
+          builder: (
+            BuildContext context,
+            ScrollController scrollController,
+          ) {
+            return ColoredBox(
+              color: Theme.of(context).colorScheme.background,
+              child: Column(
+                children: [
+                  SingleChildScrollView(
+                    controller: scrollController,
+                    physics: const ClampingScrollPhysics(),
+                    child: SizedBox(
+                      width: 100,
+                      height: 30,
+                      child: Divider(
+                        thickness: 5,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: ListView.builder(
+                      controller: scrollController,
+                      physics: const ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: restaurants.length,
+                      itemBuilder: (context, restaurantIndex) {
+                        return StreamBuilder<List<RestaurantReview>>(
+                          stream: serviceLocator<FirebaseFirestore>()
+                              .collection('restaurantReviews')
+                              .where('restaurantId', isEqualTo: restaurants[restaurantIndex].id)
+                              .snapshots()
+                              .map(
+                                (event) => event.docs
+                                    .map(
+                                      (e) => RestaurantReviewModel.fromMap(
+                                        e.data(),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                          builder: (context, snapshot) {
+                            final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
+                            final restaurant = restaurants[restaurantIndex];
+                            final userPosition = context.read<RestaurantsNearMeProvider>().currentLocation;
+                            return HorizontalRestaurantCard(
+                              restaurant: restaurant,
+                              reviews: reviews,
+                              weekdayText: const [],
+                              userPosition: userPosition,
+                              imageUrl: restaurant.thumbnail != null &&
+                                      restaurant.thumbnail != '_empty.image' &&
+                                      restaurant.thumbnail!.isNotEmpty
+                                  ? restaurant.thumbnail!
+                                  : '',
+                              restaurantId: restaurant.id,
+                              restaurantName: restaurant.name.capitalizeFirstLetter(),
+                              restaurantAddress: '${restaurant.streetAddress}, '
+                                  '${restaurant.city}, ${restaurant.state}',
+                              restaurantPrice: r'$' * 3,
+                              isOpenNow: true,
+                              fromSavedRestaurants: false,
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
+            );
+          },
+        ),
+        Positioned(
+          right: 15,
+          bottom: 15,
+          child: ElevatedButton.icon(
+            // color: context.theme.primaryColor,
+            style: IconButton.styleFrom(
+              backgroundColor: context.theme.primaryColor,
+              foregroundColor: Colors.white,
             ),
-          ],
-        );
-      },
+
+            onPressed: () {
+              // BlocProvider.of<RestaurantsBloc>(context).add(
+              //   const AddRestaurantEvent(
+              //     restaurant: Restaurant.empty(),
+              //   ),
+              // );
+
+              Navigator.of(context).pushNamed(
+                AddRestaurantScreen.id,
+              );
+            },
+            icon: const Icon(
+              Icons.add,
+            ),
+            label: const Text(Strings.addBusinessText),
+          ),
+        ),
+      ],
     );
   }
 }

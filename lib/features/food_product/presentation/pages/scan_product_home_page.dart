@@ -8,7 +8,6 @@ import 'package:sheveegan/core/resources/media_resources.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/product_found_page.dart';
-import 'package:sheveegan/features/food_product/presentation/pages/scan_results_page.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 import 'package:simple_animations/simple_animations.dart';

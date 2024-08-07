@@ -23,7 +23,6 @@ class _EnterPasswordDialogState extends State<EnterPasswordDialog> {
 
     return BlocListener<AuthBloc, AuthState>(
       listener: (_, state) {
-        AuthState previousState = const AuthInitial();
         if (state is AccountDeleted) {
           CoreUtils.showSnackBar(context, 'Account Deleted', durationInMilliSecond: 1500);
           Navigator.of(context).pushNamedAndRemoveUntil(
@@ -35,10 +34,8 @@ class _EnterPasswordDialogState extends State<EnterPasswordDialog> {
           Navigator.of(context).pop();
 
           CoreUtils.showSnackBar(context, state.message, durationInMilliSecond: 2000);
-          previousState = state;
         }
         if (state is AuthLoading) {
-          previousState = state;
           CoreUtils.showLoadingDialog(context);
         }
       },
@@ -99,6 +96,9 @@ class _EnterPasswordDialogState extends State<EnterPasswordDialog> {
               );
               context.savedProductsProvider.savedProductsList = null;
               context.savedRestaurantsProvider.savedRestaurantsList = null;
+              context.restaurantsNearMeProvider.currentLocation = null;
+              context.restaurantsNearMeProvider.markers = null;
+              context.restaurantsNearMeProvider.restaurants = null;
             },
           ),
         ],

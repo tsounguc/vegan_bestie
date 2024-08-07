@@ -61,6 +61,8 @@ extension ContextExtension on BuildContext {
 
   ThemeModeProvider get themeModeProvider => read<ThemeModeProvider>();
 
+  ThemeMode get themeMode => themeModeProvider.themeMode;
+
   TabNavigator get tabNavigator => read<TabNavigator>();
 
   void pop() => tabNavigator.pop();

@@ -10,6 +10,7 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:sheveegan/features/dashboard/presentation/views/dashboard.dart';
 import 'package:sheveegan/features/profile/presentation/widgets/edit_profile_form.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -214,6 +215,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             context,
             'Profile updated successfully',
           );
+          // context.pop();
         } else if (state is AuthError) {
           CoreUtils.showSnackBar(context, state.message);
         }

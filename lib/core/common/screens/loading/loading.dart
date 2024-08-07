@@ -15,6 +15,7 @@ class _LoadingPageState extends State<LoadingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Colors.white,
+      appBar: AppBar(),
       body: Center(
         child: Column(
           children: [

@@ -58,7 +58,7 @@ void main() async {
   );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({
     required this.useDeviceSettings,
     required this.isDarkMode,
@@ -69,34 +69,23 @@ class MyApp extends StatefulWidget {
   final bool isDarkMode;
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    // context.themeModeProvider.initThemeMode();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
           value: NotificationsNotifier(serviceLocator<SharedPreferences>()),
         ),
-        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider.value(value: UserProvider()),
         ChangeNotifierProvider.value(value: SavedProductsProvider()),
         ChangeNotifierProvider.value(value: SavedRestaurantsProvider()),
-        ChangeNotifierProvider(create: (_) => BottomNavigationBarProvider()),
+        ChangeNotifierProvider.value(value: BottomNavigationBarProvider()),
         ChangeNotifierProvider.value(value: FoodProductReportsProvider()),
         ChangeNotifierProvider.value(value: RestaurantsNearMeProvider()),
         ChangeNotifierProvider.value(value: SubmittedRestaurantsProvider()),
-        ChangeNotifierProvider(
-          create: (_) => ThemeModeProvider(
-            useDeviceSettings: widget.useDeviceSettings,
-            isDarkMode: widget.isDarkMode,
+        ChangeNotifierProvider.value(
+          value: ThemeModeProvider(
+            useDeviceSettings: useDeviceSettings,
+            isDarkMode: isDarkMode,
           ),
         ),
       ],

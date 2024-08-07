@@ -65,9 +65,9 @@ class FoodProductRepositoryImpl implements FoodProductRepository {
   }
 
   @override
-  ResultVoid removeFoodProduct({required String barcode}) async {
+  ResultVoid unSaveFoodProduct({required String barcode}) async {
     try {
-      final result = await _remoteDataSource.removeFoodProduct(
+      final result = await _remoteDataSource.unSaveFoodProduct(
         barcode: barcode,
       );
       return Right(result);

@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sheveegan/core/enums/update_food_product.dart';
 import 'package:sheveegan/core/resources/strings.dart';
-import 'package:sheveegan/features/auth/domain/usecases/remove_food_product.dart';
+import 'package:sheveegan/features/auth/domain/usecases/unsave_food_product.dart';
 import 'package:sheveegan/features/auth/domain/usecases/save_food_product.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product_report.dart';
@@ -25,7 +25,7 @@ class FoodProductCubit extends Cubit<FoodProductState> {
     required ScanBarcode scanBarcode,
     required FetchProduct fetchProduct,
     required SaveFoodProduct saveFoodProduct,
-    required RemoveFoodProduct removeFoodProduct,
+    required UnSaveFoodProduct unSaveFoodProduct,
     required FetchSavedProductsList fetchSavedProductsList,
     required ReadIngredientsFromImage readIngredientsFromImage,
     required UpdateFoodProduct updateFoodProduct,
@@ -36,7 +36,7 @@ class FoodProductCubit extends Cubit<FoodProductState> {
   })  : _scanBarcode = scanBarcode,
         _fetchProduct = fetchProduct,
         _saveFoodProduct = saveFoodProduct,
-        _removeFoodProduct = removeFoodProduct,
+        _unSaveFoodProduct = unSaveFoodProduct,
         _fetchSavedProductsList = fetchSavedProductsList,
         _readIngredientsFromImage = readIngredientsFromImage,
         _updateFoodProduct = updateFoodProduct,
@@ -48,7 +48,7 @@ class FoodProductCubit extends Cubit<FoodProductState> {
   final ScanBarcode _scanBarcode;
   final FetchProduct _fetchProduct;
   final SaveFoodProduct _saveFoodProduct;
-  final RemoveFoodProduct _removeFoodProduct;
+  final UnSaveFoodProduct _unSaveFoodProduct;
   final FetchSavedProductsList _fetchSavedProductsList;
   final ReadIngredientsFromImage _readIngredientsFromImage;
   final UpdateFoodProduct _updateFoodProduct;
@@ -135,23 +135,24 @@ class FoodProductCubit extends Cubit<FoodProductState> {
 
     final result = await _saveFoodProduct(product.code);
 
-    result.fold((failure) => emit(FoodProductError(message: failure.message)), (success) {
-      if (product.productName.isEmpty) {
-        emit(ProductNotFound(barcode: product.code));
-      } else {
-        emit(
-          ProductFound(
-            product: product,
-          ),
-        );
-      }
-    });
+    result.fold(
+      (failure) => emit(FoodProductError(message: failure.message)),
+      (success) {
+        if (product.productName.isEmpty) {
+          emit(ProductNotFound(barcode: product.code));
+        } else {
+          emit(
+            const FoodProductSaved(),
+          );
+        }
+      },
+    );
   }
 
-  Future<void> removeFoodProductHandler({required FoodProduct product}) async {
-    emit(const RemovingFoodProduct());
+  Future<void> unSaveFoodProductHandler({required FoodProduct product}) async {
+    emit(const UnSavingFoodProduct());
 
-    final result = await _removeFoodProduct(product.code);
+    final result = await _unSaveFoodProduct(product.code);
 
     result.fold(
       (failure) => emit(FoodProductError(message: failure.message)),
@@ -159,7 +160,7 @@ class FoodProductCubit extends Cubit<FoodProductState> {
         if (product.productName.isEmpty) {
           emit(ProductNotFound(barcode: product.code));
         } else {
-          emit(ProductFound(product: product));
+          emit(const FoodProductUnSaved());
         }
       },
     );

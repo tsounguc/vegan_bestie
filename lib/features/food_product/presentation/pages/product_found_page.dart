@@ -3,12 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/custom_image_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
+import 'package:sheveegan/features/dashboard/presentation/utils/dashboard_utils.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/refactors/flexible_space_bar_bottom.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/refactors/product_found_body.dart';
@@ -47,30 +49,19 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
   void removeFoodProduct(FoodProduct product) {
     BlocProvider.of<FoodProductCubit>(
       context,
-    ).removeFoodProductHandler(product: product);
-    CoreUtils.showSnackBar(
-      context,
-      'Product removed',
-    );
+    ).unSaveFoodProductHandler(product: product);
   }
 
   void saveFoodProduct(FoodProduct product) {
     BlocProvider.of<FoodProductCubit>(
       context,
     ).saveFoodProductHandler(product: product);
-    CoreUtils.showSnackBar(
-      context,
-      'Product saved',
-    );
   }
 
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      // final state = BlocProvider.of<ScanProductCubit>(
-      //   context,
-      // ).state;
       if (widget.product.ingredients.isNotEmpty) {
         await showAndCloseTooltip();
       }
@@ -97,75 +88,87 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
     }
 
     return StreamBuilder<UserModel>(
-      stream: serviceLocator<FirebaseFirestore>()
-          .collection('users')
-          .doc(serviceLocator<FirebaseAuth>().currentUser!.uid)
-          .snapshots()
-          .map(
-            (event) => UserModel.fromMap(event.data()!),
-          ),
+      stream: DashboardUtils.userDataStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          context.userProvider.user = snapshot.data;
+          context.read<UserProvider>().user = snapshot.data;
         }
+
         final user = context.userProvider.user;
-        return Scaffold(
-          // backgroundColor: Colors.white,
-          body: CustomScrollView(
-            shrinkWrap: true,
-            slivers: [
-              SliverAppBar(
-                expandedHeight: context.height * 0.46,
-                pinned: true,
-                // backgroundColor: Colors.white,
-                leading: const CustomBackButton(),
-                actions: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 5,
-                      shape: const CircleBorder(),
-                      backgroundColor: Colors.white.withOpacity(0.7),
+
+        final isSaved = user!.savedProductsBarcodes.contains(widget.product.code);
+
+        return BlocListener<FoodProductCubit, FoodProductState>(
+          listener: (context, state) {
+            if (state is FoodProductSaved) {
+              CoreUtils.showSnackBar(
+                context,
+                'Product saved',
+              );
+              final foodProductBarcodes = context.userProvider.user?.savedProductsBarcodes ?? [];
+              BlocProvider.of<FoodProductCubit>(context).fetchProductsList(foodProductBarcodes);
+            }
+
+            if (state is FoodProductUnSaved) {
+              CoreUtils.showSnackBar(context, 'Product unsaved');
+              final foodProductBarcodes = context.userProvider.user?.savedProductsBarcodes ?? [];
+              BlocProvider.of<FoodProductCubit>(context).fetchProductsList(foodProductBarcodes);
+            }
+            if (state is SavedProductsListFetched) {
+              context.savedProductsProvider.savedProductsList = state.savedProductsList;
+            }
+          },
+          child: Scaffold(
+            // backgroundColor: Colors.white,
+            body: CustomScrollView(
+              shrinkWrap: true,
+              slivers: [
+                SliverAppBar(
+                  expandedHeight: context.height * 0.46,
+                  pinned: true,
+                  // backgroundColor: Colors.white,
+                  leading: const CustomBackButton(),
+                  actions: [
+                    IconButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 5,
+                        shape: const CircleBorder(),
+                        backgroundColor: Colors.white.withOpacity(0.7),
+                      ),
+                      icon: Icon(
+                        isSaved ? Icons.bookmark : Icons.bookmark_outline,
+                        color: isSaved ? Colors.amberAccent : context.theme.iconTheme.color?.withOpacity(0.5),
+                        // size: 30,
+                      ),
+                      onPressed: () =>
+                          isSaved ? removeFoodProduct(widget.product) : saveFoodProduct(widget.product),
                     ),
-                    child: Icon(
-                      Icons.bookmark,
-                      color: user!.savedProductsBarcodes.contains(
-                        widget.product.code,
-                      )
-                          ? Colors.amberAccent
-                          : Colors.white,
-                      // size: 30,
+                  ],
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: CustomImageWidget(
+                      imageUrl: widget.product.imageFrontUrl,
                     ),
-                    onPressed: () => user.savedProductsBarcodes.contains(
-                      widget.product.code,
-                    )
-                        ? removeFoodProduct(widget.product)
-                        : saveFoodProduct(widget.product),
                   ),
-                ],
-                flexibleSpace: FlexibleSpaceBar(
-                  background: CustomImageWidget(
-                    imageUrl: widget.product.imageFrontUrl,
+                  bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(0),
+                    child: FlexibleSpaceBarBottom(
+                      toolTipKey: _toolTipKey,
+                      product: widget.product,
+                      onTooltipTriggered: showAndCloseTooltip,
+                    ),
                   ),
                 ),
-                bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(0),
-                  child: FlexibleSpaceBarBottom(
-                    toolTipKey: _toolTipKey,
+                SliverToBoxAdapter(
+                  child: ProductFoundBody(
+                    fatPercentage: fatPct,
+                    carbsPercentage: carbsPct,
+                    proteinsPercentage: proteinsPct,
                     product: widget.product,
-                    onTooltipTriggered: showAndCloseTooltip,
+                    scrollController: _scrollController,
                   ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: ProductFoundBody(
-                  fatPercentage: fatPct,
-                  carbsPercentage: carbsPct,
-                  proteinsPercentage: proteinsPct,
-                  product: widget.product,
-                  scrollController: _scrollController,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

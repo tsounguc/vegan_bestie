@@ -13,7 +13,7 @@ abstract class FoodProductRepository {
 
   ResultVoid saveFoodProduct({required String barcode});
 
-  ResultVoid removeFoodProduct({required String barcode});
+  ResultVoid unSaveFoodProduct({required String barcode});
 
   ResultFuture<List<FoodProduct>> fetchSavedProductsList({required List<String> productsList});
 
