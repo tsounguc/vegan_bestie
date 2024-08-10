@@ -25,6 +25,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final fullNameController = TextEditingController();
+  final veganStatusController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
@@ -117,6 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 20),
                   SignUpForm(
                     fullNameController: fullNameController,
+                    veganStatusController: veganStatusController,
                     emailController: emailController,
                     passwordController: passwordController,
                     confirmPasswordController: confirmPasswordController,

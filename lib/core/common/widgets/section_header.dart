@@ -7,12 +7,14 @@ class SectionHeader extends StatelessWidget {
     required this.sectionTitle,
     required this.seeAll,
     required this.onSeeAll,
+    this.fontSize,
     super.key,
   });
 
   final String sectionTitle;
   final bool seeAll;
   final VoidCallback onSeeAll;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class SectionHeader extends StatelessWidget {
         Text(
           sectionTitle,
           style: TextStyle(
-            fontSize: 14.sp,
+            fontSize: fontSize ?? 14.sp,
             fontWeight: FontWeight.w600,
             // color: Colors.grey.shade800,
           ),

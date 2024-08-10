@@ -1,9 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:sheveegan/core/common/widgets/i_field.dart';
+import 'package:sheveegan/core/common/widgets/vegan_status_text_field.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({
     required this.fullNameController,
+    required this.veganStatusController,
     required this.emailController,
     required this.passwordController,
     required this.confirmPasswordController,
@@ -13,6 +16,7 @@ class SignUpForm extends StatefulWidget {
   });
 
   final TextEditingController fullNameController;
+  final TextEditingController veganStatusController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
@@ -36,7 +40,11 @@ class _SignUpFormState extends State<SignUpForm> {
           IField(
             controller: widget.fullNameController,
             hintText: 'Full Name',
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.text,
+          ),
+          const SizedBox(height: 25),
+          VeganStatusTextField(
+            controller: widget.veganStatusController,
           ),
           const SizedBox(height: 25),
           IField(

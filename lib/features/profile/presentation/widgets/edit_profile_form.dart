@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sheveegan/core/common/widgets/vegan_status_text_field.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/features/profile/presentation/widgets/edit_profile_form_field.dart';
@@ -10,6 +11,7 @@ class EditProfileForm extends StatelessWidget {
     // required this.passwordController,
     // required this.oldPasswordController,
     required this.bioController,
+    required this.veganStatusController,
     super.key,
   });
 
@@ -19,6 +21,7 @@ class EditProfileForm extends StatelessWidget {
   // final TextEditingController passwordController;
   // final TextEditingController oldPasswordController;
   final TextEditingController bioController;
+  final TextEditingController veganStatusController;
 
   @override
   Widget build(BuildContext context) {
@@ -30,29 +33,12 @@ class EditProfileForm extends StatelessWidget {
           controller: fullNameController,
           hintText: context.currentUser!.name,
         ),
+        VeganStatusTextField(controller: veganStatusController),
         EditProfileFormField(
           fieldTitle: 'EMAIL',
           controller: emailController,
           hintText: context.currentUser!.email.obscureEmail,
         ),
-        // EditProfileFormField(
-        //   fieldTitle: 'CURRENT PASSWORD',
-        //   controller: oldPasswordController,
-        //   hintText: '********',
-        // ),
-        // StatefulBuilder(
-        //   builder: (_, setState) {
-        //     oldPasswordController.addListener(
-        //       () => setState(() {}),
-        //     );
-        //     return EditProfileFormField(
-        //       fieldTitle: 'NEW PASSWORD',
-        //       controller: passwordController,
-        //       hintText: '********',
-        //       readOnly: oldPasswordController.text.isEmpty,
-        //     );
-        //   },
-        // ),
         EditProfileFormField(
           fieldTitle: 'BIO',
           controller: bioController,

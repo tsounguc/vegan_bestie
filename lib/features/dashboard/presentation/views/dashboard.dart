@@ -25,10 +25,6 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
-    // if (context.currentLocation == null) {
-    //   debugPrint('currentLocation is null Dashboard init');
-    // serviceLocator<RestaurantsCubit>().loadGeoLocation();
-    // }
     super.initState();
   }
 

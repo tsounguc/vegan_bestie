@@ -7,6 +7,7 @@ class UserEntity extends Equatable {
     required this.email,
     this.photoUrl,
     this.bio,
+    this.veganStatus,
     this.savedProductsBarcodes = const [],
     this.savedRestaurantsIds = const [],
   });
@@ -26,6 +27,7 @@ class UserEntity extends Equatable {
   final String email;
   final String? photoUrl;
   final String? bio;
+  final String? veganStatus;
   final List<String> savedProductsBarcodes;
   final List<String> savedRestaurantsIds;
 
@@ -38,6 +40,7 @@ class UserEntity extends Equatable {
         email,
         photoUrl,
         bio,
+        veganStatus,
         savedProductsBarcodes,
         savedRestaurantsIds,
       ];

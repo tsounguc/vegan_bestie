@@ -3,5 +3,6 @@ enum UpdateUserAction {
   email,
   password,
   bio,
+  veganStatus,
   photoUrl,
 }

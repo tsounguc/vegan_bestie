@@ -10,6 +10,7 @@ class UserModel extends UserEntity {
     required super.email,
     super.photoUrl,
     super.bio,
+    super.veganStatus,
     super.savedProductsBarcodes,
     super.savedRestaurantsIds,
   });
@@ -21,6 +22,7 @@ class UserModel extends UserEntity {
           email: '_empty.email',
           photoUrl: null,
           bio: null,
+          veganStatus: null,
           savedRestaurantsIds: const [],
           savedProductsBarcodes: const [],
         );
@@ -36,6 +38,7 @@ class UserModel extends UserEntity {
           email: dataMap['email'] as String,
           photoUrl: dataMap['photoUrl'] as String?,
           bio: dataMap['bio'] as String?,
+          veganStatus: dataMap['veganStatus'] as String?,
           savedProductsBarcodes: dataMap['savedProductsBarcodes'] == null
               ? []
               : List<String>.from(
@@ -60,6 +63,7 @@ class UserModel extends UserEntity {
         'email': email,
         'photoUrl': photoUrl,
         'bio': bio,
+        'veganStatus': veganStatus,
         'savedProductsBarcodes': savedProductsBarcodes,
         'savedRestaurantsIds': savedRestaurantsIds,
       };
@@ -70,6 +74,7 @@ class UserModel extends UserEntity {
     String? email,
     String? photoUrl,
     String? bio,
+    String? veganStatus,
     List<String>? savedProductsBarcodes,
     List<String>? savedRestaurantsIds,
   }) {
@@ -79,6 +84,7 @@ class UserModel extends UserEntity {
       email: email ?? this.email,
       photoUrl: photoUrl ?? this.photoUrl,
       bio: bio ?? this.bio,
+      veganStatus: veganStatus ?? this.veganStatus,
       savedProductsBarcodes: savedProductsBarcodes ?? this.savedProductsBarcodes,
       savedRestaurantsIds: savedRestaurantsIds ?? this.savedRestaurantsIds,
     );

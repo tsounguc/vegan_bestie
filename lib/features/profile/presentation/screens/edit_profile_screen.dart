@@ -26,6 +26,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
   final bioController = TextEditingController();
+  final veganStatusController = TextEditingController();
   File? pickedImage;
 
   // final passwordController = TextEditingController();
@@ -120,6 +121,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   bool get bioChanged => context.currentUser?.bio?.trim() != bioController.text.trim();
 
+  bool get veganStatusChanged => context.currentUser?.veganStatus?.trim() != veganStatusController.text.trim();
+
   bool get imageChanged => pickedImage != null;
 
   bool get nothingChanged =>
@@ -128,12 +131,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       // && !passwordChanged
       &&
       !bioChanged &&
+      !veganStatusChanged &&
       !imageChanged;
 
   @override
   void initState() {
     fullNameController.text = context.currentUser!.name.trim();
     bioController.text = context.currentUser!.bio?.trim() ?? '';
+    veganStatusController.text = context.currentUser!.veganStatus?.trim() ?? '';
     super.initState();
   }
 
@@ -197,6 +202,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         UpdateUserEvent(
           action: UpdateUserAction.bio,
           userData: bioController.text.trim(),
+        ),
+      );
+    }
+    if (veganStatusChanged) {
+      bloc.add(
+        UpdateUserEvent(
+          action: UpdateUserAction.veganStatus,
+          userData: veganStatusController.text.trim(),
         ),
       );
     }
@@ -285,6 +298,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   EditProfileForm(
                     fullNameController: fullNameController,
                     emailController: emailController,
+                    veganStatusController: veganStatusController,
                     // passwordController: passwordController,
                     // oldPasswordController: oldPasswordController,
                     bioController: bioController,
@@ -296,6 +310,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       emailController.addListener(() => refresh(() {}));
                       // passwordController.addListener(() => refresh(() {}));
                       bioController.addListener(() => refresh(() {}));
+                      veganStatusController.addListener(() => refresh(() {}));
                       return state is AuthLoading
                           ? const Center(child: CircularProgressIndicator())
                           : LongButton(

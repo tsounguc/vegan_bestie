@@ -273,6 +273,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           );
         case UpdateUserAction.bio:
           await _updateUserData({'bio': userData as String});
+        case UpdateUserAction.veganStatus:
+          await _updateUserData({'veganStatus': userData as String});
       }
     } on FirebaseException catch (e) {
       throw UpdateUserDataException(

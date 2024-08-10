@@ -21,18 +21,6 @@ class AppRouter {
               // store user model in user provider
               context.userProvider.initUser(userModel);
 
-              // if (context.currentLocation == null) {
-              //   debugPrint('if currentLocation is null loadGeoLocation from appRouter');
-              //   serviceLocator<RestaurantsCubit>().loadGeoLocation().then(
-              //     (value) {
-              //       if (context.currentUser?.savedRestaurantsIds.length != context.savedRestaurantsList?.length) {
-              //         final savedRestaurantsIds = context.currentUser?.savedRestaurantsIds ?? [];
-              //         serviceLocator<RestaurantsCubit>().getSavedRestaurants(savedRestaurantsIds);
-              //       }
-              //     },
-              //   );
-              // }
-
               return MultiBlocProvider(providers: [
                 BlocProvider(
                   create: (_) => serviceLocator<RestaurantsCubit>(),
@@ -50,11 +38,6 @@ class AppRouter {
           },
           settings: settings,
         );
-      // case Dashboard.id:
-      //   return _pageBuilder(
-      //     (_) => const Dashboard(),
-      //     settings: settings,
-      //   );
       case SignInScreen.id:
         return _pageBuilder(
           (_) => BlocProvider(

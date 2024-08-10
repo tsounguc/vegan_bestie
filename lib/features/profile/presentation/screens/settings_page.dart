@@ -54,34 +54,34 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(
               height: 40,
             ),
-            Card(
-              child: ListTile(
-                // padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 15),
-                style: ListTileStyle.list,
-                leading: Icon(
-                  context.themeModeProvider.themeMode == ThemeMode.dark
-                      ? Icons.dark_mode
-                      : context.themeModeProvider.themeMode == ThemeMode.system
-                          ? Icons.phone_android
-                          : Icons.light_mode,
-                  color: context.themeModeProvider.themeMode == ThemeMode.light
-                      ? Colors.yellow
-                      : context.theme.iconTheme.color,
-                ),
-                title: Text(
-                  'Display',
-                  style: context.theme.textTheme.titleMedium,
-                ),
-                trailing: Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: context.theme.iconTheme.color,
-                  size: 15,
-                ),
-                onTap: () => Navigator.of(context).pushNamed(
-                  DisplayScreen.id,
-                ),
-              ),
-            ),
+            // Card(
+            //   child: ListTile(
+            //     // padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 15),
+            //     style: ListTileStyle.list,
+            //     leading: Icon(
+            //       context.themeModeProvider.themeMode == ThemeMode.dark
+            //           ? Icons.dark_mode
+            //           : context.themeModeProvider.themeMode == ThemeMode.system
+            //               ? Icons.phone_android
+            //               : Icons.light_mode,
+            //       color: context.themeModeProvider.themeMode == ThemeMode.light
+            //           ? Colors.yellow
+            //           : context.theme.iconTheme.color,
+            //     ),
+            //     title: Text(
+            //       'Display',
+            //       style: context.theme.textTheme.titleMedium,
+            //     ),
+            //     trailing: Icon(
+            //       Icons.arrow_forward_ios_outlined,
+            //       color: context.theme.iconTheme.color,
+            //       size: 15,
+            //     ),
+            //     onTap: () => Navigator.of(context).pushNamed(
+            //       DisplayScreen.id,
+            //     ),
+            //   ),
+            // ),
             const SizedBox(
               height: 20,
             ),

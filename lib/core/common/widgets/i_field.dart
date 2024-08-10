@@ -11,6 +11,7 @@ class IField extends StatelessWidget {
     this.fillColor,
     this.contentPadding,
     this.suffixIcon,
+    this.suffix,
     this.hintText,
     this.keyboardType,
     this.hintStyle,
@@ -38,6 +39,7 @@ class IField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final bool readOnly;
   final Widget? suffixIcon;
+  final Widget? suffix;
   final String? hintText;
   final TextInputType? keyboardType;
   final bool overrideValidator;
@@ -100,6 +102,7 @@ class IField extends StatelessWidget {
         filled: filled,
         fillColor: fillColor,
         suffixIcon: suffixIcon,
+        suffix: suffix,
         hintText: hintText,
         hintStyle: hintStyle ??
             TextStyle(
