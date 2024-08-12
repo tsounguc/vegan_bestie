@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -86,62 +87,93 @@ class RestaurantsFoundBody extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Expanded(
-                    child: ListView.builder(
-                      controller: scrollController,
-                      physics: const ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: restaurants.length,
-                      itemBuilder: (context, restaurantIndex) {
-                        return StreamBuilder<List<RestaurantReview>>(
-                          stream: serviceLocator<FirebaseFirestore>()
-                              .collection('restaurantReviews')
-                              .where('restaurantId', isEqualTo: restaurants[restaurantIndex].id)
-                              .snapshots()
-                              .map(
-                                (event) => event.docs
-                                    .map(
-                                      (e) => RestaurantReviewModel.fromMap(
-                                        e.data(),
-                                      ),
-                                    )
-                                    .toList(),
+                  if (restaurants.isEmpty)
+                    Expanded(
+                      child: ListView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
+                        children: [
+                          Center(
+                            child: Text(
+                              'No restaurants found',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w700,
                               ),
-                          builder: (context, snapshot) {
-                            final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
-                            final restaurant = restaurants[restaurantIndex];
-                            final userPosition = context.read<RestaurantsNearMeProvider>().currentLocation;
-                            return Column(
-                              children: [
-                                HorizontalRestaurantCard(
-                                  restaurant: restaurant,
-                                  reviews: reviews,
-                                  weekdayText: const [],
-                                  userPosition: userPosition,
-                                  imageUrl: restaurant.thumbnail != null &&
-                                          restaurant.thumbnail != '_empty.image' &&
-                                          restaurant.thumbnail!.isNotEmpty
-                                      ? restaurant.thumbnail!
-                                      : '',
-                                  restaurantId: restaurant.id,
-                                  restaurantName: restaurant.name.capitalizeFirstLetter(),
-                                  restaurantAddress: '${restaurant.streetAddress}, '
-                                      '${restaurant.city}, ${restaurant.state}',
-                                  restaurantPrice: r'$' * 3,
-                                  isOpenNow: true,
-                                  fromSavedRestaurants: false,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          Center(
+                            child: Text(
+                              "We couldn't find restaurants in your area",
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    Expanded(
+                      child: ListView.builder(
+                        controller: scrollController,
+                        physics: const ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: restaurants.length,
+                        itemBuilder: (context, restaurantIndex) {
+                          return StreamBuilder<List<RestaurantReview>>(
+                            stream: serviceLocator<FirebaseFirestore>()
+                                .collection('restaurantReviews')
+                                .where('restaurantId', isEqualTo: restaurants[restaurantIndex].id)
+                                .snapshots()
+                                .map(
+                                  (event) => event.docs
+                                      .map(
+                                        (e) => RestaurantReviewModel.fromMap(
+                                          e.data(),
+                                        ),
+                                      )
+                                      .toList(),
                                 ),
-                                if (restaurantIndex == restaurants.length - 1)
-                                  const SizedBox(
-                                    height: 75,
+                            builder: (context, snapshot) {
+                              final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
+                              final restaurant = restaurants[restaurantIndex];
+                              final userPosition = context.read<RestaurantsNearMeProvider>().currentLocation;
+                              return Column(
+                                children: [
+                                  HorizontalRestaurantCard(
+                                    restaurant: restaurant,
+                                    reviews: reviews,
+                                    weekdayText: const [],
+                                    userPosition: userPosition,
+                                    imageUrl: restaurant.thumbnail != null &&
+                                            restaurant.thumbnail != '_empty.image' &&
+                                            restaurant.thumbnail!.isNotEmpty
+                                        ? restaurant.thumbnail!
+                                        : '',
+                                    restaurantId: restaurant.id,
+                                    restaurantName: restaurant.name.capitalizeFirstLetter(),
+                                    restaurantAddress: '${restaurant.streetAddress}, '
+                                        '${restaurant.city}, ${restaurant.state}',
+                                    restaurantPrice: r'$' * 3,
+                                    isOpenNow: true,
+                                    fromSavedRestaurants: false,
                                   ),
-                              ],
-                            );
-                          },
-                        );
-                      },
+                                  if (restaurantIndex == restaurants.length - 1)
+                                    const SizedBox(
+                                      height: 75,
+                                    ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
-                  ),
                 ],
               ),
             );
@@ -158,12 +190,6 @@ class RestaurantsFoundBody extends StatelessWidget {
             ),
 
             onPressed: () {
-              // BlocProvider.of<RestaurantsBloc>(context).add(
-              //   const AddRestaurantEvent(
-              //     restaurant: Restaurant.empty(),
-              //   ),
-              // );
-
               Navigator.of(context).pushNamed(
                 AddRestaurantScreen.id,
               );

@@ -371,7 +371,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                           SizedBox(
                                             width: context.width * 0.54,
                                             child: Text(
-                                              '${restaurant.streetAddress}, ${restaurant.city}, ${restaurant.state}',
+                                              '${restaurant.streetAddress}, ${restaurant.city}',
                                               style: baseTextStyle,
                                             ),
                                           ),
@@ -408,7 +408,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(right: 16),
+                                      padding: const EdgeInsets.only(right: 16, top: 5),
                                       child: RestaurantVeganStatusText(isVegan: restaurant.veganStatus),
                                     ),
                                   ],
