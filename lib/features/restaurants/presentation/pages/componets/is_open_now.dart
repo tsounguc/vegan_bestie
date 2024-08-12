@@ -21,115 +21,12 @@ class IsOpenNowWidget extends StatelessWidget {
   final bool visible;
   final bool isFromDetailedPage;
   final double? fontSize;
-  List<String> weekdaysText = [];
   final OpenHours openHours;
-
-  String getOpeningHours(BuildContext context) {
-    var status = 'Closed';
-    final date = DateTime.now();
-    var from = '';
-    var to = '';
-    final todaysWeekDay =
-        DateFormat('EEEE').format(date).toLowerCase().capitalizeFirstLetter();
-
-    final daysOfTheWeek = context.daysOfTheWeek;
-    var dayName = '';
-    var dayOpenHours = '';
-    if (openHours.periods.isNotEmpty) {
-      for (final period in openHours.periods) {
-        dayName = daysOfTheWeek[period.open.day]!;
-
-        // Set day and open hours
-        // Example: Monday 06:00 - 11:00
-        if (period.open.time.isNotEmpty && period.close.time.isNotEmpty) {
-          final df = DateFormat.jm();
-
-          // format openTime
-          var openTime = period.open.time;
-          final openHour = int.tryParse(openTime.split(':')[0]) ?? -1;
-          final openMinutes = int.tryParse(openTime.split(':')[1]) ?? -1;
-          final fromDateTime = DateTime(
-            date.year,
-            date.month,
-            date.day,
-            openHour,
-            openMinutes,
-          );
-          openTime = df.format(fromDateTime);
-
-          // format closeTime
-          var closeTime = period.close.time;
-          final closeHour = int.tryParse(closeTime.split(':')[0]) ?? -1;
-          final closeMinutes = int.tryParse(closeTime.split(':')[1]) ?? -1;
-          final toDateTime = DateTime(
-            date.year,
-            date.month,
-            date.day,
-            closeHour,
-            closeMinutes,
-          );
-          closeTime = df.format(toDateTime);
-
-          dayOpenHours = '$dayName $openTime - $closeTime';
-        } else {
-          dayOpenHours = '$dayName Closed';
-        }
-
-        weekdaysText.add(dayOpenHours);
-        // print('${weekdaysText}\n');
-
-        // check if is open now
-        if (daysOfTheWeek[period.open.day] == todaysWeekDay) {
-          from = period.open.time;
-          final fromSplit = from.split(':');
-          final fromHour = int.tryParse(fromSplit[0]) ?? -1;
-          final fromMinutes = int.tryParse(fromSplit[1]) ?? -1;
-          var fromTime = DateTime(
-            date.year,
-            date.month,
-            date.day,
-            fromHour,
-            fromMinutes,
-          );
-
-          to = period.close.time;
-          final toHour = int.tryParse(to.split(':')[0]) ?? -1;
-          final toMinutes = int.tryParse(to.split(':')[1]) ?? -1;
-          var toTime = DateTime(
-            date.year,
-            date.month,
-            date.day,
-            toHour,
-            toMinutes,
-          );
-
-          if (fromHour == -1 ||
-              fromMinutes == -1 ||
-              toHour == -1 ||
-              toMinutes == -1) {
-            status = '';
-          } else {
-            if (toTime.isBefore(fromTime)) {
-              if (date.isBefore(fromTime) && date.hour > 12) {
-                toTime = toTime.add(const Duration(days: 1));
-              } else if (date.isAfter(fromTime) && date.hour < 12) {
-                fromTime = fromTime.subtract(const Duration(days: 1));
-              }
-            }
-
-            if (date.isAfter(fromTime) && date.isBefore(toTime)) {
-              status = 'Open Now';
-            }
-          }
-        }
-      }
-    }
-    return status;
-  }
 
   @override
   Widget build(BuildContext context) {
-    final isStoreOpen = getOpeningHours(context);
+    final isStoreOpen = CoreUtils.checkOpenStatus(context, openHours.periods);
+    // checkOpenStatus(context, openHours);
     return Visibility(
       visible: visible == true,
       child: ElevatedButton.icon(
@@ -138,25 +35,27 @@ class IsOpenNowWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(12.r),
           ),
           padding: EdgeInsets.symmetric(
-              vertical: weekdaysText.isEmpty ? 0 : 12.r, horizontal: 12.r),
-          elevation: weekdaysText.isEmpty ? 0 : 2,
+            vertical: openHours.periods.isEmpty ? 0 : 12.r,
+            horizontal: 12.r,
+          ),
+          elevation: openHours.periods.isEmpty ? 0 : 2,
         ).copyWith(
           backgroundColor: MaterialStatePropertyAll(
-            isFromDetailedPage && weekdaysText.isEmpty
+            isFromDetailedPage && openHours.periods.isEmpty
                 ? context.theme.colorScheme.background
                 : context.theme.cardTheme.color,
           ),
           surfaceTintColor: MaterialStatePropertyAll(
-            isFromDetailedPage && weekdaysText.isEmpty
+            isFromDetailedPage && openHours.periods.isEmpty
                 ? context.theme.colorScheme.background
                 : context.theme.cardTheme.color,
           ),
         ),
-        onPressed: !(isFromDetailedPage && weekdaysText.isNotEmpty)
+        onPressed: !(isFromDetailedPage && openHours.periods.isNotEmpty)
             ? null
             : () => CoreUtils.displayHoursDialog(
                   context,
-                  weekdaysText,
+                  openHours.periods,
                 ),
         icon: Icon(
           Icons.access_time,

@@ -12,6 +12,7 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 
 class CoreUtils {
   const CoreUtils._();
@@ -109,10 +110,12 @@ class CoreUtils {
 
   static void displayHoursDialog(
     BuildContext context,
-    List<String> weekdayText,
+    List<Period> openHourPeriods,
   ) async {
     final date = DateTime.now();
+    final df = DateFormat.jm();
     final todaysWeekDay = DateFormat('EEEE').format(date).toLowerCase().capitalizeFirstLetter();
+    final isOpen = checkOpenStatus(context, openHourPeriods) == 'Open Now';
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -120,12 +123,14 @@ class CoreUtils {
         return AlertDialog(
           backgroundColor: context.theme.cardTheme.color,
           surfaceTintColor: context.theme.cardTheme.color,
-          title: Text(
-            'Hours',
-            style: context.theme.textTheme.bodyMedium?.copyWith(
-              // color: Colors.black,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600,
+          title: Center(
+            child: Text(
+              'Hours',
+              style: context.theme.textTheme.bodyMedium?.copyWith(
+                // color: Colors.black,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           content: IntrinsicHeight(
@@ -133,25 +138,90 @@ class CoreUtils {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                for (int index = 0; index < weekdayText.length; index++)
-                  Row(
-                    children: [
-                      FittedBox(
-                        child: Text(
-                          weekdayText[index].replaceAll(
-                            ', ',
-                            '\n                     ',
-                          ),
-                          style: TextStyle(
-                            // color: Colors.black,
-                            fontSize: 12.sp,
-                            fontWeight: weekdayText[index].split(' ')[0] == todaysWeekDay
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                          ),
+                for (int index = 0; index < context.daysOfTheWeek.length; index++)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Weekday column
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            FittedBox(
+                              child: Text(
+                                context.daysOfTheWeek[index]!,
+                                style: TextStyle(
+                                  color: context.daysOfTheWeek[index] == todaysWeekDay && isOpen
+                                      ? Colors.green
+                                      : null,
+                                  fontSize: 12.sp,
+                                  fontWeight: context.daysOfTheWeek[index] == todaysWeekDay
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                        // Open hours of the weekdays
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for (final period in openHourPeriods)
+                              if (period.open.day == index &&
+                                  period.open.time.isNotEmpty &&
+                                  period.close.time.isNotEmpty)
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${df.format(
+                                        DateTime(
+                                          date.year,
+                                          date.month,
+                                          date.day,
+                                          int.tryParse(period.open.time.split(':')[0]) ?? -1,
+                                          int.tryParse(period.open.time.split(':')[1]) ?? -1,
+                                        ),
+                                      )} - ${df.format(
+                                        DateTime(
+                                          date.year,
+                                          date.month,
+                                          date.day,
+                                          int.tryParse(period.close.time.split(':')[0]) ?? -1,
+                                          int.tryParse(period.close.time.split(':')[1]) ?? -1,
+                                        ),
+                                      )}',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: context.daysOfTheWeek[index] == todaysWeekDay
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              else if (period.open.day == index &&
+                                  (period.open.time.isEmpty || period.close.time.isEmpty))
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Closed',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: context.daysOfTheWeek[index] == todaysWeekDay
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
               ],
             ),
@@ -163,7 +233,7 @@ class CoreUtils {
                 style: TextStyle(
                   // color: Colors.black,
                   fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
               onPressed: () {
@@ -178,6 +248,62 @@ class CoreUtils {
         );
       },
     );
+  }
+
+  static String checkOpenStatus(BuildContext context, List<Period> openHoursPeriods) {
+    var status = 'Closed';
+    final today = DateTime.now();
+    var from = '';
+    var to = '';
+    final todaysWeekDay = DateFormat('EEEE').format(today).toLowerCase().capitalizeFirstLetter();
+
+    final daysOfTheWeek = context.daysOfTheWeek;
+    if (openHoursPeriods.isNotEmpty) {
+      for (final period in openHoursPeriods) {
+        // check if is open now
+        if (daysOfTheWeek[period.open.day] == todaysWeekDay) {
+          from = period.open.time;
+          final fromSplit = from.split(':');
+          final fromHour = int.tryParse(fromSplit[0]) ?? -1;
+          final fromMinutes = int.tryParse(fromSplit[1]) ?? -1;
+          var fromTime = DateTime(
+            today.year,
+            today.month,
+            today.day,
+            fromHour,
+            fromMinutes,
+          );
+
+          to = period.close.time;
+          final toHour = int.tryParse(to.split(':')[0]) ?? -1;
+          final toMinutes = int.tryParse(to.split(':')[1]) ?? -1;
+          var toTime = DateTime(
+            today.year,
+            today.month,
+            today.day,
+            toHour,
+            toMinutes,
+          );
+
+          if (fromHour == -1 || fromMinutes == -1 || toHour == -1 || toMinutes == -1) {
+            status = '';
+          } else {
+            if (toTime.isBefore(fromTime)) {
+              if (today.isBefore(fromTime) && today.hour > 12) {
+                toTime = toTime.add(const Duration(days: 1));
+              } else if (today.isAfter(fromTime) && today.hour < 12) {
+                fromTime = fromTime.subtract(const Duration(days: 1));
+              }
+            }
+
+            if (today.isAfter(fromTime) && today.isBefore(toTime)) {
+              status = 'Open Now';
+            }
+          }
+        }
+      }
+    }
+    return status;
   }
 
   static Future<File?> pickImageFromGallery() async {

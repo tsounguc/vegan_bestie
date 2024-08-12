@@ -52,7 +52,9 @@ class ProfileHeaderBottom extends StatelessWidget {
                                 ? Colors.green
                                 : user.veganStatus?.toLowerCase() == 'vegetarian'
                                     ? Colors.purple
-                                    : Colors.grey.shade800,
+                                    : user.veganStatus?.toLowerCase() == 'non veg'
+                                        ? Colors.red
+                                        : Colors.grey.shade800,
                           ),
                         ),
                       ],
@@ -97,10 +99,6 @@ class ProfileHeaderBottom extends StatelessWidget {
                         'Edit Profile',
                         style: context.theme.textTheme.titleSmall,
                       ),
-                      // icon: Icon(
-                      //   Icons.edit_outlined,
-                      //   color: Colors.black,
-                      // ),
                     ),
                   ],
                 ),

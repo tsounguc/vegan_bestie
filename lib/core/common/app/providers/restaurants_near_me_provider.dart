@@ -5,7 +5,7 @@ import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 
 class RestaurantsNearMeProvider extends ChangeNotifier {
-  double _radius = kOneMileInMeters * 3.0;
+  double _radius = kOneMileInMeters * 10.0;
 
   Position? _currentLocation;
 

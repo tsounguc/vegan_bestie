@@ -111,23 +111,31 @@ class RestaurantsFoundBody extends StatelessWidget {
                             final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
                             final restaurant = restaurants[restaurantIndex];
                             final userPosition = context.read<RestaurantsNearMeProvider>().currentLocation;
-                            return HorizontalRestaurantCard(
-                              restaurant: restaurant,
-                              reviews: reviews,
-                              weekdayText: const [],
-                              userPosition: userPosition,
-                              imageUrl: restaurant.thumbnail != null &&
-                                      restaurant.thumbnail != '_empty.image' &&
-                                      restaurant.thumbnail!.isNotEmpty
-                                  ? restaurant.thumbnail!
-                                  : '',
-                              restaurantId: restaurant.id,
-                              restaurantName: restaurant.name.capitalizeFirstLetter(),
-                              restaurantAddress: '${restaurant.streetAddress}, '
-                                  '${restaurant.city}, ${restaurant.state}',
-                              restaurantPrice: r'$' * 3,
-                              isOpenNow: true,
-                              fromSavedRestaurants: false,
+                            return Column(
+                              children: [
+                                HorizontalRestaurantCard(
+                                  restaurant: restaurant,
+                                  reviews: reviews,
+                                  weekdayText: const [],
+                                  userPosition: userPosition,
+                                  imageUrl: restaurant.thumbnail != null &&
+                                          restaurant.thumbnail != '_empty.image' &&
+                                          restaurant.thumbnail!.isNotEmpty
+                                      ? restaurant.thumbnail!
+                                      : '',
+                                  restaurantId: restaurant.id,
+                                  restaurantName: restaurant.name.capitalizeFirstLetter(),
+                                  restaurantAddress: '${restaurant.streetAddress}, '
+                                      '${restaurant.city}, ${restaurant.state}',
+                                  restaurantPrice: r'$' * 3,
+                                  isOpenNow: true,
+                                  fromSavedRestaurants: false,
+                                ),
+                                if (restaurantIndex == restaurants.length - 1)
+                                  const SizedBox(
+                                    height: 75,
+                                  ),
+                              ],
                             );
                           },
                         );
