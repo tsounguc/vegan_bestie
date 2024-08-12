@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sheveegan/core/common/widgets/restaurant_vegan_status_text.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/extensions/int_extensions.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
@@ -140,7 +142,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                         Text(
                           userPosition == null
                               ? ''
-                              : '${(distance / 1609.344).round()} '
+                              : '${(distance / 1609.344).round().isLessThan} '
                                   '${Strings.distanceUnitText}',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -175,8 +177,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                                 child: Text(
                                   restaurantAddress,
                                   style: TextStyle(
-                                    color: context
-                                        .theme.textTheme.bodySmall?.color,
+                                    color: context.theme.textTheme.bodySmall?.color,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 10.sp,
                                   ),
@@ -186,9 +187,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          restaurantPrice.contains('_empty.price')
-                              ? ''
-                              : restaurantPrice,
+                          restaurantPrice.contains('_empty.price') ? '' : restaurantPrice,
                           style: TextStyle(
                             // color: Colors.grey.shade800,
                             fontWeight: FontWeight.w500,
@@ -217,8 +216,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.025,
                         ),
                         Text(
-                          '${reviews.length} ${Strings.reviewsText}'
-                              .pluralize(reviews.length, ending: 's'),
+                          '${reviews.length} ${Strings.reviewsText}'.pluralize(reviews.length, ending: 's'),
                           style: TextStyle(
                             // color: Colors.grey.shade800,
                             fontWeight: FontWeight.w500,
@@ -227,9 +225,17 @@ class HorizontalRestaurantCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    IsOpenNowWidget(
-                      openHours: restaurant.openHours,
-                      fontSize: 10.sp,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IsOpenNowWidget(
+                          openHours: restaurant.openHours,
+                          fontSize: 10.sp,
+                        ),
+                        RestaurantVeganStatusText(
+                          isVegan: restaurant.veganStatus,
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.007,

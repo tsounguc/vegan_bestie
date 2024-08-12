@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +9,7 @@ import 'package:sheveegan/core/common/screens/webview/web_view_screen.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/expandable_text.dart';
 import 'package:sheveegan/core/common/widgets/popup_item.dart';
+import 'package:sheveegan/core/common/widgets/restaurant_vegan_status_text.dart';
 import 'package:sheveegan/core/common/widgets/section_header.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
@@ -317,6 +318,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // Restaurant name and open hours
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -335,62 +337,90 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                IsOpenNowWidget(
-                                  openHours: restaurant.openHours,
-                                  isFromDetailedPage: true,
-                                  fontSize: 10.sp,
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5.0),
+                                  child: IsOpenNowWidget(
+                                    openHours: restaurant.openHours,
+                                    isFromDetailedPage: true,
+                                    fontSize: 9.sp,
+                                  ),
                                 ),
                               ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 6, top: 5),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    Icons.location_on,
-                                    color: Colors.redAccent,
-                                    size: 12,
-                                  ),
-                                  SizedBox(
-                                    width: 3.w,
-                                  ),
-                                  SizedBox(
-                                    width: context.width * 0.54,
-                                    child: Text(
-                                      '${restaurant.streetAddress}, ${restaurant.city}, ${restaurant.state}',
-                                      style: baseTextStyle,
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Address,
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 6, top: 5),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.location_on,
+                                            color: Colors.redAccent,
+                                            size: 12,
+                                          ),
+                                          SizedBox(
+                                            width: 3.w,
+                                          ),
+                                          SizedBox(
+                                            width: context.width * 0.54,
+                                            child: Text(
+                                              '${restaurant.streetAddress}, ${restaurant.city}, ${restaurant.state}',
+                                              style: baseTextStyle,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.0005,
-                            ),
-                            Visibility(
-                              visible: restaurant.dineIn || restaurant.takeout || restaurant.delivery,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  bottom: 5,
-                                  top: 5,
-                                  left: 5,
+
+                                    SizedBox(
+                                      height: MediaQuery.of(context).size.height * 0.0005,
+                                    ),
+
+                                    // Dine-in/takeout/delivery
+                                    Visibility(
+                                      visible: restaurant.dineIn || restaurant.takeout || restaurant.delivery,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          bottom: 5,
+                                          top: 5,
+                                          left: 5,
+                                        ),
+                                        child: SizedBox(
+                                          width: MediaQuery.of(context).size.width * 0.65,
+                                          child: DineInTakeoutDeliveryWidget(
+                                            dineIn: restaurant.dineIn,
+                                            takeout: restaurant.takeout,
+                                            delivery: restaurant.delivery,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                child: SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.65,
-                                  child: DineInTakeoutDeliveryWidget(
-                                    dineIn: restaurant.dineIn,
-                                    takeout: restaurant.takeout,
-                                    delivery: restaurant.delivery,
-                                  ),
-                                ),
-                              ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 16),
+                                      child: RestaurantVeganStatusText(isVegan: restaurant.veganStatus),
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
                           ],
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.015,
                         ),
+
                         Padding(
                           padding: const EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 35),
                           child: Row(
