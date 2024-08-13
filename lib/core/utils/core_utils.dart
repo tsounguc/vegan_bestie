@@ -153,9 +153,9 @@ class CoreUtils {
                               child: Text(
                                 context.daysOfTheWeek[index]!,
                                 style: TextStyle(
-                                  color: context.daysOfTheWeek[index] == todaysWeekDay && isOpen
-                                      ? Colors.green
-                                      : null,
+                                  // color: context.daysOfTheWeek[index] == todaysWeekDay && isOpen
+                                  //     ? Colors.green
+                                  //     : null,
                                   fontSize: 12.sp,
                                   fontWeight: context.daysOfTheWeek[index] == todaysWeekDay
                                       ? FontWeight.bold

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/i_field.dart';
 
-class ChangePasswordFormField extends StatelessWidget {
-  const ChangePasswordFormField({
+class EmailFormField extends StatelessWidget {
+  const EmailFormField({
     required this.fieldTitle,
     required this.controller,
     this.hintText,
@@ -12,7 +12,7 @@ class ChangePasswordFormField extends StatelessWidget {
     this.maxLines = 1,
     this.minLines,
     this.textInputAction,
-    this.onFieldSubmitted,
+    this.keyboardType,
     super.key,
   });
 
@@ -24,7 +24,7 @@ class ChangePasswordFormField extends StatelessWidget {
   final int? maxLines;
   final int? minLines;
   final TextInputAction? textInputAction;
-  final void Function(String)? onFieldSubmitted;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class ChangePasswordFormField extends StatelessWidget {
           maxLines: maxLines,
           minLines: minLines,
           textInputAction: textInputAction,
-          onFieldSubmitted: onFieldSubmitted,
+          keyboardType: keyboardType,
         ),
         const SizedBox(height: 30),
       ],

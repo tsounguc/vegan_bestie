@@ -20,11 +20,12 @@ class PopupItem extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontSize: 16.sp,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
             color: context.theme.textTheme.titleSmall?.color,
           ),
         ),
+        const SizedBox(width: 50),
         icon,
       ],
     );

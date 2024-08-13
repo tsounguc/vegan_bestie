@@ -87,6 +87,26 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  ResultVoid sendEmail({required String subject, required String body}) async {
+    try {
+      await _remoteDataSource.sendEmail(subject: subject, body: body);
+      return const Right(null);
+    } on SendEmailException catch (e) {
+      return Left(SendEmailFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid deleteProfilePicture({required UserEntity? user}) async {
+    try {
+      await _remoteDataSource.deleteProfilePicture(user: user);
+      return const Right(null);
+    } on DeleteProfilePictureException catch (e) {
+      return Left(DeleteProfilePictureFailure.fromException(e));
+    }
+  }
+
+  @override
   ResultVoid deleteAccount({required String password}) async {
     try {
       await _remoteDataSource.deleteAccount(password: password);

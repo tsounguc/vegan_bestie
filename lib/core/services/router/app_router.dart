@@ -24,8 +24,10 @@ import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_products_page.dart';
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_restaurants_pages.dart';
 import 'package:sheveegan/features/profile/presentation/screens/change_password_screen.dart';
+import 'package:sheveegan/features/profile/presentation/screens/contact_support_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/display_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/edit_profile_screen.dart';
+import 'package:sheveegan/features/profile/presentation/screens/profile_picture_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/reports_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/settings_page.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';

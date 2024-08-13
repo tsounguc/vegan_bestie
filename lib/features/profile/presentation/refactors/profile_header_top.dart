@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,7 @@ import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/add_food_product_screen.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
+import 'package:sheveegan/features/profile/presentation/screens/profile_picture_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/reports_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/settings_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/submitted_restaurants_screen.dart';
@@ -37,25 +39,52 @@ class ProfileHeaderTop extends StatelessWidget {
             background: Stack(
               children: [
                 Positioned.fill(
-                  child: image != null
-                      // ? Image.network(
-                      //     image,
-                      //     fit: BoxFit.cover,
-                      //   )
-                      ? CachedNetworkImage(
-                          imageUrl: image,
-                          // width: double.maxFinite,
-                          fit: BoxFit.cover,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        ProfilePictureScreen.id,
+                      );
+                    },
+                    child: Hero(
+                      tag: 'profilePic',
+                      child: image != null
+                          // ? Image.network(
+                          //     image,
+                          //     fit: BoxFit.cover,
+                          //   )
+                          ? CachedNetworkImage(
+                              imageUrl: image,
+                              // width: double.maxFinite,
+                              fit: BoxFit.cover,
 
-                          placeholder: (context, percentage) {
-                            return const LoadingPage();
-                            // return Image.asset(MediaResources.user);
-                          },
-                          errorWidget: (context, error, child) {
-                            return Image.asset(MediaResources.user);
-                          },
-                        )
-                      : Image.asset(MediaResources.user),
+                              placeholder: (context, percentage) {
+                                return const LoadingPage();
+                              },
+                              errorWidget: (context, error, child) {
+                                return const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 150.0),
+                                    child: Icon(
+                                      Icons.person,
+                                      color: Colors.grey,
+                                      size: 400,
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          : const Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 150.0),
+                                child: Icon(
+                                  Icons.person,
+                                  color: Colors.grey,
+                                  size: 400,
+                                ),
+                              ),
+                            ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -99,14 +128,13 @@ class ProfileHeaderTop extends StatelessWidget {
                             arguments: serviceLocator<FoodProductCubit>(),
                           ),
                           child: PopupItem(
-                            title: 'Reports',
+                            title: 'Reports From Users',
                             icon: Icon(
                               Icons.report_outlined,
                               color: context.theme.iconTheme.color,
                             ),
                           ),
                         ),
-
                       if (context.userProvider.user?.isAdmin ?? false)
                         PopupMenuItem<void>(
                           onTap: () => Navigator.of(context).pushNamed(
@@ -121,7 +149,6 @@ class ProfileHeaderTop extends StatelessWidget {
                             ),
                           ),
                         ),
-
                       PopupMenuItem<void>(
                         onTap: () => Navigator.of(context).pushNamed(
                           SettingsPage.id,
@@ -135,26 +162,6 @@ class ProfileHeaderTop extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // const PopupMenuItem<void>(
-                      //   // onTap: () => context.push(const Placeholder()),
-                      //   child: PopupItem(
-                      //     title: 'Notifications',
-                      //     icon: Icon(
-                      //       Icons.notifications,
-                      //       color: Color(0xFF757C8E),
-                      //     ),
-                      //   ),
-                      // ),
-                      // const PopupMenuItem<void>(
-                      //   // onTap: () => context.push(const Placeholder()),
-                      //   child: PopupItem(
-                      //     title: 'Help',
-                      //     icon: Icon(
-                      //       Icons.help_outline_outlined,
-                      //       color: Color(0xFF757C8E),
-                      //     ),
-                      //   ),
-                      // ),
                       PopupMenuItem<void>(
                         height: 1,
                         padding: EdgeInsets.zero,
@@ -165,7 +172,6 @@ class ProfileHeaderTop extends StatelessWidget {
                           indent: 10,
                         ),
                       ),
-
                       PopupMenuItem<void>(
                         onTap: () async {
                           final navigator = Navigator.of(context);

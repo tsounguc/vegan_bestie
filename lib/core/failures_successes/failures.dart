@@ -186,6 +186,34 @@ class DeleteAccountFailure extends Failure {
         );
 }
 
+class DeleteProfilePictureFailure extends Failure {
+  DeleteProfilePictureFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  DeleteProfilePictureFailure.fromException(
+    DeleteProfilePictureException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
+class SendEmailFailure extends Failure {
+  SendEmailFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  SendEmailFailure.fromException(
+    SendEmailException exception,
+  ) : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
 class ReportIssueFailure extends Failure {
   ReportIssueFailure({
     required super.message,

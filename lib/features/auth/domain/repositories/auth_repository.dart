@@ -25,6 +25,10 @@ abstract class AuthRepository {
 
   ResultVoid deleteAccount({required String password});
 
+  ResultVoid deleteProfilePicture({required UserEntity? user});
+
+  ResultVoid sendEmail({required String subject, required String body});
+
   ResultStream<UserEntity> getCurrentUser({required String userId});
 
 // ResultFuture<UserEntity> signInWithGoogle();

@@ -143,6 +143,32 @@ class DeleteAccountException extends Equatable implements Exception {
   List<Object?> get props => [message, statusCode];
 }
 
+class DeleteProfilePictureException extends Equatable implements Exception {
+  const DeleteProfilePictureException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final String statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
+}
+
+class SendEmailException extends Equatable implements Exception {
+  const SendEmailException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final String statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
+}
+
 class UpdateUserDataException extends Equatable implements Exception {
   const UpdateUserDataException({
     required this.message,

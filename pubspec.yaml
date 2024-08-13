@@ -61,6 +61,7 @@ dependencies:
   image_picker: ^1.1.1
   intl: ^0.18.1
   lottie: ^2.6.0
+  mailer: ^6.1.2
   provider: ^6.1.1
   shared_preferences: ^2.2.3
   simple_animations: ^5.0.2

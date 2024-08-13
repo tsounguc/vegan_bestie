@@ -86,11 +86,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   top: 15,
                 ),
                 children: [
+                  const SizedBox(height: 35),
                   VeganBestieLogoWidget(
                     size: 50.r,
                     showText: false,
                   ),
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: Text(
@@ -106,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: Text(
-                      'Sign up for an account',
+                      'Create an account',
                       style: TextStyle(
                         fontSize: 14.r,
                         color: context.theme.textTheme.bodyMedium?.color,

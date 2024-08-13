@@ -6,11 +6,13 @@ import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
 import 'package:sheveegan/features/auth/domain/usecases/create_with_email_and_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/delete_account.dart';
+import 'package:sheveegan/features/auth/domain/usecases/delete_profile_picture.dart';
 import 'package:sheveegan/features/auth/domain/usecases/forgot_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/get_current_user.dart';
 import 'package:sheveegan/features/auth/domain/usecases/sign_in_with_email_and_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/update_user.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:sheveegan/features/auth/domain/usecases/send_email.dart';
 
 class MockSignInWithEmailAndPassword extends Mock implements SignInWithEmailAndPassword {}
 
@@ -20,15 +22,21 @@ class MockForgotPassword extends Mock implements ForgotPassword {}
 
 class MockUpdateUser extends Mock implements UpdateUser {}
 
+class MockDeleteProfilePicture extends Mock implements DeleteProfilePicture {}
+
 class MockDeleteAccount extends Mock implements DeleteAccount {}
 
 class MockGetCurrentUser extends Mock implements GetCurrentUser {}
+
+class MockSendEmail extends Mock implements SendEmail {}
 
 void main() {
   late SignInWithEmailAndPassword signInWithEmailAndPassword;
   late CreateUserAccount createUserAccount;
   late ForgotPassword forgotPassword;
   late UpdateUser updateUser;
+  late SendEmail sendEmail;
+  late DeleteProfilePicture deleteProfilePicture;
   late DeleteAccount deleteAccount;
   late GetCurrentUser getCurrentUser;
   late AuthBloc bloc;
@@ -46,6 +54,8 @@ void main() {
     createUserAccount = MockCreateUserAccount();
     forgotPassword = MockForgotPassword();
     updateUser = MockUpdateUser();
+    sendEmail = MockSendEmail();
+    deleteProfilePicture = MockDeleteProfilePicture();
     deleteAccount = MockDeleteAccount();
     getCurrentUser = MockGetCurrentUser();
 
@@ -53,7 +63,9 @@ void main() {
       signInWithEmailAndPassword: signInWithEmailAndPassword,
       createUserAccount: createUserAccount,
       forgotPassword: forgotPassword,
+      sendEmail: sendEmail,
       updateUser: updateUser,
+      deleteProfilePic: deleteProfilePicture,
       deleteAccount: deleteAccount,
       getCurrentUser: getCurrentUser,
     );

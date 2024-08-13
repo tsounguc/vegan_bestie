@@ -41,19 +41,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
-    // final savedProductBarcodes = context.currentUser?.savedProductsBarcodes ?? [];
-    // if (context.currentIndex == 2 && context.savedProductsList != null) {
-    //   debugPrint('savedProductsList in Profile');
-    //   BlocProvider.of<FoodProductCubit>(context).fetchProductsList(savedProductBarcodes);
-    // }
-    // final savedRestaurantsIds = context.currentUser?.savedRestaurantsIds ?? [];
-    // if (context.currentIndex == 2 && context.savedRestaurantsList != null) {
-    //   debugPrint('savedRestaurantsList in Profile');
-    //   BlocProvider.of<RestaurantsCubit>(context).getSavedRestaurants(savedRestaurantsIds);
-    // }
 
     return Scaffold(
-      // backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       extendBody: true,
       body: SingleChildScrollView(
@@ -70,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   // has bio and edit button
                   const ProfileHeaderBottom(),
-                  SizedBox(height: 10.h),
+                  SizedBox(height: 35.h),
                   const SavedFoodsSection(),
                   SizedBox(height: 20.h),
                   const SavedRestaurantsSection(),

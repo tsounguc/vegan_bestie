@@ -5,12 +5,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 import 'package:sheveegan/core/enums/update_user.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/utils/datasource_utils.dart';
 import 'package:sheveegan/core/utils/firebase_constants.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
+import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
 
 abstract class AuthRemoteDataSource {
   Future<void> forgotPassword({required String email});
@@ -42,6 +46,10 @@ abstract class AuthRemoteDataSource {
 // Future<void> signOut();
 
   Future<void> deleteAccount({required String password});
+
+  Future<void> deleteProfilePicture({UserEntity? user});
+
+  Future<void> sendEmail({required String subject, required String body});
 
   Stream<UserModel> getCurrentUser({required String userId});
 }
@@ -180,6 +188,67 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
+  Future<void> sendEmail({required String subject, required String body}) async {
+    try {
+      final userEmail = _authClient.currentUser?.email ?? '';
+      final userName = _authClient.currentUser?.displayName ?? '';
+      final password = dotenv.env['VeganBestieSupportPassword'] ?? '';
+      final supportEmail = dotenv.env['VeganBestieSupportEmail'] ?? '';
+
+      // final smtpServer = SmtpServer('<your_smtp_server>', username: userName, password: password);
+      final smtpServer = gmail('tsounguc@mail.gvsu.edu', password);
+
+      final message = Message()
+        ..from = Address(userEmail, userName)
+        ..recipients.add(supportEmail)
+        ..subject = subject
+        ..text = body;
+
+      final sendReport = await send(message, smtpServer);
+      debugPrint('SentTo: ${sendReport.mail.text} \nMessage sent: ${sendReport.mail.text}');
+    } on FirebaseException catch (e) {
+      var errorMessage = e.message ?? 'An error occurred';
+      debugPrint(e.code);
+      throw SendEmailException(
+        message: errorMessage,
+        statusCode: e.code,
+      );
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw SendEmailException(
+        message: e.toString(),
+        statusCode: '505',
+      );
+    }
+  }
+
+  @override
+  Future<void> deleteProfilePicture({UserEntity? user}) async {
+    try {
+      final ref = _dbClient.ref().child('profile_pics/${_authClient.currentUser?.uid}');
+      await ref.getDownloadURL().then((response) {
+        ref.delete();
+      }).catchError((error) async {});
+
+      // Update document url in firestore
+      await _updateUserData({'photoUrl': ''});
+    } on FirebaseException catch (e) {
+      var errorMessage = e.message ?? 'An error occurred';
+      debugPrint(e.code);
+      throw DeleteProfilePictureException(
+        message: errorMessage,
+        statusCode: e.code,
+      );
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw DeleteProfilePictureException(
+        message: e.toString(),
+        statusCode: '505',
+      );
+    }
+  }
+
+  @override
   Future<void> deleteAccount({required String password}) async {
     try {
       await _authClient.currentUser?.reauthenticateWithCredential(
@@ -195,6 +264,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       await ref.getDownloadURL().then((response) {
         ref.delete();
       }).catchError((error) async {});
+
+      await _updateUserData({'photoUrl': ''});
 
       await _authClient.currentUser?.delete();
       await _authClient.currentUser?.reload();

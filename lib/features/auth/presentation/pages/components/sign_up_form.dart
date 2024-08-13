@@ -44,9 +44,10 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           const SizedBox(height: 25),
           VeganStatusTextField(
+            fieldTitle: '',
             controller: widget.veganStatusController,
           ),
-          const SizedBox(height: 25),
+          // const SizedBox(height: 25),
           IField(
             controller: widget.emailController,
             hintText: 'Email',

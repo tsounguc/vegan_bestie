@@ -85,6 +85,15 @@ class GetCurrentUserEvent extends AuthEvent {
   List<Object?> get props => [userId];
 }
 
+class DeleteProfilePicEvent extends AuthEvent {
+  const DeleteProfilePicEvent({this.user});
+
+  final UserEntity? user;
+
+  @override
+  List<Object?> get props => [user];
+}
+
 class DeleteAccountEvent extends AuthEvent {
   const DeleteAccountEvent({required this.password});
 
@@ -92,4 +101,14 @@ class DeleteAccountEvent extends AuthEvent {
 
   @override
   List<Object> get props => [password];
+}
+
+class SendEmailEvent extends AuthEvent {
+  const SendEmailEvent({required this.subject, required this.body});
+
+  final String subject;
+  final String body;
+
+  @override
+  List<Object> get props => [subject, body];
 }

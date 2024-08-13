@@ -19,12 +19,7 @@ class BottomNavigationBarProvider extends ChangeNotifier {
     ChangeNotifierProvider(
       create: (_) => TabNavigator(
         TabItem(
-          child:
-              // BlocProvider(
-              //   create: (_) => serviceLocator<FoodProductCubit>(),
-              //   child:
-              const ScanProductHomePage(),
-          // ),
+          child: const ScanProductHomePage(),
         ),
       ),
       child: const PersistentScreen(),
@@ -32,12 +27,7 @@ class BottomNavigationBarProvider extends ChangeNotifier {
     ChangeNotifierProvider(
       create: (_) => TabNavigator(
         TabItem(
-          child:
-              // BlocProvider(
-              //   create: (_) => serviceLocator<RestaurantsCubit>(),
-              //   child:
-              RestaurantsHomePage(),
-          // ),
+          child: RestaurantsHomePage(),
         ),
       ),
       child: const PersistentScreen(),
@@ -45,19 +35,7 @@ class BottomNavigationBarProvider extends ChangeNotifier {
     ChangeNotifierProvider(
       create: (_) => TabNavigator(
         TabItem(
-          child:
-              // MultiBlocProvider(
-              //   providers: [
-              //     BlocProvider(
-              //       create: (_) => serviceLocator<RestaurantsCubit>(),
-              //     ),
-              //     BlocProvider(
-              //       create: (_) => serviceLocator<FoodProductCubit>(),
-              //     ),
-              //   ],
-              //   child:
-              const ProfileScreen(),
-          // ),
+          child: const ProfileScreen(),
         ),
       ),
       child: const PersistentScreen(),

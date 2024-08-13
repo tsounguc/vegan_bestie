@@ -10,8 +10,10 @@ import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
 import 'package:sheveegan/features/auth/domain/usecases/create_with_email_and_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/delete_account.dart';
+import 'package:sheveegan/features/auth/domain/usecases/delete_profile_picture.dart';
 import 'package:sheveegan/features/auth/domain/usecases/forgot_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/get_current_user.dart';
+import 'package:sheveegan/features/auth/domain/usecases/send_email.dart';
 import 'package:sheveegan/features/auth/domain/usecases/sign_in_with_email_and_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/update_user.dart';
 
@@ -25,12 +27,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       required CreateUserAccount createUserAccount,
       required ForgotPassword forgotPassword,
       required UpdateUser updateUser,
+      required DeleteProfilePicture deleteProfilePic,
+      required SendEmail sendEmail,
       required DeleteAccount deleteAccount,
       required GetCurrentUser getCurrentUser})
       : _signInWithEmailAndPassword = signInWithEmailAndPassword,
         _createUserAccount = createUserAccount,
         _forgotPassword = forgotPassword,
         _updateUser = updateUser,
+        _deleteProfilePic = deleteProfilePic,
+        _sendEmail = sendEmail,
         _deleteAccount = deleteAccount,
         _getCurrentUser = getCurrentUser,
         super(const AuthInitial()) {
@@ -39,6 +45,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ForgotPasswordEvent>(_forgotPasswordHandler);
     on<UpdateUserEvent>(_updateUserHandler);
     on<DeleteAccountEvent>(_deleteAccountHandler);
+    on<SendEmailEvent>(_sendEmailHandler);
+    on<DeleteProfilePicEvent>(_deleteProfilePicHandler);
     on<GetCurrentUserEvent>(_getCurrentUserHandler);
   }
 
@@ -47,6 +55,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ForgotPassword _forgotPassword;
   final UpdateUser _updateUser;
   final DeleteAccount _deleteAccount;
+  final DeleteProfilePicture _deleteProfilePic;
+  final SendEmail _sendEmail;
   final GetCurrentUser _getCurrentUser;
 
   Future<void> _signInWithEmailAndPasswordHandler(
@@ -135,6 +145,41 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       },
       onDone: () {
         subscription?.cancel();
+      },
+    );
+  }
+
+  Future<void> _sendEmailHandler(
+    SendEmailEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const SendingEmail());
+    final result = await _sendEmail(
+      SendEmailParams(
+        subject: event.subject,
+        body: event.body,
+      ),
+    );
+
+    result.fold(
+      (failure) => emit(AuthError(message: failure.message)),
+      (success) {
+        return emit(const EmailSent());
+      },
+    );
+  }
+
+  Future<void> _deleteProfilePicHandler(
+    DeleteProfilePicEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthLoading());
+    final result = await _deleteProfilePic(event.user);
+
+    result.fold(
+      (failure) => emit(AuthError(message: failure.message)),
+      (success) {
+        return emit(const ProfilePicDeleted());
       },
     );
   }

@@ -24,7 +24,7 @@ class _EnterPasswordDialogState extends State<EnterPasswordDialog> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (_, state) {
         if (state is AccountDeleted) {
-          CoreUtils.showSnackBar(context, 'Account Deleted', durationInMilliSecond: 1500);
+          CoreUtils.showSnackBar(context, 'Account deleted', durationInMilliSecond: 1500);
           Navigator.of(context).pushNamedAndRemoveUntil(
             '/',
             (route) => false,

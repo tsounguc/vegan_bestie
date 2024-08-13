@@ -29,18 +29,21 @@ class EditProfileForm extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         EditProfileFormField(
-          fieldTitle: 'NAME',
+          fieldTitle: 'Name',
           controller: fullNameController,
           hintText: context.currentUser!.name,
         ),
-        VeganStatusTextField(controller: veganStatusController),
+        VeganStatusTextField(
+          fieldTitle: 'Vegan Status',
+          controller: veganStatusController,
+        ),
         EditProfileFormField(
-          fieldTitle: 'EMAIL',
+          fieldTitle: 'Email',
           controller: emailController,
           hintText: context.currentUser!.email.obscureEmail,
         ),
         EditProfileFormField(
-          fieldTitle: 'BIO',
+          fieldTitle: 'Bio',
           controller: bioController,
           borderRadius: BorderRadius.circular(20),
           minLines: 4,

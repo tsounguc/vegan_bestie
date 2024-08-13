@@ -1,12 +1,20 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/profile/presentation/refactors/user_card.dart';
 import 'package:sheveegan/features/profile/presentation/screens/change_password_screen.dart';
+import 'package:sheveegan/features/profile/presentation/screens/contact_support_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/display_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -82,12 +90,11 @@ class _SettingsPageState extends State<SettingsPage> {
             //     ),
             //   ),
             // ),
-            const SizedBox(
-              height: 20,
-            ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
             Card(
               child: ListTile(
-                // padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 15),
                 style: ListTileStyle.list,
                 leading: Icon(
                   Icons.lock_outline,
@@ -107,6 +114,94 @@ class _SettingsPageState extends State<SettingsPage> {
                   arguments: context.read<AuthBloc>(),
                 ),
               ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Card(
+              child: ListTile(
+                style: ListTileStyle.list,
+                leading: Icon(
+                  Icons.email_outlined,
+                  color: context.theme.iconTheme.color,
+                ),
+                title: Text(
+                  'Contact Support',
+                  style: context.theme.textTheme.titleMedium,
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  color: context.theme.iconTheme.color,
+                  size: 15,
+                ),
+                onTap: () => Navigator.of(context).pushNamed(
+                  ContactSupportScreen.id,
+                  arguments: context.read<AuthBloc>(),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            Card(
+              child: ListTile(
+                  style: ListTileStyle.list,
+                  leading: Icon(
+                    FontAwesomeIcons.instagram,
+                    color: context.theme.iconTheme.color,
+                  ),
+                  title: Text(
+                    'Instagram',
+                    style: context.theme.textTheme.titleMedium,
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios_outlined,
+                    color: context.theme.iconTheme.color,
+                    size: 15,
+                  ),
+                  onTap: () {
+                    launchUrl(Uri.parse('https://www.instagram.com/vgbestie'));
+                  }),
+            ),
+
+            const SizedBox(
+              height: 75,
+            ),
+
+            Card(
+              child: ListTile(
+                  style: ListTileStyle.list,
+                  leading: Icon(
+                    Icons.logout_outlined,
+                    color: context.theme.iconTheme.color,
+                  ),
+                  title: Text(
+                    'Log out',
+                    style: context.theme.textTheme.titleMedium,
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios_outlined,
+                    color: context.theme.iconTheme.color,
+                    size: 15,
+                  ),
+                  onTap: () async {
+                    final navigator = Navigator.of(context);
+
+                    context.savedProductsProvider.savedProductsList = null;
+                    context.savedRestaurantsProvider.savedRestaurantsList = null;
+                    context.restaurantsNearMeProvider.currentLocation = null;
+                    context.restaurantsNearMeProvider.markers = null;
+                    context.restaurantsNearMeProvider.restaurants = null;
+                    context.userProvider.user = null;
+
+                    await serviceLocator<FirebaseAuth>().signOut();
+                    unawaited(
+                      navigator.pushNamedAndRemoveUntil(
+                        '/',
+                        (route) => false,
+                      ),
+                    );
+                  }),
             ),
             SizedBox(
               height: context.height * 0.07,

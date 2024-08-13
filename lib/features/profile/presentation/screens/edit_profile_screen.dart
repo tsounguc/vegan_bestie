@@ -3,14 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/enums/update_user.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/constants.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:sheveegan/features/dashboard/presentation/views/dashboard.dart';
 import 'package:sheveegan/features/profile/presentation/widgets/edit_profile_form.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -28,18 +26,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final bioController = TextEditingController();
   final veganStatusController = TextEditingController();
   File? pickedImage;
-
-  // final passwordController = TextEditingController();
-  // final oldPasswordController = TextEditingController();
-
-  Future<void> pickImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      // setState(() {
-      //   pickedImage = File(image.path);
-      // });
-    }
-  }
 
   Future<void> showImagePickerOptions(BuildContext context) async {
     await showModalBottomSheet<void>(
@@ -117,8 +103,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   bool get emailChanged => emailController.text.trim().isNotEmpty;
 
-  // bool get passwordChanged => passwordController.text.trim().isNotEmpty;
-
   bool get bioChanged => context.currentUser?.bio?.trim() != bioController.text.trim();
 
   bool get veganStatusChanged => context.currentUser?.veganStatus?.trim() != veganStatusController.text.trim();
@@ -146,8 +130,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void dispose() {
     fullNameController.dispose();
     emailController.dispose();
-    // passwordController.dispose();
-    // oldPasswordController.dispose();
     bioController.dispose();
     super.dispose();
   }
@@ -155,24 +137,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void saveChanges(BuildContext context) {
     if (nothingChanged) Navigator.pop(context);
     final bloc = context.read<AuthBloc>();
-    // if (passwordChanged) {
-    //   if (oldPasswordController.text.isEmpty) {
-    //     CoreUtils.showSnackBar(
-    //       context,
-    //       'Please enter your old password',
-    //     );
-    //     return;
-    //   }
-    //   bloc.add(
-    //     UpdateUserEvent(
-    //       action: UpdateUserAction.password,
-    //       userData: jsonEncode({
-    //         'oldPassword': oldPasswordController.text.trim(),
-    //         'newPassword': passwordController.text.trim(),
-    //       }),
-    //     ),
-    //   );
-    // }
     if (nameChanged) {
       bloc.add(
         UpdateUserEvent(
@@ -261,7 +225,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             width: double.infinity,
                             decoration: BoxDecoration(
                               // color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             child: pickedImage != null
                                 ? Image.file(
@@ -270,7 +234,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   )
                                 : userImage != null
                                     ? Image.network(userImage, fit: BoxFit.contain)
-                                    : Image.asset(kUserIconPath, fit: BoxFit.contain),
+                                    : const Center(
+                                        child: Icon(
+                                          Icons.person,
+                                          color: Colors.grey,
+                                          size: 150,
+                                        ),
+                                      ),
                           ),
                           Positioned(
                             child: Container(

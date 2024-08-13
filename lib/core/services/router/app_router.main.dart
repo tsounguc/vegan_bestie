@@ -78,6 +78,22 @@ class AppRouter {
           ),
           settings: settings,
         );
+      case ProfilePictureScreen.id:
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<AuthBloc>(),
+            child: const ProfilePictureScreen(),
+          ),
+          settings: settings,
+        );
+      case ContactSupportScreen.id:
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<AuthBloc>(),
+            child: const ContactSupportScreen(),
+          ),
+          settings: settings,
+        );
       case DisplayScreen.id:
         return _pageBuilder(
           (_) => const DisplayScreen(),

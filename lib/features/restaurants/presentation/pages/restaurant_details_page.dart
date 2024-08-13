@@ -30,6 +30,7 @@ import 'package:sheveegan/features/restaurants/presentation/pages/componets/revi
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_review_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/update_restaurant_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
+import 'package:sheveegan/features/restaurants/presentation/utils/restaurants_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RestaurantDetailsPage extends StatelessWidget {
@@ -57,27 +58,67 @@ class RestaurantDetailsPage extends StatelessWidget {
 
   final controller = ScrollController();
 
-  void unsaveRestaurant(
+  void addReview(BuildContext context) {
+    Navigator.pushNamed(
+      context,
+      RestaurantReviewScreen.id,
+      arguments: restaurant,
+    );
+  }
+
+  void unSaveRestaurant(
     Restaurant restaurant,
     BuildContext context,
   ) {
     BlocProvider.of<RestaurantsCubit>(
       context,
     ).unSaveRestaurant(restaurant: restaurant);
-    // CoreUtils.showSnackBar(
-    //   context,
-    //   'Restaurant unsaved',
-    // );
   }
 
   void saveRestaurant(Restaurant product, BuildContext context) {
     BlocProvider.of<RestaurantsCubit>(
       context,
     ).saveRestaurant(restaurant);
-    // CoreUtils.showSnackBar(
-    //   context,
-    //   'Restaurant saved',
-    // );
+  }
+
+  void goToWebsite(BuildContext context) {
+    if (restaurant.websiteUrl.isNotEmpty) {
+      Navigator.of(context).push(
+        MaterialPageRoute<WebViewScreen>(
+          builder: (_) => WebViewScreen(
+            url: restaurant.websiteUrl,
+          ),
+        ),
+      );
+    } else {
+      CoreUtils.showSnackBar(
+        context,
+        'No Website Found',
+      );
+    }
+  }
+
+  void goToMap(String appleUrl, String googleUrl) {
+    if (Platform.isIOS) {
+      launchUrl(
+        Uri.parse(appleUrl),
+        mode: LaunchMode.externalNonBrowserApplication,
+      );
+    } else {
+      launchUrl(
+        Uri.parse(googleUrl),
+        mode: LaunchMode.externalNonBrowserApplication,
+      );
+    }
+  }
+
+  void callPhoneNumber() {
+    launchUrl(
+      Uri(
+        scheme: 'tel',
+        path: restaurant.phoneNumber,
+      ),
+    );
   }
 
   double totalRestaurantRating(List<RestaurantReview> reviews) {
@@ -122,12 +163,19 @@ class RestaurantDetailsPage extends StatelessWidget {
         2,
       ),
     );
+
+    const popupMenuItemPadding = EdgeInsets.symmetric(
+      horizontal: 25,
+      vertical: 5,
+    );
+
     final formattedAddress = '${restaurant.streetAddress}, ${restaurant.city},'
         '${restaurant.state} ${restaurant.zipCode}';
     final appleUrl = 'https://maps.apple.com/?q=${restaurant.name}'
         ' $formattedAddress';
     final googleUrl = 'https://www.google.com/maps/search/?api=1&query=${restaurant.name}'
         ' $formattedAddress';
+
     return StreamBuilder<UserModel>(
       stream: DashboardUtils.userDataStream,
       builder: (context, snapshot) {
@@ -141,20 +189,11 @@ class RestaurantDetailsPage extends StatelessWidget {
         );
 
         return StreamBuilder<List<RestaurantReview>>(
-          stream: serviceLocator<FirebaseFirestore>()
-              .collection('restaurantReviews')
-              .where('restaurantId', isEqualTo: restaurant.id)
-              .snapshots()
-              .map(
-                (event) => event.docs
-                    .map(
-                      (e) => RestaurantReviewModel.fromMap(e.data()),
-                    )
-                    .toList(),
-              ),
+          stream: RestaurantsUtils.restaurantReviewsModel(restaurant.id),
           builder: (context, snapshot) {
             final reviews = (snapshot.hasData ? snapshot.data! : <RestaurantReview>[])
               ..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+
             return BlocListener<RestaurantsCubit, RestaurantsState>(
               listener: (context, state) {
                 if (state is RestaurantSaved) {
@@ -200,12 +239,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                         color: isSaved ? Colors.amberAccent : context.theme.iconTheme.color?.withOpacity(0.5),
                       ),
                       onPressed: () =>
-                          isSaved ? unsaveRestaurant(restaurant, context) : saveRestaurant(restaurant, context),
+                          isSaved ? unSaveRestaurant(restaurant, context) : saveRestaurant(restaurant, context),
                     ),
                     PopupMenuButton(
-                      // padding: EdgeInsets.only(
-                      //   right: 10.w,
-                      // ),
                       icon: Icon(
                         Icons.more_vert_outlined,
                         color: context.theme.appBarTheme.iconTheme?.color,
@@ -220,6 +256,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         return [
                           if (context.userProvider.user?.isAdmin ?? false)
                             PopupMenuItem<void>(
+                              padding: popupMenuItemPadding,
                               onTap: () => Navigator.of(context).pushNamed(
                                 UpdateRestaurantScreen.id,
                                 arguments: UpdateRestaurantScreenArguments(
@@ -238,59 +275,60 @@ class RestaurantDetailsPage extends StatelessWidget {
                               ),
                             ),
                           PopupMenuItem<void>(
+                            padding: popupMenuItemPadding,
                             onTap: () => isSaved
-                                ? unsaveRestaurant(restaurant, context)
+                                ? unSaveRestaurant(restaurant, context)
                                 : saveRestaurant(restaurant, context),
                             child: PopupItem(
                               title: isSaved ? 'Unsave' : 'Save',
                               icon: Icon(
-                                Icons.bookmark,
+                                isSaved ? Icons.bookmark : Icons.bookmark_outline,
                                 color: context.theme.iconTheme.color,
                               ),
                             ),
                           ),
-
-                          // PopupMenuItem<void>(
-                          //   onTap: () => Navigator.of(context).pushNamed(
-                          //     SettingsPage.id,
-                          //     arguments: context.read<AuthBloc>(),
-                          //   ),
-                          //   child: PopupItem(
-                          //     title: 'Settings',
-                          //     icon: Icon(
-                          //       Icons.settings_outlined,
-                          //       color: context.theme.iconTheme.color,
-                          //     ),
-                          //   ),
-                          // ),
-                          // const PopupMenuItem<void>(
-                          //   // onTap: () => context.push(const Placeholder()),
-                          //   child: PopupItem(
-                          //     title: 'Notifications',
-                          //     icon: Icon(
-                          //       Icons.notifications,
-                          //       color: Color(0xFF757C8E),
-                          //     ),
-                          //   ),
-                          // ),
-                          // const PopupMenuItem<void>(
-                          //   // onTap: () => context.push(const Placeholder()),
-                          //   child: PopupItem(
-                          //     title: 'Help',
-                          //     icon: Icon(
-                          //       Icons.help_outline_outlined,
-                          //       color: Color(0xFF757C8E),
-                          //     ),
-                          //   ),
-                          // ),
                           PopupMenuItem<void>(
-                            height: 1,
-                            padding: EdgeInsets.zero,
-                            child: Divider(
-                              height: 1,
-                              color: Colors.grey.shade300,
-                              endIndent: 10,
-                              indent: 10,
+                            padding: popupMenuItemPadding,
+                            onTap: () => addReview(context),
+                            child: PopupItem(
+                              title: 'Add Review',
+                              icon: Icon(
+                                Icons.edit,
+                                color: context.theme.iconTheme.color,
+                              ),
+                            ),
+                          ),
+                          PopupMenuItem<void>(
+                            padding: popupMenuItemPadding,
+                            onTap: () => goToWebsite(context),
+                            child: PopupItem(
+                              title: 'Website',
+                              icon: Icon(
+                                Icons.launch,
+                                color: context.theme.iconTheme.color,
+                              ),
+                            ),
+                          ),
+                          PopupMenuItem<void>(
+                            padding: popupMenuItemPadding,
+                            onTap: () => goToMap(appleUrl, googleUrl),
+                            child: PopupItem(
+                              title: 'Direction',
+                              icon: Icon(
+                                Icons.directions,
+                                color: context.theme.iconTheme.color,
+                              ),
+                            ),
+                          ),
+                          PopupMenuItem<void>(
+                            padding: popupMenuItemPadding,
+                            onTap: callPhoneNumber,
+                            child: PopupItem(
+                              title: 'Call',
+                              icon: Icon(
+                                Icons.phone,
+                                color: context.theme.iconTheme.color,
+                              ),
                             ),
                           ),
                         ];
@@ -430,14 +468,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 children: [
                                   ElevatedButton(
                                     style: elevatedButtonStyle,
-                                    onPressed: () {
-                                      launchUrl(
-                                        Uri(
-                                          scheme: 'tel',
-                                          path: restaurant.phoneNumber,
-                                        ),
-                                      );
-                                    },
+                                    onPressed: callPhoneNumber,
                                     child: Icon(
                                       Icons.call,
                                       color: context.theme.iconTheme.color,
@@ -464,17 +495,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   ElevatedButton(
                                     style: elevatedButtonStyle,
                                     onPressed: () {
-                                      if (Platform.isIOS) {
-                                        launchUrl(
-                                          Uri.parse(appleUrl),
-                                          mode: LaunchMode.externalNonBrowserApplication,
-                                        );
-                                      } else {
-                                        launchUrl(
-                                          Uri.parse(googleUrl),
-                                          mode: LaunchMode.externalNonBrowserApplication,
-                                        );
-                                      }
+                                      goToMap(appleUrl, googleUrl);
                                     },
                                     child: Icon(
                                       Icons.directions,
@@ -502,20 +523,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   ElevatedButton(
                                     style: elevatedButtonStyle,
                                     onPressed: () {
-                                      if (restaurant.websiteUrl.isNotEmpty) {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute<WebViewScreen>(
-                                            builder: (_) => WebViewScreen(
-                                              url: restaurant.websiteUrl,
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        CoreUtils.showSnackBar(
-                                          context,
-                                          'No Website Found',
-                                        );
-                                      }
+                                      goToWebsite(context);
                                     },
                                     child: Icon(
                                       Icons.launch,
@@ -543,11 +551,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   ElevatedButton(
                                     style: elevatedButtonStyle,
                                     onPressed: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        RestaurantReviewScreen.id,
-                                        arguments: restaurant,
-                                      );
+                                      addReview(context);
                                     },
                                     child: Icon(
                                       Icons.edit,

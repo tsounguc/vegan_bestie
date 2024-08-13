@@ -24,7 +24,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ChangePasswordFormField(
-          fieldTitle: 'CURRENT PASSWORD',
+          fieldTitle: 'Current Password',
           controller: widget.oldPasswordController,
           hintText: '********',
           textInputAction: TextInputAction.next,
@@ -35,7 +35,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
               () => setState(() {}),
             );
             return ChangePasswordFormField(
-              fieldTitle: 'NEW PASSWORD',
+              fieldTitle: 'New Password',
               controller: widget.passwordController,
               hintText: '********',
               readOnly: widget.oldPasswordController.text.isEmpty,

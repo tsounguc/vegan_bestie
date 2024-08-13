@@ -37,9 +37,7 @@ class ProductNotFoundPage extends StatelessWidget {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
-            leading: const CustomBackButton(
-              color: Colors.black,
-            ),
+            leading: const CustomBackButton(),
           ),
           body: Container(
             alignment: Alignment.center,

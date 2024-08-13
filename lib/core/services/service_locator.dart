@@ -14,8 +14,10 @@ import 'package:sheveegan/features/auth/data/repository_impl/auth_repository_imp
 import 'package:sheveegan/features/auth/domain/repositories/auth_repository.dart';
 import 'package:sheveegan/features/auth/domain/usecases/create_with_email_and_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/delete_account.dart';
+import 'package:sheveegan/features/auth/domain/usecases/delete_profile_picture.dart';
 import 'package:sheveegan/features/auth/domain/usecases/forgot_password.dart';
 import 'package:sheveegan/features/auth/domain/usecases/get_current_user.dart';
+import 'package:sheveegan/features/auth/domain/usecases/send_email.dart';
 import 'package:sheveegan/features/auth/domain/usecases/unsave_food_product.dart';
 import 'package:sheveegan/features/auth/domain/usecases/save_food_product.dart';
 import 'package:sheveegan/features/auth/domain/usecases/sign_in_with_email_and_password.dart';

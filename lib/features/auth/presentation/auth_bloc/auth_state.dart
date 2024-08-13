@@ -15,6 +15,10 @@ class AuthLoading extends AuthState {
   const AuthLoading();
 }
 
+class SendingEmail extends AuthState {
+  const SendingEmail();
+}
+
 class SignedIn extends AuthState {
   const SignedIn(this.user);
 
@@ -41,8 +45,16 @@ class UserUpdated extends AuthState {
   const UserUpdated();
 }
 
+class EmailSent extends AuthState {
+  const EmailSent();
+}
+
 class AccountDeleted extends AuthState {
   const AccountDeleted();
+}
+
+class ProfilePicDeleted extends AuthState {
+  const ProfilePicDeleted();
 }
 
 class AuthError extends AuthState {
