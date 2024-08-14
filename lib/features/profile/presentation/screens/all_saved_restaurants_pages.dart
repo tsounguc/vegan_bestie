@@ -55,6 +55,7 @@ class AllSavedRestaurantsPage extends StatelessWidget {
                   itemCount: restaurantsList.length,
                   itemBuilder: (BuildContext context, int index) {
                     final restaurant = restaurantsList[index];
+                    final isSaved = context.currentUser!.savedRestaurantsIds.contains(restaurant.id);
                     final restaurantAddress = '${restaurant.streetAddress}, '
                         '${restaurant.city}, ${restaurant.state}';
                     return StreamBuilder<List<RestaurantReview>>(
@@ -97,7 +98,7 @@ class AllSavedRestaurantsPage extends StatelessWidget {
                             restaurantName: restaurant.name.capitalizeFirstLetter(),
                             restaurantAddress: restaurantAddress,
                             restaurantPrice: restaurant.price,
-                            isOpenNow: true,
+                            isSaved: isSaved,
                           ),
                         );
                       },

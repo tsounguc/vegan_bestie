@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/i_field.dart';
 
 class EditProfileFormField extends StatelessWidget {
@@ -32,9 +33,9 @@ class EditProfileFormField extends StatelessWidget {
           padding: const EdgeInsets.only(left: 10),
           child: Text(
             fieldTitle,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 16.sp,
             ),
           ),
         ),

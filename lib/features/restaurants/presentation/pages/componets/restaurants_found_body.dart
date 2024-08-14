@@ -142,6 +142,9 @@ class RestaurantsFoundBody extends StatelessWidget {
                             builder: (context, snapshot) {
                               final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
                               final restaurant = restaurants[restaurantIndex];
+
+                              final isSaved = context.currentUser!.savedRestaurantsIds.contains(restaurant.id);
+
                               final userPosition = context.read<RestaurantsNearMeProvider>().currentLocation;
                               return Column(
                                 children: [
@@ -159,8 +162,8 @@ class RestaurantsFoundBody extends StatelessWidget {
                                     restaurantName: restaurant.name.capitalizeFirstLetter(),
                                     restaurantAddress: '${restaurant.streetAddress}, '
                                         '${restaurant.city}, ${restaurant.state}',
-                                    restaurantPrice: r'$' * 3,
-                                    isOpenNow: true,
+                                    restaurantPrice: restaurant.price,
+                                    isSaved: isSaved,
                                     fromSavedRestaurants: false,
                                   ),
                                   if (restaurantIndex == restaurants.length - 1)

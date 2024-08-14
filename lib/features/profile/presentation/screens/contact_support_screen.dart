@@ -5,7 +5,7 @@ import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
-import 'package:sheveegan/features/profile/presentation/widgets/email_form_field.dart';
+import 'package:sheveegan/features/profile/presentation/widgets/send_email_form_field.dart';
 
 class ContactSupportScreen extends StatefulWidget {
   const ContactSupportScreen({super.key});
@@ -78,19 +78,13 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // TextField(
-                //   controller: _toController,
-                //   decoration: InputDecoration(
-                //     labelText: 'To',
-                //   ),
-                // ),
-                EmailFormField(
+                SendEmailFormField(
                   fieldTitle: 'Subject',
                   hintText: 'Subject',
                   controller: subjectController,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                EmailFormField(
+                SendEmailFormField(
                   fieldTitle: 'Message',
                   hintText: 'Message',
                   controller: bodyController,

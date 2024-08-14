@@ -45,7 +45,7 @@ class Restaurant extends Equatable {
           websiteUrl: '_empty.websiteUrl',
           geoLocation: const GeoLocation.empty(),
           openHours: const OpenHours.empty(),
-          photos: const ['_empty.photo1', '_empty.photo2'],
+          photos: const [],
           price: '_empty.price',
           veganStatus: false,
           hasVeganOptions: false,

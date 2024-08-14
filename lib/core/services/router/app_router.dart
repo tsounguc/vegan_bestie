@@ -23,6 +23,7 @@ import 'package:sheveegan/features/food_product/presentation/pages/scan_results_
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_products_page.dart';
 import 'package:sheveegan/features/profile/presentation/screens/all_saved_restaurants_pages.dart';
+import 'package:sheveegan/features/profile/presentation/screens/change_email_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/change_password_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/contact_support_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/display_screen.dart';
@@ -36,6 +37,7 @@ import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review
 import 'package:sheveegan/features/restaurants/presentation/pages/add_restaurant_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/edit_restaurant_review_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_picture_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_review_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/submitted_restaurants_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/update_restaurant_screen.dart';

@@ -8,20 +8,29 @@ import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/media_resources.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 
-class ProfilePictureScreen extends StatelessWidget {
-  const ProfilePictureScreen({super.key});
+class RestaurantPictureScreen extends StatelessWidget {
+  RestaurantPictureScreen({
+    required this.image,
+    required this.tag,
+    super.key,
+  });
 
-  static const String id = '/profilePictureScreen';
+  static const String id = '/restaurantPictureScreen';
+
+  final DecorationImage image;
+  final String tag;
+  int currentPosition = 0;
+  double height = 0;
 
   @override
   Widget build(BuildContext context) {
     final user = context.currentUser;
-    final image = user?.photoUrl == null || user!.photoUrl!.isEmpty ? null : user.photoUrl!;
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is ProfilePicDeleted) {
-          CoreUtils.showSnackBar(context, 'Profile picture deleted');
+          CoreUtils.showSnackBar(context, 'Restaurants picture deleted');
           Navigator.pop(context);
         }
       },
@@ -33,7 +42,7 @@ class ProfilePictureScreen extends StatelessWidget {
           elevation: 0,
           backgroundColor: Colors.transparent,
           surfaceTintColor: Colors.transparent,
-          leading: CustomBackButton(),
+          leading: const CustomBackButton(),
           centerTitle: true,
           actions: [
             if (user?.photoUrl != null && user!.photoUrl!.isNotEmpty)
@@ -60,10 +69,13 @@ class ProfilePictureScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 150),
           child: Center(
             child: Hero(
-              tag: 'profilePic',
-              child: image != null
+              tag: tag,
+              child: tag.isNotEmpty &&
+                      !tag.contains(
+                        '_empty.photo',
+                      )
                   ? CachedNetworkImage(
-                      imageUrl: image,
+                      imageUrl: tag,
                       fit: BoxFit.cover,
                       placeholder: (context, percentage) {
                         return const LoadingPage(

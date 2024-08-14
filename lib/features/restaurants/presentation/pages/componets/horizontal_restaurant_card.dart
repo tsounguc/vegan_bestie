@@ -24,7 +24,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
     required this.restaurantName,
     required this.restaurantAddress,
     required this.restaurantPrice,
-    required this.isOpenNow,
+    required this.isSaved,
     required this.fromSavedRestaurants,
     super.key,
   });
@@ -39,7 +39,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
   final String restaurantName;
   final String restaurantAddress;
   final String restaurantPrice;
-  final bool isOpenNow;
+  final bool isSaved;
   final List<String> weekdayText;
   final Position? userPosition;
 
@@ -88,32 +88,47 @@ class HorizontalRestaurantCard extends StatelessWidget {
                 top: MediaQuery.of(context).size.width * 0.025,
                 bottom: MediaQuery.of(context).size.width * 0.025,
               ),
-              child: Center(
-                child: imageUrl.isNotEmpty
-                    ? Ink(
-                        height: MediaQuery.of(context).size.width * 0.30,
-                        width: MediaQuery.of(context).size.width * 0.30,
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade50,
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: CachedNetworkImageProvider(imageUrl),
+              child: Stack(
+                children: [
+                  Center(
+                    child: imageUrl.isNotEmpty
+                        ? Ink(
+                            height: MediaQuery.of(context).size.width * 0.30,
+                            width: MediaQuery.of(context).size.width * 0.30,
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade50,
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: CachedNetworkImageProvider(imageUrl),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade50,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            height: MediaQuery.of(context).size.width * 0.30,
+                            width: MediaQuery.of(context).size.width * 0.30,
+                            child: const Icon(
+                              Icons.restaurant,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                      )
-                    : Container(
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade50,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        height: MediaQuery.of(context).size.width * 0.30,
-                        width: MediaQuery.of(context).size.width * 0.30,
-                        child: const Icon(
-                          Icons.restaurant,
-                          color: Colors.black,
-                        ),
+                  ),
+                  if (isSaved)
+                    const Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Icon(
+                        Icons.bookmark,
+                        color: Colors.amberAccent,
                       ),
+                    )
+                  else
+                    const SizedBox(),
+                ],
               ),
             ),
             Flexible(
@@ -187,7 +202,9 @@ class HorizontalRestaurantCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          restaurantPrice.contains('_empty.price') ? '' : restaurantPrice,
+                          restaurantPrice.contains('_empty.price') || restaurantPrice.isEmpty
+                              ? ''
+                              : restaurantPrice,
                           style: TextStyle(
                             // color: Colors.grey.shade800,
                             fontWeight: FontWeight.w500,

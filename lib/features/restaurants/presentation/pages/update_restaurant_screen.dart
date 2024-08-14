@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
+import 'package:sheveegan/core/common/widgets/section_header.dart';
 import 'package:sheveegan/core/enums/update_restaurant_info.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
@@ -27,8 +29,7 @@ class UpdateRestaurantScreen extends StatefulWidget {
 }
 
 class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
-  final TextEditingController restaurantNameController =
-      TextEditingController();
+  final TextEditingController restaurantNameController = TextEditingController();
   final TextEditingController streetAddressController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController stateController = TextEditingController();
@@ -36,19 +37,25 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController websiteController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final ExpansionTileController veganStatusExpansionController =
-      ExpansionTileController();
+  final ExpansionTileController veganStatusExpansionController = ExpansionTileController();
   bool? veganStatus;
   bool? hasVeganOptions;
   bool? takeout;
   bool? dineIn;
   bool? delivery;
 
+  String? price;
+
+  List<PriceRangeItem> priceRanges = const [
+    PriceRangeItem(price: '\$'),
+    PriceRangeItem(price: '\$\$'),
+    PriceRangeItem(price: '\$\$\$'),
+  ];
+
   List<OpenDayItem> openDaysList = [];
   File? pickedImage;
 
-  Future<void> showRestaurantThumbnailPickerOptions(
-      BuildContext context) async {
+  Future<void> showRestaurantThumbnailPickerOptions(BuildContext context) async {
     await showModalBottomSheet<void>(
       context: context,
       builder: (context) {
@@ -108,40 +115,34 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
     );
   }
 
-  bool get restaurantNameChanged =>
-      widget.restaurant!.name != restaurantNameController.text.trim();
+  bool get restaurantNameChanged => widget.restaurant!.name != restaurantNameController.text.trim();
 
-  bool get streetAddressChanged =>
-      widget.restaurant!.streetAddress != streetAddressController.text.trim();
+  bool get streetAddressChanged => widget.restaurant!.streetAddress != streetAddressController.text.trim();
 
   bool get cityChanged => widget.restaurant!.city != cityController.text.trim();
 
-  bool get stateChanged =>
-      widget.restaurant!.state != stateController.text.trim();
+  bool get stateChanged => widget.restaurant!.state != stateController.text.trim();
 
-  bool get zipcodeChanged =>
-      widget.restaurant!.zipCode != zipcodeController.text.trim();
+  bool get zipcodeChanged => widget.restaurant!.zipCode != zipcodeController.text.trim();
 
-  bool get phoneNumberChanged =>
-      widget.restaurant!.phoneNumber != phoneNumberController.text.trim();
+  bool get phoneNumberChanged => widget.restaurant!.phoneNumber != phoneNumberController.text.trim();
 
-  bool get websiteChanged =>
-      widget.restaurant!.websiteUrl != websiteController.text.trim();
+  bool get websiteChanged => widget.restaurant!.websiteUrl != websiteController.text.trim();
 
   bool get descriptionChanged =>
-      descriptionController.text.isNotEmpty &&
-      widget.restaurant!.description != descriptionController.text.trim();
+      descriptionController.text.isNotEmpty && widget.restaurant!.description != descriptionController.text.trim();
 
   bool get veganStatusChanged => widget.restaurant!.veganStatus != veganStatus;
 
-  bool get hasVeganOptionsChanged =>
-      widget.restaurant!.hasVeganOptions != hasVeganOptions;
+  bool get hasVeganOptionsChanged => widget.restaurant!.hasVeganOptions != hasVeganOptions;
 
   bool get takeoutChanged => widget.restaurant!.takeout != takeout;
 
   bool get dineInChanged => widget.restaurant!.dineIn != dineIn;
 
   bool get deliveryChanged => widget.restaurant!.delivery != delivery;
+
+  bool get priceRangeChanged => widget.restaurant!.price != price;
 
   bool get openHoursChanged {
     for (final openDay in openDaysList) {
@@ -170,6 +171,7 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
       !takeoutChanged &&
       !dineInChanged &&
       !deliveryChanged &&
+      !priceRangeChanged &&
       !imageChanged &&
       !openHoursChanged &&
       !websiteChanged;
@@ -189,10 +191,9 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
     takeout = widget.restaurant!.takeout;
     dineIn = widget.restaurant!.dineIn;
     delivery = widget.restaurant!.delivery;
+    price = widget.restaurant!.price;
 
-    for (var dayIndex = 0;
-        dayIndex < context.daysOfTheWeek.length;
-        dayIndex++) {
+    for (var dayIndex = 0; dayIndex < context.daysOfTheWeek.length; dayIndex++) {
       final periodItems = <PeriodItem>[
         PeriodItem(
           day: dayIndex,
@@ -230,10 +231,8 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
         final openDay = openDaysList[d];
         for (var p = 0; p < openDaysList[d].periodItems.length; p++) {
           final dayIndex = openDay.periodItems[p].day;
-          final openTime =
-              openDay.periodItems[p].openTextEditingController.text;
-          final closeTime =
-              openDay.periodItems[p].closeTextEditingController.text;
+          final openTime = openDay.periodItems[p].openTextEditingController.text;
+          final closeTime = openDay.periodItems[p].closeTextEditingController.text;
 
           periods.add(
             PeriodModel(
@@ -244,13 +243,6 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
               close: OpenCloseModel(day: dayIndex, time: closeTime),
             ),
           );
-
-          // openHours.periods.add(
-          //   period.copyWith(
-          //     open: OpenCloseModel(day: dayIndex, time: openTime),
-          //     close: OpenCloseModel(day: dayIndex, time: closeTime),
-          //   ),
-          // );
         }
       }
 
@@ -368,6 +360,13 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
         restaurant: widget.restaurant!,
       );
     }
+    if (priceRangeChanged) {
+      await bloc.updateRestaurant(
+        action: UpdateRestaurantInfoAction.price,
+        restaurantData: price,
+        restaurant: widget.restaurant!,
+      );
+    }
   }
 
   @override
@@ -402,9 +401,7 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             surfaceTintColor: Colors.white,
-            title: Text(context.currentUser?.isAdmin == true
-                ? 'Edit'
-                : 'Suggest an edit'),
+            title: Text(context.currentUser?.isAdmin == true ? 'Edit Restaurant' : 'Suggest An Edit'),
             centerTitle: true,
           ),
           body: Container(
@@ -435,8 +432,7 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                                     pickedImage!,
                                     fit: BoxFit.contain,
                                   )
-                                : widget.restaurant?.thumbnail != null &&
-                                        widget.restaurant!.thumbnail!.isNotEmpty
+                                : widget.restaurant?.thumbnail != null && widget.restaurant!.thumbnail!.isNotEmpty
                                     ? Image.network(
                                         widget.restaurant!.thumbnail!,
                                         fit: BoxFit.contain,
@@ -460,14 +456,12 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                           ),
                           IconButton(
                             onPressed: () async {
-                              await showRestaurantThumbnailPickerOptions(
-                                  context);
+                              await showRestaurantThumbnailPickerOptions(context);
                             },
                             icon: Icon(
                               (pickedImage != null ||
                                       (widget.restaurant?.thumbnail != null &&
-                                          widget.restaurant!.thumbnail!
-                                              .isNotEmpty))
+                                          widget.restaurant!.thumbnail!.isNotEmpty))
                                   ? Icons.edit
                                   : Icons.add_a_photo,
                               color: Colors.white,
@@ -489,8 +483,7 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                     descriptionController: descriptionController,
                     veganStatus: veganStatus,
                     hasVeganOptions: hasVeganOptions,
-                    veganStatusExpansionController:
-                        veganStatusExpansionController,
+                    veganStatusExpansionController: veganStatusExpansionController,
                     onChangedIsVeganYes: (bool? value) {
                       setState(() {
                         veganStatus = value;
@@ -520,6 +513,14 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                       });
                     },
                     adminList: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: SectionHeader(
+                          sectionTitle: 'Take Out / Dine In / Delivery',
+                          seeAll: false,
+                          onSeeAll: () {},
+                        ),
+                      ),
                       CheckboxListTile(
                         controlAffinity: ListTileControlAffinity.leading,
                         title: Text(
@@ -571,13 +572,44 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                           });
                         },
                       ),
-                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                        child: SectionHeader(
+                          sectionTitle: 'Price Range',
+                          seeAll: false,
+                          onSeeAll: () {},
+                        ),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: priceRanges.length,
+                        itemBuilder: (context, index) {
+                          return RadioListTile(
+                            contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                            title: Text(
+                              priceRanges[index].price,
+                              style: TextStyle(
+                                color: context.theme.textTheme.bodyMedium?.color,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            value: priceRanges[index].price,
+                            groupValue: price,
+                            onChanged: (value) {
+                              setState(() {
+                                price = value;
+                              });
+                            },
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 25),
                       Theme(
-                        data: context.theme
-                            .copyWith(dividerColor: Colors.transparent),
+                        data: context.theme.copyWith(dividerColor: Colors.transparent),
                         child: ExpansionTile(
-                          collapsedBackgroundColor:
-                              context.theme.cardTheme.color,
+                          collapsedBackgroundColor: context.theme.cardTheme.color,
                           iconColor: context.theme.iconTheme.color,
                           collapsedIconColor: context.theme.iconTheme.color,
                           title: Text(
@@ -617,10 +649,8 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                                             final periodItem = PeriodItem(
                                               day: index,
                                               periods: const [],
-                                              openTextEditingController:
-                                                  TextEditingController(),
-                                              closeTextEditingController:
-                                                  TextEditingController(),
+                                              openTextEditingController: TextEditingController(),
+                                              closeTextEditingController: TextEditingController(),
                                             );
                                             openDay.periodItems.add(
                                               periodItem,
@@ -646,8 +676,7 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                   const SizedBox(height: 50),
                   StatefulBuilder(
                     builder: (context, refresh) {
-                      restaurantNameController
-                          .addListener(() => refresh(() {}));
+                      restaurantNameController.addListener(() => refresh(() {}));
                       streetAddressController.addListener(() => refresh(() {}));
                       cityController.addListener(() => refresh(() {}));
                       stateController.addListener(() => refresh(() {}));
@@ -668,9 +697,7 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                       return state is UpdatingRestaurant
                           ? const Center(child: CircularProgressIndicator())
                           : LongButton(
-                              onPressed: nothingChanged
-                                  ? null
-                                  : () => submitChanges(context),
+                              onPressed: nothingChanged ? null : () => submitChanges(context),
                               label: 'Submit',
                               backgroundColor: nothingChanged
                                   ? Colors.grey
@@ -689,4 +716,13 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
       },
     );
   }
+}
+
+class PriceRangeItem extends Equatable {
+  const PriceRangeItem({required this.price});
+
+  final String price;
+
+  @override
+  List<Object?> get props => [price];
 }

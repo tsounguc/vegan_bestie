@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sheveegan/core/resources/media_resources.dart';
+import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_picture_screen.dart';
 
 class CustomPageView extends StatefulWidget {
   const CustomPageView({required this.restaurant, super.key});
@@ -70,34 +72,9 @@ class _CustomPageViewState extends State<CustomPageView> {
         }
         return Transform(
           transform: matrix,
-          child: Container(
-            height: height,
-            margin: const EdgeInsets.only(
-              left: 5,
-              right: 5,
-              top: 10,
-              bottom: 10,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(15),
-              // border: Border.all(color: Colors.black12),
-              boxShadow: _currentPageValue != position
-                  ? const [
-                      BoxShadow(
-                        color: Colors.black38,
-                        blurRadius: 2,
-                        offset: Offset(2, 4),
-                      ),
-                    ]
-                  : const [
-                      BoxShadow(
-                        color: Colors.black38,
-                        blurRadius: 2,
-                        offset: Offset(2, 4),
-                      ),
-                    ],
-              image: widget.restaurant.photos[position].isNotEmpty &&
+          child: GestureDetector(
+            onTap: () {
+              final image = widget.restaurant.photos[position].isNotEmpty &&
                       !widget.restaurant.photos[position].contains(
                         '_empty.photo',
                       )
@@ -111,7 +88,62 @@ class _CustomPageViewState extends State<CustomPageView> {
                       fit: BoxFit.contain,
                       // colorFilter: ColorFilter.mode(Colors.grey, BlendMode.darken),
                       image: AssetImage(MediaResources.tofu),
-                    ),
+                    );
+
+              Navigator.of(context).pushNamed(
+                RestaurantPictureScreen.id,
+                arguments: RestaurantPictureScreenArguments(
+                  widget.restaurant.photos[position],
+                  image,
+                ),
+              );
+            },
+            child: Hero(
+              tag: widget.restaurant.photos[position],
+              child: Container(
+                height: height,
+                margin: const EdgeInsets.only(
+                  left: 5,
+                  right: 5,
+                  top: 10,
+                  bottom: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(15),
+                  // border: Border.all(color: Colors.black12),
+                  boxShadow: _currentPageValue != position
+                      ? const [
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2,
+                            offset: Offset(2, 4),
+                          ),
+                        ]
+                      : const [
+                          BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 2,
+                            offset: Offset(2, 4),
+                          ),
+                        ],
+                  image: widget.restaurant.photos[position].isNotEmpty &&
+                          !widget.restaurant.photos[position].contains(
+                            '_empty.photo',
+                          )
+                      ? DecorationImage(
+                          fit: BoxFit.fill,
+                          image: NetworkImage(
+                            widget.restaurant.photos[position],
+                          ),
+                        )
+                      : const DecorationImage(
+                          fit: BoxFit.contain,
+                          // colorFilter: ColorFilter.mode(Colors.grey, BlendMode.darken),
+                          image: AssetImage(MediaResources.tofu),
+                        ),
+                ),
+              ),
             ),
           ),
         );

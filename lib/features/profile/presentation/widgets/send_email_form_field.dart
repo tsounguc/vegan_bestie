@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/i_field.dart';
 
-class EmailFormField extends StatelessWidget {
-  const EmailFormField({
+class SendEmailFormField extends StatelessWidget {
+  const SendEmailFormField({
     required this.fieldTitle,
     required this.controller,
     this.hintText,

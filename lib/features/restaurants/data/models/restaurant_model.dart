@@ -48,9 +48,7 @@ class RestaurantModel extends Restaurant {
           websiteUrl: '_empty.websiteUrl',
           geoLocation: const GeoLocationModel.empty(),
           openHours: const OpenHoursModel.empty(),
-          photos: const [
-            '_empty.photo1',
-          ],
+          photos: const [],
           price: '_empty.price',
           permanentlyClosed: false,
           veganStatus: false,

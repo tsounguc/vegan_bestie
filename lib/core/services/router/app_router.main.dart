@@ -86,6 +86,18 @@ class AppRouter {
           ),
           settings: settings,
         );
+      case RestaurantPictureScreen.id:
+        final args = settings.arguments! as RestaurantPictureScreenArguments;
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<AuthBloc>(),
+            child: RestaurantPictureScreen(
+              image: args.image,
+              tag: args.tag,
+            ),
+          ),
+          settings: settings,
+        );
       case ContactSupportScreen.id:
         return _pageBuilder(
           (_) => BlocProvider(
@@ -97,6 +109,15 @@ class AppRouter {
       case DisplayScreen.id:
         return _pageBuilder(
           (_) => const DisplayScreen(),
+          settings: settings,
+        );
+
+      case ChangeEmailScreen.id:
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<AuthBloc>(),
+            child: const ChangeEmailScreen(),
+          ),
           settings: settings,
         );
 
@@ -310,4 +331,14 @@ class UpdateRestaurantScreenArguments {
 
   final String title;
   final Restaurant? restaurant;
+}
+
+class RestaurantPictureScreenArguments {
+  const RestaurantPictureScreenArguments(
+    this.tag,
+    this.image,
+  );
+
+  final DecorationImage image;
+  final String tag;
 }

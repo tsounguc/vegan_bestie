@@ -7,19 +7,13 @@ import 'package:sheveegan/features/profile/presentation/widgets/edit_profile_for
 class EditProfileForm extends StatelessWidget {
   const EditProfileForm({
     required this.fullNameController,
-    required this.emailController,
-    // required this.passwordController,
-    // required this.oldPasswordController,
     required this.bioController,
     required this.veganStatusController,
     super.key,
   });
 
   final TextEditingController fullNameController;
-  final TextEditingController emailController;
 
-  // final TextEditingController passwordController;
-  // final TextEditingController oldPasswordController;
   final TextEditingController bioController;
   final TextEditingController veganStatusController;
 
@@ -36,11 +30,6 @@ class EditProfileForm extends StatelessWidget {
         VeganStatusTextField(
           fieldTitle: 'Vegan Status',
           controller: veganStatusController,
-        ),
-        EditProfileFormField(
-          fieldTitle: 'Email',
-          controller: emailController,
-          hintText: context.currentUser!.email.obscureEmail,
         ),
         EditProfileFormField(
           fieldTitle: 'Bio',

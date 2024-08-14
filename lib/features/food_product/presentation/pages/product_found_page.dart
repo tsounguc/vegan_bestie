@@ -1,19 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/custom_image_widget.dart';
+import 'package:sheveegan/core/common/widgets/popup_item.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
-import 'package:sheveegan/core/services/service_locator.dart';
+import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/dashboard/presentation/utils/dashboard_utils.dart';
 import 'package:sheveegan/features/food_product/domain/entities/food_product.dart';
+import 'package:sheveegan/features/food_product/presentation/pages/food_product_report_screen.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/refactors/flexible_space_bar_bottom.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/refactors/product_found_body.dart';
+import 'package:sheveegan/features/food_product/presentation/pages/update_food_product_screen.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 
 class ProductFoundPage extends StatefulWidget {
@@ -46,7 +47,7 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
     Tooltip.dismissAllToolTips();
   }
 
-  void removeFoodProduct(FoodProduct product) {
+  void unSaveFoodProduct(FoodProduct product) {
     BlocProvider.of<FoodProductCubit>(
       context,
     ).unSaveFoodProductHandler(product: product);
@@ -56,6 +57,22 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
     BlocProvider.of<FoodProductCubit>(
       context,
     ).saveFoodProductHandler(product: product);
+  }
+
+  void gotoUpdateFoodProductPage(BuildContext context, FoodProduct product) {
+    Navigator.pushNamed(
+      context,
+      UpdateFoodProductScreen.id,
+      arguments: UpdateFoodProductPageArguments('Edit Product', product),
+    );
+  }
+
+  void goToReportIssue(BuildContext context, FoodProduct product) {
+    Navigator.pushNamed(
+      context,
+      FoodProductReportScreen.id,
+      arguments: product,
+    );
   }
 
   @override
@@ -74,6 +91,10 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
     final carbsAmount = widget.product.nutriments.carbohydratesServing;
     final fatAmount = widget.product.nutriments.fatServing;
     final total = proteinsAmount + carbsAmount + fatAmount;
+    const popupMenuItemPadding = EdgeInsets.symmetric(
+      horizontal: 25,
+      vertical: 5,
+    );
     var proteinsPct = (proteinsAmount / total) * 100;
     if (proteinsPct.isNaN || proteinsPct.isInfinite || proteinsPct.isNegative) {
       proteinsPct = 0;
@@ -95,7 +116,7 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
         }
 
         final user = context.userProvider.user;
-
+        final isAdmin = user != null && user.isAdmin;
         final isSaved = user!.savedProductsBarcodes.contains(widget.product.code);
 
         return BlocListener<FoodProductCubit, FoodProductState>(
@@ -141,7 +162,47 @@ class _ProductFoundPageState extends State<ProductFoundPage> {
                         // size: 30,
                       ),
                       onPressed: () =>
-                          isSaved ? removeFoodProduct(widget.product) : saveFoodProduct(widget.product),
+                          isSaved ? unSaveFoodProduct(widget.product) : saveFoodProduct(widget.product),
+                    ),
+                    PopupMenuButton(
+                      icon: Icon(
+                        Icons.more_vert_outlined,
+                        color: context.theme.appBarTheme.iconTheme?.color,
+                      ),
+                      surfaceTintColor: context.theme.cardTheme.color,
+                      color: context.theme.cardTheme.color,
+                      offset: const Offset(0, 60),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      itemBuilder: (_) {
+                        return [
+                          PopupMenuItem<void>(
+                            padding: popupMenuItemPadding,
+                            onTap: () =>
+                                isSaved ? unSaveFoodProduct(widget.product) : saveFoodProduct(widget.product),
+                            child: PopupItem(
+                              title: isSaved ? 'Unsave' : 'Save',
+                              icon: Icon(
+                                isSaved ? Icons.bookmark : Icons.bookmark_outline,
+                                color: context.theme.iconTheme.color,
+                              ),
+                            ),
+                          ),
+                          PopupMenuItem<void>(
+                            padding: popupMenuItemPadding,
+                            onTap: () => isAdmin
+                                ? gotoUpdateFoodProductPage(context, widget.product)
+                                : goToReportIssue(context, widget.product),
+                            child: PopupItem(
+                              title: isAdmin ? 'Fix Issue' : 'Report Issue',
+                              icon: Icon(
+                                Icons.report_outlined,
+                              ),
+                            ),
+                          ),
+                        ];
+                      },
                     ),
                   ],
                   flexibleSpace: FlexibleSpaceBar(

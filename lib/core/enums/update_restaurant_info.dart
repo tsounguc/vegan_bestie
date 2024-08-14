@@ -14,6 +14,7 @@ enum UpdateRestaurantInfoAction {
   takeout,
   dineIn,
   delivery,
+  price,
   veganStatus,
   hasVeganOptions,
 }

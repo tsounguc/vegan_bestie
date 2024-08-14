@@ -22,7 +22,6 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final fullNameController = TextEditingController();
-  final emailController = TextEditingController();
   final bioController = TextEditingController();
   final veganStatusController = TextEditingController();
   File? pickedImage;
@@ -101,22 +100,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   bool get nameChanged => context.currentUser?.name.trim() != fullNameController.text.trim();
 
-  bool get emailChanged => emailController.text.trim().isNotEmpty;
-
   bool get bioChanged => context.currentUser?.bio?.trim() != bioController.text.trim();
 
   bool get veganStatusChanged => context.currentUser?.veganStatus?.trim() != veganStatusController.text.trim();
 
   bool get imageChanged => pickedImage != null;
 
-  bool get nothingChanged =>
-      !nameChanged &&
-      !emailChanged
-      // && !passwordChanged
-      &&
-      !bioChanged &&
-      !veganStatusChanged &&
-      !imageChanged;
+  bool get nothingChanged => !nameChanged && !bioChanged && !veganStatusChanged && !imageChanged;
 
   @override
   void initState() {
@@ -129,8 +119,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void dispose() {
     fullNameController.dispose();
-    emailController.dispose();
     bioController.dispose();
+    veganStatusController.dispose();
     super.dispose();
   }
 
@@ -142,14 +132,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         UpdateUserEvent(
           action: UpdateUserAction.displayName,
           userData: fullNameController.text.trim(),
-        ),
-      );
-    }
-    if (emailChanged) {
-      bloc.add(
-        UpdateUserEvent(
-          action: UpdateUserAction.email,
-          userData: emailController.text.trim(),
         ),
       );
     }
@@ -267,18 +249,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   const SizedBox(height: 40),
                   EditProfileForm(
                     fullNameController: fullNameController,
-                    emailController: emailController,
                     veganStatusController: veganStatusController,
-                    // passwordController: passwordController,
-                    // oldPasswordController: oldPasswordController,
                     bioController: bioController,
                   ),
                   const SizedBox(height: 30),
                   StatefulBuilder(
                     builder: (context, refresh) {
                       fullNameController.addListener(() => refresh(() {}));
-                      emailController.addListener(() => refresh(() {}));
-                      // passwordController.addListener(() => refresh(() {}));
                       bioController.addListener(() => refresh(() {}));
                       veganStatusController.addListener(() => refresh(() {}));
                       return state is AuthLoading

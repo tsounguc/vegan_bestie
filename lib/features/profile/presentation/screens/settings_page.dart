@@ -11,6 +11,7 @@ import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/profile/presentation/refactors/user_card.dart';
+import 'package:sheveegan/features/profile/presentation/screens/change_email_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/change_password_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/contact_support_screen.dart';
 import 'package:sheveegan/features/profile/presentation/screens/display_screen.dart';
@@ -26,22 +27,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  // bool useDeviceSettings = false;
-  // bool isDarkMode = false;
-
-  // @override
-  // void initState() {
-  //   final mode = context.themeModeProvider.themeMode;
-  //   if (mode == ThemeMode.system) {
-  //     context.themeModeProvider.useDeviceSettings = true;
-  //   } else if (mode == ThemeMode.dark) {
-  //     context.themeModeProvider.isDarkMode = true;
-  //   } else {
-  //     context.themeModeProvider.isDarkMode = false;
-  //   }
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,6 +82,31 @@ class _SettingsPageState extends State<SettingsPage> {
               child: ListTile(
                 style: ListTileStyle.list,
                 leading: Icon(
+                  Icons.email_outlined,
+                  color: context.theme.iconTheme.color,
+                ),
+                title: Text(
+                  'Change Email',
+                  style: context.theme.textTheme.titleMedium,
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  color: context.theme.iconTheme.color,
+                  size: 15,
+                ),
+                onTap: () => Navigator.of(context).pushNamed(
+                  ChangeEmailScreen.id,
+                  arguments: context.read<AuthBloc>(),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Card(
+              child: ListTile(
+                style: ListTileStyle.list,
+                leading: Icon(
                   Icons.lock_outline,
                   color: context.theme.iconTheme.color,
                 ),
@@ -122,7 +132,7 @@ class _SettingsPageState extends State<SettingsPage> {
               child: ListTile(
                 style: ListTileStyle.list,
                 leading: Icon(
-                  Icons.email_outlined,
+                  Icons.contact_support_outlined,
                   color: context.theme.iconTheme.color,
                 ),
                 title: Text(
@@ -204,7 +214,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   }),
             ),
             SizedBox(
-              height: context.height * 0.07,
+              height: context.height * 0.05,
             ),
             TextButton(
               onPressed: () {

@@ -27,6 +27,7 @@ import 'package:sheveegan/features/restaurants/presentation/pages/componets/dine
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/rating_and_reviews_count.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/review_card.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_picture_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_review_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/update_restaurant_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
@@ -349,7 +350,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 15),
                           child: SizedBox(
                             height: MediaQuery.of(context).size.height * 0.30,
-                            child: CustomPageView(restaurant: restaurant),
+                            child: CustomPageView(
+                              restaurant: restaurant,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 30),
