@@ -17,6 +17,7 @@ import 'package:sheveegan/features/restaurants/presentation/pages/add_restaurant
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/horizontal_restaurant_card.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/map_page.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
+import 'package:sheveegan/features/restaurants/presentation/utils/restaurants_utils.dart';
 
 class RestaurantsFoundBody extends StatelessWidget {
   const RestaurantsFoundBody({
@@ -125,25 +126,13 @@ class RestaurantsFoundBody extends StatelessWidget {
                         shrinkWrap: true,
                         itemCount: restaurants.length,
                         itemBuilder: (context, restaurantIndex) {
+                          final restaurant = restaurants[restaurantIndex];
+                          final isSaved = context.currentUser!.savedRestaurantsIds.contains(restaurant.id);
+
                           return StreamBuilder<List<RestaurantReview>>(
-                            stream: serviceLocator<FirebaseFirestore>()
-                                .collection('restaurantReviews')
-                                .where('restaurantId', isEqualTo: restaurants[restaurantIndex].id)
-                                .snapshots()
-                                .map(
-                                  (event) => event.docs
-                                      .map(
-                                        (e) => RestaurantReviewModel.fromMap(
-                                          e.data(),
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
+                            stream: RestaurantsUtils.restaurantReviewsModel(restaurant.id),
                             builder: (context, snapshot) {
                               final reviews = snapshot.hasData ? snapshot.data! : <RestaurantReview>[];
-                              final restaurant = restaurants[restaurantIndex];
-
-                              final isSaved = context.currentUser!.savedRestaurantsIds.contains(restaurant.id);
 
                               final userPosition = context.read<RestaurantsNearMeProvider>().currentLocation;
                               return Column(

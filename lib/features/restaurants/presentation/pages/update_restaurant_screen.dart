@@ -103,7 +103,6 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
               onTap: () async {
                 Navigator.of(context).pop();
                 final image = await CoreUtils.pickImageFromGallery();
-
                 setState(() {
                   pickedImage = image;
                 });

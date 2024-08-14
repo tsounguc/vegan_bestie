@@ -45,7 +45,7 @@ class RestaurantPictureScreen extends StatelessWidget {
           leading: const CustomBackButton(),
           centerTitle: true,
           actions: [
-            if (user?.photoUrl != null && user!.photoUrl!.isNotEmpty)
+            if (user != null && user.isAdmin && tag.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(right: 8),
                 child: TextButton(
@@ -53,7 +53,7 @@ class RestaurantPictureScreen extends StatelessWidget {
                     context.read<AuthBloc>().add(DeleteProfilePicEvent(user: user));
                   },
                   child: Text(
-                    'Delete Profile',
+                    'Delete',
                     style: TextStyle(
                       fontSize: 14.sp,
                       // color: Theme.of(context).textTheme.titleLarge?.color,

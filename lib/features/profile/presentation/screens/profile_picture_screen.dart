@@ -44,7 +44,7 @@ class ProfilePictureScreen extends StatelessWidget {
                     context.read<AuthBloc>().add(DeleteProfilePicEvent(user: user));
                   },
                   child: Text(
-                    'Delete Profile',
+                    'Delete',
                     style: TextStyle(
                       fontSize: 14.sp,
                       // color: Theme.of(context).textTheme.titleLarge?.color,

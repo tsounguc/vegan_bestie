@@ -38,10 +38,6 @@ class _AddFoodProductScreenState extends State<AddFoodProductScreen> {
   final fatsController = TextEditingController();
   File? pickedImage;
 
-  Future<void> pickImage() async {
-    pickedImage = await CoreUtils.pickImageFromGallery();
-  }
-
   bool get barcodeEntered => barcodeController.text.trim().isNotEmpty;
 
   bool get productNameEntered => productNameController.text.trim().isNotEmpty;
@@ -107,129 +103,24 @@ class _AddFoodProductScreenState extends State<AddFoodProductScreen> {
   }
 
   Future<void> showProductImagePickerOptions(BuildContext context) async {
-    await showModalBottomSheet<void>(
-      context: context,
-      builder: (context) {
-        return Wrap(
-          children: [
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 35,
-                vertical: 10,
-              ),
-              leading: const Icon(Icons.camera_alt_outlined),
-              title: Text(
-                'Camera',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-              ),
-              onTap: () async {
-                Navigator.of(context).pop();
-                final image = await CoreUtils.getImageFromCamera();
-
-                setState(() {
-                  pickedImage = image;
-                });
-              },
-            ),
-            SizedBox(
-              child: Divider(
-                color: Colors.grey.shade300,
-              ),
-            ),
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 35,
-                vertical: 10,
-              ),
-              leading: const Icon(
-                Icons.image_outlined,
-              ),
-              title: Text(
-                'Gallery',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-              ),
-              onTap: () async {
-                Navigator.of(context).pop();
-                final image = await CoreUtils.pickImageFromGallery();
-
-                setState(() {
-                  pickedImage = image;
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
+    Navigator.of(context).pop();
+    final image = await CoreUtils.pickImageFromGallery();
+    setState(() {
+      pickedImage = image;
+    });
   }
 
   Future<void> showIngredientsImagePickerOptions(BuildContext context) async {
-    File? pickedIngredientsImage;
-    await showModalBottomSheet<void>(
-      context: context,
-      builder: (_) {
-        return Wrap(
-          children: [
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 35,
-                vertical: 10,
-              ),
-              leading: const Icon(Icons.camera_alt_outlined),
-              title: Text(
-                'Camera',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-              ),
-              onTap: () async {
-                pickedIngredientsImage = await CoreUtils.getImageFromCamera();
-                if (context.mounted) {
-                  Navigator.of(context).pop();
+    final File? pickedIngredientsImage = await CoreUtils.pickImageFromGallery();
 
-                  if (pickedIngredientsImage != null) {
-                    await BlocProvider.of<FoodProductCubit>(
-                      context,
-                    ).readIngredientsFromImage(pickedIngredientsImage!);
-                  }
-                }
-              },
-            ),
-            SizedBox(
-              child: Divider(
-                color: Colors.grey.shade300,
-              ),
-            ),
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 35,
-                vertical: 10,
-              ),
-              leading: const Icon(
-                Icons.image_outlined,
-              ),
-              title: Text(
-                'Gallery',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              onTap: () async {
-                pickedIngredientsImage = await CoreUtils.pickImageFromGallery();
-
-                if (context.mounted) {
-                  Navigator.of(context).pop();
-                  if (pickedIngredientsImage != null) {
-                    await BlocProvider.of<FoodProductCubit>(
-                      context,
-                    ).readIngredientsFromImage(pickedIngredientsImage!);
-                  }
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
+    if (context.mounted) {
+      Navigator.of(context).pop();
+      if (pickedIngredientsImage != null) {
+        await BlocProvider.of<FoodProductCubit>(
+          context,
+        ).readIngredientsFromImage(pickedIngredientsImage);
+      }
+    }
   }
 
   @override

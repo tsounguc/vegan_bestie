@@ -27,75 +27,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   File? pickedImage;
 
   Future<void> showImagePickerOptions(BuildContext context) async {
-    await showModalBottomSheet<void>(
-      backgroundColor: context.theme.colorScheme.background,
-      context: context,
-      builder: (context) {
-        return Wrap(
-          children: [
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 35,
-                vertical: 10,
-              ),
-              leading: Icon(
-                Icons.camera_alt_outlined,
-                color: context.theme.iconTheme.color,
-              ),
-              title: Text(
-                'Camera',
-                style: TextStyle(
-                  color: context.theme.textTheme.titleSmall?.color,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              onTap: () async {
-                Navigator.of(context).pop();
-                final image = await CoreUtils.getImageFromCamera();
-                if (image != null) {
-                  setState(() {
-                    pickedImage = image;
-                  });
-                }
-              },
-            ),
-            SizedBox(
-              child: Divider(
-                color: Colors.grey.shade300,
-              ),
-            ),
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 35,
-                vertical: 10,
-              ),
-              leading: Icon(
-                Icons.image_outlined,
-                color: context.theme.iconTheme.color,
-              ),
-              title: Text(
-                'Gallery',
-                style: TextStyle(
-                  color: context.theme.textTheme.titleSmall?.color,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              onTap: () async {
-                Navigator.of(context).pop();
-                final image = await CoreUtils.pickImageFromGallery();
-                if (image != null) {
-                  setState(() {
-                    pickedImage = image;
-                  });
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
+    Navigator.of(context).pop();
+    final image = await CoreUtils.pickImageFromGallery();
+    if (image != null) {
+      setState(() {
+        pickedImage = image;
+      });
+    }
   }
 
   bool get nameChanged => context.currentUser?.name.trim() != fullNameController.text.trim();
