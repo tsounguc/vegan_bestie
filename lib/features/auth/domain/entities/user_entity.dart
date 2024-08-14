@@ -18,6 +18,7 @@ class UserEntity extends Equatable {
           name: '',
           email: '',
           photoUrl: '',
+          veganStatus: '',
           bio: '',
           savedProductsBarcodes: const [],
           savedRestaurantsIds: const [],
@@ -47,8 +48,12 @@ class UserEntity extends Equatable {
 
   @override
   String toString() {
-    return 'LocalUser{ uid: $uid, email: $email, fullName: $name '
-        'bio: $bio savedFoodProduct: $savedProductsBarcodes '
+    return 'LocalUser{ uid: $uid, '
+        'email: $email, '
+        'fullName: $name '
+        'veganStatus: $veganStatus '
+        'bio: $bio '
+        'savedFoodProduct: $savedProductsBarcodes '
         'savedRestaurants: $savedRestaurantsIds }';
   }
 }

@@ -24,38 +24,38 @@ class FoodProductReportScreen extends StatefulWidget {
 class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
   final List<IssueItem> listOfIssues = [
     IssueItem(
-      title: 'Wrong Image',
+      title: 'Wrong or no image',
       hint: '',
       textEditingController: TextEditingController(),
       expansionTileController: ExpansionTileController(),
     ),
     IssueItem(
-      title: 'Incorrect Name',
+      title: 'Incorrect name',
       hint: 'What is the correct name',
       textEditingController: TextEditingController(),
       expansionTileController: ExpansionTileController(),
     ),
     IssueItem(
       title: 'Incorrect protein, carbs, and/or fat amounts',
-      hint: 'What is the correct information',
+      hint: 'Please provide more details',
       textEditingController: TextEditingController(),
       expansionTileController: ExpansionTileController(),
     ),
     IssueItem(
       title: 'Wrong or incomplete ingredients',
-      hint: 'What is the correct information',
+      hint: 'Please provide more details',
       textEditingController: TextEditingController(),
       expansionTileController: ExpansionTileController(),
     ),
     IssueItem(
       title: 'Wrong Vegan or Vegetarian label',
-      hint: 'What is the correct label?',
+      hint: 'Please provide more details',
       textEditingController: TextEditingController(),
       expansionTileController: ExpansionTileController(),
     ),
     IssueItem(
       title: 'Wrong product',
-      hint: 'What product should this be?',
+      hint: 'Please provide more details',
       textEditingController: TextEditingController(),
       expansionTileController: ExpansionTileController(),
     ),
@@ -154,6 +154,7 @@ class _FoodProductReportScreenState extends State<FoodProductReportScreen> {
                   const SizedBox(height: 50),
                   ListView.builder(
                     shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: listOfIssues.length,
                     itemBuilder: (context, index) {
                       final issue = listOfIssues[index];

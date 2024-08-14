@@ -82,6 +82,7 @@ void main() {
   const tPassword = 'Test Password';
   const tFullName = 'Test FullName';
   const tEmail = 'testemail@mail.org';
+  const tVeganStatus = 'Vegan';
 
   final tFirebaseAuthException = FirebaseAuthException(
     code: 'user-not-found',
@@ -243,6 +244,7 @@ void main() {
         expect(
           () async => methodCall(
             email: tEmail,
+            veganStatus: tVeganStatus,
             fullName: tFullName,
             password: tPassword,
           ),

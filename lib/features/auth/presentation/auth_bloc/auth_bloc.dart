@@ -82,6 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await _createUserAccount(
       CreateUserAccountParams(
         email: event.email,
+        veganStatus: event.veganStatus,
         password: event.password,
         fullName: event.fullName,
       ),

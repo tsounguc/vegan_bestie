@@ -26,6 +26,7 @@ abstract class AuthRemoteDataSource {
 
   Future<UserModel> createUserAccount({
     required String fullName,
+    required String veganStatus,
     required String email,
     required String password,
   });
@@ -88,6 +89,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<UserModel> createUserAccount({
     required String fullName,
+    required String veganStatus,
     required String email,
     required String password,
   }) async {
@@ -110,6 +112,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         email: userCredential.user?.email ?? '',
         name: userCredential.user?.displayName ?? '',
         photoUrl: userCredential.user!.photoURL,
+        veganStatus: veganStatus,
         bio: '',
       );
 
@@ -264,8 +267,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       await ref.getDownloadURL().then((response) {
         ref.delete();
       }).catchError((error) async {});
-
-      await _updateUserData({'photoUrl': ''});
 
       await _authClient.currentUser?.delete();
       await _authClient.currentUser?.reload();

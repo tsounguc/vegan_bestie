@@ -50,12 +50,14 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   ResultFuture<UserEntity> createUserAccount({
     required String userName,
+    required String veganStatus,
     required String email,
     required String password,
   }) async {
     try {
       final result = await _remoteDataSource.createUserAccount(
         fullName: userName,
+        veganStatus: veganStatus,
         email: email,
         password: password,
       );

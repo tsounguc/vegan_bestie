@@ -50,6 +50,7 @@ void main() {
   const testEmail = 'tsounguc@mail.gvsu.edu';
   const testPassword = '12345678';
   const testFullName = 'Christian Tsoungui Nkoulou';
+  const testVeganStatus = 'Vegan';
 
   group('forgotPassword - ', () {
     test(
@@ -193,6 +194,7 @@ void main() {
         when(
           () => remoteDataSource.createUserAccount(
             fullName: any(named: 'fullName'),
+            veganStatus: any(named: 'veganStatus'),
             email: any(named: 'email'),
             password: any(named: 'password'),
           ),
@@ -202,6 +204,7 @@ void main() {
           email: testEmail,
           password: testPassword,
           userName: testFullName,
+          veganStatus: testVeganStatus,
         );
         // Assert
         expect(
@@ -210,10 +213,10 @@ void main() {
         );
         verify(
           () => remoteDataSource.createUserAccount(
-            fullName: any(named: 'fullName'),
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ),
+              fullName: any(named: 'fullName'),
+              email: any(named: 'email'),
+              password: any(named: 'password'),
+              veganStatus: any(named: 'veganStatus')),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);
       },
@@ -228,17 +231,17 @@ void main() {
         // Arrange
         when(
           () => remoteDataSource.createUserAccount(
-            fullName: any(named: 'fullName'),
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ),
+              fullName: any(named: 'fullName'),
+              email: any(named: 'email'),
+              password: any(named: 'password'),
+              veganStatus: any(named: 'veganStatus')),
         ).thenThrow(testCreateUserException);
         // Act
         final result = await repositoryImpl.createUserAccount(
-          email: 'testEmail',
-          password: 'testPassword',
-          userName: 'testFullName',
-        );
+            email: 'testEmail',
+            password: 'testPassword',
+            userName: 'testFullName',
+            veganStatus: 'testVeganStatus');
         // Assert
         expect(
           result,
@@ -252,10 +255,10 @@ void main() {
         );
         verify(
           () => remoteDataSource.createUserAccount(
-            fullName: any(named: 'fullName'),
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ),
+              fullName: any(named: 'fullName'),
+              email: any(named: 'email'),
+              password: any(named: 'password'),
+              veganStatus: any(named: 'veganStatus')),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);
       },

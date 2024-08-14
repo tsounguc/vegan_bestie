@@ -14,6 +14,7 @@ void main() {
   const tEmail = 'Test email';
   const tPassword = 'Test password';
   const tUserName = 'Test userName';
+  const tVeganStatus = 'Vegan';
 
   setUp(() {
     repository = MockAuthRepo();
@@ -34,7 +35,11 @@ void main() {
     () async {
       when(
         () => repository.createUserAccount(
-            email: any(named: 'email'), password: any(named: 'password'), userName: any(named: 'userName'),),
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          userName: any(named: 'userName'),
+          veganStatus: any(named: 'veganStatus'),
+        ),
       ).thenAnswer((_) async => const Right(tUser));
 
       final result = await useCase(
@@ -42,6 +47,7 @@ void main() {
           email: tEmail,
           password: tPassword,
           fullName: tUserName,
+          veganStatus: tVeganStatus,
         ),
       );
 
@@ -52,6 +58,7 @@ void main() {
           email: tEmail,
           password: tPassword,
           userName: tUserName,
+          veganStatus: tVeganStatus,
         ),
       ).called(1);
 
@@ -68,18 +75,15 @@ void main() {
       // Arrange
       when(
         () => repository.createUserAccount(
-          email: any(named: 'email'),
-          password: any(named: 'password'),
-          userName: any(named: 'userName'),
-        ),
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+            userName: any(named: 'userName'),
+            veganStatus: any(named: 'veganStatus')),
       ).thenAnswer((_) async => Left(testFailure));
       // Act
       final result = await useCase(
         const CreateUserAccountParams(
-          email: tEmail,
-          password: tPassword,
-          fullName: tUserName,
-        ),
+            email: tEmail, password: tPassword, fullName: tUserName, veganStatus: tVeganStatus),
       );
       // Assert
       expect(
@@ -91,6 +95,7 @@ void main() {
           email: tEmail,
           password: tPassword,
           userName: tUserName,
+          veganStatus: tVeganStatus,
         ),
       ).called(1);
       verifyNoMoreInteractions(repository);

@@ -127,7 +127,7 @@ class RestaurantsFoundBody extends StatelessWidget {
                         itemCount: restaurants.length,
                         itemBuilder: (context, restaurantIndex) {
                           final restaurant = restaurants[restaurantIndex];
-                          final isSaved = context.currentUser!.savedRestaurantsIds.contains(restaurant.id);
+                          final isSaved = context.currentUser?.savedRestaurantsIds.contains(restaurant.id);
 
                           return StreamBuilder<List<RestaurantReview>>(
                             stream: RestaurantsUtils.restaurantReviewsModel(restaurant.id),
@@ -152,7 +152,7 @@ class RestaurantsFoundBody extends StatelessWidget {
                                     restaurantAddress: '${restaurant.streetAddress}, '
                                         '${restaurant.city}, ${restaurant.state}',
                                     restaurantPrice: restaurant.price,
-                                    isSaved: isSaved,
+                                    isSaved: isSaved ?? false,
                                     fromSavedRestaurants: false,
                                   ),
                                   if (restaurantIndex == restaurants.length - 1)

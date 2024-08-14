@@ -13,6 +13,7 @@ class CreateUserAccount extends UseCaseWithParams<UserEntity, CreateUserAccountP
   ResultFuture<UserEntity> call(CreateUserAccountParams params) {
     return _repository.createUserAccount(
       userName: params.fullName,
+      veganStatus: params.veganStatus,
       email: params.email,
       password: params.password,
     );
@@ -20,27 +21,21 @@ class CreateUserAccount extends UseCaseWithParams<UserEntity, CreateUserAccountP
 }
 
 class CreateUserAccountParams extends Equatable {
-  const CreateUserAccountParams({
-    required this.email,
-    required this.password,
-    required this.fullName,
-  });
+  const CreateUserAccountParams(
+      {required this.email, required this.password, required this.fullName, required this.veganStatus});
 
-  const CreateUserAccountParams.empty()
-      : this(
-          email: '',
-          password: '',
-          fullName: '',
-        );
+  const CreateUserAccountParams.empty() : this(email: '', password: '', fullName: '', veganStatus: '');
 
   final String email;
   final String password;
   final String fullName;
+  final String veganStatus;
 
   @override
   List<Object?> get props => [
         email,
         password,
         fullName,
+        veganStatus,
       ];
 }

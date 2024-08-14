@@ -183,6 +183,7 @@ void main() {
           email: testCreateUserAccountParams.email,
           password: testCreateUserAccountParams.password,
           fullName: testCreateUserAccountParams.fullName,
+          veganStatus: testCreateUserAccountParams.veganStatus,
         ),
       ),
       expect: () => [
@@ -209,6 +210,7 @@ void main() {
           email: testCreateUserAccountParams.email,
           password: testCreateUserAccountParams.password,
           fullName: testCreateUserAccountParams.fullName,
+          veganStatus: testCreateUserAccountParams.veganStatus,
         ),
       ),
       expect: () => [

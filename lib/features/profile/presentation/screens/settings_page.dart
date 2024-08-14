@@ -181,7 +181,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
 
             const SizedBox(
-              height: 40,
+              height: 20,
             ),
             Card(
               child: ListTile(
@@ -216,7 +216,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
 
             const SizedBox(
-              height: 75,
+              height: 65,
             ),
 
             Card(
@@ -227,7 +227,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     color: context.theme.iconTheme.color,
                   ),
                   title: Text(
-                    'Log out',
+                    'Logout',
                     style: context.theme.textTheme.titleMedium,
                   ),
                   trailing: Icon(

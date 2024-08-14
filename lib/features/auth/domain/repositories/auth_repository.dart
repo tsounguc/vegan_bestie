@@ -9,6 +9,7 @@ abstract class AuthRepository {
 
   ResultFuture<UserEntity> createUserAccount({
     required String userName,
+    required String veganStatus,
     required String email,
     required String password,
   });

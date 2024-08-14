@@ -81,6 +81,7 @@ class _VeganStatusTextFieldState extends State<VeganStatusTextField> {
               ),
             ),
             inputDecorationTheme: InputDecorationTheme(
+              contentPadding: EdgeInsets.zero,
               isDense: true,
               iconColor: context.theme.iconTheme.color,
               prefixIconColor: context.theme.iconTheme.color,

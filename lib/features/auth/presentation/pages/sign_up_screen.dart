@@ -47,6 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       context.read<AuthBloc>().add(
             CreateUserAccountEvent(
               email: emailController.text.trim(),
+              veganStatus: veganStatusController.text.trim(),
               password: passwordController.text.trim(),
               fullName: fullNameController.text.trim(),
             ),

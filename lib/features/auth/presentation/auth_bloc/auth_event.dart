@@ -25,14 +25,21 @@ class CreateUserAccountEvent extends AuthEvent {
     required this.email,
     required this.password,
     required this.fullName,
+    required this.veganStatus,
   });
 
   final String email;
   final String password;
   final String fullName;
+  final String veganStatus;
 
   @override
-  List<Object> get props => [email, password, fullName];
+  List<Object> get props => [
+        email,
+        password,
+        fullName,
+        veganStatus,
+      ];
 }
 
 class ForgotPasswordEvent extends AuthEvent {
