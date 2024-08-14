@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +29,10 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final appLinkGoogle = 'https://play.google.com/store/apps/details?id=com.christiantsoungui.veganbestie';
+  final appLinkAppleAppStore = 'https://apps.apple.com/be/app/vegan-bestie/id6448803152';
+  final instagramLink = 'https://www.instagram.com/vgbestie';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,7 +176,42 @@ class _SettingsPageState extends State<SettingsPage> {
                     size: 15,
                   ),
                   onTap: () {
-                    launchUrl(Uri.parse('https://www.instagram.com/vgbestie'));
+                    launchUrl(Uri.parse(instagramLink));
+                  }),
+            ),
+
+            const SizedBox(
+              height: 40,
+            ),
+            Card(
+              child: ListTile(
+                  style: ListTileStyle.list,
+                  leading: Icon(
+                    FontAwesomeIcons.share,
+                    color: context.theme.iconTheme.color,
+                  ),
+                  title: Text(
+                    'Share Vegan Bestie',
+                    style: context.theme.textTheme.titleMedium,
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios_outlined,
+                    color: context.theme.iconTheme.color,
+                    size: 15,
+                  ),
+                  onTap: () async {
+                    if (Platform.isAndroid) {
+                      await FlutterShare.share(
+                        title: 'Share App ',
+                        linkUrl: appLinkGoogle,
+                      );
+                    }
+                    if (Platform.isIOS) {
+                      await FlutterShare.share(
+                        title: 'Share App ',
+                        linkUrl: appLinkAppleAppStore,
+                      );
+                    }
                   }),
             ),
 
