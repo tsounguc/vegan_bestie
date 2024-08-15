@@ -6,7 +6,7 @@ enum UpdateRestaurantInfoAction {
   zipcode,
   description,
   email,
-  phone,
+  phoneNumber,
   website,
   openHours,
   permanentlyClosed,

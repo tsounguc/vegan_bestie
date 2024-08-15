@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
+import 'package:sheveegan/core/common/widgets/section_header.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
@@ -216,58 +217,6 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                 ),
                 shrinkWrap: true,
                 children: [
-                  // if(context.currentUser?.isAdmin??false)
-                  // Builder(
-                  //   builder: (context) {
-                  //     return Stack(
-                  //       alignment: AlignmentDirectional.center,
-                  //       children: [
-                  //         SizedBox(height: 25.h),
-                  //         Container(
-                  //           height: context.height * 0.2,
-                  //           width: double.infinity,
-                  //           decoration: BoxDecoration(
-                  //             // color: Colors.white,
-                  //             borderRadius: BorderRadius.circular(20),
-                  //           ),
-                  //           child: pickedImage != null
-                  //               ? Image.file(
-                  //             pickedImage!,
-                  //             fit: BoxFit.contain,
-                  //           )
-                  //               : Icon(
-                  //             Icons.image_outlined,
-                  //             color: Colors.grey.shade500,
-                  //             size: 175,
-                  //           ),
-                  //         ),
-                  //         Positioned(
-                  //           child: Container(
-                  //             height: context.height * 0.2,
-                  //             width: double.infinity,
-                  //             decoration: BoxDecoration(
-                  //               // shape: BoxShape.circle,
-                  //               color: Colors.grey.shade600.withOpacity(0.5),
-                  //               borderRadius: BorderRadius.circular(20),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //         IconButton(
-                  //           onPressed: () async {
-                  //             await showProductImagePickerOptions(context);
-                  //           },
-                  //           icon: Icon(
-                  //             pickedImage != null ? Icons.edit : Icons.add_a_photo,
-                  //             color: Colors.white,
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     );
-                  //   },
-                  // ),
-                  const SizedBox(
-                    height: 20,
-                  ),
                   AddRestaurantForm(
                     restaurantNameController: restaurantNameController,
                     streetAddressController: streetAddressController,
@@ -309,6 +258,14 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                       });
                     },
                     adminList: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: SectionHeader(
+                          sectionTitle: 'Take Out / Dine In / Delivery',
+                          seeAll: false,
+                          onSeeAll: () {},
+                        ),
+                      ),
                       ListView.builder(
                         shrinkWrap: true,
                         itemCount: tddItems.length,
@@ -399,9 +356,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 50),
-
                   StatefulBuilder(
                     builder: (context, refresh) {
                       restaurantNameController.addListener(() => refresh(() {}));

@@ -210,10 +210,10 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
             id: restaurant.id,
             data: {'email': restaurantData},
           );
-        case UpdateRestaurantInfoAction.phone:
+        case UpdateRestaurantInfoAction.phoneNumber:
           await _updateRestaurantData(
             id: restaurant.id,
-            data: {'phone': restaurantData},
+            data: {'phoneNumber': restaurantData},
           );
         case UpdateRestaurantInfoAction.website:
           await _updateRestaurantData(

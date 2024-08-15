@@ -56,7 +56,7 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
   File? pickedImage;
 
   Future<void> showRestaurantThumbnailPickerOptions(BuildContext context) async {
-    final image = await CoreUtils.getImageFromCamera();
+    final image = await CoreUtils.pickImageFromGallery();
     setState(() {
       pickedImage = image;
     });
@@ -173,34 +173,6 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
     final bloc = BlocProvider.of<RestaurantsCubit>(context);
     const openHours = OpenHoursModel.empty();
     final periods = <Period>[];
-    if (openHoursChanged) {
-      for (var d = 0; d < openDaysList.length; d++) {
-        final openDay = openDaysList[d];
-        for (var p = 0; p < openDaysList[d].periodItems.length; p++) {
-          final dayIndex = openDay.periodItems[p].day;
-          final openTime = openDay.periodItems[p].openTextEditingController.text;
-          final closeTime = openDay.periodItems[p].closeTextEditingController.text;
-
-          periods.add(
-            PeriodModel(
-              open: OpenCloseModel(
-                day: dayIndex,
-                time: openTime,
-              ),
-              close: OpenCloseModel(day: dayIndex, time: closeTime),
-            ),
-          );
-        }
-      }
-
-      openHours.copyWith(periods: periods);
-      await bloc.updateRestaurant(
-        action: UpdateRestaurantInfoAction.openHours,
-        restaurantData: OpenHoursModel(periods: periods),
-        restaurant: widget.restaurant!,
-      );
-    }
-
     if (imageChanged) {
       await bloc.updateRestaurant(
         action: UpdateRestaurantInfoAction.thumbnail,
@@ -209,6 +181,21 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
       );
     }
 
+    if (veganStatusChanged) {
+      await bloc.updateRestaurant(
+        action: UpdateRestaurantInfoAction.veganStatus,
+        restaurantData: veganStatus,
+        restaurant: widget.restaurant!,
+      );
+    }
+
+    if (hasVeganOptionsChanged) {
+      await bloc.updateRestaurant(
+        action: UpdateRestaurantInfoAction.hasVeganOptions,
+        restaurantData: hasVeganOptions,
+        restaurant: widget.restaurant!,
+      );
+    }
     if (restaurantNameChanged) {
       await bloc.updateRestaurant(
         action: UpdateRestaurantInfoAction.name,
@@ -247,39 +234,11 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
         restaurant: widget.restaurant!,
       );
     }
-    if (phoneNumberChanged) {
-      await bloc.updateRestaurant(
-        action: UpdateRestaurantInfoAction.phone,
-        restaurantData: phoneNumberController.text,
-        restaurant: widget.restaurant!,
-      );
-    }
-    if (websiteChanged) {
-      await bloc.updateRestaurant(
-        action: UpdateRestaurantInfoAction.website,
-        restaurantData: websiteController.text,
-        restaurant: widget.restaurant!,
-      );
-    }
+
     if (descriptionChanged) {
       await bloc.updateRestaurant(
         action: UpdateRestaurantInfoAction.description,
         restaurantData: descriptionController.text,
-        restaurant: widget.restaurant!,
-      );
-    }
-
-    if (veganStatusChanged) {
-      await bloc.updateRestaurant(
-        action: UpdateRestaurantInfoAction.veganStatus,
-        restaurantData: veganStatus,
-        restaurant: widget.restaurant!,
-      );
-    }
-    if (hasVeganOptionsChanged) {
-      await bloc.updateRestaurant(
-        action: UpdateRestaurantInfoAction.hasVeganOptions,
-        restaurantData: hasVeganOptions,
         restaurant: widget.restaurant!,
       );
     }
@@ -307,10 +266,54 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
         restaurant: widget.restaurant!,
       );
     }
+
     if (priceRangeChanged) {
       await bloc.updateRestaurant(
         action: UpdateRestaurantInfoAction.price,
         restaurantData: price,
+        restaurant: widget.restaurant!,
+      );
+    }
+
+    if (openHoursChanged) {
+      for (var d = 0; d < openDaysList.length; d++) {
+        final openDay = openDaysList[d];
+        for (var p = 0; p < openDaysList[d].periodItems.length; p++) {
+          final dayIndex = openDay.periodItems[p].day;
+          final openTime = openDay.periodItems[p].openTextEditingController.text;
+          final closeTime = openDay.periodItems[p].closeTextEditingController.text;
+
+          periods.add(
+            PeriodModel(
+              open: OpenCloseModel(
+                day: dayIndex,
+                time: openTime,
+              ),
+              close: OpenCloseModel(day: dayIndex, time: closeTime),
+            ),
+          );
+        }
+      }
+
+      openHours.copyWith(periods: periods);
+      await bloc.updateRestaurant(
+        action: UpdateRestaurantInfoAction.openHours,
+        restaurantData: OpenHoursModel(periods: periods),
+        restaurant: widget.restaurant!,
+      );
+    }
+
+    if (phoneNumberChanged) {
+      await bloc.updateRestaurant(
+        action: UpdateRestaurantInfoAction.phoneNumber,
+        restaurantData: phoneNumberController.text,
+        restaurant: widget.restaurant!,
+      );
+    }
+    if (websiteChanged) {
+      await bloc.updateRestaurant(
+        action: UpdateRestaurantInfoAction.website,
+        restaurantData: websiteController.text,
         restaurant: widget.restaurant!,
       );
     }

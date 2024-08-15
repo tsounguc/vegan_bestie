@@ -64,6 +64,7 @@ class RestaurantModel extends Restaurant {
           name: restaurant.name,
           contactName: restaurant.contactName,
           email: restaurant.email,
+          description: restaurant.description,
           streetAddress: restaurant.streetAddress,
           city: restaurant.city,
           state: restaurant.state,
@@ -152,11 +153,11 @@ class RestaurantModel extends Restaurant {
         ),
         'permanentlyClosed': permanentlyClosed,
         'price': price,
-        'veganStatus': false,
-        'hasVeganOptions': false,
-        'dineIn': false,
-        'takeout': false,
-        'delivery': false,
+        'veganStatus': veganStatus,
+        'hasVeganOptions': hasVeganOptions,
+        'dineIn': dineIn,
+        'takeout': takeout,
+        'delivery': delivery,
       };
 
   RestaurantModel copyWith({
