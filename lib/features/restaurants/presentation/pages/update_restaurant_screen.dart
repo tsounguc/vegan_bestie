@@ -101,7 +101,6 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                 ),
               ),
               onTap: () async {
-                Navigator.of(context).pop();
                 final image = await CoreUtils.pickImageFromGallery();
                 setState(() {
                   pickedImage = image;
@@ -159,21 +158,21 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
 
   bool get nothingChanged =>
       !restaurantNameChanged &&
-      !streetAddressChanged &&
-      !cityChanged &&
-      !stateChanged &&
-      !zipcodeChanged &&
-      !phoneNumberChanged &&
-      !descriptionChanged &&
-      !veganStatusChanged &&
-      !hasVeganOptionsChanged &&
-      !takeoutChanged &&
-      !dineInChanged &&
-      !deliveryChanged &&
-      !priceRangeChanged &&
-      !imageChanged &&
-      !openHoursChanged &&
-      !websiteChanged;
+          !streetAddressChanged &&
+          !cityChanged &&
+          !stateChanged &&
+          !zipcodeChanged &&
+          !phoneNumberChanged &&
+          !descriptionChanged &&
+          !veganStatusChanged &&
+          !hasVeganOptionsChanged &&
+          !takeoutChanged &&
+          !dineInChanged &&
+          !deliveryChanged &&
+          !priceRangeChanged &&
+          !imageChanged &&
+          !openHoursChanged &&
+          !websiteChanged;
 
   @override
   void initState() {
@@ -428,19 +427,19 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                             ),
                             child: pickedImage != null
                                 ? Image.file(
-                                    pickedImage!,
-                                    fit: BoxFit.contain,
-                                  )
+                              pickedImage!,
+                              fit: BoxFit.contain,
+                            )
                                 : widget.restaurant?.thumbnail != null && widget.restaurant!.thumbnail!.isNotEmpty
-                                    ? Image.network(
-                                        widget.restaurant!.thumbnail!,
-                                        fit: BoxFit.contain,
-                                      )
-                                    : Icon(
-                                        Icons.image_outlined,
-                                        color: Colors.grey.shade500,
-                                        size: 175,
-                                      ),
+                                ? Image.network(
+                              widget.restaurant!.thumbnail!,
+                              fit: BoxFit.contain,
+                            )
+                                : Icon(
+                              Icons.image_outlined,
+                              color: Colors.grey.shade500,
+                              size: 175,
+                            ),
                           ),
                           Positioned(
                             child: Container(
@@ -459,8 +458,8 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                             },
                             icon: Icon(
                               (pickedImage != null ||
-                                      (widget.restaurant?.thumbnail != null &&
-                                          widget.restaurant!.thumbnail!.isNotEmpty))
+                                  (widget.restaurant?.thumbnail != null &&
+                                      widget.restaurant!.thumbnail!.isNotEmpty))
                                   ? Icons.edit
                                   : Icons.add_a_photo,
                               color: Colors.white,
@@ -686,25 +685,29 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                       for (final openDay in openDaysList) {
                         for (final periodItem in openDay.periodItems) {
                           periodItem.openTextEditingController.addListener(
-                            () => refresh(() {}),
+                                () => refresh(() {}),
                           );
                           periodItem.closeTextEditingController.addListener(
-                            () => refresh(() {}),
+                                () => refresh(() {}),
                           );
                         }
                       }
                       return state is UpdatingRestaurant
                           ? const Center(child: CircularProgressIndicator())
                           : LongButton(
-                              onPressed: nothingChanged ? null : () => submitChanges(context),
-                              label: 'Submit',
-                              backgroundColor: nothingChanged
-                                  ? Colors.grey
-                                  : Theme.of(
-                                      context,
-                                    ).buttonTheme.colorScheme?.primary,
-                              textColor: Colors.white,
-                            );
+                        onPressed: nothingChanged ? null : () => submitChanges(context),
+                        label: 'Submit',
+                        backgroundColor: nothingChanged
+                            ? Colors.grey
+                            : Theme
+                            .of(
+                          context,
+                        )
+                            .buttonTheme
+                            .colorScheme
+                            ?.primary,
+                        textColor: Colors.white,
+                      );
                     },
                   ),
                 ],

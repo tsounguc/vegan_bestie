@@ -210,7 +210,7 @@ class ProfileHeaderTop extends StatelessWidget {
             child: Container(
               width: double.maxFinite,
               margin: const EdgeInsets.symmetric(horizontal: 25),
-              padding: const EdgeInsets.symmetric(vertical: 15),
+              padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 50),
               decoration: BoxDecoration(
                 color: context.theme.cardTheme.color?.withOpacity(0.93),
                 border: const Border(
@@ -223,15 +223,18 @@ class ProfileHeaderTop extends StatelessWidget {
                   topLeft: Radius.circular(20.r),
                 ),
               ),
-              child: Center(
-                child: Text(
-                  user?.name ?? '',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w700,
-                    // color: Colors.grey.shade800,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    user?.name ?? '',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w700,
+                      // color: Colors.grey.shade800,
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),

@@ -103,7 +103,6 @@ class _AddFoodProductScreenState extends State<AddFoodProductScreen> {
   }
 
   Future<void> showProductImagePickerOptions(BuildContext context) async {
-    Navigator.of(context).pop();
     final image = await CoreUtils.pickImageFromGallery();
     setState(() {
       pickedImage = image;
@@ -114,7 +113,6 @@ class _AddFoodProductScreenState extends State<AddFoodProductScreen> {
     final File? pickedIngredientsImage = await CoreUtils.pickImageFromGallery();
 
     if (context.mounted) {
-      Navigator.of(context).pop();
       if (pickedIngredientsImage != null) {
         await BlocProvider.of<FoodProductCubit>(
           context,

@@ -33,6 +33,7 @@ class EditProfileForm extends StatelessWidget {
         ),
         EditProfileFormField(
           fieldTitle: 'Bio',
+          hintText: 'Say something about yourself',
           controller: bioController,
           borderRadius: BorderRadius.circular(20),
           minLines: 4,

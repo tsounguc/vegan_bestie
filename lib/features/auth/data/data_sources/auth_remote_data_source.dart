@@ -103,10 +103,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       // await userCredential.user?.updatePhotoURL(kDefaultAvatar);
 
       //
-      await _setUserData(
-        _authClient.currentUser!,
-        email,
-      );
+      await _setUserData(_authClient.currentUser!, veganStatus, email);
       final user = UserModel(
         uid: userCredential.user?.uid ?? '',
         email: userCredential.user?.email ?? '',
@@ -156,14 +153,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       // get user data from firestore with user uid
       var userData = await _getUserData(user.uid);
-
+      var userModel = const UserModel.empty();
       if (userData.exists) {
-        return UserModel.fromMap(userData.data()!);
+        userModel = UserModel.fromMap(userData.data()!);
+        return userModel;
       }
 
       // if user doesn't have data in firestore
       // upload data to firestore
-      await _setUserData(user, email);
+      await _setUserData(user, userModel.veganStatus, email);
       // get user data from firestore with user uid
       userData = await _getUserData(user.uid);
 
@@ -404,13 +402,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     return _users.doc(uid).get();
   }
 
-  Future<void> _setUserData(User user, String fallbackEmail) async {
+  Future<void> _setUserData(User user, String? veganStatus, String fallbackEmail) async {
     await _users.doc(user.uid).set(
           UserModel(
             uid: user.uid,
             email: user.email ?? fallbackEmail,
             name: user.displayName ?? '',
             photoUrl: user.photoURL ?? '',
+            veganStatus: veganStatus,
             bio: '',
           ).toMap(),
         );

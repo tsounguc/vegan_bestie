@@ -27,7 +27,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   File? pickedImage;
 
   Future<void> showImagePickerOptions(BuildContext context) async {
-    Navigator.of(context).pop();
     final image = await CoreUtils.pickImageFromGallery();
     if (image != null) {
       setState(() {

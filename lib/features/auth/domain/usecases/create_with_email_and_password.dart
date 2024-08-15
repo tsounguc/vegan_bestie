@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:sheveegan/core/use_case/use_case.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/auth/domain/entities/user_entity.dart';
@@ -11,6 +12,7 @@ class CreateUserAccount extends UseCaseWithParams<UserEntity, CreateUserAccountP
 
   @override
   ResultFuture<UserEntity> call(CreateUserAccountParams params) {
+    debugPrint('vegan status : ${params.veganStatus}');
     return _repository.createUserAccount(
       userName: params.fullName,
       veganStatus: params.veganStatus,
@@ -21,10 +23,20 @@ class CreateUserAccount extends UseCaseWithParams<UserEntity, CreateUserAccountP
 }
 
 class CreateUserAccountParams extends Equatable {
-  const CreateUserAccountParams(
-      {required this.email, required this.password, required this.fullName, required this.veganStatus});
+  const CreateUserAccountParams({
+    required this.email,
+    required this.password,
+    required this.fullName,
+    required this.veganStatus,
+  });
 
-  const CreateUserAccountParams.empty() : this(email: '', password: '', fullName: '', veganStatus: '');
+  const CreateUserAccountParams.empty()
+      : this(
+          email: '',
+          password: '',
+          fullName: '',
+          veganStatus: '',
+        );
 
   final String email;
   final String password;

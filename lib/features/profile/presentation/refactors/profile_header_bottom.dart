@@ -47,7 +47,7 @@ class ProfileHeaderBottom extends StatelessWidget {
                           user.veganStatus!,
                           style: TextStyle(
                             fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                             color: user.veganStatus?.toLowerCase() == 'vegan'
                                 ? Colors.green
                                 : user.veganStatus?.toLowerCase() == 'vegetarian'
@@ -60,33 +60,26 @@ class ProfileHeaderBottom extends StatelessWidget {
                       ],
                     ),
                   ),
-                SectionHeader(
-                  sectionTitle: 'About Me',
-                  fontSize: 12.sp,
-                  seeAll: false,
-                  onSeeAll: () {},
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 5.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        user?.bio != null && user!.bio!.isNotEmpty ? user.bio! : 'Say something about yourself',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: user?.bio != null && user!.bio!.isNotEmpty ? null : Colors.grey.shade400,
+                if (user?.bio != null && user!.bio!.isNotEmpty) ...[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          user.bio!,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                ],
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -102,7 +95,7 @@ class ProfileHeaderBottom extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 25),
               ],
             ),
           ),

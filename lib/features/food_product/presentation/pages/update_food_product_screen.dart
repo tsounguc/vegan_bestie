@@ -40,7 +40,6 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
   File? pickedImage;
 
   Future<void> showProductImagePickerOptions(BuildContext context) async {
-    Navigator.of(context).pop();
     final image = await CoreUtils.pickImageFromGallery();
 
     setState(() {
@@ -51,11 +50,10 @@ class _UpdateFoodProductScreenState extends State<UpdateFoodProductScreen> {
   Future<void> showIngredientsImagePickerOptions(BuildContext context) async {
     File? pickedIngredientsImage = await CoreUtils.pickImageFromGallery();
     if (context.mounted) {
-      Navigator.of(context).pop();
       if (pickedIngredientsImage != null) {
         await BlocProvider.of<FoodProductCubit>(
           context,
-        ).readIngredientsFromImage(pickedIngredientsImage!);
+        ).readIngredientsFromImage(pickedIngredientsImage);
       }
     }
   }

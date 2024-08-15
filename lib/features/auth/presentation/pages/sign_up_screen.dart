@@ -35,6 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void dispose() {
     emailController.dispose();
     fullNameController.dispose();
+    veganStatusController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
     super.dispose();
@@ -44,6 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     FocusManager.instance.primaryFocus?.unfocus();
     FirebaseAuth.instance.currentUser?.reload();
     if (formKey.currentState!.validate()) {
+      debugPrint('vegan status : ${veganStatusController.text.trim()}');
       context.read<AuthBloc>().add(
             CreateUserAccountEvent(
               email: emailController.text.trim(),

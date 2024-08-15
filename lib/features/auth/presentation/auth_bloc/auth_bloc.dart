@@ -79,6 +79,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(const AuthLoading());
+    debugPrint('AuthBloc vegan status : ${event.veganStatus}');
     final result = await _createUserAccount(
       CreateUserAccountParams(
         email: event.email,
