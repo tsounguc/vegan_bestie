@@ -56,61 +56,10 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
   File? pickedImage;
 
   Future<void> showRestaurantThumbnailPickerOptions(BuildContext context) async {
-    await showModalBottomSheet<void>(
-      context: context,
-      builder: (context) {
-        return Wrap(
-          children: [
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 35,
-                vertical: 10,
-              ),
-              leading: const Icon(Icons.camera_alt_outlined),
-              title: Text(
-                'Camera',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-              ),
-              onTap: () async {
-                Navigator.of(context).pop();
-                final image = await CoreUtils.getImageFromCamera();
-
-                setState(() {
-                  pickedImage = image;
-                });
-              },
-            ),
-            SizedBox(
-              child: Divider(
-                color: Colors.grey.shade300,
-              ),
-            ),
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 35,
-                vertical: 10,
-              ),
-              leading: const Icon(
-                Icons.image_outlined,
-              ),
-              title: Text(
-                'Gallery',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              onTap: () async {
-                final image = await CoreUtils.pickImageFromGallery();
-                setState(() {
-                  pickedImage = image;
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
+    final image = await CoreUtils.getImageFromCamera();
+    setState(() {
+      pickedImage = image;
+    });
   }
 
   bool get restaurantNameChanged => widget.restaurant!.name != restaurantNameController.text.trim();
@@ -158,21 +107,21 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
 
   bool get nothingChanged =>
       !restaurantNameChanged &&
-          !streetAddressChanged &&
-          !cityChanged &&
-          !stateChanged &&
-          !zipcodeChanged &&
-          !phoneNumberChanged &&
-          !descriptionChanged &&
-          !veganStatusChanged &&
-          !hasVeganOptionsChanged &&
-          !takeoutChanged &&
-          !dineInChanged &&
-          !deliveryChanged &&
-          !priceRangeChanged &&
-          !imageChanged &&
-          !openHoursChanged &&
-          !websiteChanged;
+      !streetAddressChanged &&
+      !cityChanged &&
+      !stateChanged &&
+      !zipcodeChanged &&
+      !phoneNumberChanged &&
+      !descriptionChanged &&
+      !veganStatusChanged &&
+      !hasVeganOptionsChanged &&
+      !takeoutChanged &&
+      !dineInChanged &&
+      !deliveryChanged &&
+      !priceRangeChanged &&
+      !imageChanged &&
+      !openHoursChanged &&
+      !websiteChanged;
 
   @override
   void initState() {
@@ -427,19 +376,19 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                             ),
                             child: pickedImage != null
                                 ? Image.file(
-                              pickedImage!,
-                              fit: BoxFit.contain,
-                            )
+                                    pickedImage!,
+                                    fit: BoxFit.contain,
+                                  )
                                 : widget.restaurant?.thumbnail != null && widget.restaurant!.thumbnail!.isNotEmpty
-                                ? Image.network(
-                              widget.restaurant!.thumbnail!,
-                              fit: BoxFit.contain,
-                            )
-                                : Icon(
-                              Icons.image_outlined,
-                              color: Colors.grey.shade500,
-                              size: 175,
-                            ),
+                                    ? Image.network(
+                                        widget.restaurant!.thumbnail!,
+                                        fit: BoxFit.contain,
+                                      )
+                                    : Icon(
+                                        Icons.image_outlined,
+                                        color: Colors.grey.shade500,
+                                        size: 175,
+                                      ),
                           ),
                           Positioned(
                             child: Container(
@@ -458,8 +407,8 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                             },
                             icon: Icon(
                               (pickedImage != null ||
-                                  (widget.restaurant?.thumbnail != null &&
-                                      widget.restaurant!.thumbnail!.isNotEmpty))
+                                      (widget.restaurant?.thumbnail != null &&
+                                          widget.restaurant!.thumbnail!.isNotEmpty))
                                   ? Icons.edit
                                   : Icons.add_a_photo,
                               color: Colors.white,
@@ -685,29 +634,25 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                       for (final openDay in openDaysList) {
                         for (final periodItem in openDay.periodItems) {
                           periodItem.openTextEditingController.addListener(
-                                () => refresh(() {}),
+                            () => refresh(() {}),
                           );
                           periodItem.closeTextEditingController.addListener(
-                                () => refresh(() {}),
+                            () => refresh(() {}),
                           );
                         }
                       }
                       return state is UpdatingRestaurant
                           ? const Center(child: CircularProgressIndicator())
                           : LongButton(
-                        onPressed: nothingChanged ? null : () => submitChanges(context),
-                        label: 'Submit',
-                        backgroundColor: nothingChanged
-                            ? Colors.grey
-                            : Theme
-                            .of(
-                          context,
-                        )
-                            .buttonTheme
-                            .colorScheme
-                            ?.primary,
-                        textColor: Colors.white,
-                      );
+                              onPressed: nothingChanged ? null : () => submitChanges(context),
+                              label: 'Submit',
+                              backgroundColor: nothingChanged
+                                  ? Colors.grey
+                                  : Theme.of(
+                                      context,
+                                    ).buttonTheme.colorScheme?.primary,
+                              textColor: Colors.white,
+                            );
                     },
                   ),
                 ],
