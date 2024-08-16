@@ -228,9 +228,7 @@ class AddRestaurantForm extends StatelessWidget {
             iconColor: context.theme.iconTheme.color,
             collapsedIconColor: context.theme.iconTheme.color,
             title: Text(
-              phoneNumberController.text.isNotEmpty
-                  ? phoneNumberController.text
-                  : 'Phone Number and Website (Optional)',
+              'Phone Number and Website (Optional)',
               style: TextStyle(
                 color: context.theme.textTheme.bodyMedium?.color,
                 fontSize: 14.sp,

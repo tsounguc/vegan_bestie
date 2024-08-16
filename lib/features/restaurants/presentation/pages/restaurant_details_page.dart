@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,16 +8,13 @@ import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/expandable_text.dart';
 import 'package:sheveegan/core/common/widgets/popup_item.dart';
 import 'package:sheveegan/core/common/widgets/restaurant_vegan_status_text.dart';
-import 'package:sheveegan/core/common/widgets/section_header.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
-import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/dashboard/presentation/utils/dashboard_utils.dart';
-import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/custom_page_view.dart';
@@ -27,7 +22,6 @@ import 'package:sheveegan/features/restaurants/presentation/pages/componets/dine
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/is_open_now.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/rating_and_reviews_count.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/review_card.dart';
-import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_picture_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_review_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/update_restaurant_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
@@ -94,7 +88,7 @@ class RestaurantDetailsPage extends StatelessWidget {
     } else {
       CoreUtils.showSnackBar(
         context,
-        'No Website Found',
+        'No website found',
       );
     }
   }
@@ -113,13 +107,20 @@ class RestaurantDetailsPage extends StatelessWidget {
     }
   }
 
-  void callPhoneNumber() {
-    launchUrl(
-      Uri(
-        scheme: 'tel',
-        path: restaurant.phoneNumber,
-      ),
-    );
+  void callPhoneNumber(BuildContext context) {
+    if (restaurant.phoneNumber.isNotEmpty) {
+      launchUrl(
+        Uri(
+          scheme: 'tel',
+          path: restaurant.phoneNumber,
+        ),
+      );
+    } else {
+      CoreUtils.showSnackBar(
+        context,
+        'No phone number found',
+      );
+    }
   }
 
   double totalRestaurantRating(List<RestaurantReview> reviews) {
@@ -312,7 +313,16 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ),
                           PopupMenuItem<void>(
                             padding: popupMenuItemPadding,
-                            onTap: () => goToMap(appleUrl, googleUrl),
+                            onTap: () {
+                              if (formattedAddress.isNotEmpty) {
+                                goToMap(appleUrl, googleUrl);
+                              } else {
+                                CoreUtils.showSnackBar(
+                                  context,
+                                  'No address found',
+                                );
+                              }
+                            },
                             child: PopupItem(
                               title: 'Direction',
                               icon: Icon(
@@ -323,7 +333,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ),
                           PopupMenuItem<void>(
                             padding: popupMenuItemPadding,
-                            onTap: callPhoneNumber,
+                            onTap: () => callPhoneNumber(context),
                             child: PopupItem(
                               title: 'Call',
                               icon: Icon(
@@ -471,7 +481,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 children: [
                                   ElevatedButton(
                                     style: elevatedButtonStyle,
-                                    onPressed: callPhoneNumber,
+                                    onPressed: () => callPhoneNumber(context),
                                     child: Icon(
                                       Icons.call,
                                       color: context.theme.iconTheme.color,
@@ -498,7 +508,14 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   ElevatedButton(
                                     style: elevatedButtonStyle,
                                     onPressed: () {
-                                      goToMap(appleUrl, googleUrl);
+                                      if (formattedAddress.isNotEmpty) {
+                                        goToMap(appleUrl, googleUrl);
+                                      } else {
+                                        CoreUtils.showSnackBar(
+                                          context,
+                                          'No address found',
+                                        );
+                                      }
                                     },
                                     child: Icon(
                                       Icons.directions,
@@ -580,17 +597,17 @@ class RestaurantDetailsPage extends StatelessWidget {
                         // SizedBox(
                         //   height: MediaQuery.of(context).size.height * 0.035,
                         // ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 25,
-                          ).copyWith(bottom: 10),
-                          child: SectionHeader(
-                            sectionTitle: 'About Restaurant',
-                            seeAll: false,
-                            onSeeAll: () {},
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //     horizontal: 10,
+                        //     vertical: 25,
+                        //   ).copyWith(bottom: 10),
+                        //   child: SectionHeader(
+                        //     sectionTitle: 'About Restaurant',
+                        //     seeAll: false,
+                        //     onSeeAll: () {},
+                        //   ),
+                        // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(left: 20),
                           child: ExpandableText(

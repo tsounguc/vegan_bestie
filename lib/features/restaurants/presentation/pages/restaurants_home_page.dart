@@ -44,6 +44,7 @@ class RestaurantsHomePage extends StatelessWidget {
           if (locationChanged) {
             // store location loaded in provider variable ...
             context.restaurantsNearMeProvider.currentLocation = state.position;
+            context.restaurantsNearMeProvider.radius = context.currentUser?.isAdmin == true ? 5 : 10;
             debugPrint(
               'userCurrentLocation: ${state.position.latitude}'
               ' ${state.position.longitude}',
