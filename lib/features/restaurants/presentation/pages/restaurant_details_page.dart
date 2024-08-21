@@ -1,8 +1,10 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:sheveegan/core/common/app/providers/theme_inherited_widget.dart';
 import 'package:sheveegan/core/common/screens/webview/web_view_screen.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/expandable_text.dart';
@@ -138,9 +140,11 @@ class RestaurantDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ThemeSwitcher.of(context)!;
     final baseTextStyle = TextStyle(
       fontSize: 10.sp,
       fontWeight: FontWeight.w500,
+      color: true == themeMode.isDarkModeOn ? Colors.grey.shade300 : Colors.grey.shade700,
     );
     final elevatedButtonStyle = ButtonStyle(
       backgroundColor: MaterialStatePropertyAll(
@@ -383,7 +387,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   child: Text(
                                     restaurant.name.capitalizeFirstLetter(),
                                     style: baseTextStyle.copyWith(
-                                      color: context.theme.textTheme.bodyMedium?.color,
+                                      color: true == themeMode.isDarkModeOn
+                                          ? Colors.grey.shade300
+                                          : context.theme.textTheme.bodyMedium?.color,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16.sp,
                                     ),
@@ -425,7 +431,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                                             child: Text(
                                               '${restaurant.streetAddress}, ${restaurant.city}, ${restaurant.state}',
                                               style: baseTextStyle.copyWith(
-                                                color: Colors.grey.shade700,
+                                                // color: true == themeMode.isDarkModeOn
+                                                //     ? Colors.grey.shade300
+                                                //     : Colors.grey.shade700,
                                                 fontSize: 10.sp,
                                               ),
                                             ),
@@ -602,21 +610,6 @@ class RestaurantDetailsPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        // SizedBox(
-                        //   height: MediaQuery.of(context).size.height * 0.035,
-                        // ),
-                        // Padding(
-                        //   padding: const EdgeInsets.symmetric(
-                        //     horizontal: 10,
-                        //     vertical: 15,
-                        //   ).copyWith(bottom: 10),
-                        //   child: SectionHeader(
-                        //     sectionTitle: 'About Restaurant',
-                        //     fontSize: 12.sp,
-                        //     seeAll: false,
-                        //     onSeeAll: () {},
-                        //   ),
-                        // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20)
                               .copyWith(left: 15, bottom: 0),
@@ -625,7 +618,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                             text: restaurant.description ?? restaurant.name.capitalizeFirstLetter(),
                             style: baseTextStyle.copyWith(
                               color: restaurant.description != null && restaurant.description!.isNotEmpty
-                                  ? Colors.grey.shade700
+                                  ? true == themeMode.isDarkModeOn
+                                      ? Colors.grey.shade300
+                                      : Colors.grey.shade700
                                   : Colors.grey.shade500,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.normal,

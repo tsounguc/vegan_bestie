@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/app/providers/theme_inherited_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 
 class SectionHeader extends StatelessWidget {
@@ -18,6 +19,7 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ThemeSwitcher.of(context)!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -26,7 +28,7 @@ class SectionHeader extends StatelessWidget {
           style: TextStyle(
             fontSize: fontSize ?? 14.sp,
             fontWeight: FontWeight.w600,
-            // color: Colors.grey.shade800,
+            // color: true == themeMode.isDarkModeOn ? Colors.white : Colors.grey.shade800,
           ),
         ),
         if (seeAll)

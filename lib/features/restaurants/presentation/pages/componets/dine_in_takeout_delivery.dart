@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/app/providers/theme_inherited_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 
 class DineInTakeoutDeliveryWidget extends StatelessWidget {
@@ -16,6 +17,7 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ThemeSwitcher.of(context)!;
     return Row(
       children: [
         Visibility(
@@ -27,13 +29,13 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
                 SizedBox(
                   height: 15,
                   child: VerticalDivider(
-                    color: Colors.grey.shade700,
+                    color: context.theme.iconTheme.color,
                     width: 15,
                   ),
                 ),
                 Icon(
                   Icons.restaurant,
-                  color: Colors.grey.shade700,
+                  color: context.theme.iconTheme.color,
                   size: 12,
                 ),
                 SizedBox(width: 3.w),
@@ -41,10 +43,9 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
                   child: Text(
                     'Dine-in',
                     style: TextStyle(
-                      color: Colors.grey.shade700,
+                      color: context.theme.iconTheme.color,
                       fontSize: 10.sp,
                       fontWeight: FontWeight.w500,
-                      // overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
@@ -61,23 +62,22 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
                 SizedBox(
                   height: 15,
                   child: VerticalDivider(
-                    color: Colors.grey.shade700,
+                    color: context.theme.iconTheme.color,
                     width: 15,
                   ),
                 ),
                 Icon(
                   Icons.takeout_dining,
-                  color: Colors.grey.shade700,
+                  color: context.theme.iconTheme.color,
                   size: 12,
                 ),
                 const SizedBox(width: 5),
                 Text(
                   'Takeout',
                   style: TextStyle(
-                    color: Colors.grey.shade700,
+                    color: context.theme.iconTheme.color,
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
-                    // overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -93,23 +93,22 @@ class DineInTakeoutDeliveryWidget extends StatelessWidget {
                 SizedBox(
                   height: 15,
                   child: VerticalDivider(
-                    color: Colors.grey.shade700,
+                    color: context.theme.iconTheme.color,
                     width: 15,
                   ),
                 ),
                 Icon(
                   Icons.delivery_dining,
-                  color: Colors.grey.shade700,
+                  color: context.theme.iconTheme.color,
                   size: 14,
                 ),
                 const SizedBox(width: 5),
                 Text(
                   'Delivery',
                   style: TextStyle(
-                    color: Colors.grey.shade700,
+                    color: context.theme.iconTheme.color,
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
-                    // overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:sheveegan/core/common/app/providers/theme_inherited_widget.dart';
 import 'package:sheveegan/core/common/widgets/popup_item.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/date_time_extensions.dart';
@@ -43,6 +44,7 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ThemeSwitcher.of(context)!;
     var timestamp = review.createdAt.timeAgo;
     // DateFormat('MMM d, yyyy').format(review.createdAt.toLocal());
     if (review.updatedAt.toLocal().isAfter(review.createdAt.toLocal())) {
@@ -114,7 +116,7 @@ class ReviewCard extends StatelessWidget {
                           child: Text(
                             user?.name ?? 'Anonymous User',
                             style: TextStyle(
-                              // color: Colors.grey.shade800,
+                              // color: true == themeMode.isDarkModeOn ? Colors.grey.shade300 : Colors.grey.shade700,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w500,
                             ),
@@ -175,21 +177,15 @@ class ReviewCard extends StatelessWidget {
                       child: Text(
                         review.title.capitalizeFirstLetter(),
                         style: TextStyle(
-                          // color: Colors.grey.shade800,
+                          // color: true == themeMode.isDarkModeOn
+                          //     ? context.theme.textTheme.bodyMedium?.color
+                          //     : Colors.grey.shade700,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                     const SizedBox(height: 5),
-                    // Text(
-                    //   timestamp,
-                    //   style: TextStyle(
-                    //     color: context.theme.textTheme.bodySmall?.color,
-                    //     fontSize: 10.sp,
-                    //     fontWeight: FontWeight.normal,
-                    //   ),
-                    // ),
                   ],
                 ),
                 const SizedBox(height: 5),
@@ -209,7 +205,11 @@ class ReviewCard extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
                     review.text,
-                    style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.normal, color: Colors.grey.shade700),
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.normal,
+                      // color: true == themeMode.isDarkModeOn ? Colors.grey.shade300 : Colors.grey.shade700,
+                    ),
                   ),
                 ),
                 SizedBox(
