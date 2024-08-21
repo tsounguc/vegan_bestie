@@ -8,6 +8,7 @@ import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/expandable_text.dart';
 import 'package:sheveegan/core/common/widgets/popup_item.dart';
 import 'package:sheveegan/core/common/widgets/restaurant_vegan_status_text.dart';
+import 'package:sheveegan/core/common/widgets/section_header.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/resources/strings.dart';
@@ -422,8 +423,11 @@ class RestaurantDetailsPage extends StatelessWidget {
                                           SizedBox(
                                             width: context.width * 0.54,
                                             child: Text(
-                                              '${restaurant.streetAddress}, ${restaurant.city}',
-                                              style: baseTextStyle,
+                                              '${restaurant.streetAddress}, ${restaurant.city}, ${restaurant.state}',
+                                              style: baseTextStyle.copyWith(
+                                                color: Colors.grey.shade700,
+                                                fontSize: 10.sp,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -471,9 +475,13 @@ class RestaurantDetailsPage extends StatelessWidget {
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.015,
                         ),
-
                         Padding(
-                          padding: const EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 35),
+                          padding: const EdgeInsets.only(
+                            left: 5,
+                            right: 5,
+                            top: 15,
+                            bottom: 35,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -600,22 +608,24 @@ class RestaurantDetailsPage extends StatelessWidget {
                         // Padding(
                         //   padding: const EdgeInsets.symmetric(
                         //     horizontal: 10,
-                        //     vertical: 25,
+                        //     vertical: 15,
                         //   ).copyWith(bottom: 10),
                         //   child: SectionHeader(
                         //     sectionTitle: 'About Restaurant',
+                        //     fontSize: 12.sp,
                         //     seeAll: false,
                         //     onSeeAll: () {},
                         //   ),
                         // ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(left: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20)
+                              .copyWith(left: 15, bottom: 0),
                           child: ExpandableText(
                             context,
                             text: restaurant.description ?? restaurant.name.capitalizeFirstLetter(),
                             style: baseTextStyle.copyWith(
                               color: restaurant.description != null && restaurant.description!.isNotEmpty
-                                  ? context.theme.textTheme.titleSmall?.color
+                                  ? Colors.grey.shade700
                                   : Colors.grey.shade500,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.normal,
@@ -627,13 +637,11 @@ class RestaurantDetailsPage extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            'Reviews',
-                            style: baseTextStyle.copyWith(
-                              // color: Colors.grey.shade800,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14.sp,
-                            ),
+                          child: SectionHeader(
+                            sectionTitle: 'Reviews',
+                            fontSize: 12.sp,
+                            seeAll: false,
+                            onSeeAll: () {},
                           ),
                         ),
                         Padding(
@@ -646,7 +654,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                         const SizedBox(height: 15),
                         if (reviews.isEmpty)
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 35),
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 35),
                             child: SizedBox(
                               height: 150,
                               width: context.width * 0.75,
@@ -656,7 +664,7 @@ class RestaurantDetailsPage extends StatelessWidget {
                                 style: baseTextStyle.copyWith(
                                   color: Colors.grey.shade500,
                                   fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.normal,
                                 ),
                               ),
                             ),

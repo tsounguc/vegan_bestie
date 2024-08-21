@@ -82,15 +82,19 @@ class UpdateUserEvent extends AuthEvent {
 }
 
 class GetCurrentUserEvent extends AuthEvent {
-  const GetCurrentUserEvent({
-    required this.userId,
-  });
-
-  final String userId;
-
-  @override
-  List<Object?> get props => [userId];
+  const GetCurrentUserEvent();
 }
+
+// class GetCurrentUserEvent extends AuthEvent {
+//   const GetCurrentUserEvent({
+//     required this.userId,
+//   });
+//
+//   final String userId;
+//
+//   @override
+//   List<Object?> get props => [userId];
+// }
 
 class DeleteProfilePicEvent extends AuthEvent {
   const DeleteProfilePicEvent({this.user});

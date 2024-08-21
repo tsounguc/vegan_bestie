@@ -32,6 +32,8 @@ abstract class AuthRepository {
 
   ResultStream<UserEntity> getCurrentUser({required String userId});
 
+  ResultFuture<UserEntity> currentUser();
+
 // ResultFuture<UserEntity> signInWithGoogle();
 //
 // ResultFuture<UserEntity> signInWithFacebook();

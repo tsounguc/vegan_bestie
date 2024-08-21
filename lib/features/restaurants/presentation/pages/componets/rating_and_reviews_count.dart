@@ -38,9 +38,9 @@ class RatingAndReviewsCountWidget extends StatelessWidget {
             Text(
               '${rating.toStringAsPrecision(2)} out of 5',
               style: TextStyle(
-                color: context.theme.textTheme.titleSmall?.color,
-                fontSize: 11.sp,
-                fontWeight: FontWeight.normal,
+                color: Colors.grey.shade500,
+                fontSize: 10.sp,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
@@ -52,7 +52,7 @@ class RatingAndReviewsCountWidget extends StatelessWidget {
             '$reviewCount review'.pluralize(reviewCount, ending: 's'),
             style: TextStyle(
               color: Colors.grey.shade500,
-              fontSize: 11.sp,
+              fontSize: 10.sp,
               fontWeight: FontWeight.w500,
             ),
           ),

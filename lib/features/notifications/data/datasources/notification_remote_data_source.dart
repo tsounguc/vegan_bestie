@@ -108,7 +108,7 @@ class NotificationRemoteDatasourceImpl implements NotificationRemoteDatasource {
       debugPrintStack(stackTrace: stackTrace);
       return Stream.error(
         ServerException(
-          message: e.message ?? 'Unknow error occurred',
+          message: e.message ?? 'Unknown error occurred',
           statusCode: e.code,
         ),
       );
@@ -118,7 +118,7 @@ class NotificationRemoteDatasourceImpl implements NotificationRemoteDatasource {
       debugPrintStack(stackTrace: stackTrace);
       return Stream.error(
         const ServerException(
-          message: 'Issue fetching product',
+          message: 'Unknown error occurred',
           statusCode: '500',
         ),
       );
@@ -194,13 +194,13 @@ class NotificationRemoteDatasourceImpl implements NotificationRemoteDatasource {
       }
     } on FirebaseException catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
-      throw ServerException(message: e.message ?? 'Unknow error occurred', statusCode: e.code);
+      throw ServerException(message: e.message ?? 'Unknown error occurred', statusCode: e.code);
     } on ServerException {
       rethrow;
     } catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
       throw const ServerException(
-        message: 'Issue fetching product',
+        message: 'Unknown error occurred',
         statusCode: '500',
       );
     }

@@ -127,29 +127,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  void _getCurrentUserHandler(GetCurrentUserEvent event, Emitter<AuthState> emit) {
-    emit(const AuthLoading());
-    StreamSubscription<Either<Failure, UserEntity>>? subscription;
-    subscription = _getCurrentUser(event.userId).listen(
-      (result) {
-        result.fold(
-          (failure) {
-            debugPrint(failure.errorMessage);
-            emit(AuthError(message: failure.message));
-            subscription?.cancel();
-          },
-          (user) => emit(CurrentUserDataLoaded(currentUser: user)),
-        );
-      },
-      onError: (dynamic error) {
-        debugPrint(error.toString());
-        emit(AuthError(message: error.toString()));
-      },
-      onDone: () {
-        subscription?.cancel();
-      },
-    );
-  }
+  // void _getCurrentUserHandler(GetCurrentUserEvent event, Emitter<AuthState> emit) {
+  //   emit(const AuthLoading());
+  //   StreamSubscription<Either<Failure, UserEntity>>? subscription;
+  //   subscription = _getCurrentUser(event.userId).listen(
+  //     (result) {
+  //       result.fold(
+  //         (failure) {
+  //           debugPrint(failure.errorMessage);
+  //           emit(AuthError(message: failure.message));
+  //           subscription?.cancel();
+  //         },
+  //         (user) => emit(CurrentUserDataLoaded(currentUser: user)),
+  //       );
+  //     },
+  //     onError: (dynamic error) {
+  //       debugPrint(error.toString());
+  //       emit(AuthError(message: error.toString()));
+  //     },
+  //     onDone: () {
+  //       subscription?.cancel();
+  //     },
+  //   );
+  // }
 
   Future<void> _sendEmailHandler(
     SendEmailEvent event,
@@ -198,6 +198,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (success) {
         return emit(const AccountDeleted());
       },
+    );
+  }
+
+  FutureOr<void> _getCurrentUserHandler(
+    GetCurrentUserEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    final result = await _getCurrentUser();
+    result.fold(
+      (failure) => emit(
+        AuthError(message: failure.message),
+      ),
+      (user) => emit(
+        CurrentUserDataLoaded(currentUser: user),
+      ),
     );
   }
 }

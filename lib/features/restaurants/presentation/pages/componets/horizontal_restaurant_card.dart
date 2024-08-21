@@ -247,7 +247,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                       children: [
                         IsOpenNowWidget(
                           openHours: restaurant.openHours,
-                          fontSize: 10.sp,
+                          fontSize: 9.sp,
                         ),
                         RestaurantVeganStatusText(
                           isVegan: restaurant.veganStatus,

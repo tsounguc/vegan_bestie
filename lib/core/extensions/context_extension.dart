@@ -59,9 +59,9 @@ extension ContextExtension on BuildContext {
 
   SubmittedRestaurantsProvider get submittedRestaurantsProvider => read<SubmittedRestaurantsProvider>();
 
-  ThemeModeProvider get themeModeProvider => read<ThemeModeProvider>();
+  // ThemeModeProvider get themeModeProvider => read<ThemeModeProvider>();
 
-  ThemeMode get themeMode => themeModeProvider.themeMode;
+  // ThemeMode get themeMode => themeModeProvider.themeMode;
 
   TabNavigator get tabNavigator => read<TabNavigator>();
 

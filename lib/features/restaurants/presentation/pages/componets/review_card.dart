@@ -116,7 +116,7 @@ class ReviewCard extends StatelessWidget {
                             style: TextStyle(
                               // color: Colors.grey.shade800,
                               fontSize: 12.sp,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
@@ -177,7 +177,7 @@ class ReviewCard extends StatelessWidget {
                         style: TextStyle(
                           // color: Colors.grey.shade800,
                           fontSize: 12.sp,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
@@ -209,10 +209,7 @@ class ReviewCard extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
                     review.text,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.normal,
-                    ),
+                    style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.normal, color: Colors.grey.shade700),
                   ),
                 ),
                 SizedBox(

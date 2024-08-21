@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sheveegan/core/common/app/providers/theme_mode_provider.dart';
+import 'package:sheveegan/core/common/app/providers/theme_inherited_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 
 class DisplayScreen extends StatelessWidget {
@@ -10,83 +9,79 @@ class DisplayScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeModeProvider>(
-      builder: (
-        BuildContext context,
-        ThemeModeProvider provider,
-        Widget? child,
-      ) {
-        return Scaffold(
-          appBar: AppBar(title: const Text('Display')),
-          body: SafeArea(
-            child: ListView(
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 35).copyWith(
-                top: 15,
-              ),
-              children: [
-                Card(
-                  surfaceTintColor: Colors.white,
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 10,
-                    ),
-                    leading: Icon(
-                      Icons.phone_android,
-                      color: context.theme.iconTheme.color,
-                    ),
-                    title: Text(
-                      'Use Device Settings',
-                      style: context.theme.textTheme.titleMedium,
-                    ),
-                    trailing: Switch(
-                      value: provider.useDeviceSettings,
-                      thumbColor: MaterialStatePropertyAll(context.theme.primaryColor),
-                      activeColor: Colors.green.shade400,
-                      inactiveTrackColor: Colors.grey.shade300,
-                      onChanged: (bool value) async {
-                        provider.useDeviceSettings = value;
-                        if (!value) {
-                          provider.isDarkMode = await provider.prefs.getDarkTheme();
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                Card(
-                  surfaceTintColor: Colors.white,
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 10,
-                    ),
-                    leading: Icon(
-                      provider.themeMode == ThemeMode.dark ? Icons.dark_mode : Icons.light_mode,
-                      color: provider.themeMode == ThemeMode.light ? Colors.yellow : context.theme.iconTheme.color,
-                    ),
-                    title: Text(
-                      provider.themeMode == ThemeMode.dark ? 'DarkMode' : 'LightMode',
-                      style: context.theme.textTheme.titleMedium,
-                    ),
-                    trailing: Switch(
-                      value: !provider.useDeviceSettings && provider.isDarkMode,
-                      thumbColor: MaterialStatePropertyAll(context.theme.primaryColor),
-                      activeColor: Colors.green.shade400,
-                      inactiveTrackColor: Colors.grey.shade300,
-                      onChanged: (bool value) {
-                        if (!provider.useDeviceSettings) {
-                          provider.isDarkMode = value;
-                        }
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
+    final themeSwitcher = ThemeSwitcher.of(context)!;
+    return Scaffold(
+      appBar: AppBar(title: const Text('Display')),
+      body: SafeArea(
+        child: ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 35).copyWith(
+            top: 15,
           ),
-        );
-      },
+          children: [
+            Card(
+              surfaceTintColor: Colors.white,
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 10,
+                ),
+                leading: Icon(
+                  Icons.phone_android,
+                  color: context.theme.iconTheme.color,
+                ),
+                title: Text(
+                  'Use Device Settings',
+                  style: context.theme.textTheme.titleMedium,
+                ),
+                trailing: Switch(
+                  value: themeSwitcher.useDeviceSettings ?? false,
+                  thumbColor: MaterialStatePropertyAll(context.theme.primaryColor),
+                  activeColor: Colors.green.shade400,
+                  inactiveTrackColor: Colors.grey.shade300,
+                  onChanged: (bool value) async {
+                    themeSwitcher.switchUseDeviceSettings(value: value);
+                    if (!value) {
+                      final darkThemePrefs = await themeSwitcher.prefs.getDarkTheme();
+                      themeSwitcher.switchDarkMode(value: darkThemePrefs);
+                    }
+                  },
+                ),
+              ),
+            ),
+            Card(
+              surfaceTintColor: Colors.white,
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 10,
+                ),
+                leading: Icon(
+                  themeSwitcher.themeMode == ThemeMode.dark ? Icons.dark_mode : Icons.light_mode,
+                  color:
+                      themeSwitcher.themeMode == ThemeMode.light ? Colors.yellow : context.theme.iconTheme.color,
+                ),
+                title: Text(
+                  themeSwitcher.themeMode == ThemeMode.dark ? 'DarkMode' : 'LightMode',
+                  style: context.theme.textTheme.titleMedium,
+                ),
+                trailing: Switch(
+                  value: false == themeSwitcher.useDeviceSettings && true == themeSwitcher.isDarkModeOn,
+                  thumbColor: MaterialStatePropertyAll(context.theme.primaryColor),
+                  activeColor: Colors.green.shade400,
+                  inactiveTrackColor: Colors.grey.shade300,
+                  onChanged: (bool value) {
+                    if (false == themeSwitcher.useDeviceSettings) {
+                      themeSwitcher.switchDarkMode(value: value);
+                      // serviceLocator<AuthBloc>().add(const GetCurrentUserEvent());
+                    }
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -11,24 +11,38 @@ class AppRouter {
             if (serviceLocator<FirebaseAuth>().currentUser != null) {
               // get user info from firebase
               final user = serviceLocator<FirebaseAuth>().currentUser!;
-
+              final currentUser = context.currentUser;
               // create userModel with user info
               final userModel = UserModel(
                 uid: user.uid,
                 email: user.email ?? '',
                 name: user.displayName ?? '',
+                photoUrl: user.photoURL,
+              ).copyWith(
+                bio: currentUser?.bio,
+                veganStatus: currentUser?.veganStatus,
+                savedProductsBarcodes: currentUser?.savedProductsBarcodes,
+                savedRestaurantsIds: currentUser?.savedRestaurantsIds,
               );
+              print('AppRouter: $userModel');
+
               // store user model in user provider
               context.userProvider.initUser(userModel);
 
-              return MultiBlocProvider(providers: [
-                BlocProvider(
-                  create: (_) => serviceLocator<RestaurantsCubit>(),
-                ),
-                BlocProvider(
-                  create: (_) => serviceLocator<FoodProductCubit>(),
-                ),
-              ], child: const Dashboard());
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (_) => serviceLocator<RestaurantsCubit>(),
+                  ),
+                  BlocProvider(
+                    create: (_) => serviceLocator<FoodProductCubit>(),
+                  ),
+                  BlocProvider.value(
+                    value: serviceLocator<AuthBloc>(),
+                  ),
+                ],
+                child: const Dashboard(),
+              );
             } else {
               return BlocProvider(
                 create: (_) => serviceLocator<AuthBloc>(),

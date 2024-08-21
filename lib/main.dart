@@ -1,5 +1,6 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,13 @@ import 'package:sheveegan/core/common/app/providers/restaurants_near_me_provider
 import 'package:sheveegan/core/common/app/providers/saved_products_provider.dart';
 import 'package:sheveegan/core/common/app/providers/saved_restaurants_provider.dart';
 import 'package:sheveegan/core/common/app/providers/submitted_restaurants_provider.dart';
-import 'package:sheveegan/core/common/app/providers/theme_mode_provider.dart';
+import 'package:sheveegan/core/common/app/providers/theme_inherited_widget.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
+import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/dashboard/presentation/providers/bottom_navigation_bar_provider.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 
@@ -50,9 +53,33 @@ void main() async {
   runApp(
     DevicePreview(
       enabled: false,
-      builder: (BuildContext context) => MyApp(
-        useDeviceSettings: useDeviceSettings,
-        isDarkMode: isDarkMode,
+      builder: (BuildContext context) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(
+            value: NotificationsNotifier(serviceLocator<SharedPreferences>()),
+          ),
+          ChangeNotifierProvider.value(value: UserProvider()),
+          ChangeNotifierProvider.value(value: SavedProductsProvider()),
+          ChangeNotifierProvider.value(value: SavedRestaurantsProvider()),
+          ChangeNotifierProvider.value(value: BottomNavigationBarProvider()),
+          ChangeNotifierProvider.value(value: FoodProductReportsProvider()),
+          ChangeNotifierProvider.value(value: RestaurantsNearMeProvider()),
+          ChangeNotifierProvider.value(value: SubmittedRestaurantsProvider()),
+          // ChangeNotifierProvider.value(
+          //   value: ThemeModeProvider(
+          //     useDeviceSettings: useDeviceSettings,
+          //     isDarkMode: isDarkMode,
+          //   ),
+          // ),
+        ],
+        child: ThemeSwitcherWidget(
+          initialDeviceSettings: useDeviceSettings,
+          initialDarkModeOn: isDarkMode,
+          child: MyApp(
+            useDeviceSettings: useDeviceSettings,
+            isDarkMode: isDarkMode,
+          ),
+        ),
       ),
     ),
   );
@@ -70,41 +97,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(
-          value: NotificationsNotifier(serviceLocator<SharedPreferences>()),
-        ),
-        ChangeNotifierProvider.value(value: UserProvider()),
-        ChangeNotifierProvider.value(value: SavedProductsProvider()),
-        ChangeNotifierProvider.value(value: SavedRestaurantsProvider()),
-        ChangeNotifierProvider.value(value: BottomNavigationBarProvider()),
-        ChangeNotifierProvider.value(value: FoodProductReportsProvider()),
-        ChangeNotifierProvider.value(value: RestaurantsNearMeProvider()),
-        ChangeNotifierProvider.value(value: SubmittedRestaurantsProvider()),
-        ChangeNotifierProvider.value(
-          value: ThemeModeProvider(
-            useDeviceSettings: useDeviceSettings,
-            isDarkMode: isDarkMode,
-          ),
-        ),
-      ],
-      child: ScreenUtilInit(
-        builder: (context, child) => Consumer<ThemeModeProvider>(
-          builder: (_, provider, __) {
-            return MaterialApp(
-              builder: DevicePreview.appBuilder,
-              locale: DevicePreview.locale(context),
-              debugShowCheckedModeBanner: false,
-              title: Strings.appTitle,
-              theme: AppTheme.lightTheme,
-              darkTheme: AppTheme.darkTheme,
-              themeMode: provider.themeMode,
-              onGenerateRoute: AppRouter.onGenerateRoute,
-            );
-          },
-        ),
-      ),
+    return ScreenUtilInit(
+      builder: (context, child) {
+        return MaterialApp(
+          builder: DevicePreview.appBuilder,
+          locale: DevicePreview.locale(context),
+          debugShowCheckedModeBanner: false,
+          title: Strings.appTitle,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeSwitcher.of(context)?.themeMode,
+          onGenerateRoute: AppRouter.onGenerateRoute,
+        );
+      },
+      // ),
+      // ),
     );
   }
 }

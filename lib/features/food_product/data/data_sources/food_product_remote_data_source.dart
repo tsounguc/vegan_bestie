@@ -117,7 +117,7 @@ class FoodProductRemoteDataSourceImpl implements FoodProductRemoteDataSource {
       rethrow;
     } catch (e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
-      throw const FetchProductException(message: 'Issue fetching product', statusCode: 500);
+      throw const FetchProductException(message: 'Issue fetching products in saved list', statusCode: 500);
     }
   }
 

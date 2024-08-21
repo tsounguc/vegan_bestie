@@ -19,7 +19,7 @@ class CustomImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height ?? MediaQuery.of(context).size.height * 0.43,
-      width: width ?? MediaQuery.of(context).size.width * 0.80,
+      width: width ?? MediaQuery.of(context).size.width * 0.85,
       decoration: const BoxDecoration(
         color: Colors.grey,
         // gradient:

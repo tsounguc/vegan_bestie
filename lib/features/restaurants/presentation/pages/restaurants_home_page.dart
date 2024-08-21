@@ -44,7 +44,7 @@ class RestaurantsHomePage extends StatelessWidget {
           if (locationChanged) {
             // store location loaded in provider variable ...
             context.restaurantsNearMeProvider.currentLocation = state.position;
-            context.restaurantsNearMeProvider.radius = context.currentUser?.isAdmin == true ? 5 : 10;
+            context.restaurantsNearMeProvider.radius = context.currentUser?.isAdmin == true ? 10 : 5;
             debugPrint(
               'userCurrentLocation: ${state.position.latitude}'
               ' ${state.position.longitude}',
@@ -76,7 +76,10 @@ class RestaurantsHomePage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is RestaurantsError) {
+        if (state is LoadingRestaurants || state is LoadingMarkers) {
+          currentPage = const LoadingPage();
+          return LoadingPage();
+        } else if (state is RestaurantsError) {
           currentPage = ErrorPage(error: state.message);
           return ErrorPage(error: state.message);
         } else if (state is MarkersLoaded) {

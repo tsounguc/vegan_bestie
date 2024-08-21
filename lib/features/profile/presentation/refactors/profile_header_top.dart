@@ -1,15 +1,14 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:sheveegan/core/common/app/providers/theme_inherited_widget.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/common/widgets/popup_item.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
-import 'package:sheveegan/core/resources/media_resources.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 import 'package:sheveegan/features/food_product/presentation/pages/add_food_product_screen.dart';
@@ -195,7 +194,9 @@ class ProfileHeaderTop extends StatelessWidget {
                           title: 'Logout',
                           icon: Icon(
                             Icons.logout,
-                            color: context.themeMode == ThemeMode.dark ? Colors.grey.shade700 : Colors.black,
+                            color: ThemeSwitcher.of(context)?.themeMode == ThemeMode.dark
+                                ? Colors.grey.shade700
+                                : Colors.black,
                           ),
                         ),
                       ),

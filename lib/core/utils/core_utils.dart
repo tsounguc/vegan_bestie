@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:sheveegan/core/common/widgets/enter_password_dialog.dart';
-import 'package:sheveegan/core/common/widgets/i_field.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
@@ -264,8 +263,8 @@ class CoreUtils {
         if (daysOfTheWeek[period.open.day] == todaysWeekDay) {
           from = period.open.time;
           final fromSplit = from.split(':');
-          final fromHour = int.tryParse(fromSplit[0]) ?? -1;
-          final fromMinutes = int.tryParse(fromSplit[1]) ?? -1;
+          final fromHour = from.isEmpty ? -1 : int.tryParse(fromSplit[0]) ?? -1;
+          final fromMinutes = from.isEmpty ? -1 : int.tryParse(fromSplit[1]) ?? -1;
           var fromTime = DateTime(
             today.year,
             today.month,
@@ -275,8 +274,8 @@ class CoreUtils {
           );
 
           to = period.close.time;
-          final toHour = int.tryParse(to.split(':')[0]) ?? -1;
-          final toMinutes = int.tryParse(to.split(':')[1]) ?? -1;
+          final toHour = to.isEmpty ? -1 : int.tryParse(to.split(':')[0]) ?? -1;
+          final toMinutes = to.isEmpty ? -1 : int.tryParse(to.split(':')[1]) ?? -1;
           var toTime = DateTime(
             today.year,
             today.month,
@@ -286,7 +285,7 @@ class CoreUtils {
           );
 
           if (fromHour == -1 || fromMinutes == -1 || toHour == -1 || toMinutes == -1) {
-            status = '';
+            status = 'Closed';
           } else {
             if (toTime.isBefore(fromTime)) {
               if (today.isBefore(fromTime) && today.hour > 12) {

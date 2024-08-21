@@ -45,7 +45,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "com.christiantsoungui.veganbestie"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
     buildToolsVersion '34.0.0'
 //

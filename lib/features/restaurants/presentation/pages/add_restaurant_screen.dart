@@ -367,7 +367,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                       phoneNumberController.addListener(() => refresh(() {}));
                       websiteController.addListener(() => refresh(() {}));
                       descriptionController.addListener(() => refresh(() {}));
-                      return state is AddingRestaurant
+                      return state is AddingRestaurant || state is SubmittingRestaurant
                           ? const Center(child: CircularProgressIndicator())
                           : LongButton(
                               onPressed: !canSubmit

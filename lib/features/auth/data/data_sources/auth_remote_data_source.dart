@@ -42,7 +42,8 @@ abstract class AuthRemoteDataSource {
 //
 //
 //
-// Future<UserModel> currentUser();
+  Future<UserModel> currentUser();
+
 //
 // Future<void> signOut();
 
@@ -354,6 +355,30 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw UpdateUserDataException(
+        message: e.toString(),
+        statusCode: '505',
+      );
+    }
+  }
+
+  @override
+  Future<UserModel> currentUser() async {
+    try {
+      final currentUser = _authClient.currentUser;
+      await currentUser?.reload();
+      final userData = await _getUserData(currentUser?.uid ?? '');
+      return UserModel.fromMap(userData.data()!);
+    } on FirebaseAuthException catch (e) {
+      var errorMessage = e.message ?? 'An error occurred. Please try again';
+      throw ServerException(
+        message: errorMessage,
+        statusCode: e.code,
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      throw ServerException(
         message: e.toString(),
         statusCode: '505',
       );

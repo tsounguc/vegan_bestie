@@ -121,20 +121,30 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   ResultStream<UserEntity> getCurrentUser({required String userId}) {
     return _remoteDataSource.getCurrentUser(userId: userId).transform(
-          StreamTransformer<UserModel, Either<Failure, UserEntity>>.fromHandlers(
-            handleData: (user, sink) {
-              sink.add(Right(user));
-            },
-            handleError: (error, stackTrace, sink) {
-              debugPrintStack(stackTrace: stackTrace);
-              if (error is ServerException) {
-                sink.add(Left(ServerFailure.fromException(error)));
-              } else {
-                sink.add(Left(ServerFailure(message: error.toString(), statusCode: 505)));
-              }
-            },
-          ),
-        );
+      StreamTransformer<UserModel, Either<Failure, UserEntity>>.fromHandlers(
+        handleData: (user, sink) {
+          sink.add(Right(user));
+        },
+        handleError: (error, stackTrace, sink) {
+          debugPrintStack(stackTrace: stackTrace);
+          if (error is ServerException) {
+            sink.add(Left(ServerFailure.fromException(error)));
+          } else {
+            sink.add(Left(ServerFailure(message: error.toString(), statusCode: 505)));
+          }
+        },
+      ),
+    );
+  }
+
+  @override
+  ResultFuture<UserEntity> currentUser() async {
+    try {
+      final currentUser = await _remoteDataSource.currentUser();
+      return Right(currentUser);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message, statusCode: 500));
+    }
   }
 
 // @override
@@ -169,17 +179,7 @@ class AuthRepositoryImpl implements AuthRepository {
 //   }
 // }
 //
-// @override
-// ResultFuture<UserEntity> currentUser() async {
-//   try {
-//     final currentUserModel = await _remoteDataSource.currentUser();
-//     final mapper = UserMapper();
-//     final currentUserEntity = mapper.mapToEntity(currentUserModel);
-//     return Right(currentUserEntity);
-//   } on CurrentUserException catch (e) {
-//     return Left(CurrentUserFailure(message: e.message, statusCode: 500));
-//   }
-// }
+//
 //
 // @override
 // ResultVoid signOut() async {
