@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
-import 'package:sheveegan/core/resources/media_resources.dart';
 import 'package:sheveegan/core/utils/core_utils.dart';
 import 'package:sheveegan/features/auth/presentation/auth_bloc/auth_bloc.dart';
 
@@ -33,7 +32,7 @@ class ProfilePictureScreen extends StatelessWidget {
           elevation: 0,
           backgroundColor: Colors.transparent,
           surfaceTintColor: Colors.transparent,
-          leading: CustomBackButton(),
+          leading: const CustomBackButton(),
           centerTitle: true,
           actions: [
             if (user?.photoUrl != null && user!.photoUrl!.isNotEmpty)

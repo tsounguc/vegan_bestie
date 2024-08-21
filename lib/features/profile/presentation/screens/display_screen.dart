@@ -73,7 +73,6 @@ class DisplayScreen extends StatelessWidget {
                   onChanged: (bool value) {
                     if (false == themeSwitcher.useDeviceSettings) {
                       themeSwitcher.switchDarkMode(value: value);
-                      // serviceLocator<AuthBloc>().add(const GetCurrentUserEvent());
                     }
                   },
                 ),

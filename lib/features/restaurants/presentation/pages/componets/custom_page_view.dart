@@ -74,27 +74,10 @@ class _CustomPageViewState extends State<CustomPageView> {
           transform: matrix,
           child: GestureDetector(
             onTap: () {
-              final image = widget.restaurant.photos[position].isNotEmpty &&
-                      !widget.restaurant.photos[position].contains(
-                        '_empty.photo',
-                      )
-                  ? DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(
-                        widget.restaurant.photos[position],
-                      ),
-                    )
-                  : const DecorationImage(
-                      fit: BoxFit.contain,
-                      // colorFilter: ColorFilter.mode(Colors.grey, BlendMode.darken),
-                      image: AssetImage(MediaResources.tofu),
-                    );
-
               Navigator.of(context).pushNamed(
                 RestaurantPictureScreen.id,
                 arguments: RestaurantPictureScreenArguments(
                   widget.restaurant.photos[position],
-                  image,
                 ),
               );
             },

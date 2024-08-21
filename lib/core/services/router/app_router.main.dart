@@ -106,8 +106,19 @@ class AppRouter {
           (_) => BlocProvider(
             create: (_) => serviceLocator<AuthBloc>(),
             child: RestaurantPictureScreen(
-              image: args.image,
               tag: args.tag,
+            ),
+          ),
+          settings: settings,
+        );
+
+      case FoodProductImageScreen.id:
+        final args = settings.arguments as String?;
+        return _pageBuilder(
+          (_) => BlocProvider(
+            create: (_) => serviceLocator<AuthBloc>(),
+            child: FoodProductImageScreen(
+              imageUrl: args,
             ),
           ),
           settings: settings,
@@ -350,9 +361,7 @@ class UpdateRestaurantScreenArguments {
 class RestaurantPictureScreenArguments {
   const RestaurantPictureScreenArguments(
     this.tag,
-    this.image,
   );
 
-  final DecorationImage image;
   final String tag;
 }
