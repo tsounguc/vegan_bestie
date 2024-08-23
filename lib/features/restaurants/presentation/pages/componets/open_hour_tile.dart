@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/app/providers/theme_inherited_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/add_restaurant_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/period_widget.dart';
@@ -37,13 +38,19 @@ class _OpenHourTileState extends State<OpenHourTile> {
             // Checkbox
             Row(
               children: [
-                Checkbox(
-                  value: widget.value,
-                  tristate: true,
-                  fillColor: MaterialStatePropertyAll(widget.value
-                      ? context.theme.primaryColor
-                      : Colors.transparent),
-                  onChanged: widget.onChanged,
+                Theme(
+                  data: ThemeData.dark().copyWith(
+                    unselectedWidgetColor:
+                        true == ThemeSwitcher.of(context)?.isDarkModeOn ? Colors.white : Colors.black,
+                  ),
+                  child: Checkbox(
+                    value: widget.value,
+                    tristate: true,
+                    checkColor: Colors.white,
+                    fillColor:
+                        MaterialStatePropertyAll(widget.value ? context.theme.primaryColor : Colors.transparent),
+                    onChanged: widget.onChanged,
+                  ),
                 ),
                 Text(
                   widget.title,
@@ -72,23 +79,19 @@ class _OpenHourTileState extends State<OpenHourTile> {
                 else
                   for (int i = 0; i < widget.periodControllers.length; i++)
                     PeriodWidget(
-                      openTextEditingController:
-                          widget.periodControllers[i].openTextEditingController,
-                      closeTextEditingController: widget
-                          .periodControllers[i].closeTextEditingController,
+                      openTextEditingController: widget.periodControllers[i].openTextEditingController,
+                      closeTextEditingController: widget.periodControllers[i].closeTextEditingController,
                       onOpenTap: () async {
                         final time = await selectTime(context);
                         if (time != null) {
-                          widget.periodControllers[i].openTextEditingController
-                                  .text =
+                          widget.periodControllers[i].openTextEditingController.text =
                               '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
                         }
                       },
                       onCloseTap: () async {
                         final time = await selectTime(context);
                         if (time != null) {
-                          widget.periodControllers[i].closeTextEditingController
-                                  .text =
+                          widget.periodControllers[i].closeTextEditingController.text =
                               '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
                         }
                       },

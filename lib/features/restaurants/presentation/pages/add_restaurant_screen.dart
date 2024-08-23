@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/app/providers/theme_inherited_widget.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/common/widgets/custom_back_button.dart';
 import 'package:sheveegan/core/common/widgets/section_header.dart';
@@ -170,6 +171,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ThemeSwitcher.of(context)!;
     return BlocConsumer<RestaurantsCubit, RestaurantsState>(
       listener: (context, state) {
         if (state is RestaurantSubmitted) {
@@ -271,22 +273,29 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
                         itemCount: tddItems.length,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return CheckboxListTile(
-                            controlAffinity: ListTileControlAffinity.leading,
-                            title: Text(
-                              tddItems[index].title,
-                              style: TextStyle(
-                                color: context.theme.textTheme.bodyMedium?.color,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
+                          return Theme(
+                            data: ThemeData.dark().copyWith(
+                              unselectedWidgetColor: true == themeMode.isDarkModeOn ? Colors.white : Colors.black,
                             ),
-                            value: tddItems[index].isSelected,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                tddItems[index].isSelected = value!;
-                              });
-                            },
+                            child: CheckboxListTile(
+                              checkColor: Colors.white,
+                              activeColor: context.theme.primaryColor,
+                              controlAffinity: ListTileControlAffinity.leading,
+                              title: Text(
+                                tddItems[index].title,
+                                style: TextStyle(
+                                  color: context.theme.textTheme.bodyMedium?.color,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              value: tddItems[index].isSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  tddItems[index].isSelected = value!;
+                                });
+                              },
+                            ),
                           );
                         },
                       ),

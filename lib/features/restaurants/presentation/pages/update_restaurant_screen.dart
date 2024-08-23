@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/app/providers/theme_inherited_widget.dart';
 import 'package:sheveegan/core/common/widgets/buttons.dart';
 import 'package:sheveegan/core/common/widgets/section_header.dart';
 import 'package:sheveegan/core/enums/update_restaurant_info.dart';
@@ -321,6 +322,8 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ThemeSwitcher.of(context)!;
+
     return BlocConsumer<RestaurantsCubit, RestaurantsState>(
       listener: (context, state) {
         if (state is RestaurantUpdated) {
@@ -471,56 +474,77 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                           onSeeAll: () {},
                         ),
                       ),
-                      CheckboxListTile(
-                        controlAffinity: ListTileControlAffinity.leading,
-                        title: Text(
-                          'Takeout',
-                          style: TextStyle(
-                            color: context.theme.textTheme.bodyMedium?.color,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      Theme(
+                        data: ThemeData.dark().copyWith(
+                          unselectedWidgetColor: true == themeMode.isDarkModeOn ? Colors.white : Colors.black,
                         ),
-                        value: takeout,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            takeout = value;
-                          });
-                        },
+                        child: CheckboxListTile(
+                          checkColor: Colors.white,
+                          activeColor: context.theme.primaryColor,
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text(
+                            'Takeout',
+                            style: TextStyle(
+                              color: context.theme.textTheme.bodyMedium?.color,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          value: takeout,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              takeout = value;
+                            });
+                          },
+                        ),
                       ),
-                      CheckboxListTile(
-                        controlAffinity: ListTileControlAffinity.leading,
-                        title: Text(
-                          'DineIn',
-                          style: TextStyle(
-                            color: context.theme.textTheme.bodyMedium?.color,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      Theme(
+                        data: ThemeData.dark().copyWith(
+                          unselectedWidgetColor: true == themeMode.isDarkModeOn ? Colors.white : Colors.black,
                         ),
-                        value: dineIn,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            dineIn = value;
-                          });
-                        },
+                        child: CheckboxListTile(
+                          checkColor: Colors.white,
+                          activeColor: context.theme.primaryColor,
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text(
+                            'DineIn',
+                            style: TextStyle(
+                              color: context.theme.textTheme.bodyMedium?.color,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          value: dineIn,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              dineIn = value;
+                            });
+                          },
+                        ),
                       ),
-                      CheckboxListTile(
-                        controlAffinity: ListTileControlAffinity.leading,
-                        title: Text(
-                          'Delivery',
-                          style: TextStyle(
-                            color: context.theme.textTheme.bodyMedium?.color,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      Theme(
+                        data: ThemeData.dark().copyWith(
+                          unselectedWidgetColor: true == themeMode.isDarkModeOn ? Colors.white : Colors.black,
                         ),
-                        value: delivery,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            delivery = value;
-                          });
-                        },
+                        child: CheckboxListTile(
+                          checkColor: Colors.white,
+                          activeColor: context.theme.primaryColor,
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text(
+                            'Delivery',
+                            style: TextStyle(
+                              color: context.theme.textTheme.bodyMedium?.color,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          value: delivery,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              delivery = value;
+                            });
+                          },
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -535,23 +559,29 @@ class _UpdateRestaurantScreenState extends State<UpdateRestaurantScreen> {
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: priceRanges.length,
                         itemBuilder: (context, index) {
-                          return RadioListTile(
-                            contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                            title: Text(
-                              priceRanges[index].price,
-                              style: TextStyle(
-                                color: context.theme.textTheme.bodyMedium?.color,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.normal,
-                              ),
+                          return Theme(
+                            data: ThemeData.dark().copyWith(
+                              unselectedWidgetColor: true == themeMode.isDarkModeOn ? Colors.white : Colors.black,
                             ),
-                            value: priceRanges[index].price,
-                            groupValue: price,
-                            onChanged: (value) {
-                              setState(() {
-                                price = value;
-                              });
-                            },
+                            child: RadioListTile(
+                              activeColor: context.theme.primaryColor,
+                              contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                              title: Text(
+                                priceRanges[index].price,
+                                style: TextStyle(
+                                  color: context.theme.textTheme.bodyMedium?.color,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              value: priceRanges[index].price,
+                              groupValue: price,
+                              onChanged: (value) {
+                                setState(() {
+                                  price = value;
+                                });
+                              },
+                            ),
                           );
                         },
                       ),

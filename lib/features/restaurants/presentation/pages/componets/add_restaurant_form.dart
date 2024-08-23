@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheveegan/core/common/app/providers/theme_inherited_widget.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/add_restaurant_form_field.dart';
 
@@ -43,6 +44,7 @@ class AddRestaurantForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ThemeSwitcher.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -65,13 +67,14 @@ class AddRestaurantForm extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            subtitle: Theme(
-              data: context.theme.copyWith(
-                unselectedWidgetColor: context.theme.iconTheme.color,
-              ),
-              child: Column(
-                children: <Widget>[
-                  RadioListTile(
+            subtitle: Column(
+              children: <Widget>[
+                Theme(
+                  data: ThemeData.dark().copyWith(
+                    unselectedWidgetColor: true == themeMode.isDarkModeOn ? Colors.white : Colors.black,
+                  ),
+                  child: RadioListTile(
+                    activeColor: context.theme.primaryColor,
                     contentPadding: const EdgeInsets.symmetric(vertical: 10),
                     title: Text(
                       'Yes',
@@ -85,7 +88,13 @@ class AddRestaurantForm extends StatelessWidget {
                     groupValue: veganStatus,
                     onChanged: onChangedIsVeganYes,
                   ),
-                  RadioListTile(
+                ),
+                Theme(
+                  data: ThemeData.dark().copyWith(
+                    unselectedWidgetColor: true == themeMode.isDarkModeOn ? Colors.white : Colors.black,
+                  ),
+                  child: RadioListTile(
+                    activeColor: context.theme.primaryColor,
                     contentPadding: const EdgeInsets.symmetric(vertical: 10),
                     title: Text(
                       'No',
@@ -99,8 +108,8 @@ class AddRestaurantForm extends StatelessWidget {
                     groupValue: veganStatus,
                     onChanged: onChangedIsVeganNo,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             trailing: const SizedBox(),
             enabled: false,
@@ -116,33 +125,45 @@ class AddRestaurantForm extends StatelessWidget {
                 ),
                 subtitle: Column(
                   children: <Widget>[
-                    RadioListTile(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                      title: Text(
-                        'Yes',
-                        style: TextStyle(
-                          color: context.theme.textTheme.bodyMedium?.color,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.normal,
-                        ),
+                    Theme(
+                      data: ThemeData.dark().copyWith(
+                        unselectedWidgetColor: true == themeMode.isDarkModeOn ? Colors.white : Colors.black,
                       ),
-                      value: true,
-                      groupValue: hasVeganOptions,
-                      onChanged: onChangedHasVeganOptionsNo,
+                      child: RadioListTile(
+                        activeColor: context.theme.primaryColor,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                        title: Text(
+                          'Yes',
+                          style: TextStyle(
+                            color: context.theme.textTheme.bodyMedium?.color,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        value: true,
+                        groupValue: hasVeganOptions,
+                        onChanged: onChangedHasVeganOptionsNo,
+                      ),
                     ),
-                    RadioListTile(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                      title: Text(
-                        'No',
-                        style: TextStyle(
-                          color: context.theme.textTheme.bodyMedium?.color,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.normal,
-                        ),
+                    Theme(
+                      data: ThemeData.dark().copyWith(
+                        unselectedWidgetColor: true == themeMode.isDarkModeOn ? Colors.white : Colors.black,
                       ),
-                      value: false,
-                      groupValue: hasVeganOptions,
-                      onChanged: onChangedHasVeganOptionsNo,
+                      child: RadioListTile(
+                        activeColor: context.theme.primaryColor,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                        title: Text(
+                          'No',
+                          style: TextStyle(
+                            color: context.theme.textTheme.bodyMedium?.color,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        value: false,
+                        groupValue: hasVeganOptions,
+                        onChanged: onChangedHasVeganOptionsNo,
+                      ),
                     ),
                   ],
                 ),
