@@ -14,7 +14,7 @@ class RestaurantVeganStatusText extends StatelessWidget {
     return Text(
       isVegan == true ? 'Vegan' : 'Vegan Options',
       style: TextStyle(
-        color: isVegan == true ? Colors.green.shade300 : Colors.purple.shade300,
+        color: isVegan == true ? Colors.green : Colors.purple.shade300,
         fontSize: 11.sp,
       ),
     );

@@ -28,7 +28,9 @@ class ProfileHeaderTop extends StatelessWidget {
       builder: (context, provider, child) {
         final user = provider.user;
 
-        final image = user?.photoUrl == null || user!.photoUrl!.isEmpty ? null : provider.user!.photoUrl!;
+        final image = user?.photoUrl == null || user!.photoUrl!.isEmpty
+            ? null
+            : provider.user!.photoUrl!;
 
         return SliverAppBar(
           expandedHeight: context.height * 0.50,
@@ -175,9 +177,12 @@ class ProfileHeaderTop extends StatelessWidget {
                         onTap: () async {
                           final navigator = Navigator.of(context);
 
-                          context.savedProductsProvider.savedProductsList = null;
-                          context.savedRestaurantsProvider.savedRestaurantsList = null;
-                          context.restaurantsNearMeProvider.currentLocation = null;
+                          context.savedProductsProvider.savedProductsList =
+                              null;
+                          context.savedRestaurantsProvider
+                              .savedRestaurantsList = null;
+                          context.restaurantsNearMeProvider.currentLocation =
+                              null;
                           context.restaurantsNearMeProvider.markers = null;
                           context.restaurantsNearMeProvider.restaurants = null;
                           context.userProvider.user = null;
@@ -194,7 +199,8 @@ class ProfileHeaderTop extends StatelessWidget {
                           title: 'Logout',
                           icon: Icon(
                             Icons.logout,
-                            color: ThemeSwitcher.of(context)?.themeMode == ThemeMode.dark
+                            color: ThemeSwitcher.of(context)?.themeMode ==
+                                    ThemeMode.dark
                                 ? Colors.grey.shade700
                                 : Colors.black,
                           ),
@@ -211,7 +217,9 @@ class ProfileHeaderTop extends StatelessWidget {
             child: Container(
               width: double.maxFinite,
               margin: const EdgeInsets.symmetric(horizontal: 25),
-              padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 50),
+              padding: const EdgeInsets.symmetric(
+                vertical: 20,
+              ),
               decoration: BoxDecoration(
                 color: context.theme.cardTheme.color?.withOpacity(0.93),
                 border: const Border(

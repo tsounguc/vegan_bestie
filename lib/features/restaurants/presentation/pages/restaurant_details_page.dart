@@ -144,7 +144,9 @@ class RestaurantDetailsPage extends StatelessWidget {
     final baseTextStyle = TextStyle(
       fontSize: 10.sp,
       fontWeight: FontWeight.w500,
-      color: true == themeMode.isDarkModeOn ? Colors.grey.shade300 : Colors.grey.shade700,
+      color: true == themeMode.isDarkModeOn
+          ? Colors.grey.shade300
+          : context.theme.textTheme.bodyMedium?.color,
     );
     final elevatedButtonStyle = ButtonStyle(
       backgroundColor: MaterialStatePropertyAll(
@@ -180,7 +182,8 @@ class RestaurantDetailsPage extends StatelessWidget {
         '${restaurant.state} ${restaurant.zipCode}';
     final appleUrl = 'https://maps.apple.com/?q=${restaurant.name}'
         ' $formattedAddress';
-    final googleUrl = 'https://www.google.com/maps/search/?api=1&query=${restaurant.name}'
+    final googleUrl =
+        'https://www.google.com/maps/search/?api=1&query=${restaurant.name}'
         ' $formattedAddress';
 
     return StreamBuilder<UserModel>(
@@ -198,7 +201,9 @@ class RestaurantDetailsPage extends StatelessWidget {
         return StreamBuilder<List<RestaurantReview>>(
           stream: RestaurantsUtils.restaurantReviewsModel(restaurant.id),
           builder: (context, snapshot) {
-            final reviews = (snapshot.hasData ? snapshot.data! : <RestaurantReview>[])
+            final reviews = (snapshot.hasData
+                ? snapshot.data!
+                : <RestaurantReview>[])
               ..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
 
             return BlocListener<RestaurantsCubit, RestaurantsState>(
@@ -208,19 +213,24 @@ class RestaurantDetailsPage extends StatelessWidget {
                     context,
                     'Restaurant saved',
                   );
-                  final restaurantIds = context.userProvider.user?.savedRestaurantsIds ?? [];
-                  BlocProvider.of<RestaurantsCubit>(context).getSavedRestaurants(restaurantIds);
+                  final restaurantIds =
+                      context.userProvider.user?.savedRestaurantsIds ?? [];
+                  BlocProvider.of<RestaurantsCubit>(context)
+                      .getSavedRestaurants(restaurantIds);
                 }
                 if (state is RestaurantUnSaved) {
                   CoreUtils.showSnackBar(
                     context,
                     'Restaurant unsaved',
                   );
-                  final restaurantIds = context.userProvider.user?.savedRestaurantsIds ?? [];
-                  BlocProvider.of<RestaurantsCubit>(context).getSavedRestaurants(restaurantIds);
+                  final restaurantIds =
+                      context.userProvider.user?.savedRestaurantsIds ?? [];
+                  BlocProvider.of<RestaurantsCubit>(context)
+                      .getSavedRestaurants(restaurantIds);
                 }
                 if (state is SavedRestaurantsListFetched) {
-                  context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
+                  context.savedRestaurantsProvider.savedRestaurantsList =
+                      state.savedRestaurantsList;
                 }
               },
               child: Scaffold(
@@ -243,10 +253,13 @@ class RestaurantDetailsPage extends StatelessWidget {
                       ),
                       icon: Icon(
                         isSaved ? Icons.bookmark : Icons.bookmark_outline,
-                        color: isSaved ? Colors.amberAccent : context.theme.iconTheme.color?.withOpacity(0.5),
+                        color: isSaved
+                            ? Colors.amberAccent
+                            : context.theme.iconTheme.color?.withOpacity(0.5),
                       ),
-                      onPressed: () =>
-                          isSaved ? unSaveRestaurant(restaurant, context) : saveRestaurant(restaurant, context),
+                      onPressed: () => isSaved
+                          ? unSaveRestaurant(restaurant, context)
+                          : saveRestaurant(restaurant, context),
                     ),
                     PopupMenuButton(
                       icon: Icon(
@@ -289,7 +302,9 @@ class RestaurantDetailsPage extends StatelessWidget {
                             child: PopupItem(
                               title: isSaved ? 'Unsave' : 'Save',
                               icon: Icon(
-                                isSaved ? Icons.bookmark : Icons.bookmark_outline,
+                                isSaved
+                                    ? Icons.bookmark
+                                    : Icons.bookmark_outline,
                                 color: context.theme.iconTheme.color,
                               ),
                             ),
@@ -379,7 +394,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  width: MediaQuery.of(context).size.width * 0.65,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.65,
                                   padding: const EdgeInsets.only(
                                     left: 8,
                                     bottom: 8,
@@ -387,9 +403,6 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   child: Text(
                                     restaurant.name.capitalizeFirstLetter(),
                                     style: baseTextStyle.copyWith(
-                                      color: true == themeMode.isDarkModeOn
-                                          ? Colors.grey.shade300
-                                          : context.theme.textTheme.bodyMedium?.color,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16.sp,
                                     ),
@@ -414,9 +427,11 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   children: [
                                     // Address,
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 6, top: 5),
+                                      padding: const EdgeInsets.only(
+                                          left: 6, top: 5),
                                       child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           const Icon(
                                             Icons.location_on,
@@ -431,9 +446,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                                             child: Text(
                                               '${restaurant.streetAddress}, ${restaurant.city}, ${restaurant.state}',
                                               style: baseTextStyle.copyWith(
-                                                // color: true == themeMode.isDarkModeOn
-                                                //     ? Colors.grey.shade300
-                                                //     : Colors.grey.shade700,
+                                                color: context.theme.textTheme
+                                                    .bodyMedium?.color,
                                                 fontSize: 10.sp,
                                               ),
                                             ),
@@ -443,12 +457,16 @@ class RestaurantDetailsPage extends StatelessWidget {
                                     ),
 
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height * 0.0005,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.0005,
                                     ),
 
                                     // Dine-in/takeout/delivery
                                     Visibility(
-                                      visible: restaurant.dineIn || restaurant.takeout || restaurant.delivery,
+                                      visible: restaurant.dineIn ||
+                                          restaurant.takeout ||
+                                          restaurant.delivery,
                                       child: Padding(
                                         padding: const EdgeInsets.only(
                                           bottom: 5,
@@ -456,7 +474,10 @@ class RestaurantDetailsPage extends StatelessWidget {
                                           left: 5,
                                         ),
                                         child: SizedBox(
-                                          width: MediaQuery.of(context).size.width * 0.65,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.65,
                                           child: DineInTakeoutDeliveryWidget(
                                             dineIn: restaurant.dineIn,
                                             takeout: restaurant.takeout,
@@ -471,8 +492,11 @@ class RestaurantDetailsPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(right: 16, top: 5),
-                                      child: RestaurantVeganStatusText(isVegan: restaurant.veganStatus),
+                                      padding: const EdgeInsets.only(
+                                          right: 16, top: 5),
+                                      child: RestaurantVeganStatusText(
+                                        isVegan: restaurant.veganStatus,
+                                      ),
                                     ),
                                   ],
                                 )
@@ -611,16 +635,20 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20)
+                          padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 20)
                               .copyWith(left: 15, bottom: 0),
                           child: ExpandableText(
                             context,
-                            text: restaurant.description ?? restaurant.name.capitalizeFirstLetter(),
+                            text: restaurant.description ??
+                                restaurant.name.capitalizeFirstLetter(),
                             style: baseTextStyle.copyWith(
-                              color: restaurant.description != null && restaurant.description!.isNotEmpty
+                              color: restaurant.description != null &&
+                                      restaurant.description!.isNotEmpty
                                   ? true == themeMode.isDarkModeOn
                                       ? Colors.grey.shade300
-                                      : Colors.grey.shade700
+                                      : context
+                                          .theme.textTheme.bodyMedium?.color
                                   : Colors.grey.shade500,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.normal,
@@ -640,7 +668,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 14).copyWith(top: 5),
+                          padding: const EdgeInsets.symmetric(horizontal: 14)
+                              .copyWith(top: 5),
                           child: RatingAndReviewsCountWidget(
                             rating: totalRestaurantRating(reviews),
                             reviewCount: reviews.length,
@@ -649,7 +678,8 @@ class RestaurantDetailsPage extends StatelessWidget {
                         const SizedBox(height: 15),
                         if (reviews.isEmpty)
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 35),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 35),
                             child: SizedBox(
                               height: 150,
                               width: context.width * 0.75,
