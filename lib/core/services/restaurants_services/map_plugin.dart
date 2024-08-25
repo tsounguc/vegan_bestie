@@ -42,7 +42,7 @@ class GoogleMapPlugin {
           ),
           position: LatLng(latitude, longitude),
           icon: customIcon,
-          anchor: const Offset(0.1, 0.8),
+          // anchor: const Offset(0.1, 0.8),
         ),
       );
     }

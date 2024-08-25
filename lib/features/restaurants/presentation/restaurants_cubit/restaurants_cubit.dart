@@ -118,7 +118,8 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     );
   }
 
-  Future<void> deleteRestaurantSubmission(RestaurantSubmit restaurantSubmit) async {
+  Future<void> deleteRestaurantSubmission(
+      RestaurantSubmit restaurantSubmit) async {
     emit(const DeletingRestaurantSubmit());
     final result = await _deleteRestaurantSubmission(restaurantSubmit);
 
@@ -143,7 +144,8 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
             emit(RestaurantsError(message: failure.errorMessage));
             subscription?.cancel();
           },
-          (restaurantsList) => emit(RestaurantsLoaded(restaurants: restaurantsList)),
+          (restaurantsList) =>
+              emit(RestaurantsLoaded(restaurants: restaurantsList)),
         );
       },
       onError: (dynamic error) {
@@ -252,5 +254,13 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     );
   }
 
-  Future<void> editRestaurantReview({required RestaurantReviewModel review}) async {}
+  Future<void> editRestaurantReview(
+      {required RestaurantReviewModel review}) async {
+    emit(const EditingRestaurantReview());
+    final result = await _editRestaurantReview(review);
+    result.fold(
+      (failure) => emit(RestaurantsError(message: failure.message)),
+      (success) => emit(const RestaurantReviewEdited()),
+    );
+  }
 }
