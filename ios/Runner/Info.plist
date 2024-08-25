@@ -54,5 +54,7 @@
     <key>NSMicrophoneUsageDescription</key>
     <string>Vegan Bestie needs access to the microphone </string>
     <key>GOOGLE_MAPS_API_KEY</key><string>$(GOOGLE_MAPS_API_KEY)</string>
+    <key>FLTEnableImpeller</key>
+    <false/>
 </dict>
 </plist>
