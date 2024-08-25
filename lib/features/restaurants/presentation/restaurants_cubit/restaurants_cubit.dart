@@ -57,9 +57,6 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
         _unSaveRestaurant = unSaveRestaurant,
         _getSavedRestaurants = getSavedRestaurants,
         super(const RestaurantsInitial());
-  GoogleMapController? controller;
-  List<Restaurant>? restaurants;
-  Set<Marker>? markers;
 
   final AddRestaurant _addRestaurant;
   final SubmitRestaurant _submitRestaurant;

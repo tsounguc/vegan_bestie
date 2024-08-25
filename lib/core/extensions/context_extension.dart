@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter_platform_interface/src/types/marker.dart';
 import 'package:provider/provider.dart';
 import 'package:sheveegan/core/common/app/providers/food_product_reports_provider.dart';
@@ -30,11 +31,16 @@ extension ContextExtension on BuildContext {
 
   UserEntity? get currentUser => userProvider.user;
 
-  BottomNavigationBarProvider get dashboardControllerProvider => read<BottomNavigationBarProvider>();
+  BottomNavigationBarProvider get dashboardControllerProvider =>
+      read<BottomNavigationBarProvider>();
 
-  RestaurantsNearMeProvider get restaurantsNearMeProvider => read<RestaurantsNearMeProvider>();
+  RestaurantsNearMeProvider get restaurantsNearMeProvider =>
+      read<RestaurantsNearMeProvider>();
 
   Position? get currentLocation => restaurantsNearMeProvider.currentLocation;
+
+  GoogleMapController? get mapController =>
+      restaurantsNearMeProvider.mapController;
 
   double get radius => restaurantsNearMeProvider.radius;
 
@@ -44,19 +50,25 @@ extension ContextExtension on BuildContext {
 
   int get currentIndex => dashboardControllerProvider.currentIndex;
 
-  SavedProductsProvider get savedProductsProvider => read<SavedProductsProvider>();
+  SavedProductsProvider get savedProductsProvider =>
+      read<SavedProductsProvider>();
 
-  List<FoodProduct>? get savedProductsList => savedProductsProvider.savedProductsList;
+  List<FoodProduct>? get savedProductsList =>
+      savedProductsProvider.savedProductsList;
 
-  SavedRestaurantsProvider get savedRestaurantsProvider => read<SavedRestaurantsProvider>();
+  SavedRestaurantsProvider get savedRestaurantsProvider =>
+      read<SavedRestaurantsProvider>();
 
-  List<Restaurant>? get savedRestaurantsList => savedRestaurantsProvider.savedRestaurantsList;
+  List<Restaurant>? get savedRestaurantsList =>
+      savedRestaurantsProvider.savedRestaurantsList;
 
-  FoodProductReportsProvider get reportsProvider => read<FoodProductReportsProvider>();
+  FoodProductReportsProvider get reportsProvider =>
+      read<FoodProductReportsProvider>();
 
   List<FoodProductReport>? get reports => reportsProvider.reports;
 
-  SubmittedRestaurantsProvider get submittedRestaurantsProvider => read<SubmittedRestaurantsProvider>();
+  SubmittedRestaurantsProvider get submittedRestaurantsProvider =>
+      read<SubmittedRestaurantsProvider>();
 
   // ThemeModeProvider get themeModeProvider => read<ThemeModeProvider>();
 

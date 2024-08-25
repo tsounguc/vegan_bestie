@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
-class MapPage extends StatelessWidget {
+class MapPage extends StatefulWidget {
   const MapPage({
     required this.userLocation,
     required this.markers,
@@ -18,22 +19,62 @@ class MapPage extends StatelessWidget {
   final Set<Marker> markers;
 
   @override
+  State<MapPage> createState() => _MapPageState();
+}
+
+class _MapPageState extends State<MapPage> {
+  bool cameraMoved = false;
+
+  Timer? timer;
+
+  @override
   Widget build(BuildContext context) {
+    final initialCameraPosition = CameraPosition(
+      target: LatLng(
+        widget.userLocation.latitude,
+        widget.userLocation.longitude,
+      ),
+      zoom: 11.4746,
+    );
+
     return GoogleMap(
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
-      markers: markers,
-      initialCameraPosition: CameraPosition(
-        target: LatLng(
-          userLocation.latitude,
-          userLocation.longitude,
-        ),
-        zoom: 11.4746,
-      ),
+      markers: widget.markers,
+      initialCameraPosition: initialCameraPosition,
       onMapCreated: (GoogleMapController controller) => _onMapCreated(
         context,
         controller,
       ),
+      onCameraIdle: () {
+        timer = Timer(
+          Duration(milliseconds: 7500),
+          () {
+            context.mapController?.animateCamera(
+              CameraUpdate.newLatLngBounds(
+                MapUtils.boundsFromLatLngList(
+                  widget.markers.map((location) => location.position).toList(),
+                ),
+                30,
+              ),
+            );
+          },
+        );
+        debugPrint('onCameraIdle');
+      },
+      onCameraMoveStarted: () {
+        timer?.cancel();
+        debugPrint('onCameraMoveStarted');
+      },
+      // onCameraMove: (CameraPosition position) {
+      //   if (position != initialCameraPosition && cameraIsIdle) {
+      //     setState(() {
+      //       cameraIsIdle = false;
+      //     });
+      //     centerMap(context, delayDuration: Duration(milliseconds: 5000));
+      //   }
+      //   debugPrint('onCameraMoveMoved');
+      // },
       indoorViewEnabled: true,
     );
   }
@@ -42,18 +83,22 @@ class MapPage extends StatelessWidget {
     BuildContext context,
     GoogleMapController controller,
   ) async {
-    context.read<RestaurantsCubit>().controller = controller;
+    context.restaurantsNearMeProvider.mapController = controller;
 
+    centerMap(context);
+  }
+
+  void centerMap(BuildContext context, {Duration? delayDuration}) {
     Future.delayed(
-      const Duration(milliseconds: 200),
-      () => context.read<RestaurantsCubit>().controller?.animateCamera(
-            CameraUpdate.newLatLngBounds(
-              MapUtils.boundsFromLatLngList(
-                markers.map((location) => location.position).toList(),
-              ),
-              30,
-            ),
+      delayDuration ?? Duration(milliseconds: 200),
+      () => context.mapController?.animateCamera(
+        CameraUpdate.newLatLngBounds(
+          MapUtils.boundsFromLatLngList(
+            widget.markers.map((location) => location.position).toList(),
           ),
+          30,
+        ),
+      ),
     );
   }
 }
