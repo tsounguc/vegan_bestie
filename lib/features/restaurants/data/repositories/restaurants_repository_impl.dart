@@ -72,8 +72,20 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
   }
 
   @override
-  ResultStream<List<Restaurant>> getRestaurantsNearMe({required Position position, required double radius}) {
-    return _remoteDataSource.getRestaurantsNearMe(position: position, radius: radius).transform(
+  ResultStream<List<Restaurant>> getRestaurantsNearMe({
+    required Position position,
+    required double radius,
+    String startAfterId = '',
+    int paginationSize = 10,
+  }) {
+    return _remoteDataSource
+        .getRestaurantsNearMe(
+          position: position,
+          radius: radius,
+          startAfterId: startAfterId,
+          paginationSize: paginationSize,
+        )
+        .transform(
           StreamTransformer<List<RestaurantModel>, Either<Failure, List<Restaurant>>>.fromHandlers(
             handleData: (restaurants, sink) {
               sink.add(Right(restaurants));
@@ -103,9 +115,7 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
   @override
   ResultFuture<MapEntity> getRestaurantsMarkers({required List<Restaurant> restaurants}) async {
     try {
-      final result = await _remoteDataSource.getRestaurantsMarkers(
-        restaurants: restaurants,
-      );
+      final result = await _remoteDataSource.getRestaurantsMarkers(restaurants: restaurants);
       return Right(result);
     } on MapException catch (e) {
       return Left(MapFailure.fromException(e));

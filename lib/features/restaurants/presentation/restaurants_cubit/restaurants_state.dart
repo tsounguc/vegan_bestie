@@ -15,14 +15,6 @@ class LoadingRestaurants extends RestaurantsState {
   const LoadingRestaurants();
 }
 
-class LoadingUserGeoLocation extends RestaurantsState {
-  const LoadingUserGeoLocation();
-}
-
-class LoadingMarkers extends RestaurantsState {
-  const LoadingMarkers();
-}
-
 class AddingRestaurant extends RestaurantsState {
   const AddingRestaurant();
 }
@@ -40,12 +32,18 @@ class RestaurantUpdated extends RestaurantsState {
 }
 
 class RestaurantsLoaded extends RestaurantsState {
-  const RestaurantsLoaded({required this.restaurants});
+  const RestaurantsLoaded({
+    required this.restaurants,
+    required this.hasReachedEnd,
+    required this.markers,
+  });
 
   final List<Restaurant> restaurants;
+  final bool hasReachedEnd;
+  final Set<Marker> markers;
 
   @override
-  List<Object> get props => [restaurants];
+  List<Object> get props => [restaurants, hasReachedEnd, markers];
 }
 
 class FetchingSavedRestaurantsList extends RestaurantsState {
@@ -126,24 +124,6 @@ class EditingRestaurantReview extends RestaurantsState {
 
 class RestaurantReviewEdited extends RestaurantsState {
   const RestaurantReviewEdited();
-}
-
-class UserLocationLoaded extends RestaurantsState {
-  const UserLocationLoaded({required this.position});
-
-  final Position position;
-
-  @override
-  List<Object> get props => [position];
-}
-
-class MarkersLoaded extends RestaurantsState {
-  const MarkersLoaded({required this.markers});
-
-  final Set<Marker> markers;
-
-  @override
-  List<Object> get props => [markers];
 }
 
 class RestaurantsError extends RestaurantsState {

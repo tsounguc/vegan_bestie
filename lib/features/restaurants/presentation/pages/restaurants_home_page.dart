@@ -6,8 +6,10 @@ import 'package:sheveegan/core/common/screens/error/error.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/presentation/map_cubit/map_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurants_found_body.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
+import 'package:sheveegan/features/restaurants/presentation/user_location_cubit/user_location_cubit.dart';
 
 //ignore: must_be_immutable
 class RestaurantsHomePage extends StatelessWidget {
@@ -35,111 +37,122 @@ class RestaurantsHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RestaurantsCubit, RestaurantsState>(
-      listener: (context, state) {
-        if (state is UserLocationLoaded) {
-          // store previous location into local variable
-          final locationChanged = checkLocation(context, position: state.position);
-          // if previous location is not the same as location just loaded ..
-          if (locationChanged) {
-            // store location loaded in provider variable ...
-            context.restaurantsNearMeProvider.currentLocation = state.position;
-            context.restaurantsNearMeProvider.radius = context.currentUser?.isAdmin == true ? 10 : 5;
-            debugPrint(
-              'userCurrentLocation: ${state.position.latitude}'
-              ' ${state.position.longitude}',
-            );
-            BlocProvider.of<RestaurantsCubit>(context).getRestaurants(
-              state.position,
-              context.radius,
-            );
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<RestaurantsCubit, RestaurantsState>(
+          listener: (context, state) {
+            if (state is RestaurantsLoaded) {
+              context.restaurantsNearMeProvider.restaurants = state.restaurants;
+              context.restaurantsNearMeProvider.hasReachedEnd = state.hasReachedEnd;
+              context.restaurantsNearMeProvider.markers = state.markers;
+            }
+
+            if (state is SavedRestaurantsListFetched) {
+              debugPrint('SavedRestaurantsListFetched');
+              context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
+            }
+          },
+        ),
+        BlocListener<MapCubit, MapState>(
+          listener: (context, state) {
+            if (state is MarkersLoaded) {
+              debugPrint('MarkersLoaded');
+              context.restaurantsNearMeProvider.markers = state.markers;
+            }
+          },
+        ),
+      ],
+      child: BlocConsumer<UserLocationCubit, UserLocationState>(
+        listener: (context, state) {
+          if (state is UserLocationLoaded) {
+            // store previous location into local variable
+            final locationChanged = checkLocation(context, position: state.position);
+            // if previous location is not the same as location just loaded ..
+            if (locationChanged) {
+              // store location loaded in provider variable ...
+              context.restaurantsNearMeProvider.currentLocation = state.position;
+              context.restaurantsNearMeProvider.radius = context.currentUser?.isAdmin == true ? 10 : 7;
+              debugPrint(
+                'userCurrentLocation: ${state.position.latitude}'
+                ' ${state.position.longitude}',
+              );
+              BlocProvider.of<RestaurantsCubit>(context).getRestaurants(
+                state.position,
+                context.radius,
+              );
+            }
           }
-        }
 
-        if (state is RestaurantsLoaded) {
-          debugPrint('RestaurantsLoaded');
-          context.restaurantsNearMeProvider.restaurants = state.restaurants
-            ..sort((a, b) => sortByDistance(context, a, b));
-          BlocProvider.of<RestaurantsCubit>(context).getRestaurantsMarkers(
-            state.restaurants,
-          );
-        }
-
-        if (state is MarkersLoaded) {
-          debugPrint('MarkersLoaded');
-          context.restaurantsNearMeProvider.markers = state.markers;
-        }
-
-        if (state is SavedRestaurantsListFetched) {
-          debugPrint('SavedRestaurantsListFetched');
-          context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
-        }
-      },
-      builder: (context, state) {
-        if (state is LoadingRestaurants || state is LoadingMarkers) {
-          currentPage = const LoadingPage();
-          return LoadingPage();
-        } else if (state is RestaurantsError) {
-          currentPage = ErrorPage(error: state.message);
-          return ErrorPage(error: state.message);
-        } else if (state is MarkersLoaded) {
-          currentPage = RestaurantsFoundBody(
-            restaurants: context.restaurants ?? <Restaurant>[],
-            userLocation: context.currentLocation ??
-                Position(
-                  longitude: 0,
-                  latitude: 0,
-                  timestamp: DateTime.now(),
-                  accuracy: 0,
-                  altitude: 0,
-                  altitudeAccuracy: 0,
-                  heading: 0,
-                  headingAccuracy: 0,
-                  speed: 0,
-                  speedAccuracy: 0,
-                ),
-            markers: context.markers ?? <Marker>{},
-          );
-          return RestaurantsFoundBody(
-            restaurants: context.restaurants ?? <Restaurant>[],
-            userLocation: context.currentLocation ??
-                Position(
-                  longitude: 0,
-                  latitude: 0,
-                  timestamp: DateTime.now(),
-                  accuracy: 0,
-                  altitude: 0,
-                  altitudeAccuracy: 0,
-                  heading: 0,
-                  headingAccuracy: 0,
-                  speed: 0,
-                  speedAccuracy: 0,
-                ),
-            markers: context.markers ?? <Marker>{},
-          );
-        } else {
-          if (context.currentLocation == null) {
+          // if (state is RestaurantsLoaded) {
+          //   debugPrint('RestaurantsLoaded');
+          //   context.restaurantsNearMeProvider.restaurants = state.restaurants
+          //     ..sort((a, b) => sortByDistance(context, a, b));
+          //   context.restaurantsNearMeProvider.hasReachedEnd = state.hasReachedEnd;
+          //   BlocProvider.of<RestaurantsCubit>(context).getRestaurantsMarkers(
+          //     state.restaurants,
+          //   );
+          // }
+          //
+          // if (state is MarkersLoaded) {
+          //   debugPrint('MarkersLoaded');
+          //   context.restaurantsNearMeProvider.markers = state.markers;
+          // }
+          //
+          // if (state is SavedRestaurantsListFetched) {
+          //   debugPrint('SavedRestaurantsListFetched');
+          //   context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
+          // }
+        },
+        builder: (context, state) {
+          if (state is LoadingUserGeoLocation) {
             currentPage = const LoadingPage();
+            return const LoadingPage();
+          } else if (state is UserLocationError) {
+            currentPage = ErrorPage(error: state.message);
+            return ErrorPage(error: state.message);
+          } else if (state is UserLocationLoaded) {
+            currentPage = RestaurantsFoundBody(
+              restaurants: context.restaurants ?? <Restaurant>[],
+              userLocation: context.currentLocation ??
+                  Position(
+                    longitude: 0,
+                    latitude: 0,
+                    timestamp: DateTime.now(),
+                    accuracy: 0,
+                    altitude: 0,
+                    altitudeAccuracy: 0,
+                    heading: 0,
+                    headingAccuracy: 0,
+                    speed: 0,
+                    speedAccuracy: 0,
+                  ),
+              markers: context.markers ?? <Marker>{},
+            );
+            return RestaurantsFoundBody(
+              restaurants: context.restaurants ?? <Restaurant>[],
+              userLocation: context.currentLocation ??
+                  Position(
+                    longitude: 0,
+                    latitude: 0,
+                    timestamp: DateTime.now(),
+                    accuracy: 0,
+                    altitude: 0,
+                    altitudeAccuracy: 0,
+                    heading: 0,
+                    headingAccuracy: 0,
+                    speed: 0,
+                    speedAccuracy: 0,
+                  ),
+              markers: context.markers ?? <Marker>{},
+            );
+          } else {
+            if (context.currentLocation == null) {
+              currentPage = const LoadingPage();
+            }
+            return currentPage;
           }
-          return currentPage;
-        }
-      },
+        },
+      ),
     );
-  }
-
-  int sortByDistance(BuildContext context, Restaurant a, Restaurant b) {
-    final distanceA = Geolocator.distanceBetween(
-      context.currentLocation?.latitude ?? 0,
-      context.currentLocation?.longitude ?? 0,
-      a.geoLocation.lat,
-      a.geoLocation.lng,
-    );
-    final distanceB = Geolocator.distanceBetween(
-      context.currentLocation?.latitude ?? 0,
-      context.currentLocation?.longitude ?? 0,
-      b.geoLocation.lat,
-      b.geoLocation.lng,
-    );
-    return distanceA.compareTo(distanceB);
   }
 }

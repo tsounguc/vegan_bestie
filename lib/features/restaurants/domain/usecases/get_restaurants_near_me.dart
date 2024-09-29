@@ -11,23 +11,20 @@ class GetRestaurantsNearMe extends StreamUseCaseWithParams<List<Restaurant>, Get
   final RestaurantsRepository _repository;
 
   @override
-  ResultStream<List<Restaurant>> call(GetRestaurantsNearMeParams params) =>
-      _repository.getRestaurantsNearMe(position: params.position, radius: params.radius);
-
-// @override
-// ResultFuture<List<Restaurant>> call(
-//   GetRestaurantsNearMeParams params,
-// ) async =>
-//     _repository.getRestaurantsNearMe(
-//       position: params.position,
-//       radius: params.radius,
-//     );
+  ResultStream<List<Restaurant>> call(GetRestaurantsNearMeParams params) => _repository.getRestaurantsNearMe(
+        position: params.position,
+        radius: params.radius,
+        startAfterId: params.startAfterId,
+        paginationSize: params.paginationSize,
+      );
 }
 
 class GetRestaurantsNearMeParams extends Equatable {
   const GetRestaurantsNearMeParams({
     required this.position,
     required this.radius,
+    this.startAfterId = '',
+    this.paginationSize = 10,
   });
 
   GetRestaurantsNearMeParams.empty()
@@ -45,10 +42,14 @@ class GetRestaurantsNearMeParams extends Equatable {
             speedAccuracy: 0,
           ),
           radius: 1609,
+          startAfterId: '',
+          paginationSize: 10,
         );
 
   final Position position;
   final double radius;
+  final String startAfterId;
+  final int paginationSize;
 
   @override
   List<Object?> get props => [position, radius];

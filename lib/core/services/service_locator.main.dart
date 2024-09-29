@@ -141,13 +141,7 @@ Future<void> _initRestaurants() async {
         getRestaurantsNearMe: serviceLocator(),
         addRestaurant: serviceLocator(),
         submitRestaurant: serviceLocator(),
-        getUserLocation: serviceLocator(),
-        // getRestaurantDetails: serviceLocator(),
-        // getUserLocation: serviceLocator(),
-        getRestaurantsMarkers: serviceLocator(),
-
         addRestaurantReview: serviceLocator(),
-        // getRestaurantReviews: serviceLocator(),
         deleteRestaurantReview: serviceLocator(),
         deleteRestaurantSubmission: serviceLocator(),
         editRestaurantReview: serviceLocator(),
@@ -155,6 +149,16 @@ Future<void> _initRestaurants() async {
         saveRestaurant: serviceLocator(),
         unSaveRestaurant: serviceLocator(),
         getSavedRestaurants: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => UserLocationCubit(
+        getUserLocation: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => MapCubit(
+        getRestaurantsMarkers: serviceLocator(),
       ),
     )
     // Use cases

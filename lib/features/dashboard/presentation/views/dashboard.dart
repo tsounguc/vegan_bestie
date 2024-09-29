@@ -12,6 +12,7 @@ import 'package:sheveegan/features/dashboard/presentation/providers/bottom_navig
 import 'package:sheveegan/features/dashboard/presentation/utils/dashboard_utils.dart';
 import 'package:sheveegan/features/food_product/presentation/scan_product_cubit/food_product_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
+import 'package:sheveegan/features/restaurants/presentation/user_location_cubit/user_location_cubit.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -41,11 +42,11 @@ class _DashboardState extends State<Dashboard> {
           builder: (context, controller, child) {
             if (controller.currentIndex == 1) {
               debugPrint('if currentIndex is 1 loadGeoLocation from Dashboard');
-              BlocProvider.of<RestaurantsCubit>(context).loadGeoLocation();
+              BlocProvider.of<UserLocationCubit>(context).loadGeoLocation();
             }
             if (controller.currentIndex == 2) {
               if (context.currentLocation == null) {
-                BlocProvider.of<RestaurantsCubit>(context).loadGeoLocation();
+                BlocProvider.of<UserLocationCubit>(context).loadGeoLocation();
               }
               loadUserSavedData(context);
             }

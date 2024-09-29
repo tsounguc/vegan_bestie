@@ -8,11 +8,13 @@ import 'package:http/http.dart' as http;
 import 'package:sheveegan/core/resources/media_resources.dart';
 import 'package:sheveegan/features/restaurants/data/models/map_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
+import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 
 class GoogleMapPlugin {
-  Future<MapModel> getRestaurantsMarkers(
-      {required List<Restaurant> restaurants}) async {
+  Future<MapModel> getRestaurantsMarkers({
+    required List<Restaurant> restaurants,
+  }) async {
     final restaurantsMarkers = <Marker>{};
     for (var index = 0; index < restaurants.length; index++) {
       final restaurant = restaurants[index];
@@ -39,6 +41,12 @@ class GoogleMapPlugin {
             title: name,
             snippet: snippet,
             anchor: const Offset(0.5, -0.1),
+            onTap: () {
+              // navigatorKey.currentState?.pushNamed(
+              //   RestaurantDetailsPage.id,
+              //   arguments: restaurant,
+              // );
+            },
           ),
           position: LatLng(latitude, longitude),
           icon: customIcon,
@@ -54,12 +62,9 @@ class GoogleMapPlugin {
     int width,
   ) async {
     final data = await rootBundle.load(path);
-    final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
+    final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
     final fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
-        ?.buffer
-        .asUint8List();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))?.buffer.asUint8List();
   }
 
   Future<BitmapDescriptor> getMarkerIcon(
@@ -71,8 +76,7 @@ class GoogleMapPlugin {
     final canvas = Canvas(pictureRecorder);
     final radius = Radius.circular(size.width / 2);
 
-    final shadowPaint = Paint()
-      ..color = AppTheme.lightPrimaryColor.withAlpha(100);
+    final shadowPaint = Paint()..color = AppTheme.lightPrimaryColor.withAlpha(100);
     const shadowWidth = 8.0;
 
     final borderPaint = Paint()..color = Colors.white;
@@ -123,26 +127,21 @@ class GoogleMapPlugin {
       );
 
     // Oval for the image
-    final oval = Rect.fromLTWH(imageOffset, imageOffset,
-        size.width - (imageOffset * 2), size.height - (imageOffset * 2));
+    final oval =
+        Rect.fromLTWH(imageOffset, imageOffset, size.width - (imageOffset * 2), size.height - (imageOffset * 2));
 
     // Clip oval path for image
     canvas.clipPath(Path()..addOval(oval));
 
     // Fetch and draw the network image
-    final image = isFromAsset
-        ? await _fetchAssetsImage(imageUrl)
-        : await _fetchNetworkImage(imageUrl);
+    final image = isFromAsset ? await _fetchAssetsImage(imageUrl) : await _fetchNetworkImage(imageUrl);
     paintImage(canvas: canvas, image: image, rect: oval, fit: BoxFit.cover);
 
     // Convert canvas to image
-    final markerAsImage = await pictureRecorder
-        .endRecording()
-        .toImage(size.width.toInt(), size.height.toInt());
+    final markerAsImage = await pictureRecorder.endRecording().toImage(size.width.toInt(), size.height.toInt());
 
     // Convert image to bytes
-    final byteData =
-        await markerAsImage.toByteData(format: ui.ImageByteFormat.png);
+    final byteData = await markerAsImage.toByteData(format: ui.ImageByteFormat.png);
     final uint8List = byteData!.buffer.asUint8List();
 
     return BitmapDescriptor.fromBytes(uint8List);
@@ -158,8 +157,7 @@ class GoogleMapPlugin {
 
   Future<ui.Image> _fetchAssetsImage(String imageUrl) async {
     final data = await rootBundle.load(imageUrl);
-    final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: 100);
+    final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: 100);
     final fi = await codec.getNextFrame();
     return fi.image;
   }

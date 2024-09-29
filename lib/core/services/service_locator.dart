@@ -63,6 +63,8 @@ import 'package:sheveegan/features/restaurants/domain/usecases/save_restaurant.d
 import 'package:sheveegan/features/restaurants/domain/usecases/submit_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/unsave_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/update_restaurant.dart';
+import 'package:sheveegan/features/restaurants/presentation/map_cubit/map_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
+import 'package:sheveegan/features/restaurants/presentation/user_location_cubit/user_location_cubit.dart';
 
 part 'service_locator.main.dart';

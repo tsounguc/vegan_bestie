@@ -11,6 +11,8 @@ class RestaurantsNearMeProvider extends ChangeNotifier {
 
   List<Restaurant>? restaurants;
 
+  bool hasReachedEnd = false;
+
   GoogleMapController? mapController;
 
   Set<Marker>? markers;

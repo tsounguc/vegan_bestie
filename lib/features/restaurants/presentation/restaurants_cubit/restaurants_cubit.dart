@@ -8,6 +8,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sheveegan/core/enums/update_restaurant_info.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
+import 'package:sheveegan/core/services/restaurants_services/map_plugin.dart';
+import 'package:sheveegan/core/services/service_locator.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
@@ -34,9 +36,7 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     required UpdateRestaurant updateRestaurant,
     required SubmitRestaurant submitRestaurant,
     required DeleteRestaurantSubmission deleteRestaurantSubmission,
-    required GetUserLocation getUserLocation,
     required GetRestaurantsNearMe getRestaurantsNearMe,
-    required GetRestaurantsMarkers getRestaurantsMarkers,
     required AddRestaurantReview addRestaurantReview,
     required DeleteRestaurantReview deleteRestaurantReview,
     required EditRestaurantReview editRestaurantReview,
@@ -47,9 +47,7 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
         _submitRestaurant = submitRestaurant,
         _updateRestaurant = updateRestaurant,
         _deleteRestaurantSubmission = deleteRestaurantSubmission,
-        _getUserLocation = getUserLocation,
         _getRestaurantsNearMe = getRestaurantsNearMe,
-        _getRestaurantsMarkers = getRestaurantsMarkers,
         _addRestaurantReview = addRestaurantReview,
         _deleteRestaurantReview = deleteRestaurantReview,
         _editRestaurantReview = editRestaurantReview,
@@ -63,14 +61,19 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
   final UpdateRestaurant _updateRestaurant;
   final DeleteRestaurantSubmission _deleteRestaurantSubmission;
   final GetRestaurantsNearMe _getRestaurantsNearMe;
-  final GetUserLocation _getUserLocation;
-  final GetRestaurantsMarkers _getRestaurantsMarkers;
   final AddRestaurantReview _addRestaurantReview;
   final DeleteRestaurantReview _deleteRestaurantReview;
   final EditRestaurantReview _editRestaurantReview;
   final SaveRestaurant _saveRestaurant;
   final UnSaveRestaurant _unSaveRestaurant;
   final GetSavedRestaurants _getSavedRestaurants;
+
+  List<Restaurant> _restaurantsList = [];
+
+  Restaurant? lastRestaurant;
+  Set<Marker> _markers = <Marker>{};
+  bool hasReachedEnd = false;
+  bool isFetching = false;
 
   Future<void> addRestaurant(Restaurant restaurant) async {
     emit(const AddingRestaurant());
@@ -115,8 +118,7 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     );
   }
 
-  Future<void> deleteRestaurantSubmission(
-      RestaurantSubmit restaurantSubmit) async {
+  Future<void> deleteRestaurantSubmission(RestaurantSubmit restaurantSubmit) async {
     emit(const DeletingRestaurantSubmit());
     final result = await _deleteRestaurantSubmission(restaurantSubmit);
 
@@ -126,12 +128,25 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     );
   }
 
+  StreamSubscription<Either<Failure, List<Restaurant>>>? subscription;
+
   void getRestaurants(Position position, double radius) {
+    subscription?.cancel();
+
     emit(const LoadingRestaurants());
-    StreamSubscription<Either<Failure, List<Restaurant>>>? subscription;
+
+    // RestaurantsState? currentState;
+    // if(state is RestaurantsLoaded) {
+    //   currentState = state as RestaurantsLoaded;
+    // }
 
     subscription = _getRestaurantsNearMe(
-      GetRestaurantsNearMeParams(position: position, radius: radius),
+      GetRestaurantsNearMeParams(
+        position: position,
+        radius: radius,
+        startAfterId: lastRestaurant?.id ?? '',
+        paginationSize: 15,
+      ),
     ).listen(
       /*onData:*/
       (result) {
@@ -141,13 +156,44 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
             emit(RestaurantsError(message: failure.errorMessage));
             subscription?.cancel();
           },
-          (restaurantsList) =>
-              emit(RestaurantsLoaded(restaurants: restaurantsList)),
+          (restaurantsListFromPagination) async {
+            lastRestaurant = restaurantsListFromPagination.isNotEmpty ? restaurantsListFromPagination.last : null;
+
+            if (restaurantsListFromPagination.isEmpty) {
+              debugPrint('RestaurantsList empty. lastRestaurant: ${lastRestaurant?.name}');
+              hasReachedEnd = true;
+              emit(
+                RestaurantsLoaded(
+                  restaurants: const [],
+                  markers: {},
+                  hasReachedEnd: hasReachedEnd,
+                ),
+              );
+            } else if (restaurantsListFromPagination.isNotEmpty) {
+              debugPrint('RestaurantsList not empty. lastRestaurant: ${lastRestaurant?.name}');
+              hasReachedEnd = false;
+
+              _restaurantsList = state is RestaurantsLoaded
+                  ? (state as RestaurantsLoaded).restaurants + restaurantsListFromPagination
+                  : restaurantsListFromPagination;
+              final markersResult = await serviceLocator<GoogleMapPlugin>().getRestaurantsMarkers(
+                restaurants: _restaurantsList,
+              );
+              _markers = markersResult.markers;
+              emit(
+                RestaurantsLoaded(
+                  restaurants: _restaurantsList,
+                  hasReachedEnd: hasReachedEnd,
+                  markers: _markers,
+                ),
+              );
+            }
+          },
         );
       },
       onError: (dynamic error) {
         debugPrint(error.toString());
-        emit(RestaurantsError(message: error.toString()));
+        emit(const RestaurantsError(message: 'Failed to fetch Restaurants'));
       },
       onDone: () {
         subscription?.cancel();
@@ -155,27 +201,93 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     );
   }
 
-  Future<void> getRestaurantsMarkers(List<Restaurant> restaurants) async {
-    emit(const LoadingMarkers());
-    final result = await _getRestaurantsMarkers(
-      GetRestaurantsMarkersParams(restaurants: restaurants),
+  void loadMoreRestaurants(
+    Position position,
+    double radius, {
+    String startAfterId = '',
+    int paginationSize = 10,
+  }) {
+    if (isFetching || hasReachedEnd || state is LoadingRestaurants) return;
+
+    isFetching = true;
+
+    final currentState = state as RestaurantsLoaded;
+
+    subscription = _getRestaurantsNearMe(
+      GetRestaurantsNearMeParams(
+          position: position,
+          radius: radius,
+          startAfterId: lastRestaurant?.id ?? '',
+          paginationSize: paginationSize),
+    ).listen(
+      /*onData:*/
+      (result) {
+        result.fold(
+          (failure) {
+            debugPrint(failure.errorMessage);
+            emit(RestaurantsError(message: failure.errorMessage));
+            subscription?.cancel();
+          },
+          (restaurantsListFromPagination) async {
+            lastRestaurant = restaurantsListFromPagination.isNotEmpty ? restaurantsListFromPagination.last : null;
+            if (restaurantsListFromPagination.isEmpty) {
+              debugPrint('Load more RestaurantsList empty. lastRestaurant: ${lastRestaurant?.name}');
+              hasReachedEnd = true;
+              final markersResult = await serviceLocator<GoogleMapPlugin>().getRestaurantsMarkers(
+                restaurants: currentState.restaurants,
+              );
+              _markers = markersResult.markers;
+              emit(
+                RestaurantsLoaded(
+                  restaurants: currentState.restaurants,
+                  hasReachedEnd: hasReachedEnd,
+                  markers: _markers,
+                ),
+              );
+            } else if (restaurantsListFromPagination.isNotEmpty) {
+              debugPrint('Load more RestaurantsList not empty lastRestaurant: ${lastRestaurant?.name}');
+              hasReachedEnd = false;
+              _restaurantsList = currentState.restaurants + restaurantsListFromPagination;
+              final markersResult = await serviceLocator<GoogleMapPlugin>().getRestaurantsMarkers(
+                restaurants: currentState.restaurants,
+              );
+              _markers = markersResult.markers;
+              emit(
+                RestaurantsLoaded(
+                  restaurants: _restaurantsList,
+                  hasReachedEnd: hasReachedEnd,
+                  markers: _markers,
+                ),
+              );
+            }
+            isFetching = false;
+          },
+        );
+      },
+      onError: (dynamic error) {
+        debugPrint(error.toString());
+        emit(const RestaurantsError(message: 'Failed to fetch Restaurants'));
+      },
+      onDone: () {
+        subscription?.cancel();
+      },
     );
-    result.fold(
-      (failure) => emit(RestaurantsError(message: failure.errorMessage)),
-      (mapEntity) => emit(MarkersLoaded(markers: mapEntity.markers)),
-    );
+    // if (hasReachedEnd) return;
+    // if (state is RestaurantsLoaded) {
+    //   getRestaurants(position, radius);
+    // }
   }
 
-  Future<void> loadGeoLocation() async {
-    emit(const LoadingUserGeoLocation());
-    final result = await _getUserLocation();
-    result.fold(
-      (failure) => emit(RestaurantsError(message: failure.errorMessage)),
-      (userLocation) => emit(
-        UserLocationLoaded(position: userLocation.position),
-      ),
-    );
-  }
+  // Future<void> loadGeoLocation() async {
+  //   emit(const LoadingUserGeoLocation());
+  //   final result = await _getUserLocation();
+  //   result.fold(
+  //     (failure) => emit(RestaurantsError(message: failure.errorMessage)),
+  //     (userLocation) => emit(
+  //       UserLocationLoaded(position: userLocation.position),
+  //     ),
+  //   );
+  // }
 
   Future<void> addRestaurantReview(RestaurantReview restaurantReview) async {
     emit(const AddingRestaurantReview());
@@ -251,13 +363,18 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     );
   }
 
-  Future<void> editRestaurantReview(
-      {required RestaurantReviewModel review}) async {
+  Future<void> editRestaurantReview({required RestaurantReviewModel review}) async {
     emit(const EditingRestaurantReview());
     final result = await _editRestaurantReview(review);
     result.fold(
       (failure) => emit(RestaurantsError(message: failure.message)),
       (success) => emit(const RestaurantReviewEdited()),
     );
+  }
+
+  @override
+  Future<void> close() {
+    subscription?.cancel();
+    return super.close();
   }
 }

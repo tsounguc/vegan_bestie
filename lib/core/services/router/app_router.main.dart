@@ -24,7 +24,6 @@ class AppRouter {
                 savedProductsBarcodes: currentUser?.savedProductsBarcodes,
                 savedRestaurantsIds: currentUser?.savedRestaurantsIds,
               );
-              print('AppRouter: $userModel');
 
               // store user model in user provider
               context.userProvider.initUser(userModel);
@@ -33,6 +32,12 @@ class AppRouter {
                 providers: [
                   BlocProvider(
                     create: (_) => serviceLocator<RestaurantsCubit>(),
+                  ),
+                  BlocProvider(
+                    create: (_) => serviceLocator<UserLocationCubit>(),
+                  ),
+                  BlocProvider(
+                    create: (_) => serviceLocator<MapCubit>(),
                   ),
                   BlocProvider(
                     create: (_) => serviceLocator<FoodProductCubit>(),

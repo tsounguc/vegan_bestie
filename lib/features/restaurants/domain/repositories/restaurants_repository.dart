@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sheveegan/core/enums/update_restaurant_info.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
@@ -43,6 +44,8 @@ abstract class RestaurantsRepository {
   ResultStream<List<Restaurant>> getRestaurantsNearMe({
     required Position position,
     required double radius,
+    String startAfterId = '',
+    int paginationSize = 10,
   });
 
   ResultVoid addRestaurantReview({
@@ -59,9 +62,7 @@ abstract class RestaurantsRepository {
     required RestaurantReview restaurantReview,
   });
 
-  ResultFuture<MapEntity> getRestaurantsMarkers({
-    required List<Restaurant> restaurants,
-  });
+  ResultFuture<MapEntity> getRestaurantsMarkers({required List<Restaurant> restaurants});
 }
 
 // abstract class RestaurantsRepository {

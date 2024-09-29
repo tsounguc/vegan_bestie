@@ -192,8 +192,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                                 child: Text(
                                   restaurantAddress,
                                   style: TextStyle(
-                                    color: context
-                                        .theme.textTheme.bodySmall?.color,
+                                    color: context.theme.textTheme.bodySmall?.color,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 10.sp,
                                   ),
@@ -203,8 +202,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          restaurantPrice.contains('_empty.price') ||
-                                  restaurantPrice.isEmpty
+                          restaurantPrice.contains('_empty.price') || restaurantPrice.isEmpty
                               ? ''
                               : restaurantPrice,
                           style: TextStyle(
@@ -235,8 +233,7 @@ class HorizontalRestaurantCard extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.025,
                         ),
                         Text(
-                          '${reviews.length} ${Strings.reviewsText}'
-                              .pluralize(reviews.length, ending: 's'),
+                          '${reviews.length} ${Strings.reviewsText}'.pluralize(reviews.length, ending: 's'),
                           style: TextStyle(
                             // color: Colors.grey.shade800,
                             fontWeight: FontWeight.w500,

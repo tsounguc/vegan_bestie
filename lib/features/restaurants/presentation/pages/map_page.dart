@@ -48,7 +48,7 @@ class _MapPageState extends State<MapPage> {
       ),
       onCameraIdle: () {
         timer = Timer(
-          Duration(milliseconds: 7500),
+          const Duration(milliseconds: 7500),
           () {
             context.mapController?.animateCamera(
               CameraUpdate.newLatLngBounds(
@@ -66,15 +66,6 @@ class _MapPageState extends State<MapPage> {
         timer?.cancel();
         debugPrint('onCameraMoveStarted');
       },
-      // onCameraMove: (CameraPosition position) {
-      //   if (position != initialCameraPosition && cameraIsIdle) {
-      //     setState(() {
-      //       cameraIsIdle = false;
-      //     });
-      //     centerMap(context, delayDuration: Duration(milliseconds: 5000));
-      //   }
-      //   debugPrint('onCameraMoveMoved');
-      // },
       indoorViewEnabled: true,
     );
   }
@@ -102,75 +93,6 @@ class _MapPageState extends State<MapPage> {
     );
   }
 }
-
-// class MapPage extends StatefulWidget {
-//   const MapPage({Key? key}) : super(key: key);
-//
-//   @override
-//   State<MapPage> createState() => _MapPageState();
-// }
-//
-// class _MapPageState extends State<MapPage> {
-//   GoogleMapController? _controller;
-//   Position? userCurrentLocation;
-//
-//   @override
-//   void dispose() {
-//     super.dispose();
-//     _controller?.dispose();
-//   }
-//
-//   static final CameraPosition _kGooglePlex = CameraPosition(target: LatLng(37.4279, -122.0857), zoom: 14.4746);
-//   static final CameraPosition _kLake =
-//       CameraPosition(bearing: 192.8334, target: LatLng(37.4329, -122.0883), tilt: 59.4407, zoom: 19.1519);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<MapCubit, MapState>(
-//       builder: (context, state) {
-//         if (state is MapErrorState) {
-//           ErrorPage(error: state.error);
-//         }
-//         if (state is MapLocationsFound) {
-//           debugPrint(state.markers.first.mapsId.value);
-//           return GoogleMap(
-//             myLocationEnabled: true,
-//             myLocationButtonEnabled: false,
-//             mapType: MapType.normal,
-//             markers: state.markers,
-//             // trafficEnabled: true,
-//             // cameraTargetBounds: CameraTargetBounds(
-//             //   MapUtils.boundsFromLatLngList(state.markers.map((location) => location.position).toList()),
-//             // ),
-//             initialCameraPosition: CameraPosition(
-//               // bearing: 190,
-//               target: LatLng(state.userLocation.latitude, state.userLocation.longitude),
-//               // zoom: 11.4746,
-//             ),
-//             onMapCreated: (GoogleMapController controller) => _onMapCreated(controller, state),
-//           );
-//         } else {
-//           return LoadingPage();
-//         }
-//       },
-//     );
-//   }
-//
-//   void _onMapCreated(GoogleMapController controller, MapLocationsFound state) async {
-//     _controller = controller;
-//     userCurrentLocation = BlocProvider.of<GeolocationBloc>(context).currentLocation;
-//
-//     Future.delayed(
-//       Duration(milliseconds: 200),
-//       () => _controller?.animateCamera(
-//         CameraUpdate.newLatLngBounds(
-//           MapUtils.boundsFromLatLngList(state.markers.map((location) => location.position).toList()),
-//           1,
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 //https://www.appsloveworld.com/flutter/100/47/keep-all-markers-in-view-with-flutter-google-maps-plugin
 class MapUtils {

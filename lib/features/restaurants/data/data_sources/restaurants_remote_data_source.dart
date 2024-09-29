@@ -51,6 +51,8 @@ abstract class RestaurantsRemoteDataSource {
   Stream<List<RestaurantModel>> getRestaurantsNearMe({
     required Position position,
     required double radius,
+    String startAfterId = '',
+    int paginationSize = 10,
   });
 
   Future<void> addRestaurantReview(RestaurantReview restaurantReview);
@@ -446,6 +448,8 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
   Stream<List<RestaurantModel>> getRestaurantsNearMe({
     required Position position,
     required double radius,
+    String startAfterId = '',
+    int paginationSize = 10,
   }) {
     try {
       DataSourceUtils.authorizeUser(_auth);
@@ -455,14 +459,24 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       final greaterPoint = DataSourceUtils.getGreaterGeoPoint(position, distance);
       final lesserPoint = DataSourceUtils.getLesserGeoPoint(position, distance);
 
-      final restaurantsStream = _restaurants
+      var restaurantsQuery = _restaurants
           .where('geoLocation.lat', isGreaterThan: lesserPoint.latitude)
           .where('geoLocation.lng', isGreaterThan: lesserPoint.longitude)
           .where('geoLocation.lat', isLessThan: greaterPoint.latitude)
           .where('geoLocation.lng', isLessThan: greaterPoint.longitude)
-          .snapshots()
-          .map(
-            (snapshot) => snapshot.docs.map((doc) => RestaurantModel.fromMap(doc.data())).toList(),
+          .orderBy('id')
+          .limit(paginationSize);
+
+      if (startAfterId.isNotEmpty) {
+        restaurantsQuery = restaurantsQuery.startAfter([startAfterId]);
+      }
+
+      final restaurantsStream = restaurantsQuery.snapshots().map(
+            (snapshot) => snapshot.docs
+                .map(
+                  (doc) => RestaurantModel.fromMap(doc.data()),
+                )
+                .toList(),
           );
       return restaurantsStream.handleError((dynamic error) {
         if (error is FirebaseException) {

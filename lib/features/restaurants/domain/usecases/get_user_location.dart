@@ -11,12 +11,3 @@ class GetUserLocation extends UseCase<UserLocation> {
   @override
   ResultFuture<UserLocation> call() async => _repository.getUserLocation();
 }
-
-// class GetLastLocationUseCase {
-//   final CurrentLocationRepositoryContract _currentLocationRepositoryContract =
-//       serviceLocator<CurrentLocationRepositoryContract>();
-//
-//   Future<Either<LocationFailure, LocationEntity>> getLastLocation() {
-//     return _currentLocationRepositoryContract.getLastLocation();
-//   }
-// }

@@ -24,8 +24,10 @@ dependencies:
   audioplayers: ^6.0.0
   bloc: ^8.1.4
   cached_network_image: ^3.3.1
+  clippy_flutter: ^2.0.0-nullsafety.1
   cloud_firestore: ^4.15.5
   cupertino_icons: ^1.0.8
+  custom_info_window: ^1.0.1
   dartz:
   device_preview: ^1.1.0
   equatable:
