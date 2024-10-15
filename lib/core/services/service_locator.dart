@@ -60,11 +60,13 @@ import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_n
 import 'package:sheveegan/features/restaurants/domain/usecases/get_saved_restaurants.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/save_restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/search_restaurants.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/submit_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/unsave_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/update_restaurant.dart';
 import 'package:sheveegan/features/restaurants/presentation/map_cubit/map_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
+import 'package:sheveegan/features/restaurants/presentation/search_restaurants_cubit/search_restaurants_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/user_location_cubit/user_location_cubit.dart';
 
 part 'service_locator.main.dart';

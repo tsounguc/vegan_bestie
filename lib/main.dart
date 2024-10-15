@@ -1,6 +1,5 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +16,9 @@ import 'package:sheveegan/core/common/app/providers/saved_restaurants_provider.d
 import 'package:sheveegan/core/common/app/providers/submitted_restaurants_provider.dart';
 import 'package:sheveegan/core/common/app/providers/theme_inherited_widget.dart';
 import 'package:sheveegan/core/common/app/providers/user_provider.dart';
-import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/core/resources/strings.dart';
 import 'package:sheveegan/core/services/router/app_router.dart';
 import 'package:sheveegan/core/services/service_locator.dart';
-import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/dashboard/presentation/providers/bottom_navigation_bar_provider.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 

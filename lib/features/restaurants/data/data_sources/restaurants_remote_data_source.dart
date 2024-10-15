@@ -68,6 +68,10 @@ abstract class RestaurantsRemoteDataSource {
   Future<List<RestaurantModel>> getSavedRestaurants({
     required List<String> restaurantsIdsList,
   });
+
+  Future<void> submitUpdateSuggestion({required Restaurant restaurant});
+
+  Future<List<Restaurant>> searchRestaurants(String query);
 }
 
 class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
@@ -730,6 +734,43 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       restaurantsList.add(restaurant);
     }
     return restaurantsList;
+  }
+
+  @override
+  Future<List<Restaurant>> searchRestaurants(String query) async {
+    try {
+      DataSourceUtils.authorizeUser(_auth);
+      final lowerCaseQuery = query.toLowerCase();
+      return await _restaurants
+          .where('name_lowercase', isGreaterThanOrEqualTo: lowerCaseQuery)
+          .where('name_lowercase', isLessThanOrEqualTo: lowerCaseQuery + '\uf8ff') // Ensures a partial match
+          .limit(25)
+          .get()
+          .then(
+            (value) => value.docs
+                .map(
+                  (doc) => RestaurantModel.fromMap(doc.data()),
+                )
+                .toList(),
+          );
+    } on FirebaseException catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw RestaurantsException(
+        message: e.message ?? 'Unknown error occurred',
+        statusCode: 500,
+      );
+    } on RestaurantsException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw RestaurantsException(message: e.toString(), statusCode: 500);
+    }
+  }
+
+  @override
+  Future<void> submitUpdateSuggestion({required Restaurant restaurant}) {
+    // TODO: implement submitUpdateSuggestion
+    throw UnimplementedError();
   }
 
   Future<void> _updateRestaurantData({

@@ -1,11 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({
@@ -40,26 +38,21 @@ class _MapPageState extends State<MapPage> {
     return GoogleMap(
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
+      zoomControlsEnabled: false,
       markers: widget.markers,
       initialCameraPosition: initialCameraPosition,
-      onMapCreated: (GoogleMapController controller) => _onMapCreated(
-        context,
-        controller,
-      ),
-      onCameraIdle: () {
-        timer = Timer(
-          const Duration(milliseconds: 7500),
-          () {
-            context.mapController?.animateCamera(
-              CameraUpdate.newLatLngBounds(
-                MapUtils.boundsFromLatLngList(
-                  widget.markers.map((location) => location.position).toList(),
-                ),
-                30,
-              ),
-            );
-          },
+      onMapCreated: (GoogleMapController controller) async {
+        await _onMapCreated(
+          context,
+          controller,
         );
+        centerMap(
+          context,
+          delayDuration: const Duration(milliseconds: 200),
+        );
+      },
+      onCameraIdle: () {
+        centerMap(context);
         debugPrint('onCameraIdle');
       },
       onCameraMoveStarted: () {
@@ -75,21 +68,21 @@ class _MapPageState extends State<MapPage> {
     GoogleMapController controller,
   ) async {
     context.restaurantsNearMeProvider.mapController = controller;
-
-    centerMap(context);
   }
 
   void centerMap(BuildContext context, {Duration? delayDuration}) {
-    Future.delayed(
-      delayDuration ?? Duration(milliseconds: 200),
-      () => context.mapController?.animateCamera(
-        CameraUpdate.newLatLngBounds(
-          MapUtils.boundsFromLatLngList(
-            widget.markers.map((location) => location.position).toList(),
+    timer = Timer(
+      delayDuration ?? const Duration(milliseconds: 7500),
+      () {
+        context.mapController?.animateCamera(
+          CameraUpdate.newLatLngBounds(
+            MapUtils.boundsFromLatLngList(
+              widget.markers.map((location) => location.position).toList(),
+            ),
+            55,
           ),
-          30,
-        ),
-      ),
+        );
+      },
     );
   }
 }

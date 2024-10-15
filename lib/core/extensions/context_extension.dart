@@ -47,6 +47,10 @@ extension ContextExtension on BuildContext {
 
   bool get hasReachedEnd => restaurantsNearMeProvider.hasReachedEnd;
 
+  List<String> get categories => restaurantsNearMeProvider.categories;
+
+  List<String> get selectedCategories => restaurantsNearMeProvider.selectedCategories;
+
   int get currentIndex => dashboardControllerProvider.currentIndex;
 
   SavedProductsProvider get savedProductsProvider => read<SavedProductsProvider>();

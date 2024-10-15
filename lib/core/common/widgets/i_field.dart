@@ -9,7 +9,10 @@ class IField extends StatelessWidget {
     this.readOnly = false,
     this.validator,
     this.fillColor,
+    this.focusColor,
     this.contentPadding,
+    this.prefixIcon,
+    this.prefix,
     this.suffixIcon,
     this.suffix,
     this.hintText,
@@ -34,10 +37,13 @@ class IField extends StatelessWidget {
   final TextEditingController controller;
   final bool filled;
   final Color? fillColor;
+  final Color? focusColor;
   final EdgeInsetsGeometry? contentPadding;
   final bool obscureText;
   final TextInputAction? textInputAction;
   final bool readOnly;
+  final Widget? prefixIcon;
+  final Widget? prefix;
   final Widget? suffixIcon;
   final Widget? suffix;
   final String? hintText;
@@ -89,7 +95,7 @@ class IField extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: borderRadius ?? BorderRadius.circular(90),
           borderSide: BorderSide(
-            color: Theme.of(context).primaryColor,
+            color: focusColor ?? Theme.of(context).primaryColor,
           ),
         ),
         // overriding the default padding helps with that puffy look
@@ -101,6 +107,9 @@ class IField extends StatelessWidget {
 
         filled: filled,
         fillColor: fillColor,
+        focusColor: focusColor,
+        prefixIcon: prefixIcon,
+        prefix: prefix,
         suffixIcon: suffixIcon,
         suffix: suffix,
         hintText: hintText,

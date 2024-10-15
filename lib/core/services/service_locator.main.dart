@@ -161,6 +161,11 @@ Future<void> _initRestaurants() async {
         getRestaurantsMarkers: serviceLocator(),
       ),
     )
+    ..registerFactory(
+      () => SearchRestaurantsCubit(
+        searchRestaurants: serviceLocator(),
+      ),
+    )
     // Use cases
     ..registerLazySingleton(() => AddRestaurant(serviceLocator()))
     ..registerLazySingleton(() => SubmitRestaurant(serviceLocator()))
@@ -177,6 +182,7 @@ Future<void> _initRestaurants() async {
     ..registerLazySingleton(() => DeleteRestaurantReview(serviceLocator()))
     ..registerLazySingleton(() => DeleteRestaurantSubmission(serviceLocator()))
     ..registerLazySingleton(() => EditRestaurantReview(serviceLocator()))
+    ..registerLazySingleton(() => SearchRestaurants(serviceLocator()))
     // Repositories
     ..registerLazySingleton<RestaurantsRepository>(
       () => RestaurantsRepositoryImpl(serviceLocator()),

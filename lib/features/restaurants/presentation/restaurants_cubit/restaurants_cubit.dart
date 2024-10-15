@@ -135,17 +135,12 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
 
     emit(const LoadingRestaurants());
 
-    // RestaurantsState? currentState;
-    // if(state is RestaurantsLoaded) {
-    //   currentState = state as RestaurantsLoaded;
-    // }
-
     subscription = _getRestaurantsNearMe(
       GetRestaurantsNearMeParams(
         position: position,
         radius: radius,
         startAfterId: lastRestaurant?.id ?? '',
-        paginationSize: 15,
+        paginationSize: 20,
       ),
     ).listen(
       /*onData:*/
@@ -156,11 +151,12 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
             emit(RestaurantsError(message: failure.errorMessage));
             subscription?.cancel();
           },
-          (restaurantsListFromPagination) async {
-            lastRestaurant = restaurantsListFromPagination.isNotEmpty ? restaurantsListFromPagination.last : null;
+          (restaurants) async {
+            lastRestaurant = restaurants.isNotEmpty ? restaurants.last : null;
 
-            if (restaurantsListFromPagination.isEmpty) {
+            if (restaurants.isEmpty) {
               debugPrint('RestaurantsList empty. lastRestaurant: ${lastRestaurant?.name}');
+
               hasReachedEnd = true;
               emit(
                 RestaurantsLoaded(
@@ -169,13 +165,13 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
                   hasReachedEnd: hasReachedEnd,
                 ),
               );
-            } else if (restaurantsListFromPagination.isNotEmpty) {
+            } else if (restaurants.isNotEmpty) {
               debugPrint('RestaurantsList not empty. lastRestaurant: ${lastRestaurant?.name}');
-              hasReachedEnd = false;
 
+              hasReachedEnd = restaurants.length < 20;
               _restaurantsList = state is RestaurantsLoaded
-                  ? (state as RestaurantsLoaded).restaurants + restaurantsListFromPagination
-                  : restaurantsListFromPagination;
+                  ? (state as RestaurantsLoaded).restaurants + restaurants
+                  : restaurants;
               final markersResult = await serviceLocator<GoogleMapPlugin>().getRestaurantsMarkers(
                 restaurants: _restaurantsList,
               );
@@ -228,11 +224,11 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
             emit(RestaurantsError(message: failure.errorMessage));
             subscription?.cancel();
           },
-          (restaurantsListFromPagination) async {
-            lastRestaurant = restaurantsListFromPagination.isNotEmpty ? restaurantsListFromPagination.last : null;
-            if (restaurantsListFromPagination.isEmpty) {
+          (restaurants) async {
+            lastRestaurant = restaurants.isNotEmpty ? restaurants.last : null;
+            if (restaurants.isEmpty) {
               debugPrint('Load more RestaurantsList empty. lastRestaurant: ${lastRestaurant?.name}');
-              hasReachedEnd = true;
+              hasReachedEnd = restaurants.length < paginationSize;
               final markersResult = await serviceLocator<GoogleMapPlugin>().getRestaurantsMarkers(
                 restaurants: currentState.restaurants,
               );
@@ -244,12 +240,12 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
                   markers: _markers,
                 ),
               );
-            } else if (restaurantsListFromPagination.isNotEmpty) {
+            } else if (restaurants.isNotEmpty) {
               debugPrint('Load more RestaurantsList not empty lastRestaurant: ${lastRestaurant?.name}');
-              hasReachedEnd = false;
-              _restaurantsList = currentState.restaurants + restaurantsListFromPagination;
+              hasReachedEnd = restaurants.length < paginationSize;
+              _restaurantsList = currentState.restaurants + restaurants;
               final markersResult = await serviceLocator<GoogleMapPlugin>().getRestaurantsMarkers(
-                restaurants: currentState.restaurants,
+                restaurants: currentState.restaurants + restaurants,
               );
               _markers = markersResult.markers;
               emit(

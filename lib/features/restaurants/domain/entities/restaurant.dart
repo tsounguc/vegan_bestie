@@ -4,6 +4,7 @@ class Restaurant extends Equatable {
   const Restaurant({
     required this.id,
     required this.name,
+    required this.nameLowercase,
     required this.contactName,
     required this.email,
     required this.streetAddress,
@@ -33,6 +34,7 @@ class Restaurant extends Equatable {
       : this(
           id: '_empty.id',
           name: '_empty.name',
+          nameLowercase: '_empty.nameLowercase',
           contactName: '_empty.contactName',
           email: '_empty.email',
           streetAddress: '_empty.streetAddress',
@@ -60,6 +62,7 @@ class Restaurant extends Equatable {
 
   final String id;
   final String name;
+  final String nameLowercase;
   final String contactName;
   final String email;
   final String streetAddress;
@@ -90,6 +93,7 @@ class Restaurant extends Equatable {
   List<Object?> get props => [
         id,
         // name,
+        // nameLowercase,
         // contactName,
         // email,
         // streetAddress,

@@ -63,6 +63,8 @@ abstract class RestaurantsRepository {
   });
 
   ResultFuture<MapEntity> getRestaurantsMarkers({required List<Restaurant> restaurants});
+
+  ResultFuture<List<Restaurant>> searchRestaurants(String query);
 }
 
 // abstract class RestaurantsRepository {

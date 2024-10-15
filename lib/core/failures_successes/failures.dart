@@ -62,6 +62,19 @@ class UpdateFoodProductFailure extends Failure {
         );
 }
 
+class UpdateSuggestionFailure extends Failure {
+  UpdateSuggestionFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  UpdateSuggestionFailure.fromException(UpdateSuggestionException exception)
+      : this(
+          message: exception.message,
+          statusCode: exception.statusCode,
+        );
+}
+
 class ScanFailure extends Failure {
   ScanFailure({
     required super.message,

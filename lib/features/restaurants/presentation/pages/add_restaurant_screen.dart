@@ -140,6 +140,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
     }
     final restaurant = const RestaurantModel.empty().copyWith(
       name: restaurantNameController.text.trim(),
+      nameLowercase: restaurantNameController.text.trim().toLowerCase(),
       streetAddress: streetAddressController.text.trim(),
       city: cityController.text.trim(),
       state: stateController.text.trim(),

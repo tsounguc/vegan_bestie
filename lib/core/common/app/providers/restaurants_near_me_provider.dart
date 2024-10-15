@@ -9,6 +9,16 @@ class RestaurantsNearMeProvider extends ChangeNotifier {
 
   Position? _currentLocation;
 
+  List<String> _categories = [
+    'Vegan',
+    'Vegan options',
+    'Takeout',
+    'Dine-in',
+    'Delivery',
+  ];
+
+  List<String> _selectedCategories = [];
+
   List<Restaurant>? restaurants;
 
   bool hasReachedEnd = false;
@@ -20,6 +30,20 @@ class RestaurantsNearMeProvider extends ChangeNotifier {
   double get radius => _radius;
 
   Position? get currentLocation => _currentLocation;
+
+  List<String> get categories => _categories;
+
+  List<String> get selectedCategories => _selectedCategories;
+
+  void addCategory(String category) {
+    _selectedCategories.add(category);
+    notifyListeners();
+  }
+
+  void removeCategory(String category) {
+    _selectedCategories.remove(category);
+    notifyListeners();
+  }
 
   set currentLocation(Position? value) {
     _currentLocation = value;

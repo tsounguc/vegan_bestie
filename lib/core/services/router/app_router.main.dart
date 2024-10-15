@@ -33,6 +33,9 @@ class AppRouter {
                   BlocProvider(
                     create: (_) => serviceLocator<RestaurantsCubit>(),
                   ),
+                  // BlocProvider(
+                  //   create: (_) => serviceLocator<SearchRestaurantsCubit>(),
+                  // ),
                   BlocProvider(
                     create: (_) => serviceLocator<UserLocationCubit>(),
                   ),

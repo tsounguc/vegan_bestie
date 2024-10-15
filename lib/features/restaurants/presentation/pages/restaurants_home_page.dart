@@ -17,22 +17,6 @@ class RestaurantsHomePage extends StatelessWidget {
 
   static const String id = '/restaurantsHomepage';
 
-  bool checkLocation(
-    BuildContext context, {
-    required Position position,
-  }) {
-    final userLocation = context.currentLocation;
-    return userLocation == null ||
-        userLocation.latitude.toStringAsFixed(3) !=
-            position.latitude.toStringAsFixed(
-              3,
-            ) ||
-        userLocation.longitude.toStringAsFixed(3) !=
-            position.longitude.toStringAsFixed(
-              3,
-            );
-  }
-
   Widget currentPage = const LoadingPage();
 
   @override
@@ -65,43 +49,17 @@ class RestaurantsHomePage extends StatelessWidget {
       child: BlocConsumer<UserLocationCubit, UserLocationState>(
         listener: (context, state) {
           if (state is UserLocationLoaded) {
-            // store previous location into local variable
-            final locationChanged = checkLocation(context, position: state.position);
-            // if previous location is not the same as location just loaded ..
-            if (locationChanged) {
-              // store location loaded in provider variable ...
-              context.restaurantsNearMeProvider.currentLocation = state.position;
-              context.restaurantsNearMeProvider.radius = context.currentUser?.isAdmin == true ? 10 : 7;
-              debugPrint(
-                'userCurrentLocation: ${state.position.latitude}'
-                ' ${state.position.longitude}',
-              );
-              BlocProvider.of<RestaurantsCubit>(context).getRestaurants(
-                state.position,
-                context.radius,
-              );
-            }
+            context.restaurantsNearMeProvider.currentLocation = state.position;
+            context.restaurantsNearMeProvider.radius = context.currentUser?.isAdmin == true ? 10 : 7;
+            debugPrint(
+              'userCurrentLocation: ${state.position.latitude}'
+              ' ${state.position.longitude}',
+            );
+            BlocProvider.of<RestaurantsCubit>(context).getRestaurants(
+              state.position,
+              context.radius,
+            );
           }
-
-          // if (state is RestaurantsLoaded) {
-          //   debugPrint('RestaurantsLoaded');
-          //   context.restaurantsNearMeProvider.restaurants = state.restaurants
-          //     ..sort((a, b) => sortByDistance(context, a, b));
-          //   context.restaurantsNearMeProvider.hasReachedEnd = state.hasReachedEnd;
-          //   BlocProvider.of<RestaurantsCubit>(context).getRestaurantsMarkers(
-          //     state.restaurants,
-          //   );
-          // }
-          //
-          // if (state is MarkersLoaded) {
-          //   debugPrint('MarkersLoaded');
-          //   context.restaurantsNearMeProvider.markers = state.markers;
-          // }
-          //
-          // if (state is SavedRestaurantsListFetched) {
-          //   debugPrint('SavedRestaurantsListFetched');
-          //   context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
-          // }
         },
         builder: (context, state) {
           if (state is LoadingUserGeoLocation) {

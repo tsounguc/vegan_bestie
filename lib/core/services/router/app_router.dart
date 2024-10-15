@@ -44,6 +44,7 @@ import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_rev
 import 'package:sheveegan/features/restaurants/presentation/pages/submitted_restaurants_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/update_restaurant_screen.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
+import 'package:sheveegan/features/restaurants/presentation/search_restaurants_cubit/search_restaurants_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/user_location_cubit/user_location_cubit.dart';
 
 part 'package:sheveegan/core/services/router/app_router.main.dart';
