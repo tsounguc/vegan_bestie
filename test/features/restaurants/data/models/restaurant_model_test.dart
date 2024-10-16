@@ -27,6 +27,7 @@ void main() {
     const testRestaurant = Restaurant(
       id: '12345678',
       name: 'name',
+      nameLowercase: 'nameLowercase',
       contactName: 'contactName',
       email: 'email',
       streetAddress: 'streetAddress',

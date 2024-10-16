@@ -1,5 +1,6 @@
 name: sheveegan
-description: A new Flutter application.
+description: Vegan Bestie is an app that scans the barcode of a food product
+  to determine if it's vegan, and gives you a list of places to eat near you.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.

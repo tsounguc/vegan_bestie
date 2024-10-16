@@ -46,7 +46,7 @@ class RestaurantPictureScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 8),
                 child: TextButton(
                   onPressed: () {
-                    context.read<AuthBloc>().add(DeleteProfilePicEvent(user: user));
+                    // context.read<AuthBloc>().add(DeleteProfilePicEvent(user: user));
                   },
                   child: Text(
                     'Delete',
