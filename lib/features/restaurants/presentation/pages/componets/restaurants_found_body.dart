@@ -258,7 +258,33 @@ class _RestaurantsFoundBodyState extends State<RestaurantsFoundBody> {
                             ),
                           );
                         } else {
-                          if (context.restaurants != null && context.restaurants!.isNotEmpty) {
+                          if (context.restaurants == null || context.restaurants!.isEmpty) {
+                            return currentListView = SliverList.list(
+                              children: [
+                                Center(
+                                  child: Text(
+                                    'No restaurants found',
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 25,
+                                ),
+                                Center(
+                                  child: Text(
+                                    "We couldn't find restaurants in your area\n",
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
                             final sortedRestaurants = buildList(context)
                               ..sort(
                                 (a, b) => RestaurantsUtils.sortByDistance(context.currentLocation!, a, b),
@@ -332,32 +358,6 @@ class _RestaurantsFoundBodyState extends State<RestaurantsFoundBody> {
                                   },
                                 );
                               },
-                            );
-                          } else {
-                            return currentListView = SliverList.list(
-                              children: [
-                                Center(
-                                  child: Text(
-                                    'No restaurants found',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 25,
-                                ),
-                                Center(
-                                  child: Text(
-                                    "We couldn't find restaurants in your area\n",
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                ),
-                              ],
                             );
                           }
                         }
