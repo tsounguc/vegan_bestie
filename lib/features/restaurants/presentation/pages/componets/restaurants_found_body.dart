@@ -41,7 +41,7 @@ class RestaurantsFoundBody extends StatefulWidget {
 }
 
 class _RestaurantsFoundBodyState extends State<RestaurantsFoundBody> {
-  final _scrollThreshold = 0.75;
+  final _scrollThreshold = 0.65;
 
   Widget mapView = const LoadingPage();
 
@@ -200,9 +200,6 @@ class _RestaurantsFoundBodyState extends State<RestaurantsFoundBody> {
                                                     : Colors.grey.shade400),
                                           ),
                                           backgroundColor: context.theme.cardTheme.color,
-                                          // color: selectedCategories.contains(category)
-                                          //     ? MaterialStatePropertyAll(context.theme.primaryColor.withOpacity(0.2))
-                                          //     : MaterialStatePropertyAll(context.theme.cardColor),
                                           onSelected: (selected) {
                                             setState(() {
                                               if (selected) {
