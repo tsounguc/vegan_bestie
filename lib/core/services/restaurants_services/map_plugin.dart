@@ -6,13 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:sheveegan/core/resources/media_resources.dart';
-import 'package:sheveegan/features/restaurants/data/models/map_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
-import 'package:sheveegan/features/restaurants/presentation/pages/restaurant_details_page.dart';
 import 'package:sheveegan/themes/app_theme.dart';
 
 class GoogleMapPlugin {
-  Future<MapModel> getRestaurantsMarkers({
+  Future<Set<Marker>> getRestaurantsMarkers({
     required List<Restaurant> restaurants,
   }) async {
     final restaurantsMarkers = <Marker>{};
@@ -54,7 +52,7 @@ class GoogleMapPlugin {
         ),
       );
     }
-    return MapModel(markers: restaurantsMarkers);
+    return restaurantsMarkers;
   }
 
   Future<Uint8List?> getBytesFromAsset(

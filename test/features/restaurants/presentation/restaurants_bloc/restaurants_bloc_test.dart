@@ -1,139 +1,151 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
+import 'package:sheveegan/features/restaurants/domain/entities/restaurant_submit.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant.dart';
-import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant_review.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant_review.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant_submission.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/edit_restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/get_saved_restaurants.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
-import 'package:sheveegan/features/restaurants/presentation/restaurants_bloc/restaurants_bloc.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/save_restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/submit_restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/unsave_restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/update_restaurant.dart';
+import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 
 class MockAddRestaurant extends Mock implements AddRestaurant {}
 
+class MockUpdateRestaurant extends Mock implements UpdateRestaurant {}
+
+class MockSubmitRestaurant extends Mock implements SubmitRestaurant {}
+
 class MockGetRestaurantsNearMe extends Mock implements GetRestaurantsNearMe {}
 
-// class MockGetRestaurantDetails extends Mock implements GetRestaurantDetails {}
+class MockDeleteRestaurantSubmission extends Mock implements DeleteRestaurantSubmission {}
+
+class MockAddRestaurantReview extends Mock implements AddRestaurantReview {}
+
+class MockDeleteRestaurantReview extends Mock implements DeleteRestaurantReview {}
+
+class MockEditRestaurantReview extends Mock implements EditRestaurantReview {}
+
+class MockSaveRestaurant extends Mock implements SaveRestaurant {}
+
+class MockGetSavedRestaurants extends Mock implements GetSavedRestaurants {}
+
+class MockUnSaveRestaurant extends Mock implements UnSaveRestaurant {}
 
 class MockGetUserLocation extends Mock implements GetUserLocation {}
 
-class MockGetRestaurantsMarkers extends Mock implements GetRestaurantsMarkers {}
-
-// class MockGetSavedRestaurantsList extends Mock implements GetSavedRestaurantsList {}
-
-// class MockSaveRestaurant extends Mock implements SaveRestaurant {}
-
-// class MockRemoveRestaurant extends Mock implements RemoveRestaurant {}
-
-// class MockAddRestaurantReview extends Mock implements AddRestaurantReview {}
-
-// class MockGetRestaurantReviews extends Mock implements GetRestaurantReviews {}
-
-// class MockDeleteRestaurantReview extends Mock implements DeleteRestaurantReview {}
-
-// class MockEditRestaurantReview extends Mock implements EditRestaurantReview {}
-
 void main() {
-  late GetRestaurantsNearMe getRestaurantsNearMe;
   late AddRestaurant addRestaurant;
-  // late GetRestaurantDetails getRestaurantDetails;
-  late GetUserLocation getUserLocation;
-  late GetRestaurantsMarkers getRestaurantsMarkers;
-  // late DeleteRestaurantReview deleteRestaurantReview;
-  late RestaurantsBloc bloc;
+  late UpdateRestaurant updateRestaurant;
+  late SubmitRestaurant submitRestaurant;
+  late DeleteRestaurantSubmission deleteRestaurantSubmission;
+  late GetRestaurantsNearMe getRestaurantsNearMe;
+  late AddRestaurantReview addRestaurantReview;
+  late DeleteRestaurantReview deleteRestaurantReview;
+  late EditRestaurantReview editRestaurantReview;
+  late SaveRestaurant saveRestaurant;
+  late UnSaveRestaurant unSaveRestaurant;
+  late GetSavedRestaurants getSavedRestaurants;
+  late RestaurantsCubit cubit;
   late GetRestaurantsNearMeParams testGetRestaurantsParams;
-  // late GetRestaurantDetailsParams testGetRestaurantDetailsParams;
-  late GetRestaurantsMarkersParams testGetRestaurantsMarkersParams;
+  late UpdateRestaurantParams testUpdateRestaurantParams;
 
   late RestaurantsFailure testRestaurantsFailure;
-  late RestaurantDetailsFailure testRestaurantDetailsFailure;
-  late UserLocationFailure testUserLocationFailure;
-  late MapFailure testMapFailure;
+  late AddRestaurantReviewFailure testAddReviewFailure;
   late Restaurant testRestaurant;
+  late RestaurantSubmit testRestaurantSubmit;
+  late RestaurantReview testRestaurantReview;
+  late List<String> testRestaurantsIdsList;
 
   setUp(() {
     addRestaurant = MockAddRestaurant();
+    updateRestaurant = MockUpdateRestaurant();
+    submitRestaurant = MockSubmitRestaurant();
+    deleteRestaurantSubmission = MockDeleteRestaurantSubmission();
     getRestaurantsNearMe = MockGetRestaurantsNearMe();
-    // getRestaurantDetails = MockGetRestaurantDetails();
-    getUserLocation = MockGetUserLocation();
-    getRestaurantsMarkers = MockGetRestaurantsMarkers();
-    // deleteRestaurantReview = MockDeleteRestaurantReview();
-    bloc = RestaurantsBloc(
-      getRestaurantsNearMe: getRestaurantsNearMe,
-      // getRestaurantDetails: getRestaurantDetails,
-      getUserLocation: getUserLocation,
+    addRestaurantReview = MockAddRestaurantReview();
+    deleteRestaurantReview = MockDeleteRestaurantReview();
+    editRestaurantReview = MockEditRestaurantReview();
+    saveRestaurant = MockSaveRestaurant();
+    unSaveRestaurant = MockUnSaveRestaurant();
+    getSavedRestaurants = MockGetSavedRestaurants();
+    cubit = RestaurantsCubit(
       addRestaurant: addRestaurant,
-      getRestaurantsMarkers: getRestaurantsMarkers,
-      // getSavedRestaurantsList: MockGetSavedRestaurantsList(),
-      // saveRestaurant: MockSaveRestaurant(),
-      // removeRestaurant: MockRemoveRestaurant(),
-      // addRestaurantReview: MockAddRestaurantReview(),
-      // getRestaurantReviews: MockGetRestaurantReviews(),
-      // deleteRestaurantReview: MockDeleteRestaurantReview(),
-      // editRestaurantReview: MockEditRestaurantReview(),
+      updateRestaurant: updateRestaurant,
+      submitRestaurant: submitRestaurant,
+      deleteRestaurantSubmission: deleteRestaurantSubmission,
+      getRestaurantsNearMe: getRestaurantsNearMe,
+      addRestaurantReview: addRestaurantReview,
+      deleteRestaurantReview: deleteRestaurantReview,
+      editRestaurantReview: editRestaurantReview,
+      saveRestaurant: saveRestaurant,
+      getSavedRestaurants: getSavedRestaurants,
+      unSaveRestaurant: unSaveRestaurant,
     );
     testRestaurant = const Restaurant.empty();
+    testRestaurantSubmit = RestaurantSubmit.empty();
+    testRestaurantReview = RestaurantReview.empty();
     testGetRestaurantsParams = GetRestaurantsNearMeParams.empty();
-    // testGetRestaurantDetailsParams = const GetRestaurantDetailsParams.empty();
-    testGetRestaurantsMarkersParams = GetRestaurantsMarkersParams.empty();
+    testUpdateRestaurantParams = UpdateRestaurantParams.empty();
+    testRestaurantsIdsList = [testRestaurant.id];
     testRestaurantsFailure = RestaurantsFailure(
       message: 'message',
       statusCode: 400,
     );
-
-    testRestaurantDetailsFailure = RestaurantDetailsFailure(
+    testAddReviewFailure = AddRestaurantReviewFailure(
       message: 'message',
-      statusCode: 400,
-    );
-
-    testUserLocationFailure = UserLocationFailure(
-      message: 'message',
-      statusCode: 400,
-    );
-
-    testMapFailure = MapFailure(
-      message: 'message',
-      statusCode: 500,
+      statusCode: '',
     );
     registerFallbackValue(testGetRestaurantsParams);
+    registerFallbackValue(testUpdateRestaurantParams);
     registerFallbackValue(testRestaurant);
+    registerFallbackValue(testRestaurantSubmit);
+    registerFallbackValue(testRestaurantReview);
+    registerFallbackValue(testRestaurantsIdsList);
   });
 
-  tearDown(() => bloc.close());
+  tearDown(() => cubit.close());
 
   test(
-      'given RestaurantsBloc '
+      'given RestaurantsCubit '
       'when bloc is instantiated '
       'then initial state should be [RestaurantsInitial]', () async {
     // Arrange
     // Act
     // Assert
-    expect(bloc.state, const RestaurantsInitial());
+    expect(cubit.state, const RestaurantsInitial());
   });
 
-  group('addRestaurants -', () {
-    blocTest<RestaurantsBloc, RestaurantsState>(
-      'given RestaurantsBloc '
-      'when [RestaurantsBloc.addRestaurants] is called'
+  group('addRestaurant -', () {
+    blocTest<RestaurantsCubit, RestaurantsState>(
+      'given RestaurantsCubit '
+      'when [RestaurantsCubit.addRestaurant] is called'
       ' and completed successfully '
       'then emit [AddingRestaurant, RestaurantsAdded]',
       build: () {
         when(() => addRestaurant(any())).thenAnswer(
           (_) async => const Right(null),
         );
-        return bloc;
+        return cubit;
       },
-      act: (bloc) => bloc.add(
-        AddRestaurantEvent(restaurant: testRestaurant),
-      ),
+      act: (cubit) => cubit.addRestaurant(testRestaurant),
       expect: () => [
         const AddingRestaurant(),
         const RestaurantAdded(),
       ],
-      verify: (bloc) {
+      verify: (cubit) {
         verify(
           () => addRestaurant(testRestaurant),
         ).called(1);
@@ -141,19 +153,17 @@ void main() {
       },
     );
 
-    blocTest<RestaurantsBloc, RestaurantsState>(
-      'given RestaurantsBloc '
-      'when [RestaurantsBloc.addRestaurant] is called and unsuccessful '
+    blocTest<RestaurantsCubit, RestaurantsState>(
+      'given RestaurantsCubit '
+      'when [RestaurantsCubit.addRestaurant] is called and unsuccessful '
       'then emit [AddingRestaurant, RestaurantsError]',
       build: () {
         when(() => addRestaurant(any())).thenAnswer(
           (_) async => Left(testRestaurantsFailure),
         );
-        return bloc;
+        return cubit;
       },
-      act: (bloc) => bloc.add(
-        AddRestaurantEvent(restaurant: testRestaurant),
-      ),
+      act: (cubit) => cubit.addRestaurant(testRestaurant),
       expect: () => [
         const AddingRestaurant(),
         RestaurantsError(message: testRestaurantsFailure.errorMessage),
@@ -167,30 +177,184 @@ void main() {
     );
   });
 
-  group('getRestaurantsNearMe -', () {
+  group('updateRestaurant - ', () {
+    blocTest<RestaurantsCubit, RestaurantsState>(
+        'given RestaurantCubit '
+        'when [RestaurantsCubit.updateRestaurant] is called '
+        'and completed successfully '
+        'then emit [UpdatingRestaurant, RestaurantUpdated]',
+        build: () {
+          when(() => updateRestaurant(any())).thenAnswer(
+            (_) async => const Right(null),
+          );
+          return cubit;
+        },
+        act: (cubit) => cubit.updateRestaurant(
+              action: testUpdateRestaurantParams.action,
+              restaurantData: testUpdateRestaurantParams.restaurantData,
+              restaurant: testUpdateRestaurantParams.restaurant,
+            ),
+        expect: () => [
+              const UpdatingRestaurant(),
+              const RestaurantUpdated(),
+            ],
+        verify: (cubit) {
+          verify(
+            () => updateRestaurant(testUpdateRestaurantParams),
+          ).called(1);
+          verifyNoMoreInteractions(updateRestaurant);
+        });
+
+    blocTest<RestaurantsCubit, RestaurantsState>(
+        'given RestaurantCubit '
+        'when [RestaurantsCubit.updateRestaurant] is called unsuccessfully '
+        'then emit [UpdatingRestaurant, RestaurantsError]',
+        build: () {
+          when(() => updateRestaurant(any())).thenAnswer(
+            (_) async => Left(testRestaurantsFailure),
+          );
+          return cubit;
+        },
+        act: (cubit) => cubit.updateRestaurant(
+              action: testUpdateRestaurantParams.action,
+              restaurantData: testUpdateRestaurantParams.restaurantData,
+              restaurant: testUpdateRestaurantParams.restaurant,
+            ),
+        expect: () => [
+              const UpdatingRestaurant(),
+              RestaurantsError(message: testRestaurantsFailure.errorMessage),
+            ],
+        verify: (cubit) {
+          verify(
+            () => updateRestaurant(testUpdateRestaurantParams),
+          ).called(1);
+          verifyNoMoreInteractions(updateRestaurant);
+        });
+  });
+
+  group('submitRestaurant - ', () {
+    blocTest<RestaurantsCubit, RestaurantsState>(
+      'given RestaurantCubit '
+      'when [RestaurantsCubit.submitRestaurant] is called '
+      'and completed successfully '
+      'then emit [SubmittingRestaurant, RestaurantSubmitted]',
+      build: () {
+        when(() => submitRestaurant(any())).thenAnswer(
+          (_) async => const Right(null),
+        );
+        return cubit;
+      },
+      act: (cubit) => cubit.submitRestaurant(testRestaurantSubmit),
+      expect: () => [
+        const SubmittingRestaurant(),
+        const RestaurantSubmitted(),
+      ],
+      verify: (cubit) {
+        verify(
+          () => submitRestaurant(testRestaurantSubmit),
+        ).called(1);
+        verifyNoMoreInteractions(submitRestaurant);
+      },
+    );
+
+    blocTest<RestaurantsCubit, RestaurantsState>(
+        'given RestaurantCubit '
+        'when [RestaurantsCubit.updateRestaurant] is called unsuccessfully '
+        'then emit [UpdatingRestaurant, RestaurantsError]',
+        build: () {
+          when(() => submitRestaurant(any())).thenAnswer(
+            (_) async => Left(testRestaurantsFailure),
+          );
+          return cubit;
+        },
+        act: (cubit) => cubit.submitRestaurant(testRestaurantSubmit),
+        expect: () => [
+              const SubmittingRestaurant(),
+              RestaurantsError(message: testRestaurantsFailure.errorMessage),
+            ],
+        verify: (cubit) {
+          verify(
+            () => submitRestaurant(testRestaurantSubmit),
+          ).called(1);
+          verifyNoMoreInteractions(submitRestaurant);
+        });
+  });
+
+  group('deleteRestaurantSubmission - ', () {
+    blocTest<RestaurantsCubit, RestaurantsState>(
+      'given RestaurantCubit '
+      'when [RestaurantsCubit.deleteRestaurantSubmission] is called '
+      'and completed successfully '
+      'then emit [DeletingRestaurantSubmit, RestaurantSubmitDeleted]',
+      build: () {
+        when(() => deleteRestaurantSubmission(any())).thenAnswer(
+          (_) async => const Right(null),
+        );
+        return cubit;
+      },
+      act: (cubit) => cubit.deleteRestaurantSubmission(testRestaurantSubmit),
+      expect: () => [
+        const DeletingRestaurantSubmit(),
+        const RestaurantSubmitDeleted(),
+      ],
+      verify: (cubit) {
+        verify(
+          () => deleteRestaurantSubmission(testRestaurantSubmit),
+        ).called(1);
+        verifyNoMoreInteractions(deleteRestaurantSubmission);
+      },
+    );
+
+    blocTest<RestaurantsCubit, RestaurantsState>(
+        'given RestaurantCubit '
+        'when [RestaurantsCubit.deleteRestaurantSubmission] is called unsuccessfully '
+        'then emit [DeletingRestaurantSubmit, RestaurantsError]',
+        build: () {
+          when(() => deleteRestaurantSubmission(any())).thenAnswer(
+            (_) async => Left(testRestaurantsFailure),
+          );
+          return cubit;
+        },
+        act: (cubit) => cubit.deleteRestaurantSubmission(testRestaurantSubmit),
+        expect: () => [
+              const DeletingRestaurantSubmit(),
+              RestaurantsError(message: testRestaurantsFailure.errorMessage),
+            ],
+        verify: (cubit) {
+          verify(
+            () => deleteRestaurantSubmission(testRestaurantSubmit),
+          ).called(1);
+          verifyNoMoreInteractions(deleteRestaurantSubmission);
+        });
+  });
+
+  group('getRestaurants -', () {
     final testRestaurants = <Restaurant>[];
-    blocTest<RestaurantsBloc, RestaurantsState>(
-      'given RestaurantsBloc '
-      'when [RestaurantsBloc.getRestaurantsNearMe] is called'
+    final testMarkers = <Marker>{};
+    blocTest<RestaurantsCubit, RestaurantsState>(
+      'given RestaurantsCubit '
+      'when [RestaurantsCubit.getRestaurants] is called'
       ' and completed successfully '
       'then emit [LoadingRestaurants, RestaurantsLoaded]',
       build: () {
         when(() => getRestaurantsNearMe(any())).thenAnswer(
           (_) => Stream.value(Right(testRestaurants)),
         );
-        return bloc;
+        return cubit;
       },
-      act: (bloc) => bloc.add(
-        GetRestaurantsEvent(
-          position: testGetRestaurantsParams.position,
-          radius: testGetRestaurantsParams.radius,
-        ),
+      act: (cubit) => cubit.getRestaurants(
+        testGetRestaurantsParams.position,
+        testGetRestaurantsParams.radius,
       ),
       expect: () => [
         const LoadingRestaurants(),
-        RestaurantsLoaded(restaurants: testRestaurants),
+        RestaurantsLoaded(
+          restaurants: testRestaurants,
+          markers: testMarkers,
+          hasReachedEnd: true,
+        ),
       ],
-      verify: (bloc) {
+      verify: (cubit) {
         verify(
           () => getRestaurantsNearMe(testGetRestaurantsParams),
         ).called(1);
@@ -198,21 +362,19 @@ void main() {
       },
     );
 
-    blocTest<RestaurantsBloc, RestaurantsState>(
-      'given RestaurantsBloc '
-      'when [RestaurantsBloc.getRestaurantsNearMe] is called and unsuccessful '
+    blocTest<RestaurantsCubit, RestaurantsState>(
+      'given RestaurantsCubit '
+      'when [RestaurantsCubit.getRestaurants] is called and unsuccessful '
       'then emit [LoadingRestaurants, RestaurantsError]',
       build: () {
         when(() => getRestaurantsNearMe(any())).thenAnswer(
           (_) => Stream.value(Left(testRestaurantsFailure)),
         );
-        return bloc;
+        return cubit;
       },
-      act: (bloc) => bloc.add(
-        GetRestaurantsEvent(
-          position: testGetRestaurantsParams.position,
-          radius: testGetRestaurantsParams.radius,
-        ),
+      act: (cubit) => cubit.getRestaurants(
+        testGetRestaurantsParams.position,
+        testGetRestaurantsParams.radius,
       ),
       expect: () => [
         const LoadingRestaurants(),
@@ -227,163 +389,293 @@ void main() {
     );
   });
 
-  group('getUserLocation - ', () {
-    final testUserLocation = UserLocation.empty();
-    blocTest<RestaurantsBloc, RestaurantsState>(
-      'given RestaurantsBloc '
-      'when [RestaurantsBloc.getUserLocation] is called '
+  group('addRestaurantReview - ', () {
+    blocTest<RestaurantsCubit, RestaurantsState>(
+      'given RestaurantCubit '
+      'when [RestaurantsCubit.addRestaurantReview] is called '
       'and completed successfully '
-      'then emit [LoadingUserGeoLocation, UserLocationLoaded]',
+      'then emit [AddingRestaurantReview, RestaurantReviewAdded]',
       build: () {
-        when(() => getUserLocation()).thenAnswer(
-          (_) async => Right(testUserLocation),
+        when(() => addRestaurantReview(any())).thenAnswer(
+          (_) async => const Right(null),
         );
-        return bloc;
+        return cubit;
       },
-      act: (bloc) => bloc.add(const LoadGeolocationEvent()),
+      act: (cubit) => cubit.addRestaurantReview(testRestaurantReview),
       expect: () => [
-        const LoadingUserGeoLocation(),
-        UserLocationLoaded(position: testUserLocation.position),
-      ],
-      verify: (bloc) {
-        verify(() => getUserLocation()).called(1);
-        verifyNoMoreInteractions(getUserLocation);
-      },
-    );
-
-    blocTest<RestaurantsBloc, RestaurantsState>(
-      'given RestaurantsBloc '
-      'when [RestaurantsBloc.getUserLocation] is called and unsuccessful '
-      'then emit [LoadingUserGeoLocation, RestaurantsError]',
-      build: () {
-        when(() => getUserLocation()).thenAnswer(
-          (_) async => Left(testUserLocationFailure),
-        );
-        return bloc;
-      },
-      act: (bloc) => bloc.add(const LoadGeolocationEvent()),
-      expect: () => [
-        const LoadingUserGeoLocation(),
-        RestaurantsError(message: testUserLocationFailure.errorMessage),
-      ],
-      verify: (cubit) {
-        verify(() => getUserLocation()).called(1);
-        verifyNoMoreInteractions(getUserLocation);
-      },
-    );
-  });
-
-  group('getRestaurantsMarkers - ', () {
-    final testMapEntity = MapEntity.empty();
-    blocTest<RestaurantsBloc, RestaurantsState>(
-      'given RestaurantsBloc '
-      'when [RestaurantsBloc.getRestaurantsMarkers] is called '
-      'and completed successfully '
-      'then emit [LoadingMarkers, MarkersLoaded]',
-      build: () {
-        when(
-          () => getRestaurantsMarkers(testGetRestaurantsMarkersParams),
-        ).thenAnswer((_) async => Right(testMapEntity));
-        return bloc;
-      },
-      act: (bloc) => bloc.add(
-        GetRestaurantsMarkersEvent(
-          restaurants: testGetRestaurantsMarkersParams.restaurants,
-        ),
-      ),
-      expect: () => [
-        const LoadingMarkers(),
-        MarkersLoaded(markers: testMapEntity.markers),
-      ],
-      verify: (bloc) {
-        verify(
-          () => getRestaurantsMarkers(testGetRestaurantsMarkersParams),
-        ).called(1);
-        verifyNoMoreInteractions(getRestaurantsMarkers);
-      },
-    );
-
-    blocTest<RestaurantsBloc, RestaurantsState>(
-      'given RestaurantsBloc '
-      'when [RestaurantsBloc.getRestaurantsMarkers] is called and unsuccessful '
-      'then emit [LoadingMarkers, RestaurantsError]',
-      build: () {
-        when(
-          () => getRestaurantsMarkers(testGetRestaurantsMarkersParams),
-        ).thenAnswer(
-          (_) async => Left(testMapFailure),
-        );
-        return bloc;
-      },
-      act: (bloc) => bloc.add(
-        GetRestaurantsMarkersEvent(
-          restaurants: testGetRestaurantsMarkersParams.restaurants,
-        ),
-      ),
-      expect: () => [
-        const LoadingMarkers(),
-        RestaurantsError(message: testMapFailure.errorMessage),
+        const AddingRestaurantReview(),
+        const RestaurantReviewAdded(),
       ],
       verify: (cubit) {
         verify(
-          () => getRestaurantsMarkers(testGetRestaurantsMarkersParams),
+          () => addRestaurantReview(testRestaurantReview),
         ).called(1);
-        verifyNoMoreInteractions(getRestaurantsMarkers);
+        verifyNoMoreInteractions(addRestaurantReview);
       },
     );
+
+    blocTest<RestaurantsCubit, RestaurantsState>(
+        'given RestaurantCubit '
+        'when [RestaurantsCubit.addRestaurantReview] is called unsuccessfully '
+        'then emit [AddingRestaurantReview, RestaurantsError]',
+        build: () {
+          when(() => addRestaurantReview(any())).thenAnswer(
+            (_) async => Left(testAddReviewFailure),
+          );
+          return cubit;
+        },
+        act: (cubit) => cubit.addRestaurantReview(testRestaurantReview),
+        expect: () => [
+              const AddingRestaurantReview(),
+              RestaurantsError(message: testAddReviewFailure.message),
+            ],
+        verify: (cubit) {
+          verify(
+            () => addRestaurantReview(testRestaurantReview),
+          ).called(1);
+          verifyNoMoreInteractions(addRestaurantReview);
+        });
   });
 
-  // group('getRestaurantDetails -', () {
-  //   final testRestaurantDetails = RestaurantDetails.empty();
-  //   blocTest<RestaurantsBloc, RestaurantsState>(
-  //     'given RestaurantsBloc '
-  //     'when [RestaurantsBloc.getRestaurantDetails] is called '
-  //     'and completed successfully '
-  //     'then emit [LoadingRestaurantDetails, RestaurantDetailsLoaded]',
-  //     build: () {
-  //       when(
-  //         () => getRestaurantDetails(testGetRestaurantDetailsParams),
-  //       ).thenAnswer((_) async => Right(testRestaurantDetails));
-  //       return bloc;
-  //     },
-  //     act: (bloc) => bloc.add(
-  //       GetRestaurantDetailsEvent(id: testGetRestaurantDetailsParams.id),
-  //     ),
-  //     expect: () => [
-  //       const LoadingRestaurantDetails(),
-  //       RestaurantDetailsLoaded(restaurantDetails: testRestaurantDetails),
-  //     ],
-  //     verify: (bloc) {
-  //       verify(
-  //         () => getRestaurantDetails(testGetRestaurantDetailsParams),
-  //       ).called(1);
-  //       verifyNoMoreInteractions(getRestaurantDetails);
-  //     },
-  //   );
-  //
-  //   blocTest<RestaurantsBloc, RestaurantsState>(
-  //     'given RestaurantsBloc '
-  //     'when [RestaurantsBloc.getRestaurantDetails] is called and unsuccessful '
-  //     'then emit [LoadingRestaurantDetails, RestaurantsError]',
-  //     build: () {
-  //       when(
-  //         () => getRestaurantDetails(testGetRestaurantDetailsParams),
-  //       ).thenAnswer((_) async => Left(testRestaurantDetailsFailure));
-  //       return bloc;
-  //     },
-  //     act: (bloc) => bloc.add(
-  //       GetRestaurantDetailsEvent(id: testGetRestaurantDetailsParams.id),
-  //     ),
-  //     expect: () => [
-  //       const LoadingRestaurantDetails(),
-  //       RestaurantsError(message: testRestaurantsFailure.errorMessage),
-  //     ],
-  //     verify: (cubit) {
-  //       verify(
-  //         () => getRestaurantDetails(testGetRestaurantDetailsParams),
-  //       ).called(1);
-  //       verifyNoMoreInteractions(getRestaurantDetails);
-  //     },
-  //   );
-  // });
+  group('deleteRestaurantReview - ', () {
+    blocTest<RestaurantsCubit, RestaurantsState>(
+      'given RestaurantCubit '
+      'when [RestaurantsCubit.deleteRestaurantReview] is called '
+      'and completed successfully '
+      'then emit [DeletingRestaurantReview, RestaurantReviewDeleted]',
+      build: () {
+        when(() => deleteRestaurantReview(any())).thenAnswer(
+          (_) async => const Right(null),
+        );
+        return cubit;
+      },
+      act: (cubit) => cubit.deleteReview(testRestaurantReview),
+      expect: () => [
+        const DeletingRestaurantReview(),
+        const RestaurantReviewDeleted(),
+      ],
+      verify: (cubit) {
+        verify(
+          () => deleteRestaurantReview(testRestaurantReview),
+        ).called(1);
+        verifyNoMoreInteractions(deleteRestaurantReview);
+      },
+    );
+
+    blocTest<RestaurantsCubit, RestaurantsState>(
+        'given RestaurantCubit '
+        'when [RestaurantsCubit.deleteRestaurantReview] is called unsuccessfully '
+        'then emit [DeletingRestaurantReview, RestaurantsError]',
+        build: () {
+          when(() => deleteRestaurantReview(any())).thenAnswer(
+            (_) async => Left(testRestaurantsFailure),
+          );
+          return cubit;
+        },
+        act: (cubit) => cubit.deleteReview(testRestaurantReview),
+        expect: () => [
+              const DeletingRestaurantReview(),
+              RestaurantsError(message: testRestaurantsFailure.message),
+            ],
+        verify: (cubit) {
+          verify(
+            () => deleteRestaurantReview(testRestaurantReview),
+          ).called(1);
+          verifyNoMoreInteractions(deleteRestaurantReview);
+        });
+  });
+
+  group('editRestaurantReview - ', () {
+    final testReviewModel = RestaurantReviewModel.empty();
+    blocTest<RestaurantsCubit, RestaurantsState>(
+      'given RestaurantCubit '
+      'when [RestaurantsCubit.editRestaurantReview] is called '
+      'and completed successfully '
+      'then emit [EditingRestaurantReview, RestaurantReviewEdited]',
+      build: () {
+        when(() => editRestaurantReview(any())).thenAnswer(
+          (_) async => const Right(null),
+        );
+        return cubit;
+      },
+      act: (cubit) => cubit.editRestaurantReview(review: testReviewModel),
+      expect: () => [
+        const EditingRestaurantReview(),
+        const RestaurantReviewEdited(),
+      ],
+      verify: (cubit) {
+        verify(
+          () => editRestaurantReview(testReviewModel),
+        ).called(1);
+        verifyNoMoreInteractions(editRestaurantReview);
+      },
+    );
+
+    blocTest<RestaurantsCubit, RestaurantsState>(
+        'given RestaurantCubit '
+        'when [RestaurantsCubit.editRestaurantReview] is called unsuccessfully '
+        'then emit [EditingRestaurantReview, RestaurantsError]',
+        build: () {
+          when(() => editRestaurantReview(any())).thenAnswer(
+            (_) async => Left(testRestaurantsFailure),
+          );
+          return cubit;
+        },
+        act: (cubit) => cubit.editRestaurantReview(review: testReviewModel),
+        expect: () => [
+              const EditingRestaurantReview(),
+              RestaurantsError(message: testRestaurantsFailure.message),
+            ],
+        verify: (cubit) {
+          verify(
+            () => editRestaurantReview(testReviewModel),
+          ).called(1);
+          verifyNoMoreInteractions(editRestaurantReview);
+        });
+  });
+
+  group('saveRestaurant - ', () {
+    blocTest<RestaurantsCubit, RestaurantsState>(
+      'given RestaurantCubit '
+      'when [RestaurantsCubit.saveRestaurant] is called '
+      'and completed successfully '
+      'then emit [SavingRestaurant, RestaurantSaved]',
+      build: () {
+        when(() => saveRestaurant(any())).thenAnswer(
+          (_) async => const Right(null),
+        );
+        return cubit;
+      },
+      act: (cubit) => cubit.saveRestaurant(testRestaurant),
+      expect: () => [
+        const SavingRestaurant(),
+        const RestaurantSaved(),
+      ],
+      verify: (cubit) {
+        verify(
+          () => saveRestaurant(testRestaurant.id),
+        ).called(1);
+        verifyNoMoreInteractions(saveRestaurant);
+      },
+    );
+
+    blocTest<RestaurantsCubit, RestaurantsState>(
+        'given RestaurantCubit '
+        'when [RestaurantsCubit.saveRestaurant] is called unsuccessfully '
+        'then emit [SavingRestaurant, RestaurantsError]',
+        build: () {
+          when(() => saveRestaurant(any())).thenAnswer(
+            (_) async => Left(testRestaurantsFailure),
+          );
+          return cubit;
+        },
+        act: (cubit) => cubit.saveRestaurant(testRestaurant),
+        expect: () => [
+              const SavingRestaurant(),
+              RestaurantsError(message: testRestaurantsFailure.message),
+            ],
+        verify: (cubit) {
+          verify(
+            () => saveRestaurant(testRestaurant.id),
+          ).called(1);
+          verifyNoMoreInteractions(saveRestaurant);
+        });
+  });
+
+  group('unSaveRestaurant - ', () {
+    blocTest<RestaurantsCubit, RestaurantsState>(
+      'given RestaurantCubit '
+      'when [RestaurantsCubit.unSaveRestaurant] is called '
+      'and completed successfully '
+      'then emit [UnSavingRestaurant, RestaurantUnSaved]',
+      build: () {
+        when(() => unSaveRestaurant(any())).thenAnswer(
+          (_) async => const Right(null),
+        );
+        return cubit;
+      },
+      act: (cubit) => cubit.unSaveRestaurant(restaurant: testRestaurant),
+      expect: () => [
+        const UnSavingRestaurant(),
+        const RestaurantUnSaved(),
+      ],
+      verify: (cubit) {
+        verify(
+          () => unSaveRestaurant(testRestaurant.id),
+        ).called(1);
+        verifyNoMoreInteractions(unSaveRestaurant);
+      },
+    );
+
+    blocTest<RestaurantsCubit, RestaurantsState>(
+        'given RestaurantCubit '
+        'when [RestaurantsCubit.unSaveRestaurant] is called unsuccessfully '
+        'then emit [UnSavingRestaurant, RestaurantsError]',
+        build: () {
+          when(() => unSaveRestaurant(any())).thenAnswer(
+            (_) async => Left(testRestaurantsFailure),
+          );
+          return cubit;
+        },
+        act: (cubit) => cubit.unSaveRestaurant(restaurant: testRestaurant),
+        expect: () => [
+              const UnSavingRestaurant(),
+              RestaurantsError(message: testRestaurantsFailure.message),
+            ],
+        verify: (cubit) {
+          verify(
+            () => unSaveRestaurant(testRestaurant.id),
+          ).called(1);
+          verifyNoMoreInteractions(unSaveRestaurant);
+        });
+  });
+
+  group('getSavedRestaurants - ', () {
+    final testSavedRestaurants = [Restaurant.empty()];
+    blocTest<RestaurantsCubit, RestaurantsState>(
+      'given RestaurantCubit '
+      'when [RestaurantsCubit.getSavedRestaurants] is called '
+      'and completed successfully '
+      'then emit [FetchingSavedRestaurantsList, SavedRestaurantsListFetched]',
+      build: () {
+        when(() => getSavedRestaurants(any())).thenAnswer(
+          (_) async => Right(testSavedRestaurants),
+        );
+        return cubit;
+      },
+      act: (cubit) => cubit.getSavedRestaurants(testRestaurantsIdsList),
+      expect: () => [
+        const FetchingSavedRestaurantsList(),
+        SavedRestaurantsListFetched(savedRestaurantsList: testSavedRestaurants),
+      ],
+      verify: (cubit) {
+        verify(
+          () => getSavedRestaurants(testRestaurantsIdsList),
+        ).called(1);
+        verifyNoMoreInteractions(getSavedRestaurants);
+      },
+    );
+
+    blocTest<RestaurantsCubit, RestaurantsState>(
+        'given RestaurantCubit '
+        'when [RestaurantsCubit.unSaveRestaurant] is called unsuccessfully '
+        'then emit [UnSavingRestaurant, RestaurantsError]',
+        build: () {
+          when(() => getSavedRestaurants(any())).thenAnswer(
+            (_) async => Left(testRestaurantsFailure),
+          );
+          return cubit;
+        },
+        act: (cubit) => cubit.getSavedRestaurants(testRestaurantsIdsList),
+        expect: () => [
+              const FetchingSavedRestaurantsList(),
+              RestaurantsError(message: testRestaurantsFailure.message),
+            ],
+        verify: (cubit) {
+          verify(
+            () => getSavedRestaurants(testRestaurantsIdsList),
+          ).called(1);
+          verifyNoMoreInteractions(getSavedRestaurants);
+        });
+  });
 }

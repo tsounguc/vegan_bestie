@@ -11,7 +11,7 @@ class UpdateRestaurant extends UseCaseWithParams<void, UpdateRestaurantParams> {
   final RestaurantsRepository _repository;
 
   @override
-  ResultFuture<void> call(UpdateRestaurantParams params) => _repository.updateRestaurant(
+  ResultVoid call(UpdateRestaurantParams params) => _repository.updateRestaurant(
         restaurant: params.restaurant,
         restaurantData: params.restaurantData,
         action: params.action,
@@ -24,6 +24,13 @@ class UpdateRestaurantParams extends Equatable {
     required this.restaurantData,
     required this.restaurant,
   });
+
+  UpdateRestaurantParams.empty()
+      : this(
+          action: UpdateRestaurantInfoAction.name,
+          restaurantData: 'empty.name',
+          restaurant: const Restaurant.empty(),
+        );
 
   final UpdateRestaurantInfoAction action;
   final dynamic restaurantData;

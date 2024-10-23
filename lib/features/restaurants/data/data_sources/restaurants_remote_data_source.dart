@@ -16,7 +16,6 @@ import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_submit_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/user_location_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_submit.dart';
@@ -62,8 +61,6 @@ abstract class RestaurantsRemoteDataSource {
   Future<void> editRestaurantReview(RestaurantReview restaurantReview);
 
   Future<void> deleteRestaurantReview(RestaurantReview restaurantReview);
-
-  Future<MapEntity> getRestaurantsMarkers({required List<Restaurant> restaurants});
 
   Future<List<RestaurantModel>> getSavedRestaurants({
     required List<String> restaurantsIdsList,
@@ -526,20 +523,6 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
     } catch (e, stackTrace) {
       debugPrint(stackTrace.toString());
       throw UserLocationException(message: e.toString());
-    }
-  }
-
-  @override
-  Future<MapEntity> getRestaurantsMarkers({required List<Restaurant> restaurants}) async {
-    try {
-      final results = await _googleMap.getRestaurantsMarkers(restaurants: restaurants);
-      return results;
-    } on MapException catch (e, stackTrace) {
-      debugPrint(stackTrace.toString());
-      rethrow;
-    } catch (e, stackTrace) {
-      debugPrint(stackTrace.toString());
-      throw MapException(message: e.toString());
     }
   }
 

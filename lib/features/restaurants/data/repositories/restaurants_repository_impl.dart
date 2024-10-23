@@ -9,7 +9,6 @@ import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/core/utils/typedefs.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/map_entity.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_submit.dart';
@@ -109,16 +108,6 @@ class RestaurantsRepositoryImpl implements RestaurantsRepository {
       return Right(result);
     } on UserLocationException catch (e) {
       return Left(UserLocationFailure.fromException(e));
-    }
-  }
-
-  @override
-  ResultFuture<MapEntity> getRestaurantsMarkers({required List<Restaurant> restaurants}) async {
-    try {
-      final result = await _remoteDataSource.getRestaurantsMarkers(restaurants: restaurants);
-      return Right(result);
-    } on MapException catch (e) {
-      return Left(MapFailure.fromException(e));
     }
   }
 

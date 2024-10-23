@@ -14,7 +14,6 @@ import 'package:sheveegan/core/services/restaurants_services/location_plugin.dar
 import 'package:sheveegan/core/services/restaurants_services/map_plugin.dart';
 import 'package:sheveegan/core/utils/firebase_constants.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
-import 'package:sheveegan/features/restaurants/data/models/map_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/user_location_model.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
@@ -49,7 +48,6 @@ Future<void> main() async {
 
   const testRadius = 5.0;
   const testRestaurant = RestaurantModel.empty();
-  final testMapModel = MapModel.empty();
   final testUserLocation = UserLocationModel.empty();
   setUp(() async {
     firestore = FakeFirebaseFirestore();
@@ -146,7 +144,7 @@ Future<void> main() async {
     test(
       'given RestaurantRemoteDataSourceImpl '
       'when [RestaurantRemoteDataSourceImpl.getRestaurantsNearMe] is called '
-      'then return a List<Restaurant> ',
+      'then return a [Stream<List<Restaurant>>]',
       () async {
         // Arrange
         when(
@@ -161,11 +159,7 @@ Future<void> main() async {
         ];
 
         for (final restaurant in expectedRestaurants) {
-          await firestore
-              .collection(FirebaseConstants.businessesCollection)
-              .doc(FirebaseConstants.restaurantsCollection)
-              .collection('In Washington'.camelCase())
-              .add(restaurant.toMap());
+          await firestore.collection(FirebaseConstants.restaurantsCollection).add(restaurant.toMap());
         }
 
         // Act
@@ -175,61 +169,9 @@ Future<void> main() async {
         );
 
         // Assert
-        expect(result, emits([equals(expectedRestaurants)]));
+        expect(result, emitsInOrder([equals(expectedRestaurants.reversed)]));
       },
     );
-  });
-
-  group('getRestaurantsMarkers ', () {
-    test(
-      'given RestaurantRemoteDataSourceImpl '
-      'when [RestaurantRemoteDataSourceImpl.getRestaurantsMarkers] is called '
-      'then return a [MapEntity] ',
-      () async {
-        // Arrange
-        when(
-          () => googleMap.getRestaurantsMarkers(restaurants: any(named: 'restaurants')),
-        ).thenAnswer((_) async => testMapModel);
-
-        // Act
-        final result = await remoteDataSource.getRestaurantsMarkers(restaurants: [testRestaurant]);
-
-        // Assert
-        expect(result, testMapModel);
-
-        verify(
-          () => googleMap.getRestaurantsMarkers(
-            restaurants: any(named: 'restaurants'),
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(googleMap);
-      },
-    );
-
-    test(
-        'given RestaurantRemoteDataSourceImpl '
-        'when [RestaurantRemoteDataSourceImpl.getRestaurantsMarkers] call is unsuccessful '
-        'then throw [MapException]', () async {
-      // Arrange
-      when(
-        () => googleMap.getRestaurantsMarkers(restaurants: any(named: 'restaurants')),
-      ).thenThrow((_) async => const MapException(message: 'message'));
-      // Act
-      final methodCall = remoteDataSource.getRestaurantsMarkers;
-
-      // Assert
-      expect(
-        () async => methodCall(restaurants: [testRestaurant]),
-        throwsA(isA<MapException>()),
-      );
-
-      verify(
-        () => googleMap.getRestaurantsMarkers(
-          restaurants: any(named: 'restaurants'),
-        ),
-      ).called(1);
-      verifyNoMoreInteractions(googleMap);
-    });
   });
 
   group('getUserLocation', () {

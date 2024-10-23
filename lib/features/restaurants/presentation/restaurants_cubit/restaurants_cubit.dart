@@ -19,10 +19,8 @@ import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant_re
 import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/delete_restaurant_submission.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/edit_restaurant_review.dart';
-import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_markers.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_restaurants_near_me.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/get_saved_restaurants.dart';
-import 'package:sheveegan/features/restaurants/domain/usecases/get_user_location.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/save_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/submit_restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/usecases/unsave_restaurant.dart';
@@ -172,10 +170,9 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
               _restaurantsList = state is RestaurantsLoaded
                   ? (state as RestaurantsLoaded).restaurants + restaurants
                   : restaurants;
-              final markersResult = await serviceLocator<GoogleMapPlugin>().getRestaurantsMarkers(
+              _markers = await serviceLocator<GoogleMapPlugin>().getRestaurantsMarkers(
                 restaurants: _restaurantsList,
               );
-              _markers = markersResult.markers;
               emit(
                 RestaurantsLoaded(
                   restaurants: _restaurantsList,
@@ -229,10 +226,9 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
             if (restaurants.isEmpty) {
               debugPrint('Load more RestaurantsList empty. lastRestaurant: ${lastRestaurant?.name}');
               hasReachedEnd = restaurants.length < paginationSize;
-              final markersResult = await serviceLocator<GoogleMapPlugin>().getRestaurantsMarkers(
+              _markers = await serviceLocator<GoogleMapPlugin>().getRestaurantsMarkers(
                 restaurants: currentState.restaurants,
               );
-              _markers = markersResult.markers;
               emit(
                 RestaurantsLoaded(
                   restaurants: currentState.restaurants,
@@ -244,10 +240,9 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
               debugPrint('Load more RestaurantsList not empty lastRestaurant: ${lastRestaurant?.name}');
               hasReachedEnd = restaurants.length < paginationSize;
               _restaurantsList = currentState.restaurants + restaurants;
-              final markersResult = await serviceLocator<GoogleMapPlugin>().getRestaurantsMarkers(
+              _markers = await serviceLocator<GoogleMapPlugin>().getRestaurantsMarkers(
                 restaurants: currentState.restaurants + restaurants,
               );
-              _markers = markersResult.markers;
               emit(
                 RestaurantsLoaded(
                   restaurants: _restaurantsList,
@@ -268,22 +263,7 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
         subscription?.cancel();
       },
     );
-    // if (hasReachedEnd) return;
-    // if (state is RestaurantsLoaded) {
-    //   getRestaurants(position, radius);
-    // }
   }
-
-  // Future<void> loadGeoLocation() async {
-  //   emit(const LoadingUserGeoLocation());
-  //   final result = await _getUserLocation();
-  //   result.fold(
-  //     (failure) => emit(RestaurantsError(message: failure.errorMessage)),
-  //     (userLocation) => emit(
-  //       UserLocationLoaded(position: userLocation.position),
-  //     ),
-  //   );
-  // }
 
   Future<void> addRestaurantReview(RestaurantReview restaurantReview) async {
     emit(const AddingRestaurantReview());
@@ -325,7 +305,7 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     emit(const SavingRestaurant());
     final result = await _saveRestaurant(restaurant.id);
     result.fold(
-      (failure) => RestaurantsError(message: failure.message),
+      (failure) => emit(RestaurantsError(message: failure.message)),
       (success) => emit(
         const RestaurantSaved(),
       ),
@@ -336,7 +316,7 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
     emit(const UnSavingRestaurant());
     final result = await _unSaveRestaurant(restaurant.id);
     result.fold(
-      (failure) => RestaurantsError(message: failure.message),
+      (failure) => emit(RestaurantsError(message: failure.message)),
       (success) => emit(
         const RestaurantUnSaved(),
       ),
@@ -349,7 +329,7 @@ class RestaurantsCubit extends Cubit<RestaurantsState> {
 
     result.fold(
       (failure) => emit(
-        RestaurantsError(message: failure.errorMessage),
+        RestaurantsError(message: failure.message),
       ),
       (savedRestaurantsList) => emit(
         SavedRestaurantsListFetched(

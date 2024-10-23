@@ -157,11 +157,6 @@ Future<void> _initRestaurants() async {
       ),
     )
     ..registerFactory(
-      () => MapCubit(
-        getRestaurantsMarkers: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
       () => SearchRestaurantsCubit(
         searchRestaurants: serviceLocator(),
       ),
@@ -171,14 +166,11 @@ Future<void> _initRestaurants() async {
     ..registerLazySingleton(() => SubmitRestaurant(serviceLocator()))
     ..registerLazySingleton(() => GetRestaurantsNearMe(serviceLocator()))
     ..registerLazySingleton(() => UpdateRestaurant(serviceLocator()))
-    // ..registerLazySingleton(() => GetRestaurantDetails(serviceLocator()))
     ..registerLazySingleton(() => GetUserLocation(serviceLocator()))
-    ..registerLazySingleton(() => GetRestaurantsMarkers(serviceLocator()))
     ..registerLazySingleton(() => SaveRestaurant(serviceLocator()))
     ..registerLazySingleton(() => UnSaveRestaurant(serviceLocator()))
     ..registerLazySingleton(() => GetSavedRestaurants(serviceLocator()))
     ..registerLazySingleton(() => AddRestaurantReview(serviceLocator()))
-    // ..registerLazySingleton(() => GetRestaurantReviews(serviceLocator()))
     ..registerLazySingleton(() => DeleteRestaurantReview(serviceLocator()))
     ..registerLazySingleton(() => DeleteRestaurantSubmission(serviceLocator()))
     ..registerLazySingleton(() => EditRestaurantReview(serviceLocator()))
@@ -196,7 +188,6 @@ Future<void> _initRestaurants() async {
         serviceLocator(),
         serviceLocator(),
         serviceLocator(),
-        // serviceLocator(),
       ),
     )
     // External dependencies

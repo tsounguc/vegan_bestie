@@ -40,9 +40,6 @@ class AppRouter {
                     create: (_) => serviceLocator<UserLocationCubit>(),
                   ),
                   BlocProvider(
-                    create: (_) => serviceLocator<MapCubit>(),
-                  ),
-                  BlocProvider(
                     create: (_) => serviceLocator<FoodProductCubit>(),
                   ),
                   BlocProvider.value(

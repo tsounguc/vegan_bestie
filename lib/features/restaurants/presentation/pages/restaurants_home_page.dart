@@ -6,7 +6,6 @@ import 'package:sheveegan/core/common/screens/error/error.dart';
 import 'package:sheveegan/core/common/screens/loading/loading.dart';
 import 'package:sheveegan/core/extensions/context_extension.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
-import 'package:sheveegan/features/restaurants/presentation/map_cubit/map_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/pages/componets/restaurants_found_body.dart';
 import 'package:sheveegan/features/restaurants/presentation/restaurants_cubit/restaurants_cubit.dart';
 import 'package:sheveegan/features/restaurants/presentation/user_location_cubit/user_location_cubit.dart';
@@ -34,14 +33,6 @@ class RestaurantsHomePage extends StatelessWidget {
             if (state is SavedRestaurantsListFetched) {
               debugPrint('SavedRestaurantsListFetched');
               context.savedRestaurantsProvider.savedRestaurantsList = state.savedRestaurantsList;
-            }
-          },
-        ),
-        BlocListener<MapCubit, MapState>(
-          listener: (context, state) {
-            if (state is MarkersLoaded) {
-              debugPrint('MarkersLoaded');
-              context.restaurantsNearMeProvider.markers = state.markers;
             }
           },
         ),
