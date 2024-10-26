@@ -4,17 +4,17 @@ import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
-import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/unsave_restaurant.dart';
 
 import 'restaurants_repository.mock.dart';
 
 void main() {
   late RestaurantsRepository repository;
-  late AddRestaurant useCase;
+  late UnSaveRestaurant useCase;
   const testRestaurant = Restaurant.empty();
   setUp(() {
     repository = MockRestaurantsRepository();
-    useCase = AddRestaurant(repository);
+    useCase = UnSaveRestaurant(repository);
     registerFallbackValue(testRestaurant);
   });
 
@@ -24,42 +24,46 @@ void main() {
   );
 
   test(
-    'given the AddRestaurant use case '
+    'given the UnSaveRestaurant use case '
     'when instantiated '
-    'then call [RestaurantsRepository.addRestaurant] '
+    'then call [RestaurantsRepository.unSaveRestaurant] '
     'and return [void]',
     () async {
       // Arrange
       when(
-        () => repository.addRestaurant(restaurant: testRestaurant),
+        () => repository.unSaveRestaurant(
+          restaurantId: any(named: 'restaurantId'),
+        ),
       ).thenAnswer((_) async => const Right(null));
       // Act
-      final result = await useCase(testRestaurant);
+      final result = await useCase(testRestaurant.id);
       // Assert
       expect(result, equals(const Right<Failure, void>(null)));
       verify(
-        () => repository.addRestaurant(restaurant: testRestaurant),
+        () => repository.unSaveRestaurant(restaurantId: testRestaurant.id),
       ).called(1);
       verifyNoMoreInteractions(repository);
     },
   );
 
   test(
-    'given the AddRestaurant use case '
+    'given the UnSaveRestaurant use case '
     'when instantiated '
-    'and [RestaurantsRepository.addRestaurant] call unsuccessful '
+    'and [RestaurantsRepository.unSaveRestaurant] called unsuccessfully '
     'then return [RestaurantsFailure]',
     () async {
       // Arrange
       when(
-        () => repository.addRestaurant(restaurant: testRestaurant),
+        () => repository.unSaveRestaurant(
+          restaurantId: any(named: 'restaurantId'),
+        ),
       ).thenAnswer((_) async => Left(testFailure));
       // Act
-      final result = await useCase(testRestaurant);
+      final result = await useCase(testRestaurant.id);
       // Assert
       expect(result, equals(Left<Failure, void>(testFailure)));
       verify(
-        () => repository.addRestaurant(restaurant: testRestaurant),
+        () => repository.unSaveRestaurant(restaurantId: testRestaurant.id),
       ).called(1);
       verifyNoMoreInteractions(repository);
     },

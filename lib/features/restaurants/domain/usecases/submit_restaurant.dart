@@ -9,5 +9,5 @@ class SubmitRestaurant extends UseCaseWithParams<void, RestaurantSubmit> {
   final RestaurantsRepository _repository;
 
   @override
-  ResultFuture<void> call(RestaurantSubmit params) => _repository.submitRestaurant(restaurantSubmit: params);
+  ResultVoid call(RestaurantSubmit params) => _repository.submitRestaurant(restaurantSubmit: params);
 }

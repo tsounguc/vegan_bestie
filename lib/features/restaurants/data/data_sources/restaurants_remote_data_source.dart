@@ -132,7 +132,10 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
         case UpdateRestaurantInfoAction.name:
           await _updateRestaurantData(
             id: restaurant.id,
-            data: {'name': restaurantData},
+            data: {
+              'name': restaurantData,
+              'name_lowercase': restaurantData.toString().toLowerCase(),
+            },
           );
         case UpdateRestaurantInfoAction.streetAddress:
           final fullAddress = '$restaurantData,'

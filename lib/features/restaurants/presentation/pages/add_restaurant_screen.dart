@@ -155,7 +155,7 @@ class _AddRestaurantScreenState extends State<AddRestaurantScreen> {
       dineIn: tddItems[1].isSelected,
       delivery: tddItems[2].isSelected,
     );
-    if (context.currentUser?.isAdmin == true) {
+    if (true == context.currentUser?.isAdmin) {
       bloc.addRestaurant(
         restaurant,
       );

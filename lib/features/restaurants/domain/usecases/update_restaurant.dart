@@ -25,7 +25,7 @@ class UpdateRestaurantParams extends Equatable {
     required this.restaurant,
   });
 
-  UpdateRestaurantParams.empty()
+  const UpdateRestaurantParams.empty()
       : this(
           action: UpdateRestaurantInfoAction.name,
           restaurantData: 'empty.name',

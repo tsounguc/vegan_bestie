@@ -4,62 +4,74 @@ import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/failures_successes/failures.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/repositories/restaurants_repository.dart';
-import 'package:sheveegan/features/restaurants/domain/usecases/add_restaurant.dart';
+import 'package:sheveegan/features/restaurants/domain/usecases/get_saved_restaurants.dart';
 
 import 'restaurants_repository.mock.dart';
 
 void main() {
   late RestaurantsRepository repository;
-  late AddRestaurant useCase;
+  late GetSavedRestaurants useCase;
   const testRestaurant = Restaurant.empty();
+  final testRestaurantsIdsList = [testRestaurant.id];
+
   setUp(() {
     repository = MockRestaurantsRepository();
-    useCase = AddRestaurant(repository);
+    useCase = GetSavedRestaurants(repository);
     registerFallbackValue(testRestaurant);
+    registerFallbackValue(testRestaurantsIdsList);
   });
 
   final testFailure = RestaurantsFailure(
     message: 'message',
     statusCode: 500,
   );
+  final testSavedRestaurants = [const Restaurant.empty()];
 
   test(
-    'given the AddRestaurant use case '
+    'given the GetSavedRestaurants use case '
     'when instantiated '
-    'then call [RestaurantsRepository.addRestaurant] '
+    'then call [RestaurantsRepository.getSavedRestaurants] '
     'and return [void]',
     () async {
       // Arrange
       when(
-        () => repository.addRestaurant(restaurant: testRestaurant),
-      ).thenAnswer((_) async => const Right(null));
+        () => repository.getSavedRestaurants(
+          restaurantsIdsList: any(named: 'restaurantsIdsList'),
+        ),
+      ).thenAnswer((_) async => Right(testSavedRestaurants));
       // Act
-      final result = await useCase(testRestaurant);
+      final result = await useCase(testRestaurantsIdsList);
       // Assert
-      expect(result, equals(const Right<Failure, void>(null)));
+      expect(result, equals(Right<Failure, void>(testSavedRestaurants)));
       verify(
-        () => repository.addRestaurant(restaurant: testRestaurant),
+        () => repository.getSavedRestaurants(
+          restaurantsIdsList: testRestaurantsIdsList,
+        ),
       ).called(1);
       verifyNoMoreInteractions(repository);
     },
   );
 
   test(
-    'given the AddRestaurant use case '
+    'given the GetSavedRestaurants use case '
     'when instantiated '
-    'and [RestaurantsRepository.addRestaurant] call unsuccessful '
+    'and [RestaurantsRepository.getSavedRestaurants] called unsuccessfully '
     'then return [RestaurantsFailure]',
     () async {
       // Arrange
       when(
-        () => repository.addRestaurant(restaurant: testRestaurant),
+        () => repository.getSavedRestaurants(
+          restaurantsIdsList: any(named: 'restaurantsIdsList'),
+        ),
       ).thenAnswer((_) async => Left(testFailure));
       // Act
-      final result = await useCase(testRestaurant);
+      final result = await useCase(testRestaurantsIdsList);
       // Assert
       expect(result, equals(Left<Failure, void>(testFailure)));
       verify(
-        () => repository.addRestaurant(restaurant: testRestaurant),
+        () => repository.getSavedRestaurants(
+          restaurantsIdsList: testRestaurantsIdsList,
+        ),
       ).called(1);
       verifyNoMoreInteractions(repository);
     },
