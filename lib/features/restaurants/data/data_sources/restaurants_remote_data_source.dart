@@ -19,6 +19,7 @@ import 'package:sheveegan/features/restaurants/data/models/user_location_model.d
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_review.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/restaurant_submit.dart';
+import 'package:stack_trace/stack_trace.dart' as stack_trace;
 
 abstract class RestaurantsRemoteDataSource {
   Future<UserLocationModel> getUserLocation();
@@ -270,6 +271,11 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
           );
       }
     } on FirebaseException catch (e, s) {
+      FlutterError.demangleStackTrace = (StackTrace stack) {
+        if (stack is stack_trace.Trace) return stack.vmTrace;
+        if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
+        return stack;
+      };
       debugPrintStack(stackTrace: s);
       throw RestaurantsException(
         message: e.message ?? 'Unknown error occurred',
