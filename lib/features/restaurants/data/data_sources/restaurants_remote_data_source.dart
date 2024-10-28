@@ -606,7 +606,6 @@ class RestaurantsRemoteDataSourceImpl implements RestaurantsRemoteDataSource {
       // Increment reviewsCount
       return await _restaurants.doc(restaurantReviewModel.restaurantId).set(
         {
-          'restaurantId': restaurantReview.restaurantId,
           'restaurantReviewsCount': FieldValue.increment(1),
         },
         SetOptions(merge: true),

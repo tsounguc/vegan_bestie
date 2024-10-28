@@ -8,7 +8,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sheveegan/core/enums/update_restaurant_info.dart';
-import 'package:sheveegan/core/extensions/string_extensions.dart';
 import 'package:sheveegan/core/failures_successes/exceptions.dart';
 import 'package:sheveegan/core/services/restaurants_services/geocoding_plugin.dart';
 import 'package:sheveegan/core/services/restaurants_services/location_plugin.dart';
@@ -16,8 +15,9 @@ import 'package:sheveegan/core/services/restaurants_services/map_plugin.dart';
 import 'package:sheveegan/core/utils/firebase_constants.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
+import 'package:sheveegan/features/restaurants/data/models/restaurant_submit_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/user_location_model.dart';
-import 'package:sheveegan/features/restaurants/domain/entities/restaurant.dart';
 import 'package:sheveegan/features/restaurants/domain/entities/user_location.dart';
 
 class MockLocationPlugin extends Mock implements LocationPlugin {}
@@ -51,11 +51,16 @@ Future<void> main() async {
   const testRadius = 5.0;
   const testRestaurant = RestaurantModel.empty();
   final testUserLocation = UserLocationModel.empty();
+
   final testGeoLocation = Location(
     latitude: 0,
     longitude: 0,
     timestamp: DateTime.now(),
   );
+  final testRestaurantSubmit = RestaurantSubmitModel.empty().copyWith(
+    submittedAt: DateTime.now(),
+  );
+  final testRestaurantReview = RestaurantReviewModel.empty();
   setUp(() async {
     firestore = FakeFirebaseFirestore();
     final user = MockUser(
@@ -96,12 +101,25 @@ Future<void> main() async {
     );
 
     final restaurantRef = firestore.collection(FirebaseConstants.restaurantsCollection).doc();
+    final submitRef =
+        firestore.collection(FirebaseConstants.submittedRestaurantsCollection).doc(testRestaurantSubmit.id);
 
     await restaurantRef.set(
-      const RestaurantModel.empty().copyWith(id: testRestaurant.id, streetAddress: 'Test Street').toMap(),
+      const RestaurantModel.empty().copyWith(streetAddress: 'Test Street').toMap(),
+    );
+
+    await submitRef.set(
+      testRestaurantSubmit
+          .copyWith(
+            submittedRestaurant: const RestaurantModel.empty().copyWith(
+              streetAddress: 'Test Street',
+            ),
+          )
+          .toMap(),
     );
 
     registerFallbackValue(testRestaurant);
+    registerFallbackValue(testRestaurantReview);
     registerFallbackValue(testPosition);
     registerFallbackValue(testRadius);
     registerFallbackValue([testRestaurant]);
@@ -111,24 +129,25 @@ Future<void> main() async {
     test(
       'given RestaurantsRemoteDataSourceImpl '
       'when [RestaurantsRemoteDataSourceImpl.addRestaurant] is called '
-      'then add the given restaurant to the firestore collection ',
+      'then add the given restaurant to the firestore restaurants collection ',
       () async {
         // Arrange
-        final restaurantCollectionRef = await firestore.collection(FirebaseConstants.restaurantsCollection).get();
 
         when(
           () => geocoding.getCoordinateFromAddress(any()),
-        ).thenAnswer(
-          (_) async => testGeoLocation,
-        );
+        ).thenAnswer((_) async => testGeoLocation);
         // Act
         await remoteDataSource.addRestaurant(
           restaurant: testRestaurant,
         );
 
         // Assert
-
-        expect(restaurantCollectionRef.docs.length, 1);
+        final restaurantCollectionRef = await firestore
+            .collection(
+              FirebaseConstants.restaurantsCollection,
+            )
+            .get();
+        expect(restaurantCollectionRef.docs.length, 2);
         expect(restaurantCollectionRef.docs.first.data()['id'], testRestaurant.id);
 
         verify(() => geocoding.getCoordinateFromAddress(any())).called(1);
@@ -175,9 +194,9 @@ Future<void> main() async {
         final restaurantRef = firestore.collection(FirebaseConstants.restaurantsCollection).doc(testRestaurant.id);
         await restaurantRef.set(testRestaurant.toMap());
 
-        when(() => geocoding.getCoordinateFromAddress(any())).thenAnswer(
-          (_) async => testGeoLocation,
-        );
+        when(
+          () => geocoding.getCoordinateFromAddress(any()),
+        ).thenAnswer((_) async => testGeoLocation);
 
         // Act
         await remoteDataSource.updateRestaurant(
@@ -577,6 +596,66 @@ Future<void> main() async {
     );
   });
 
+  group('submitRestaurant', () {
+    test(
+      'given RestaurantsRemoteDatasource '
+      'when [RestaurantsRemoteDatasource.submitRestaurant] is called '
+      'then return add restaurant to firestore submittedRestaurants collection',
+      () async {
+        // Arrange
+        when(
+          () => geocoding.getCoordinateFromAddress(any()),
+        ).thenAnswer((_) async => testGeoLocation);
+
+        // Act
+        await remoteDataSource.submitRestaurant(
+          restaurantSubmit: testRestaurantSubmit.copyWith(id: '1'),
+        );
+
+        // Assert
+        final submitCollectionRef = await firestore
+            .collection(
+              FirebaseConstants.submittedRestaurantsCollection,
+            )
+            .get();
+
+        expect(submitCollectionRef.docs.length, 2);
+        expect(submitCollectionRef.docs.first.data()['id'], testRestaurantSubmit.id);
+
+        verify(() => geocoding.getCoordinateFromAddress(any())).called(1);
+        verifyNoMoreInteractions(geocoding);
+      },
+    );
+  });
+
+  group('deleteRestaurantSubmission', () {
+    test(
+      'given RestaurantsRemoteDataSourceImpl '
+      'when [RestaurantsRemoteDataSourceImpl.deleteRestaurantSubmission] is called '
+      'then delete restaurantSubmit and complete successfully ',
+      () async {
+        // Arrange
+        // when(
+        //   () => geocoding.getCoordinateFromAddress(any()),
+        // ).thenAnswer((_) async => testGeoLocation);
+
+        // Act
+        await remoteDataSource.deleteRestaurantSubmission(
+          restaurantSubmit: testRestaurantSubmit,
+        );
+
+        // Assert
+        final submitCollectionRef = await firestore
+            .collection(
+              FirebaseConstants.submittedRestaurantsCollection,
+            )
+            .get();
+
+        expect(submitCollectionRef.docs.length, 0);
+      },
+    );
+  });
+
   group('getRestaurantsNearMe', () {
     test(
       'given RestaurantRemoteDataSourceImpl '
@@ -596,7 +675,9 @@ Future<void> main() async {
         ];
 
         for (final restaurant in expectedRestaurants) {
-          await firestore.collection(FirebaseConstants.restaurantsCollection).add(restaurant.toMap());
+          await firestore.collection(FirebaseConstants.restaurantsCollection).add(
+                restaurant.toMap(),
+              );
         }
 
         // Act
@@ -615,6 +696,87 @@ Future<void> main() async {
       },
     );
   });
+
+  group('addRestaurantReview', () {
+    test(
+      'given RestaurantsRemoteDatasourceImpl '
+      'when [RestaurantsRemoteDatasourceImpl.addRestaurantReview] is called '
+      'then add the review to firestore reviews collection',
+      () async {
+        // Arrange
+
+        // Act
+
+        await remoteDataSource.addRestaurantReview(
+          testRestaurantReview.copyWith(restaurantId: '1'),
+        );
+
+        // Assert
+        final reviewCollectionRef =
+            await firestore.collection(FirebaseConstants.restaurantReviewsCollection).get();
+
+        expect(reviewCollectionRef.docs.length, 1);
+      },
+    );
+  });
+
+  group('editRestaurantReview', () {
+    test(
+      'given RestaurantsRemoteDatasourceImpl '
+      'when [RestaurantsRemoteDatasourceImpl.editRestaurantReview] is called '
+      'then add the review to firestore reviews collection',
+      () async {
+        // Arrange
+        await firestore.collection(FirebaseConstants.restaurantReviewsCollection).doc(testRestaurantReview.id).set(
+              testRestaurantReview.copyWith(restaurantId: '1').toMap(),
+            );
+
+        // Act
+        await remoteDataSource.editRestaurantReview(
+          testRestaurantReview.copyWith(
+            restaurantId: '1',
+            text: 'Serves a lot of vegan options',
+          ),
+        );
+
+        // Assert
+        final reviewCollectionRef =
+            await firestore.collection(FirebaseConstants.restaurantReviewsCollection).get();
+
+        expect(reviewCollectionRef.docs.length, 1);
+        // expect(reviewCollectionRef.docs.first.data()['text'], 'Serves a lot of vegan options');
+      },
+    );
+  });
+
+  group('deleteRestaurantReview', () {
+    test(
+      'given RestaurantsRemoteDatasourceImpl '
+      'when [RestaurantsRemoteDatasourceImpl.deleteRestaurantReview] is called '
+      'then add the review to firestore reviews collection',
+      () async {
+        // Arrange
+
+        // Act
+
+        await remoteDataSource.deleteRestaurantReview(
+          testRestaurantReview.copyWith(restaurantId: '1'),
+        );
+
+        // Assert
+        final reviewCollectionRef =
+            await firestore.collection(FirebaseConstants.restaurantReviewsCollection).get();
+
+        expect(reviewCollectionRef.docs.length, 0);
+      },
+    );
+  });
+
+  group('saveRestaurant', () {});
+
+  group('unSaveRestaurant', () {});
+
+  group('getSavedRestaurants', () {});
 
   group('getUserLocation', () {
     test(
