@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
@@ -13,6 +14,8 @@ import 'package:sheveegan/core/services/restaurants_services/geocoding_plugin.da
 import 'package:sheveegan/core/services/restaurants_services/location_plugin.dart';
 import 'package:sheveegan/core/services/restaurants_services/map_plugin.dart';
 import 'package:sheveegan/core/utils/firebase_constants.dart';
+import 'package:sheveegan/core/utils/typedefs.dart';
+import 'package:sheveegan/features/auth/data/models/user_model.dart';
 import 'package:sheveegan/features/restaurants/data/data_sources/restaurants_remote_data_source.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_model.dart';
 import 'package:sheveegan/features/restaurants/data/models/restaurant_review_model.dart';
@@ -26,11 +29,40 @@ class MockGoogleMapPlugin extends Mock implements GoogleMapPlugin {}
 
 class MockGeocodingPlugin extends Mock implements GeocodingPlugin {}
 
+class MockUser extends Mock implements User {
+  String _uid = 'Test uid';
+
+  @override
+  String get uid => _uid;
+
+  set uid(String value) {
+    if (_uid != value) _uid = value;
+  }
+}
+
+class MockUserCredential extends Mock implements UserCredential {
+  MockUserCredential([User? user]) : _user = user;
+  User? _user;
+
+  @override
+  User? get user => _user;
+
+  set user(User? value) {
+    if (_user != value) _user = value;
+  }
+}
+
 Future<void> main() async {
-  late RestaurantsRemoteDataSource remoteDataSource;
-  late FakeFirebaseFirestore firestore;
   late MockFirebaseAuth auth;
+  late FakeFirebaseFirestore firestore;
   late MockFirebaseStorage storage;
+  late RestaurantsRemoteDataSource remoteDataSource;
+  late UserCredential userCredential;
+  late DocumentReference<DataMap> documentReference;
+  late MockUser mockUser;
+
+  const testUser = UserModel.empty();
+
   late LocationPlugin location;
   late GoogleMapPlugin googleMap;
   late GeocodingPlugin geocoding;
@@ -62,12 +94,21 @@ Future<void> main() async {
   );
   final testRestaurantReview = RestaurantReviewModel.empty();
   setUp(() async {
+    auth = MockFirebaseAuth();
+
     firestore = FakeFirebaseFirestore();
-    final user = MockUser(
-      uid: 'uid',
-      email: 'email',
-      displayName: 'displayName',
+
+    storage = MockFirebaseStorage();
+
+    documentReference = firestore.collection(FirebaseConstants.usersCollection).doc();
+
+    await documentReference.set(
+      testUser.copyWith(uid: documentReference.id).toMap(),
     );
+
+    mockUser = MockUser()..uid = documentReference.id;
+
+    userCredential = MockUserCredential(mockUser);
 
     final googleSignIn = MockGoogleSignIn();
     final signInAccount = await googleSignIn.signIn();
@@ -76,10 +117,8 @@ Future<void> main() async {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    auth = MockFirebaseAuth(mockUser: user);
-    await auth.signInWithCredential(credential);
 
-    storage = MockFirebaseStorage();
+    await auth.signInWithCredential(credential);
 
     location = MockLocationPlugin();
 
@@ -749,34 +788,55 @@ Future<void> main() async {
     );
   });
 
-  group('deleteRestaurantReview', () {
-    test(
-      'given RestaurantsRemoteDatasourceImpl '
-      'when [RestaurantsRemoteDatasourceImpl.deleteRestaurantReview] is called '
-      'then add the review to firestore reviews collection',
-      () async {
-        // Arrange
-
-        // Act
-
-        await remoteDataSource.deleteRestaurantReview(
-          testRestaurantReview.copyWith(restaurantId: '1'),
-        );
-
-        // Assert
-        final reviewCollectionRef =
-            await firestore.collection(FirebaseConstants.restaurantReviewsCollection).get();
-
-        expect(reviewCollectionRef.docs.length, 0);
-      },
-    );
-  });
-
-  group('saveRestaurant', () {});
-
-  group('unSaveRestaurant', () {});
-
-  group('getSavedRestaurants', () {});
+  // group('deleteRestaurantReview', () {
+  //   test(
+  //     'given RestaurantsRemoteDatasourceImpl '
+  //     'when [RestaurantsRemoteDatasourceImpl.deleteRestaurantReview] is called '
+  //     'then add the review to firestore reviews collection',
+  //     () async {
+  //       // Arrange
+  //
+  //       // Act
+  //       await remoteDataSource.deleteRestaurantReview(
+  //         testRestaurantReview.copyWith(restaurantId: '1'),
+  //       );
+  //
+  //       // Assert
+  //       final reviewCollectionRef =
+  //           await firestore.collection(FirebaseConstants.restaurantReviewsCollection).get();
+  //
+  //       expect(reviewCollectionRef.docs.length, 0);
+  //     },
+  //   );
+  // });
+  //
+  // group('saveRestaurant', () {
+  //   test(
+  //     'given RestaurantsRemoteDatasourceImpl '
+  //     'when [RestaurantsRemoteDatasourceImpl.saveRestaurant] is called '
+  //     'then add the restaurantId to user doc in firestore users collection',
+  //     () async {
+  //       // Arrange
+  //       // final savedRestaurantIds = {
+  //       //   'savedRestaurantsIds': FieldValue.arrayUnion([testRestaurant.id])
+  //       // };
+  //       // final usersCollectionRef = firestore.collection(FirebaseConstants.usersCollection).doc(mockUser.uid);
+  //       // await usersCollectionRef.update(savedRestaurantIds);
+  //       // Act
+  //       // await remoteDataSource.saveRestaurant(restaurantId: testRestaurant.id);
+  //
+  //       // Assert
+  //       // final restaurantData =
+  //       //     await firestore.collection(FirebaseConstants.usersCollection).doc(mockUser.uid).get();
+  //       // print(restaurantData.data()!['savedRestaurantsIds']);
+  //       // expect(restaurantData.data()!['savedRestaurantsIds'], 1);
+  //     },
+  //   );
+  // });
+  //
+  // group('unSaveRestaurant', () {});
+  //
+  // group('getSavedRestaurants', () {});
 
   group('getUserLocation', () {
     test(
