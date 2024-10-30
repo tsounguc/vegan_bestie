@@ -53,7 +53,7 @@ class RestaurantsHomePage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is LoadingUserGeoLocation) {
+          if (state is LoadingUserLocation) {
             currentPage = const LoadingPage();
             return const LoadingPage();
           } else if (state is UserLocationError) {

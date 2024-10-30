@@ -9,12 +9,12 @@ class UserLocationCubit extends Cubit<UserLocationState> {
   UserLocationCubit({
     required GetUserLocation getUserLocation,
   })  : _getUserLocation = getUserLocation,
-        super(UserLocationInitial());
+        super(const UserLocationInitial());
   final GetUserLocation _getUserLocation;
   Position? lastUserLocation;
 
   Future<void> loadGeoLocation() async {
-    if (state is UserLocationInitial) emit(const LoadingUserGeoLocation());
+    if (state is UserLocationInitial) emit(const LoadingUserLocation());
     final result = await _getUserLocation();
     result.fold(
       (failure) => emit(UserLocationError(message: failure.errorMessage)),

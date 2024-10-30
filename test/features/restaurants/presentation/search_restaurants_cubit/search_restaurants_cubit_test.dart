@@ -34,7 +34,7 @@ void main() {
 
   test(
     'given SearchRestaurantsCubit '
-    'when bloc is instantiated '
+    'when cubit is instantiated '
     'then initial state should be [SearchRestaurantsInitial] ',
     () async {
       // Arrange

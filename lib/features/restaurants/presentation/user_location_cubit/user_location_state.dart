@@ -7,10 +7,12 @@ abstract class UserLocationState extends Equatable {
   List<Object> get props => [];
 }
 
-class UserLocationInitial extends UserLocationState {}
+class UserLocationInitial extends UserLocationState {
+  const UserLocationInitial();
+}
 
-class LoadingUserGeoLocation extends UserLocationState {
-  const LoadingUserGeoLocation();
+class LoadingUserLocation extends UserLocationState {
+  const LoadingUserLocation();
 }
 
 class UserLocationLoaded extends UserLocationState {
